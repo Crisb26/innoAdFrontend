@@ -1,0 +1,112 @@
+{
+    "Proyecto": "InnoAd",
+    "Descripcion": "Plataforma de gestión de publicidad digital remota, segura y sostenible.",
+    "Objetivo": "Revolucionar la gestión de campañas publicitarias mediante tecnología innovadora.",
+    "Responsables": [
+      {"Nombre": "Cristopfer Bueno", "Rol": "Product Owner", "Cargo": "Desarrollador"},
+      {"Nombre": "Sebastián Pinilla", "Rol": "Scrum Master", "Cargo": "Desarrollador"}
+    ],
+    "Involucrados": [
+      {"Nombre": "Hugo Hernán Henao Hernández", "Rol": "Asesor Técnico", "Cargo": "Instructor"},
+      {"Nombre": "Jenny Patricia Vásquez", "Rol": "Supervisora", "Cargo": "Instructora"}
+    ],
+    "Metodologia": "Scrum",
+    "Reuniones": [
+      {
+        "Fecha": "28/02/2025",
+        "Motivo": "Planteamiento del problema y planificación del Sprint 1",
+        "Puntos": [
+          "Identificación del problema en la publicidad tradicional.",
+          "Propuesta de solución: plataforma InnoAd.",
+          "Definición de los objetivos del proyecto.",
+          "Introducción a la metodología Scrum."
+        ]
+      },
+      {
+        "Fecha": "01/03/2025",
+        "Motivo": "Revisión del Sprint 1 y planificación del Sprint 2",
+        "Puntos": [
+          "Revisión y retrospectiva del Sprint 1.",
+          "Definición de objetivos del Sprint 2.",
+          "Asignación de tareas."
+        ],
+        "Actividades": [
+          {"Tarea": "Validación de funciones básicas", "Responsable": "Cristopfer Bueno", "Estado": "Finalizado"},
+          {"Tarea": "Desarrollo de la interfaz de administración", "Responsable": "Sebastián Pinilla", "Estado": "Finalizado"}
+        ]
+      },
+      {
+        "Fecha": "14/03/2025",
+        "Motivo": "Revisión del Sprint 2 y planificación del Sprint 3",
+        "Puntos": [
+          "Evaluación del Sprint 2.",
+          "Definición de objetivos y tareas para el Sprint 3."
+        ],
+        "Actividades": [
+          {"Tarea": "Implementar autenticación de usuarios", "Responsable": "Sebastián Pinilla", "Estado": "Asignado"},
+          {"Tarea": "Desarrollo de plantillas de anuncios", "Responsable": "Cristopfer Bueno", "Estado": "Asignado"}
+        ]
+      },
+      {
+        "Fecha": "01/04/2025",
+        "Motivo": "Diseño del logo del proyecto",
+        "Puntos": [
+          "Definición de conceptos clave para el diseño.",
+          "Propuesta y discusión de ideas.",
+          "Selección del diseño y asignación de tareas gráficas."
+        ]
+      },
+      {
+        "Fecha": "25/04/2025",
+        "Motivo": "Seguimiento del Sprint 1 y evaluación de tareas pendientes",
+        "Puntos": [
+          "Evaluación del progreso y cumplimiento de tareas.",
+          "Identificación de problemas y soluciones.",
+          "Planificación de tareas restantes."
+        ],
+        "Actividades": [
+          {"Tarea": "Crear introducción del planteamiento del problema", "Responsable": "Cristopfer Bueno", "Estado": "En Proceso"},
+          {"Tarea": "Verificar situación actual planteamiento del problema", "Responsable": "Sebastián Pinilla", "Estado": "En Proceso"}
+        ]
+      }
+    ],
+    "Caracteristicas": {
+      "Funciones": [
+        "Gestión remota de pantallas publicitarias.",
+        "Seguridad avanzada con autenticación y encriptación.",
+        "Interfaz intuitiva para administración de campañas.",
+        "Generación de reportes automáticos.",
+        "Personalización de anuncios con plantillas."
+      ],
+      "Usuarios": [
+        {"Tipo": "Administrador", "Funciones": ["Gestión completa del sistema"]},
+        {"Tipo": "Cliente", "Funciones": ["Personalización y monitoreo de campañas"]},
+        {"Tipo": "Técnico de Soporte", "Funciones": ["Mantenimiento técnico del sistema"]}
+      ]
+    },
+    "Requisitos": {
+      "Funcionales": [
+        "Registro de usuarios.",
+        "Control remoto de pantallas.",
+        "Personalización de campañas publicitarias.",
+        "Generación de reportes automáticos."
+      ],
+      "No Funcionales": [
+        "Alta usabilidad (aprendizaje en menos de 2 horas).",
+        "Confiabilidad con 99% de disponibilidad.",
+        "Eficiencia en tiempo real para programación de anuncios.",
+        "Portabilidad en navegadores modernos."
+      ]
+    },
+    "Restricciones": [
+      "Requiere conexión estable a internet.",
+      "Limitada compatibilidad con sistemas operativos antiguos.",
+      "Dependencia de almacenamiento en la nube.",
+      "Carga operativa puede afectar rendimiento con múltiples usuarios."
+    ],
+    "ProgresoActual": [
+      "Completado el Sprint 1 y Sprint 2.",
+      "En desarrollo: autenticación de usuarios y plantillas.",
+      "Diseño de logo en progreso."
+    ]
+  }
