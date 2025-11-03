@@ -1,3 +1,0 @@
-📁 Carpeta de Iconos
-
-Coloca aquí tus iconos SVG o PNG del proyecto.
