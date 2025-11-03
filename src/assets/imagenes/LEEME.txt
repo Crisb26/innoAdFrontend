@@ -1,0 +1,15 @@
+📁 Carpeta de Imágenes
+
+Coloca aquí tus imágenes del proyecto:
+- logo-innoad.png
+- logo-innoad-compacto.png
+- fondo-login.jpg
+- avatar-default.png
+
+Puedes usar herramientas como:
+- DALL-E
+- Midjourney
+- Stable Diffusion
+- Leonardo.ai
+
+O crear tus propias imágenes con herramientas de diseño.

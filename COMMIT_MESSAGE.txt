@@ -1,0 +1,91 @@
+Initial commit: Implementación completa del frontend INNOAD
+
+CONTEXTO DEL PROYECTO:
+Este commit representa la versión inicial completa del frontend de INNOAD, un sistema de gestión de publicidad digital desarrollado con Angular 18. El proyecto fue desarrollado de manera iterativa durante varias sesiones de trabajo, priorizando la funcionalidad y estabilidad sobre commits incrementales.
+
+RAZÓN PARA UN ÚNICO COMMIT INICIAL:
+- Enfoque en desarrollo continuo sin interrupciones para mantener el flujo de trabajo
+- Priorización de la arquitectura completa antes de versionar
+- Garantizar que todas las dependencias y configuraciones estén correctamente integradas
+- Evitar commits de código incompleto o no funcional durante el desarrollo inicial
+
+COMPONENTES IMPLEMENTADOS:
+
+1. ARQUITECTURA Y CONFIGURACIÓN
+   - Estructura modular con lazy loading para optimización de carga
+   - Configuración de Angular 18 con standalone components
+   - Sistema de rutas con protección mediante guardias
+   - Configuración de entornos para desarrollo y producción
+   - Configuración Docker con Nginx para despliegue en contenedores
+
+2. MÓDULO DE AUTENTICACIÓN
+   - Servicio de autenticación con JWT tokens
+   - Sistema de refresh tokens automático
+   - Guardias de autenticación y permisos
+   - Interceptor HTTP para inyección automática de tokens
+   - Componentes de inicio de sesión, registro y recuperación de contraseña
+   - Gestión de estado con Angular Signals
+
+3. MÓDULO CORE
+   - Servicios centralizados: autenticación, campañas, contenidos, pantallas, estadísticas
+   - Modelos TypeScript para entidades del sistema
+   - Interceptor de errores HTTP con manejo centralizado
+   - Guardias de rutas para control de acceso
+   - Normalización de datos (conversión ASCII para nombres)
+
+4. MÓDULOS FUNCIONALES
+   - Dashboard: Panel principal del sistema
+   - Campañas: Gestión completa de campañas publicitarias
+   - Pantallas: Administración de dispositivos de visualización
+   - Contenidos: Biblioteca multimedia con gestión de archivos
+   - Reportes: Generación de estadísticas y análisis
+   - Mantenimiento: Página de estado del sistema
+
+5. SISTEMA DE COMUNICACIÓN
+   - Integración con API REST (http://localhost:8080/api/v1)
+   - Soporte para WebSockets (ws://localhost:8080/ws)
+   - Manejo de errores HTTP con retroalimentación al usuario
+   - Sistema de reintentos para peticiones fallidas
+
+6. SEGURIDAD
+   - Autenticación basada en JWT
+   - Control de permisos por rol de usuario
+   - Protección de rutas con guardias
+   - Validación de tokens en cada petición
+   - Cierre de sesión automático por expiración
+
+7. CONFIGURACIÓN DE DESPLIEGUE
+   - Dockerfile con construcción multi-etapa
+   - Configuración Nginx para servir aplicación SPA
+   - Scripts npm para desarrollo y producción
+   - Archivos .gitignore y .dockerignore configurados
+   - Documentación completa en README.md
+
+8. DOCUMENTACIÓN
+   - README.md profesional con instrucciones detalladas
+   - Documentación de arquitectura y estructura
+   - Guía de configuración y despliegue
+   - Descripción de módulos y componentes
+   - Requisitos técnicos y dependencias
+
+TECNOLOGÍAS Y DEPENDENCIAS:
+- Angular: 18.2.0
+- TypeScript: 5.5
+- RxJS: 7.8.0
+- Zone.js: 0.14.10
+
+SCRIPTS CONFIGURADOS:
+- start: Servidor de desarrollo
+- construir: Build de producción
+- servir-produccion: Servidor HTTP para producción
+- test: Ejecución de pruebas
+- lint: Análisis de código
+
+PRÓXIMOS PASOS:
+- Implementación de funcionalidades avanzadas en módulos
+- Integración de WebSockets para tiempo real
+- Desarrollo de componentes compartidos
+- Implementación de pruebas unitarias y e2e
+- Optimización de rendimiento y carga
+
+Este commit establece la base sólida del proyecto, con una arquitectura escalable, segura y lista para desarrollo continuo.
