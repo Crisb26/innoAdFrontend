@@ -30,6 +30,7 @@ export class ServicioAutenticacion {
   private readonly TOKEN_KEY = 'innoad_token';
   private readonly REFRESH_TOKEN_KEY = 'innoad_refresh_token';
   private readonly USUARIO_KEY = 'innoad_usuario';
+  private readonly EXPIRA_KEY = 'innoad_token_expira'; // epoch ms
   
   // Signals para gestión reactiva del estado
   private usuarioActualSignal = signal<Usuario | null>(this.cargarUsuarioDesdeStorage());
@@ -38,13 +39,14 @@ export class ServicioAutenticacion {
   
   // Signals públicos computados
   public readonly usuarioActual = this.usuarioActualSignal.asReadonly();
-  public readonly estaAutenticado = computed(() => !!this.usuarioActualSignal() && !!this.tokenActualSignal());
+  public readonly estaAutenticado = computed(() => !!this.usuarioActualSignal() && !!this.tokenActualSignal() && this.tokenNoExpirado());
   public readonly cargando = this.cargandoSignal.asReadonly();
   public readonly esAdministrador = computed(() => this.usuarioActualSignal()?.rol.nombre === 'Administrador');
   public readonly permisos = computed(() => this.usuarioActualSignal()?.permisos.map(p => p.nombre) || []);
   
   // Subject para actualización automática del token
   private refrescarTokenSub = new BehaviorSubject<boolean>(false);
+  private programacionRefresco?: any; // guardar referencia a suscripción de timer
   
   constructor() {
     this.inicializarRefrescoAutomaticoToken();
@@ -68,6 +70,7 @@ export class ServicioAutenticacion {
           this.guardarSesion(datos, solicitud.recordarme);
           this.usuarioActualSignal.set(datos.usuario);
           this.tokenActualSignal.set(datos.token);
+          this.programarRefrescoConExpira(datos.expiraEn);
           this.cargandoSignal.set(false);
         }),
         catchError(error => {
@@ -122,7 +125,7 @@ export class ServicioAutenticacion {
    * Refresca el token de acceso usando el refresh token
    */
   refrescarToken(): Observable<RespuestaLogin> {
-    const refreshToken = localStorage.getItem(this.REFRESH_TOKEN_KEY);
+    const refreshToken = this.obtenerRefreshTokenDesdeStorage();
     
     if (!refreshToken) {
       return throwError(() => new Error('No hay refresh token disponible'));
@@ -139,8 +142,8 @@ export class ServicioAutenticacion {
         return respuesta.datos;
       }),
       tap(datos => {
-        localStorage.setItem(this.TOKEN_KEY, datos.token);
-        this.tokenActualSignal.set(datos.token);
+        this.guardarTokenAcceso(datos.token);
+        this.programarRefrescoConExpira(datos.expiraEn);
       }),
       catchError(error => {
         this.cerrarSesion();
@@ -238,12 +241,13 @@ export class ServicioAutenticacion {
   
   private guardarSesion(datos: RespuestaLogin, recordar: boolean): void {
     const storage = recordar ? localStorage : sessionStorage;
-    
+
     storage.setItem(this.TOKEN_KEY, datos.token);
     storage.setItem(this.REFRESH_TOKEN_KEY, datos.tokenActualizacion);
     storage.setItem(this.USUARIO_KEY, JSON.stringify(datos.usuario));
-    
-    // Iniciar temporizador de refresco de token
+    storage.setItem(this.EXPIRA_KEY, (Date.now() + datos.expiraEn * 1000).toString());
+
+    // Señal para refresco (si se usa en otras partes)
     this.refrescarTokenSub.next(true);
   }
   
@@ -254,8 +258,13 @@ export class ServicioAutenticacion {
     sessionStorage.removeItem(this.TOKEN_KEY);
     sessionStorage.removeItem(this.REFRESH_TOKEN_KEY);
     sessionStorage.removeItem(this.USUARIO_KEY);
+    sessionStorage.removeItem(this.EXPIRA_KEY);
     
     this.refrescarTokenSub.next(false);
+    if (this.programacionRefresco) {
+      this.programacionRefresco.unsubscribe?.();
+      this.programacionRefresco = undefined;
+    }
   }
   
   private cargarUsuarioDesdeStorage(): Usuario | null {
@@ -279,19 +288,62 @@ export class ServicioAutenticacion {
   }
   
   private inicializarRefrescoAutomaticoToken(): void {
-    // Refrescar token cada 50 minutos (antes de que expire)
-    timer(0, 50 * 60 * 1000)
+    // Si ya hay sesión al iniciar (recarga), reprogramar según expiración almacenada
+    const expira = this.cargarExpiracionDesdeStorage();
+    if (expira && this.tokenNoExpirado()) {
+      const segundosRestantes = Math.max(0, Math.floor((expira - Date.now()) / 1000));
+      this.programarRefrescoConExpira(segundosRestantes);
+    }
+  }
+
+  private cargarExpiracionDesdeStorage(): number | null {
+    const expira = localStorage.getItem(this.EXPIRA_KEY) || sessionStorage.getItem(this.EXPIRA_KEY);
+    return expira ? Number(expira) : null;
+  }
+
+  private obtenerRefreshTokenDesdeStorage(): string | null {
+    return localStorage.getItem(this.REFRESH_TOKEN_KEY) || sessionStorage.getItem(this.REFRESH_TOKEN_KEY);
+  }
+
+  private guardarTokenAcceso(token: string): void {
+    // Mantener storage coherente: si el token actual estaba en sessionStorage, actualizar allí; si no, en localStorage
+    if (sessionStorage.getItem(this.TOKEN_KEY) !== null) {
+      sessionStorage.setItem(this.TOKEN_KEY, token);
+    } else {
+      localStorage.setItem(this.TOKEN_KEY, token);
+    }
+    this.tokenActualSignal.set(token);
+  }
+
+  private programarRefrescoConExpira(expiraEnSegundos: number): void {
+    // Refrescar cuando falten ~60s para expirar
+    const margen = 60; // segundos
+    const disparoEnMs = Math.max(0, (expiraEnSegundos - margen) * 1000);
+
+    // Guardar nueva expiración absoluta
+    const expiraAbs = Date.now() + expiraEnSegundos * 1000;
+    if (sessionStorage.getItem(this.TOKEN_KEY) !== null) {
+      sessionStorage.setItem(this.EXPIRA_KEY, expiraAbs.toString());
+    } else {
+      localStorage.setItem(this.EXPIRA_KEY, expiraAbs.toString());
+    }
+
+    // Cancelar programación anterior
+    if (this.programacionRefresco) {
+      this.programacionRefresco.unsubscribe?.();
+    }
+
+    this.programacionRefresco = timer(disparoEnMs)
       .pipe(
-        switchMap(() => {
-          if (this.estaAutenticado()) {
-            return this.refrescarToken().pipe(
-              catchError(() => of(null))
-            );
-          }
-          return of(null);
-        })
+        switchMap(() => this.refrescarToken().pipe(catchError(() => of(null))))
       )
       .subscribe();
+  }
+
+  private tokenNoExpirado(): boolean {
+    const expira = this.cargarExpiracionDesdeStorage();
+    if (!expira) return !!this.tokenActualSignal();
+    return Date.now() < expira;
   }
   
   private manejarError(error: any): Error {

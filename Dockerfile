@@ -7,7 +7,9 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run construir
+# Permitir elegir configuración de build (production por defecto) para soportar perfiles como 'compose'
+ARG BUILD_CONFIGURATION=production
+RUN npx ng build --configuration $BUILD_CONFIGURATION
 
 # Etapa 2: Producción con Nginx
 FROM nginx:alpine

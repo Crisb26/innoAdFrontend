@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   template: `
     <div class="contenedor-mantenimiento">
       <div class="tarjeta-mantenimiento">
-        <h1 class="titulo-mantenimiento">🔧</h1>
+        <h1 class="titulo-mantenimiento">&#x1F527;</h1>
         <h2>Sistema en Mantenimiento</h2>
         <p>Estamos realizando mejoras en el sistema.</p>
         <p class="subtexto">Volveremos pronto...</p>

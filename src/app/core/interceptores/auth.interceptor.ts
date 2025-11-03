@@ -5,8 +5,12 @@ import { ServicioAutenticacion } from '../servicios/autenticacion.servicio';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const servicioAuth = inject(ServicioAutenticacion);
   const token = servicioAuth.obtenerToken();
-  
-  if (token && !req.url.includes('/autenticacion/')) {
+
+  // No adjuntar token en endpoints de autenticación ni en actuator/health
+  const esRutaAuth = req.url.includes('/autenticacion/');
+  const esHealth = req.url.includes('/actuator/health');
+
+  if (token && !esRutaAuth && !esHealth) {
     const clonedRequest = req.clone({
       setHeaders: { Authorization: `Bearer ${token}` }
     });

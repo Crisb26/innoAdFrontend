@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { guardAutenticacion } from './core/guards/autenticacion.guard';
+import { guardPermisos } from './core/guards/permisos.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -15,22 +16,31 @@ export const routes: Routes = [
   {
     path: 'campanas',
     loadChildren: () => import('./modulos/campanas/campanas.routes').then(m => m.routes),
-    canActivate: [guardAutenticacion]
+    canActivate: [guardAutenticacion, guardPermisos],
+    data: { permisos: ['CAMPANAS_VER', 'CAMPANAS_CREAR'] }
   },
   {
     path: 'pantallas',
     loadChildren: () => import('./modulos/pantallas/pantallas.routes').then(m => m.routes),
-    canActivate: [guardAutenticacion]
+    canActivate: [guardAutenticacion, guardPermisos],
+    data: { permisos: ['PANTALLAS_VER', 'PANTALLAS_ADMINISTRAR'] }
   },
   {
     path: 'contenidos',
     loadChildren: () => import('./modulos/contenidos/contenidos.routes').then(m => m.routes),
-    canActivate: [guardAutenticacion]
+    canActivate: [guardAutenticacion, guardPermisos],
+    data: { permisos: ['CONTENIDOS_VER', 'CONTENIDOS_CREAR'] }
   },
   {
     path: 'reportes',
     loadChildren: () => import('./modulos/reportes/reportes.routes').then(m => m.routes),
-    canActivate: [guardAutenticacion]
+    canActivate: [guardAutenticacion, guardPermisos],
+    data: { permisos: ['REPORTES_VER', 'ESTADISTICAS_VER'] }
+  },
+  {
+    path: 'sin-permisos',
+    loadComponent: () => import('./modulos/sin-permisos/componentes/sin-permisos.component')
+      .then(m => m.SinPermisosComponent)
   },
   {
     path: 'mantenimiento',

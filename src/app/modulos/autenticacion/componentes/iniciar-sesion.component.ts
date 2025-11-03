@@ -23,15 +23,15 @@ import { SolicitudLogin } from '@core/modelos';
           }
 
           <div class="grupo-input">
-            <label for="emailOUsuario">Email o Usuario</label>
+            <label for="nombreUsuarioOEmail">Email o Usuario</label>
             <input
-              id="emailOUsuario"
+              id="nombreUsuarioOEmail"
               type="text"
-              formControlName="emailOUsuario"
+              formControlName="nombreUsuarioOEmail"
               class="input-innoad"
               placeholder="correo@ejemplo.com"
             />
-            @if (formulario.get('emailOUsuario')?.invalid && formulario.get('emailOUsuario')?.touched) {
+            @if (formulario.get('nombreUsuarioOEmail')?.invalid && formulario.get('nombreUsuarioOEmail')?.touched) {
               <span class="texto-error">Este campo es requerido</span>
             }
           </div>
@@ -211,7 +211,7 @@ export class IniciarSesionComponent {
   protected readonly mensajeError = signal('');
 
   protected readonly formulario = this.fb.nonNullable.group({
-    emailOUsuario: ['', [Validators.required]],
+    nombreUsuarioOEmail: ['', [Validators.required]],
     contrasena: ['', [Validators.required]],
     recordarme: [false]
   });
@@ -222,7 +222,7 @@ export class IniciarSesionComponent {
     this.cargando.set(true);
     this.mensajeError.set('');
 
-    const solicitud: SolicitudLogin = this.formulario.getRawValue();
+  const solicitud: SolicitudLogin = this.formulario.getRawValue();
 
     this.servicioAuth.iniciarSesion(solicitud).subscribe({
       next: () => {

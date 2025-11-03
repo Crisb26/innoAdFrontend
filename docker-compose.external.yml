@@ -1,0 +1,22 @@
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        BUILD_CONFIGURATION: compose
+    image: ${FRONTEND_IMAGE:-innoad-frontend:external}
+    container_name: innoad-frontend-external
+    ports:
+      - "${FRONTEND_HTTP_PORT:-8080}:80"
+    volumes:
+      - ./nginx.external.conf:/etc/nginx/nginx.conf:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+networks:
+  default:
+    name: innoad-net

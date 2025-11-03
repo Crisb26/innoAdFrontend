@@ -1,18 +1,17 @@
 export const environment = {
-  // Convención Angular estándar
   production: true,
-  // Conservamos la clave previa por compatibilidad (no usada directamente)
+  // Conservamos compatibilidad con código que lea 'produccion'
   produccion: true,
 
-  // Identidad de la app
   nombreApp: 'InnoAd',
   version: '2.0.0',
 
-  // Backend PROD (ajusta dominio real si difiere)
-  urlApi: 'https://api.innoad.com/api/v1',
-  urlWebSocket: 'wss://api.innoad.com/ws',
+  // Compose usa Nginx como reverse proxy al backend (service name: backend)
+  // Por eso las URLs son relativas al mismo dominio
+  urlApi: '/api/v1',
+  urlWebSocket: '/ws',
 
-  // Otros ajustes existentes (no impactan autenticación)
+  // Resto de opciones tal cual prod
   tiempoExpiracionToken: 3600000,
   tiempoActualizacionDatos: 30000,
   paginacionPorDefecto: 10,

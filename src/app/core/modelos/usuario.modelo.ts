@@ -3,7 +3,7 @@
  * Representa la información completa de un usuario registrado
  */
 export interface Usuario {
-  id: string;
+  id: number | string; // Backend envía number; mantenemos compatibilidad
   nombreUsuario: string;
   email: string;
   nombreCompleto: string;
@@ -52,7 +52,7 @@ export interface RespuestaLogin {
 }
 
 export interface SolicitudLogin {
-  emailOUsuario: string;
+  nombreUsuarioOEmail: string; // Alineado con contrato del backend
   contrasena: string;
   recordarme: boolean;
 }

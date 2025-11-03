@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
 import { ServicioEstadisticas } from '@core/servicios/estadisticas.servicio';
-import { EstadisticasGenerales, MetricaKPI } from '@core/modelos';
+import { MetricaKPI } from '@core/modelos';
 
 @Component({
   selector: 'app-dashboard',
@@ -45,22 +45,22 @@ import { EstadisticasGenerales, MetricaKPI } from '@core/modelos';
           <h2 class="titulo-seccion">Accesos Rápidos</h2>
           <div class="grid-accesos">
             <a routerLink="/campanas" class="tarjeta-innoad tarjeta-acceso">
-              <span class="icono-acceso">📢</span>
+              <span class="icono-acceso">&#x1F4E2;</span>
               <h3>Campanas</h3>
               <p>Gestionar campanas publicitarias</p>
             </a>
             <a routerLink="/pantallas" class="tarjeta-innoad tarjeta-acceso">
-              <span class="icono-acceso">📺</span>
+              <span class="icono-acceso">&#x1F4FA;</span>
               <h3>Pantallas</h3>
               <p>Administrar dispositivos</p>
             </a>
             <a routerLink="/contenidos" class="tarjeta-innoad tarjeta-acceso">
-              <span class="icono-acceso">🎨</span>
+              <span class="icono-acceso">&#x1F3A8;</span>
               <h3>Contenidos</h3>
               <p>Biblioteca de medios</p>
             </a>
             <a routerLink="/reportes" class="tarjeta-innoad tarjeta-acceso">
-              <span class="icono-acceso">📊</span>
+              <span class="icono-acceso">&#x1F4CA;</span>
               <h3>Reportes</h3>
               <p>Estadísticas y análisis</p>
             </a>
@@ -203,7 +203,7 @@ export class DashboardComponent implements OnInit {
             unidad: '',
             variacion: 12,
             tendencia: 'subiendo',
-            icono: '📢',
+            icono: '\u{1F4E2}',
             color: '#00d9ff'
           },
           {
@@ -212,7 +212,7 @@ export class DashboardComponent implements OnInit {
             unidad: '',
             variacion: 8,
             tendencia: 'subiendo',
-            icono: '📺',
+            icono: '\u{1F4FA}',
             color: '#ff006a'
           },
           {
@@ -221,7 +221,7 @@ export class DashboardComponent implements OnInit {
             unidad: 'K',
             variacion: 15,
             tendencia: 'subiendo',
-            icono: '👁️',
+            icono: '\u{1F441}',
             color: '#00ff88'
           },
           {
@@ -230,7 +230,7 @@ export class DashboardComponent implements OnInit {
             unidad: '%',
             variacion: 5,
             tendencia: 'subiendo',
-            icono: '📈',
+            icono: '\u{1F4C8}',
             color: '#ffaa00'
           }
         ]);
