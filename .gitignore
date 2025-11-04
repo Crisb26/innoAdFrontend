@@ -34,3 +34,19 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+
+# Angular Cache
+/.angular/cache
+.angular/
+
+# Build & Test
+/dist
+/out-tsc
+/coverage
+*.log
+nul
+
+# Scripts temporales
+ANALISIS-COMPLETO.md
+COMANDOS-RAPIDOS.txt
+SCRIPTS-GUIA.md
