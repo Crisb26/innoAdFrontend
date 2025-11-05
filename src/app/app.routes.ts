@@ -3,7 +3,14 @@ import { guardAutenticacion } from './core/guards/autenticacion.guard';
 import { guardPermisos } from './core/guards/permisos.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  {
+    path: '',
+    loadChildren: () => import('./modulos/publica/publica.routes').then(m => m.routes)
+  },
+  {
+    path: 'inicio',
+    loadChildren: () => import('./modulos/publica/publica.routes').then(m => m.routes)
+  },
   {
     path: 'autenticacion',
     loadChildren: () => import('./modulos/autenticacion/autenticacion.routes').then(m => m.routes)
@@ -36,6 +43,15 @@ export const routes: Routes = [
     loadChildren: () => import('./modulos/reportes/reportes.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, guardPermisos],
     data: { permisos: ['REPORTES_VER', 'ESTADISTICAS_VER'] }
+  },
+  {
+    path: 'publicar',
+    loadChildren: () => import('./modulos/publicacion/publicacion.routes').then(m => m.routes),
+    canActivate: [guardAutenticacion]
+  },
+  {
+    path: 'player',
+    loadChildren: () => import('./modulos/player/player.routes').then(m => m.routes)
   },
   {
     path: 'sin-permisos',

@@ -58,12 +58,14 @@ export interface SolicitudLogin {
 }
 
 export interface SolicitudRegistro {
+  nombre: string;
+  apellido: string;
   nombreUsuario: string;
   email: string;
-  nombreCompleto: string;
   contrasena: string;
   telefono?: string;
-  aceptaTerminos: boolean;
+  empresa?: string;
+  cargo?: string;
 }
 
 export interface SolicitudCambioContrasena {

@@ -196,6 +196,22 @@ export class ServicioAutenticacion {
         catchError(error => throwError(() => this.manejarError(error)))
       );
   }
+
+  /**
+   * Verifica el email del usuario usando el token
+   */
+  verificarEmail(token: string): Observable<void> {
+    return this.http.get<RespuestaAPI<void>>(`${this.API_URL}/verificar-email`, {
+      params: { token }
+    }).pipe(
+      map(respuesta => {
+        if (!respuesta.exitoso) {
+          throw new Error(respuesta.mensaje || 'Error al verificar email');
+        }
+      }),
+      catchError(error => throwError(() => this.manejarError(error)))
+    );
+  }
   
   /**
    * Verifica si el usuario tiene un permiso específico
