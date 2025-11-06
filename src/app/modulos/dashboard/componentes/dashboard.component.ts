@@ -45,22 +45,37 @@ import { MetricaKPI } from '@core/modelos';
           <h2 class="titulo-seccion">Accesos Rápidos</h2>
           <div class="grid-accesos">
             <a routerLink="/campanas" class="tarjeta-innoad tarjeta-acceso">
-              <span class="icono-acceso">&#x1F4E2;</span>
+              <svg class="icono-acceso" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                <line x1="4" y1="22" x2="4" y2="15"></line>
+              </svg>
               <h3>Campanas</h3>
               <p>Gestionar campanas publicitarias</p>
             </a>
             <a routerLink="/pantallas" class="tarjeta-innoad tarjeta-acceso">
-              <span class="icono-acceso">&#x1F4FA;</span>
+              <svg class="icono-acceso" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
               <h3>Pantallas</h3>
               <p>Administrar dispositivos</p>
             </a>
             <a routerLink="/contenidos" class="tarjeta-innoad tarjeta-acceso">
-              <span class="icono-acceso">&#x1F3A8;</span>
+              <svg class="icono-acceso" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
               <h3>Contenidos</h3>
               <p>Biblioteca de medios</p>
             </a>
             <a routerLink="/reportes" class="tarjeta-innoad tarjeta-acceso">
-              <span class="icono-acceso">&#x1F4CA;</span>
+              <svg class="icono-acceso" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
               <h3>Reportes</h3>
               <p>Estadísticas y análisis</p>
             </a>
@@ -86,10 +101,11 @@ import { MetricaKPI } from '@core/modelos';
     .saludo {
       font-size: 2.5rem;
       margin-bottom: 0.5rem;
+      color: #f7fafc;
     }
 
     .subtitulo {
-      color: #b4b8d0;
+      color: #718096;
     }
 
     .boton-cerrar {
@@ -161,9 +177,17 @@ import { MetricaKPI } from '@core/modelos';
     }
 
     .icono-acceso {
-      font-size: 3rem;
+      width: 48px;
+      height: 48px;
       display: block;
-      margin-bottom: 1rem;
+      margin: 0 auto 1rem auto;
+      color: #667eea;
+      transition: all 0.3s ease;
+    }
+
+    .tarjeta-acceso:hover .icono-acceso {
+      color: #00d9ff;
+      transform: scale(1.1);
     }
 
     .tarjeta-acceso h3 {
@@ -203,8 +227,8 @@ export class DashboardComponent implements OnInit {
             unidad: '',
             variacion: 12,
             tendencia: 'subiendo',
-            icono: '\u{1F4E2}',
-            color: '#00d9ff'
+            icono: '▲',
+            color: '#667eea'
           },
           {
             nombre: 'Pantallas Conectadas',
@@ -212,8 +236,8 @@ export class DashboardComponent implements OnInit {
             unidad: '',
             variacion: 8,
             tendencia: 'subiendo',
-            icono: '\u{1F4FA}',
-            color: '#ff006a'
+            icono: '●',
+            color: '#764ba2'
           },
           {
             nombre: 'Impresiones Totales',
@@ -221,8 +245,8 @@ export class DashboardComponent implements OnInit {
             unidad: 'K',
             variacion: 15,
             tendencia: 'subiendo',
-            icono: '\u{1F441}',
-            color: '#00ff88'
+            icono: '◆',
+            color: '#00d9ff'
           },
           {
             nombre: 'Tasa de Éxito',
@@ -230,8 +254,8 @@ export class DashboardComponent implements OnInit {
             unidad: '%',
             variacion: 5,
             tendencia: 'subiendo',
-            icono: '\u{1F4C8}',
-            color: '#ffaa00'
+            icono: '■',
+            color: '#00ff88'
           }
         ]);
         this.cargando.set(false);

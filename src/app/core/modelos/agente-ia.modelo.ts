@@ -3,12 +3,15 @@
  * Representa el asistente virtual inteligente
  */
 export interface MensajeChat {
-  id: string;
-  contenido: string;
-  tipo: 'texto' | 'imagen' | 'codigo' | 'sugerencia' | 'error';
-  remitente: 'usuario' | 'ia';
-  timestamp: Date;
-  leido: boolean;
+  id: number | string;
+  texto?: string;
+  contenido?: string;
+  tipo?: 'texto' | 'imagen' | 'codigo' | 'sugerencia' | 'error';
+  remitente?: 'usuario' | 'ia';
+  esUsuario?: boolean;
+  timestamp?: Date;
+  fecha?: Date;
+  leido?: boolean;
   metadata?: MetadataMensaje;
 }
 

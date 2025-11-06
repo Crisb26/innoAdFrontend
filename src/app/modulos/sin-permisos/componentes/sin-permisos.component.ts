@@ -9,7 +9,10 @@ import { RouterLink } from '@angular/router';
   template: `
     <div class="contenedor-sin-permisos">
       <div class="tarjeta-sin-permisos">
-        <h1 class="icono-error">&#x1F512;</h1>
+        <svg class="icono-error" xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
         <h2 class="titulo-error">Acceso Denegado</h2>
         <p class="mensaje-error">No tienes permisos para acceder a este módulo.</p>
         <p class="submensaje">Si crees que esto es un error, contacta al administrador.</p>
@@ -32,8 +35,10 @@ import { RouterLink } from '@angular/router';
     }
 
     .icono-error {
-      font-size: 5rem;
-      margin-bottom: 1rem;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1rem auto;
+      color: var(--color-error);
       filter: drop-shadow(0 0 20px rgba(255, 68, 68, 0.5));
     }
 

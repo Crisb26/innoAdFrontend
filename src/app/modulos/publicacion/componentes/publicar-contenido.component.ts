@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   template: `
     <div class="contenedor-publicacion">
       <div class="encabezado-seccion">
-        <h1>📢 Publicar Contenido</h1>
+        <h1>Publicar Contenido</h1>
         <p>Comparte tu contenido en las pantallas digitales</p>
       </div>
 
@@ -32,10 +32,10 @@ import { Router } from '@angular/router';
             <label for="tipo">Tipo de Contenido *</label>
             <select id="tipo" formControlName="tipo" class="input-innoad">
               <option value="">Seleccione un tipo</option>
-              <option value="imagen">📷 Imagen</option>
-              <option value="video">🎥 Video</option>
-              <option value="texto">📝 Texto</option>
-              <option value="html">🌐 HTML/Web</option>
+              <option value="imagen">Imagen</option>
+              <option value="video">Video</option>
+              <option value="texto">Texto</option>
+              <option value="html">HTML/Web</option>
             </select>
             @if (formulario.get('tipo')?.invalid && formulario.get('tipo')?.touched) {
               <span class="texto-error">Seleccione un tipo de contenido</span>
@@ -77,7 +77,10 @@ import { Router } from '@angular/router';
                    [class.cargando]="cargandoArchivo()">
                 @if (!archivoSeleccionado() && !cargandoArchivo()) {
                   <div class="contenido-zona-carga">
-                    <div class="icono-carga">📁</div>
+                    <svg class="icono-carga" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                      <polyline points="13 2 13 9 20 9"></polyline>
+                    </svg>
                     <p>Haz clic para seleccionar un archivo</p>
                     <span class="texto-small">
                       @if (formulario.get('tipo')?.value === 'imagen') {
@@ -293,7 +296,9 @@ import { Router } from '@angular/router';
     }
 
     .icono-carga {
-      font-size: 3rem;
+      width: 48px;
+      height: 48px;
+      color: #00d9ff;
     }
 
     .icono-exito-grande {

@@ -106,7 +106,7 @@ interface Contenido {
             {{ pausado() ? '▶ Play' : '⏸ Pausa' }}
           </button>
           <button class="btn-control" (click)="siguienteContenido()">Siguiente ▶</button>
-          <button class="btn-control" (click)="recargarPlaylist()">🔄 Recargar</button>
+          <button class="btn-control" (click)="recargarPlaylist()">Recargar</button>
         </div>
       }
 

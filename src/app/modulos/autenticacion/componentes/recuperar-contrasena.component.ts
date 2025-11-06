@@ -15,7 +15,9 @@ import { SolicitudRecuperarContrasena, SolicitudRestablecerContrasena } from '@c
         @if (!modoRestablecer()) {
           <!-- Modo: Solicitar recuperación -->
           <div class="encabezado-recuperar">
-            <div class="icono-recuperar">🔐</div>
+            <svg class="icono-recuperar" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+            </svg>
             <h1 class="titulo-recuperar">Recuperar Contraseña</h1>
             <p class="subtitulo-recuperar">
               Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña
@@ -75,7 +77,9 @@ import { SolicitudRecuperarContrasena, SolicitudRestablecerContrasena } from '@c
         } @else {
           <!-- Modo: Restablecer contraseña con token -->
           <div class="encabezado-recuperar">
-            <div class="icono-recuperar">🔑</div>
+            <svg class="icono-recuperar" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+            </svg>
             <h1 class="titulo-recuperar">Nueva Contraseña</h1>
             <p class="subtitulo-recuperar">
               Ingresa tu nueva contraseña
@@ -188,8 +192,10 @@ import { SolicitudRecuperarContrasena, SolicitudRestablecerContrasena } from '@c
     }
 
     .icono-recuperar {
-      font-size: 4rem;
-      margin-bottom: 1rem;
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1rem auto;
+      color: #667eea;
     }
 
     .titulo-recuperar {

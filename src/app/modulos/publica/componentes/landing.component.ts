@@ -37,15 +37,27 @@ import { RouterLink } from '@angular/router';
         </div>
         <div class="hero-image">
           <div class="floating-card card-1">
-            <div class="card-icon">📊</div>
+            <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
             <div class="card-text">Análisis en Tiempo Real</div>
           </div>
           <div class="floating-card card-2">
-            <div class="card-icon">🎯</div>
+            <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="6"></circle>
+              <circle cx="12" cy="12" r="2"></circle>
+            </svg>
             <div class="card-text">Campañas Efectivas</div>
           </div>
           <div class="floating-card card-3">
-            <div class="card-icon">🖥️</div>
+            <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
             <div class="card-text">Gestión de Pantallas</div>
           </div>
         </div>
@@ -59,32 +71,50 @@ import { RouterLink } from '@angular/router';
         </div>
         <div class="features-grid">
           <div class="feature-card">
-            <div class="feature-icon">🤖</div>
+            <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"></path>
+            </svg>
             <h3>Asistente de IA</h3>
             <p>Asistente inteligente que te ayuda a crear campañas efectivas y optimizar tu contenido</p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon">📺</div>
+            <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
+              <polyline points="17 2 12 7 7 2"></polyline>
+            </svg>
             <h3>Gestión de Pantallas</h3>
             <p>Control centralizado de todas tus pantallas digitales conectadas vía Raspberry Pi</p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon">📱</div>
+            <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              <polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline>
+              <polyline points="7.5 19.79 7.5 14.6 3 12"></polyline>
+              <polyline points="21 12 16.5 14.6 16.5 19.79"></polyline>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+              <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
             <h3>Publicación Flexible</h3>
             <p>Publica tu contenido fácilmente desde cualquier dispositivo en tiempo real</p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon">📈</div>
+            <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
             <h3>Reportes Detallados</h3>
             <p>Analiza el rendimiento de tus campañas con estadísticas avanzadas</p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon">⚡</div>
+            <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
             <h3>Actualizaciones Instantáneas</h3>
             <p>Cambia tu contenido al instante y sincroniza con todas tus pantallas</p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon">🔒</div>
+            <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
             <h3>Seguro y Confiable</h3>
             <p>Protección de datos y disponibilidad garantizada para tu negocio</p>
           </div>
@@ -146,7 +176,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </div>
         <div class="footer-bottom">
-          <p>&copy; 2024 InnoAd. Todos los derechos reservados.</p>
+          <p>&copy; ADSO 2994283 InnoAd. Todos los derechos reservados.</p>
         </div>
       </footer>
     </div>
@@ -308,8 +338,10 @@ import { RouterLink } from '@angular/router';
     .card-3 { bottom: 10%; left: 30%; animation-delay: 2s; }
 
     .card-icon {
-      font-size: 2rem;
+      width: 40px;
+      height: 40px;
       margin-bottom: 0.5rem;
+      color: #00d9ff;
     }
 
     .card-text {
@@ -366,8 +398,10 @@ import { RouterLink } from '@angular/router';
     }
 
     .feature-icon {
-      font-size: 3rem;
+      width: 48px;
+      height: 48px;
       margin-bottom: 1rem;
+      color: #00d9ff;
     }
 
     .feature-card h3 {
