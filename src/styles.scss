@@ -1,19 +1,74 @@
 /* Estilos Globales de InnoAd */
 
-/* Variables de Colores */
+/* Paleta de Colores Futurista Ciberpunk */
 :root {
-  --color-primario: #00d9ff;
-  --color-secundario: #ff006a;
-  --color-fondo-oscuro: #0a0e27;
-  --color-fondo-claro: #1a1f3a;
-  --color-texto-claro: #ffffff;
-  --color-texto-gris: #b4b8d0;
-  --color-exito: #00ff88;
-  --color-error: #ff4444;
-  --color-advertencia: #ffaa00;
+  /* Colores Principales */
+  --color-primario: #00d4ff;           /* Cyan brillante */
+  --color-secundario: #8b5cf6;         /* Purple tech */
+  --color-acento: #f59e0b;             /* Orange energético */
+  --color-acento-alt: #ff006a;         /* Magenta */
+
+  /* Fondos */
+  --fondo-oscuro: #0f172a;             /* Negro azulado profundo */
+  --fondo-medio: #1e293b;              /* Gris azulado */
+  --fondo-claro: #334155;              /* Gris medio */
+  --fondo-superficie: #475569;         /* Superficie clara */
   
-  --sombra-neon-cyan: 0 0 20px rgba(0, 217, 255, 0.5);
-  --sombra-neon-magenta: 0 0 20px rgba(255, 0, 106, 0.5);
+  /* Texto */
+  --color-texto: #ffffff;              /* Blanco puro */
+  --color-texto-claro: #b4b8d0;        /* Gris claro */
+  --color-texto-medio: #64748b;        /* Gris medio */
+  --color-texto-oscuro: #334155;       /* Gris oscuro */
+  
+  /* Estados */
+  --color-exito: #10b981;              /* Verde éxito */
+  --color-error: #ef4444;              /* Rojo error */
+  --color-advertencia: #f59e0b;        /* Orange advertencia */
+  --color-info: #00d4ff;               /* Cyan info */
+  
+  /* Efectos Neon */
+  --sombra-neon-cyan: 0 0 20px rgba(0, 212, 255, 0.6);
+  --sombra-neon-purple: 0 0 20px rgba(139, 92, 246, 0.6);
+  --sombra-neon-orange: 0 0 20px rgba(245, 158, 11, 0.6);
+  --sombra-neon-magenta: 0 0 20px rgba(255, 0, 106, 0.6);
+  
+  /* Gradientes */
+  --gradiente-principal: linear-gradient(135deg, var(--color-primario) 0%, var(--color-secundario) 100%);
+  --gradiente-acento: linear-gradient(135deg, var(--color-acento) 0%, var(--color-acento-alt) 100%);
+  --gradiente-fondo: linear-gradient(135deg, var(--fondo-oscuro) 0%, var(--fondo-medio) 100%);
+  --gradiente-superficie: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.1) 100%);
+  
+  /* Transparencias */
+  --cristal-oscuro: rgba(15, 23, 42, 0.8);
+  --cristal-claro: rgba(255, 255, 255, 0.1);
+  --cristal-hover: rgba(255, 255, 255, 0.15);
+  
+  /* Transiciones */
+  --transicion-rapida: all 0.2s ease;
+  --transicion-suave: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transicion-lenta: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Espaciado */
+  --espacio-xs: 0.25rem;
+  --espacio-sm: 0.5rem;
+  --espacio-md: 1rem;
+  --espacio-lg: 1.5rem;
+  --espacio-xl: 2rem;
+  --espacio-2xl: 3rem;
+  
+  /* Bordes */
+  --radio-sm: 0.375rem;
+  --radio-md: 0.5rem;
+  --radio-lg: 0.75rem;
+  --radio-xl: 1rem;
+  --radio-2xl: 1.5rem;
+  
+  /* Sombras */
+  --sombra-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --sombra-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --sombra-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --sombra-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  --sombra-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 /* Reset y Base */
@@ -128,15 +183,17 @@ body {
 .titulo-seccion {
   font-size: 2.5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+  background: var(--gradiente-principal);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 1.5rem;
 }
 
 .texto-gradiente {
-  background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+  background: var(--gradiente-principal);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -175,17 +232,208 @@ body {
   100% { transform: rotate(360deg); }
 }
 
+/* Componentes Futuristas Globales */
+
+/* Botones Futuristas */
+.btn-futurista {
+  position: relative;
+  background: var(--gradiente-principal);
+  color: white;
+  border: none;
+  padding: var(--espacio-sm) var(--espacio-lg);
+  border-radius: var(--radio-md);
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-sm);
+  transition: var(--transicion-suave);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.btn-futurista::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: var(--transicion-suave);
+}
+
+.btn-futurista:hover::before {
+  left: 100%;
+}
+
+.btn-futurista:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-neon-cyan);
+}
+
+/* Tarjetas con Efecto Cristal */
+.tarjeta-cristal {
+  background: var(--cristal-claro);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radio-xl);
+  backdrop-filter: blur(10px);
+  padding: var(--espacio-xl);
+  transition: var(--transicion-suave);
+}
+
+.tarjeta-cristal:hover {
+  background: var(--cristal-hover);
+  transform: translateY(-4px);
+  box-shadow: var(--sombra-xl);
+}
+
+/* Bordes Neon */
+.borde-neon {
+  border: 1px solid transparent;
+  background: linear-gradient(var(--fondo-oscuro), var(--fondo-oscuro)) padding-box,
+              var(--gradiente-principal) border-box;
+  border-radius: var(--radio-md);
+}
+
+/* Grid Responsivo Futurista */
+.grid-futurista {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--espacio-xl);
+  margin: var(--espacio-2xl) 0;
+}
+
+/* Texto con Brillo */
+.texto-brillo {
+  color: var(--color-primario);
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+  animation: brillar 2s ease-in-out infinite alternate;
+}
+
+@keyframes brillar {
+  from { text-shadow: 0 0 10px rgba(0, 212, 255, 0.5); }
+  to { text-shadow: 0 0 20px rgba(0, 212, 255, 0.8), 0 0 30px rgba(0, 212, 255, 0.6); }
+}
+
+/* Líneas de Conexión Futurista */
+.linea-tech {
+  height: 2px;
+  background: var(--gradiente-principal);
+  border-radius: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.linea-tech::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--color-texto), transparent);
+  animation: deslizar 2s linear infinite;
+}
+
+@keyframes deslizar {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Indicadores de Estado */
+.estado-online {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--color-exito);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--color-exito);
+  animation: parpadear 1.5s ease-in-out infinite;
+}
+
+@keyframes parpadear {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Modal Futurista */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-contenido {
+  background: var(--fondo-oscuro);
+  border: 1px solid var(--color-primario);
+  border-radius: var(--radio-xl);
+  padding: var(--espacio-2xl);
+  max-width: 90vw;
+  max-height: 90vh;
+  box-shadow: var(--sombra-neon-cyan);
+  animation: modalAparecer 0.3s ease-out;
+}
+
+@keyframes modalAparecer {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Scrollbar Futurista */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--fondo-medio);
+  border-radius: var(--radio-sm);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gradiente-principal);
+  border-radius: var(--radio-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--color-secundario), var(--color-primario));
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .contenedor-principal {
-    padding: 1rem;
+    padding: var(--espacio-md);
   }
   
-  .tarjeta-innoad {
-    padding: 1.5rem;
+  .tarjeta-innoad, .tarjeta-cristal {
+    padding: var(--espacio-lg);
   }
   
   .titulo-seccion {
     font-size: 2rem;
+  }
+
+  .grid-futurista {
+    grid-template-columns: 1fr;
+    gap: var(--espacio-lg);
+  }
+
+  .modal-contenido {
+    margin: var(--espacio-md);
+    padding: var(--espacio-lg);
   }
 }

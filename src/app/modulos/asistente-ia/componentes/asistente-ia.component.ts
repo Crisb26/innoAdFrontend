@@ -1,621 +1,737 @@
-import { Component, OnInit, signal, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal, effect, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ServicioAsistenteIA } from '@core/servicios/asistente-ia.servicio';
-import { MensajeChat } from '@core/modelos';
+import { 
+  AsistenteIAServicio, 
+  MensajeChat, 
+  EstadoAsistente, 
+  AccionSugerida,
+  ConfiguracionAsistente 
+} from '@core/servicios/asistente-ia.servicio';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-asistente-ia',
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="contenedor-asistente">
-      <div class="panel-asistente">
-        <header class="encabezado-asistente">
-          <div class="info-asistente">
-            <div class="avatar-asistente">
-              <svg viewBox="0 0 100 100" class="icono-ia">
-                <circle cx="50" cy="50" r="45" class="avatar-circulo"/>
-                <path d="M 30 40 Q 50 20 70 40" class="avatar-onda onda-1"/>
-                <path d="M 30 50 Q 50 30 70 50" class="avatar-onda onda-2"/>
-                <path d="M 30 60 Q 50 40 70 60" class="avatar-onda onda-3"/>
-              </svg>
+    <!-- Botón flotante del asistente -->
+    @if (!estadoAsistente().activo) {
+      <div class="boton-asistente" 
+           (click)="toggleAsistente()"
+           [attr.data-animacion]="estadoAsistente().animacion">
+        <div class="avatar-mini">
+          <div class="cara-avatar">
+            <div class="ojos">
+              <div class="ojo"></div>
+              <div class="ojo"></div>
             </div>
-            <div class="texto-info">
-              <h2 class="nombre-asistente">InnoIA</h2>
-              <p class="estado-asistente">
-                <span class="indicador-activo"></span>
-                {{ estadoAsistente() }}
-              </p>
+            <div class="boca" [attr.data-emocion]="estadoAsistente().emocion"></div>
+          </div>
+          <div class="pulso-energia" [style.opacity]="estadoAsistente().nivelEnergia / 100"></div>
+        </div>
+        <div class="tooltip-asistente">
+          <span>¡Hola! Soy InnoBot 🤖</span>
+          <div class="flecha-tooltip"></div>
+        </div>
+      </div>
+    }
+
+    <!-- Panel completo del asistente -->
+    @if (estadoAsistente().activo) {
+      <div class="panel-asistente">
+        <!-- Header del asistente -->
+        <div class="header-asistente">
+          <div class="info-asistente">
+            <div class="avatar-principal" [attr.data-animacion]="estadoAsistente().animacion">
+              <div class="cara-principal">
+                <div class="ojos-principales">
+                  <div class="ojo-principal" 
+                       [class.parpadeando]="estadoAsistente().animacion === 'idle'">
+                    <div class="pupila"></div>
+                  </div>
+                  <div class="ojo-principal"
+                       [class.parpadeando]="estadoAsistente().animacion === 'idle'">
+                    <div class="pupila"></div>
+                  </div>
+                </div>
+                <div class="boca-principal" 
+                     [attr.data-emocion]="estadoAsistente().emocion"
+                     [attr.data-animacion]="estadoAsistente().animacion">
+                </div>
+                <div class="mejillas" 
+                     [class.sonriendo]="estadoAsistente().emocion === 'feliz'">
+                </div>
+              </div>
+              
+              <!-- Efectos especiales -->
+              <div class="efectos-avatar">
+                @if (estadoAsistente().animacion === 'pensando') {
+                  <div class="puntos-pensamiento">
+                    <div class="punto"></div>
+                    <div class="punto"></div>
+                    <div class="punto"></div>
+                  </div>
+                }
+                
+                @if (estadoAsistente().animacion === 'celebrando') {
+                  <div class="particulas-celebracion">
+                    @for (particula of particulasCelebracion; track particula.id) {
+                      <div class="particula" 
+                           [style.left.px]="particula.x"
+                           [style.top.px]="particula.y"
+                           [style.background]="particula.color">
+                      </div>
+                    }
+                  </div>
+                }
+
+                @if (estadoAsistente().escuchando) {
+                  <div class="ondas-sonido">
+                    <div class="onda"></div>
+                    <div class="onda"></div>
+                    <div class="onda"></div>
+                  </div>
+                }
+              </div>
+
+              <!-- Indicador de energía -->
+              <div class="barra-energia">
+                <div class="energia-fill" 
+                     [style.width.%]="estadoAsistente().nivelEnergia"
+                     [attr.data-nivel]="obtenerNivelEnergia()">
+                </div>
+              </div>
+            </div>
+
+            <div class="datos-asistente">
+              <div class="nombre-asistente">{{ configuracion().nombre }}</div>
+              <div class="estado-asistente">
+                @switch (estadoAsistente().animacion) {
+                  @case ('idle') { 
+                    <span>😌 Esperando...</span>
+                  }
+                  @case ('hablando') { 
+                    <span>💬 Respondiendo...</span>
+                  }
+                  @case ('escuchando') { 
+                    <span>👂 Escuchando...</span>
+                  }
+                  @case ('pensando') { 
+                    <span>🤔 Procesando...</span>
+                  }
+                  @case ('celebrando') { 
+                    <span>🎉 ¡Genial!</span>
+                  }
+                  @case ('confundido') { 
+                    <span>😕 Hmm...</span>
+                  }
+                }
+              </div>
+              <div class="personalidad">
+                Modo: {{ configuracion().personalidad }}
+              </div>
             </div>
           </div>
-          <button (click)="cerrarAsistente()" class="boton-cerrar-asistente" title="Cerrar">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        </header>
 
-        <div class="area-mensajes" #areaMensajes>
-          @if (mensajes().length === 0) {
-            <div class="mensaje-bienvenida">
-              <div class="icono-bienvenida">
-                <svg viewBox="0 0 100 100" class="logo-bienvenida">
-                  <circle cx="50" cy="50" r="40" class="circulo-logo"/>
-                  <path d="M 30 45 Q 50 25 70 45" class="linea-logo"/>
-                  <path d="M 30 55 Q 50 35 70 55" class="linea-logo"/>
-                  <path d="M 30 65 Q 50 45 70 65" class="linea-logo"/>
-                </svg>
-              </div>
-              <h3>Hola, soy InnoIA</h3>
-              <p>Tu asistente inteligente para publicidad digital</p>
-              <div class="sugerencias-rapidas">
-                <button (click)="enviarSugerencia('¿Cómo crear una campaña?')" class="sugerencia">
-                  ¿Cómo crear una campaña?
-                </button>
-                <button (click)="enviarSugerencia('¿Cómo subir contenido?')" class="sugerencia">
-                  ¿Cómo subir contenido?
-                </button>
-                <button (click)="enviarSugerencia('Analizar mis estadísticas')" class="sugerencia">
-                  Analizar mis estadísticas
-                </button>
-                <button (click)="enviarSugerencia('Tips de optimización')" class="sugerencia">
-                  Tips de optimización
-                </button>
-              </div>
-            </div>
-          } @else {
-            @for (mensaje of mensajes(); track mensaje.id) {
-              <div class="mensaje" [class.mensaje-usuario]="mensaje.esUsuario" [class.mensaje-ia]="!mensaje.esUsuario">
-                <div class="avatar-mensaje">
-                  @if (mensaje.esUsuario) {
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                      <circle cx="12" cy="8" r="4"/>
-                      <path d="M12 14c-6 0-8 3-8 6h16c0-3-2-6-8-6z"/>
-                    </svg>
-                  } @else {
-                    <svg viewBox="0 0 32 32" class="icono-ia-pequeno">
-                      <circle cx="16" cy="16" r="14" class="circulo-ia"/>
-                      <path d="M 10 14 Q 16 8 22 14" class="onda-ia"/>
-                      <path d="M 10 18 Q 16 12 22 18" class="onda-ia"/>
-                    </svg>
-                  }
-                </div>
-                <div class="contenido-mensaje">
-                  <div class="texto-mensaje">{{ mensaje.texto }}</div>
-                  <span class="hora-mensaje">{{ formatearHora(mensaje.fecha) }}</span>
-                </div>
+          <div class="controles-asistente">
+            <!-- Control de voz -->
+            <button class="btn-control voz" 
+                    [class.activo]="estadoAsistente().escuchando"
+                    (click)="toggleVoz()"
+                    [disabled]="!soportaVoz">
+              <span class="icono">{{ estadoAsistente().escuchando ? '🔴' : '🎤' }}</span>
+              <div class="tooltip">{{ estadoAsistente().escuchando ? 'Detener' : 'Hablar' }}</div>
+            </button>
+
+            <!-- Configuración -->
+            <button class="btn-control config" 
+                    (click)="toggleConfiguracion()">
+              <span class="icono">⚙️</span>
+              <div class="tooltip">Configuración</div>
+            </button>
+
+            <!-- Minimizar/Cerrar -->
+            <button class="btn-control cerrar" 
+                    (click)="toggleAsistente()">
+              <span class="icono">✕</span>
+              <div class="tooltip">Cerrar</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Área de chat -->
+        <div class="area-chat" #areaChat>
+          <div class="historial-chat">
+            @for (mensaje of historialChat(); track mensaje.id) {
+              <div class="mensaje" [attr.data-tipo]="mensaje.tipo">
+                @if (mensaje.tipo === 'usuario') {
+                  <div class="contenido-mensaje usuario">
+                    <div class="avatar-usuario">👤</div>
+                    <div class="texto-mensaje">{{ mensaje.contenido }}</div>
+                    <div class="timestamp">{{ formatearTiempo(mensaje.timestamp) }}</div>
+                  </div>
+                } @else if (mensaje.tipo === 'asistente') {
+                  <div class="contenido-mensaje asistente">
+                    <div class="avatar-asistente-mini">🤖</div>
+                    <div class="texto-mensaje">
+                      <div class="texto-principal" [innerHTML]="formatearMensaje(mensaje.contenido)"></div>
+                      
+                      @if (mensaje.metadata && mensaje.metadata.accionSugerida) {
+                        <div class="accion-sugerida">
+                          <button class="btn-accion-sugerida" 
+                                  (click)="ejecutarAccion(mensaje.metadata.accionSugerida)">
+                            <span class="icono">{{ mensaje.metadata.accionSugerida.icono }}</span>
+                            <span class="texto">{{ mensaje.metadata.accionSugerida.titulo }}</span>
+                          </button>
+                        </div>
+                      }
+
+                      @if (mensaje.metadata && mensaje.metadata.confianza !== undefined && mensaje.metadata.confianza !== null) {
+                        <div class="metadata-mensaje">
+                          <div class="confianza" [attr.data-nivel]="obtenerNivelConfianza(mensaje.metadata.confianza)">
+                            Confianza: {{ (mensaje.metadata.confianza * 100).toFixed(0) }}%
+                          </div>
+                        </div>
+                      }
+                    </div>
+                    <div class="timestamp">{{ formatearTiempo(mensaje.timestamp) }}</div>
+                  </div>
+                }
               </div>
             }
-            @if (procesando()) {
-              <div class="mensaje mensaje-ia">
-                <div class="avatar-mensaje">
-                  <svg viewBox="0 0 32 32" class="icono-ia-pequeno animado">
-                    <circle cx="16" cy="16" r="14" class="circulo-ia"/>
-                    <path d="M 10 14 Q 16 8 22 14" class="onda-ia"/>
-                    <path d="M 10 18 Q 16 12 22 18" class="onda-ia"/>
-                  </svg>
-                </div>
-                <div class="contenido-mensaje">
-                  <div class="indicador-escribiendo">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+
+            <!-- Indicador de escritura -->
+            @if (estadoAsistente().escribiendo) {
+              <div class="mensaje escribiendo">
+                <div class="contenido-mensaje asistente">
+                  <div class="avatar-asistente-mini">🤖</div>
+                  <div class="indicador-escritura">
+                    <div class="punto-escritura"></div>
+                    <div class="punto-escritura"></div>
+                    <div class="punto-escritura"></div>
                   </div>
                 </div>
               </div>
             }
+          </div>
+
+          <!-- Sugerencias rápidas -->
+          @if (sugerenciasActivas().length > 0 && !estadoAsistente().escribiendo) {
+            <div class="sugerencias-rapidas">
+              <div class="titulo-sugerencias">💡 Sugerencias:</div>
+              <div class="lista-sugerencias">
+                @for (sugerencia of sugerenciasActivas(); track sugerencia.id) {
+                  <button class="chip-sugerencia" 
+                          (click)="ejecutarAccion(sugerencia)">
+                    <span class="icono">{{ sugerencia.icono }}</span>
+                    <span class="texto">{{ sugerencia.titulo }}</span>
+                  </button>
+                }
+              </div>
+            </div>
           }
         </div>
 
-        <div class="area-entrada">
-          <form (ngSubmit)="enviarMensaje()" class="formulario-mensaje">
-            <input
-              type="text"
+        <!-- Input de mensaje -->
+        <div class="input-mensaje">
+          <div class="contenedor-input">
+            <input 
+              type="text" 
               [(ngModel)]="mensajeActual"
-              name="mensaje"
-              placeholder="Escribe tu mensaje..."
-              class="input-mensaje"
-              [disabled]="procesando()"
-              autocomplete="off"
-            />
-            <button type="submit" class="boton-enviar" [disabled]="!mensajeActual.trim() || procesando()">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/>
-              </svg>
+              (keyup.enter)="enviarMensaje()"
+              placeholder="Escribe tu mensaje o pregunta..."
+              class="campo-mensaje"
+              [disabled]="estadoAsistente().escribiendo"
+              #inputMensaje>
+            
+            <div class="controles-input">
+              <button class="btn-enviar" 
+                      (click)="enviarMensaje()"
+                      [disabled]="!mensajeActual.trim() || estadoAsistente().escribiendo">
+                @if (estadoAsistente().escribiendo) {
+                  <div class="loader-mini"></div>
+                } @else {
+                  <span class="icono">🚀</span>
+                }
+              </button>
+            </div>
+          </div>
+
+          <!-- Accesos rápidos -->
+          <div class="accesos-rapidos">
+            <button class="btn-rapido" (click)="enviarMensajeRapido('ayuda')">
+              ❓ Ayuda
             </button>
-          </form>
+            <button class="btn-rapido" (click)="enviarMensajeRapido('tutorial')">
+              🎓 Tutorial
+            </button>
+            <button class="btn-rapido" (click)="enviarMensajeRapido('optimizar')">
+              🚀 Optimizar
+            </button>
+            <button class="btn-rapido" (click)="limpiarChat()">
+              🗑️ Limpiar
+            </button>
+          </div>
         </div>
+
+        <!-- Panel de configuración -->
+        @if (mostrarConfiguracion()) {
+          <div class="panel-configuracion">
+            <div class="header-config">
+              <h3>⚙️ Configuración del Asistente</h3>
+              <button class="btn-cerrar-config" (click)="toggleConfiguracion()">✕</button>
+            </div>
+            
+            <div class="opciones-config">
+              <div class="grupo-config">
+                <label>Nombre del asistente:</label>
+                <input type="text" 
+                       [(ngModel)]="configuracionTemporal.nombre"
+                       (change)="actualizarConfiguracion()"
+                       class="input-config">
+              </div>
+
+              <div class="grupo-config">
+                <label>Personalidad:</label>
+                <select [(ngModel)]="configuracionTemporal.personalidad"
+                        (change)="actualizarConfiguracion()"
+                        class="select-config">
+                  <option value="profesional">🎯 Profesional</option>
+                  <option value="amigable">😊 Amigable</option>
+                  <option value="gracioso">😄 Gracioso</option>
+                  <option value="tecnico">🤓 Técnico</option>
+                </select>
+              </div>
+
+              <div class="grupo-config">
+                <label>Velocidad de habla:</label>
+                <input type="range" 
+                       min="0.5" 
+                       max="2" 
+                       step="0.1"
+                       [(ngModel)]="configuracionTemporal.velocidadHabla"
+                       (change)="actualizarConfiguracion()"
+                       class="range-config">
+                <span>{{ configuracionTemporal.velocidadHabla }}x</span>
+              </div>
+
+              <div class="grupo-config checkbox">
+                <label>
+                  <input type="checkbox" 
+                         [(ngModel)]="configuracionTemporal.usarVoz"
+                         (change)="actualizarConfiguracion()">
+                  <span class="checkmark"></span>
+                  Usar síntesis de voz
+                </label>
+              </div>
+
+              <div class="grupo-config checkbox">
+                <label>
+                  <input type="checkbox" 
+                         [(ngModel)]="configuracionTemporal.mostrarSugerencias"
+                         (change)="actualizarConfiguracion()">
+                  <span class="checkmark"></span>
+                  Mostrar sugerencias inteligentes
+                </label>
+              </div>
+
+              <div class="grupo-config checkbox">
+                <label>
+                  <input type="checkbox" 
+                         [(ngModel)]="configuracionTemporal.modoTutorial"
+                         (change)="actualizarConfiguracion()">
+                  <span class="checkmark"></span>
+                  Modo tutorial interactivo
+                </label>
+              </div>
+            </div>
+
+            <!-- Estadísticas del asistente -->
+            <div class="estadisticas-asistente">
+              <h4>📊 Estadísticas</h4>
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <span class="numero">{{ historialChat().length }}</span>
+                  <span class="label">Mensajes</span>
+                </div>
+                <div class="stat-item">
+                  <span class="numero">{{ capacidades().length }}</span>
+                  <span class="label">Capacidades</span>
+                </div>
+                <div class="stat-item">
+                  <span class="numero">{{ sugerenciasActivas().length }}</span>
+                  <span class="label">Sugerencias</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
       </div>
-    </div>
+    }
   `,
   styles: [`
-    .contenedor-asistente {
+    /* Botón flotante */
+    .boton-asistente {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 400px;
-      height: 600px;
-      z-index: 1000;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .panel-asistente {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      background: #ffffff;
-    }
-
-    .encabezado-asistente {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.25rem;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-    }
-
-    .info-asistente {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .avatar-asistente {
-      width: 48px;
-      height: 48px;
-    }
-
-    .icono-ia {
-      width: 100%;
-      height: 100%;
-    }
-
-    .avatar-circulo {
-      fill: rgba(255, 255, 255, 0.2);
-      stroke: white;
-      stroke-width: 2;
-    }
-
-    .avatar-onda {
-      fill: none;
-      stroke: white;
-      stroke-width: 2;
-      stroke-linecap: round;
-    }
-
-    .onda-1 {
-      animation: onda 1.5s ease-in-out infinite;
-    }
-
-    .onda-2 {
-      animation: onda 1.5s ease-in-out infinite 0.3s;
-    }
-
-    .onda-3 {
-      animation: onda 1.5s ease-in-out infinite 0.6s;
-    }
-
-    @keyframes onda {
-      0%, 100% {
-        opacity: 0.3;
-        transform: translateY(0);
-      }
-      50% {
-        opacity: 1;
-        transform: translateY(-2px);
-      }
-    }
-
-    .texto-info {
-      flex: 1;
-    }
-
-    .nombre-asistente {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin: 0;
-    }
-
-    .estado-asistente {
-      font-size: 0.875rem;
-      margin: 0.25rem 0 0;
-      opacity: 0.9;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .indicador-activo {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      background: #00ff88;
+      bottom: 2rem;
+      right: 2rem;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
-      animation: pulso 2s infinite;
-    }
-
-    @keyframes pulso {
-      0%, 100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-      50% {
-        opacity: 0.5;
-        transform: scale(1.2);
-      }
-    }
-
-    .boton-cerrar-asistente {
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      color: white;
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
+      background: var(--gradiente-principal);
       cursor: pointer;
+      box-shadow: 0 8px 30px rgba(0, 212, 255, 0.3);
+      transition: var(--transicion-suave);
+      z-index: 1000;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.3s;
+      animation: pulsoSuave 3s ease-in-out infinite;
     }
 
-    .boton-cerrar-asistente:hover {
-      background: rgba(255, 255, 255, 0.3);
+    .boton-asistente:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 40px rgba(0, 212, 255, 0.5);
     }
 
-    .area-mensajes {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1.5rem;
-      background: #f7fafc;
-    }
-
-    .mensaje-bienvenida {
-      text-align: center;
-      padding: 2rem 1rem;
-    }
-
-    .icono-bienvenida {
-      display: inline-block;
-      margin-bottom: 1.5rem;
-    }
-
-    .logo-bienvenida {
-      width: 80px;
-      height: 80px;
-    }
-
-    .circulo-logo {
-      fill: none;
-      stroke: #667eea;
-      stroke-width: 3;
-    }
-
-    .linea-logo {
-      fill: none;
-      stroke: #764ba2;
-      stroke-width: 2;
-      stroke-linecap: round;
-    }
-
-    .mensaje-bienvenida h3 {
-      font-size: 1.5rem;
-      color: #2d3748;
-      margin-bottom: 0.5rem;
-    }
-
-    .mensaje-bienvenida p {
-      color: #718096;
-      margin-bottom: 2rem;
-    }
-
-    .sugerencias-rapidas {
+    /* Panel principal */
+    .panel-asistente {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 420px;
+      height: 600px;
+      background: var(--cristal-oscuro);
+      backdrop-filter: blur(20px);
+      border-radius: var(--radio-xl);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: var(--sombra-profunda);
+      z-index: 1000;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
-      max-width: 300px;
-      margin: 0 auto;
+      overflow: hidden;
+      animation: aparecerPanel 0.3s ease-out;
     }
 
-    .sugerencia {
-      background: white;
-      border: 1px solid #e2e8f0;
-      color: #4a5568;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s;
-      font-size: 0.875rem;
+    /* Header */
+    .header-asistente {
+      padding: var(--espacio-lg);
+      background: var(--gradiente-principal);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--fondo-oscuro);
     }
 
-    .sugerencia:hover {
-      background: #667eea;
-      color: white;
-      border-color: #667eea;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    /* Avatar y efectos */
+    .avatar-mini {
+      position: relative;
+      width: 45px;
+      height: 45px;
+    }
+
+    .cara-avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--fondo-oscuro);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ojos {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .ojo {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-primario);
+      animation: parpadeoOjos 4s ease-in-out infinite;
+    }
+
+    /* Área de chat */
+    .area-chat {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .historial-chat {
+      flex: 1;
+      padding: var(--espacio-md);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--espacio-md);
     }
 
     .mensaje {
       display: flex;
-      gap: 0.75rem;
-      margin-bottom: 1.5rem;
-      animation: aparecerMensaje 0.3s ease-out;
+      margin-bottom: var(--espacio-md);
     }
 
-    @keyframes aparecerMensaje {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .mensaje-usuario {
-      flex-direction: row-reverse;
-    }
-
-    .avatar-mensaje {
-      width: 32px;
-      height: 32px;
-      flex-shrink: 0;
-    }
-
-    .mensaje-usuario .avatar-mensaje {
-      color: #667eea;
-    }
-
-    .icono-ia-pequeno {
-      width: 100%;
-      height: 100%;
-    }
-
-    .circulo-ia {
-      fill: rgba(102, 126, 234, 0.1);
-      stroke: #667eea;
-      stroke-width: 2;
-    }
-
-    .onda-ia {
-      fill: none;
-      stroke: #667eea;
-      stroke-width: 1.5;
-      stroke-linecap: round;
-    }
-
-    .icono-ia-pequeno.animado .onda-ia {
-      animation: ondaPequena 1s ease-in-out infinite;
-    }
-
-    @keyframes ondaPequena {
-      0%, 100% {
-        opacity: 0.5;
-      }
-      50% {
-        opacity: 1;
-      }
-    }
-
-    .contenido-mensaje {
-      flex: 1;
-      max-width: 70%;
-    }
-
-    .texto-mensaje {
-      background: white;
-      padding: 0.75rem 1rem;
-      border-radius: 12px;
-      color: #2d3748;
-      line-height: 1.5;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    .mensaje-usuario .texto-mensaje {
-      background: #667eea;
-      color: white;
-    }
-
-    .hora-mensaje {
-      display: block;
-      font-size: 0.75rem;
-      color: #a0aec0;
-      margin-top: 0.25rem;
-      padding: 0 0.5rem;
-    }
-
-    .indicador-escribiendo {
-      background: white;
-      padding: 1rem;
-      border-radius: 12px;
-      display: flex;
-      gap: 0.4rem;
-      width: fit-content;
-    }
-
-    .indicador-escribiendo span {
-      width: 8px;
-      height: 8px;
-      background: #667eea;
-      border-radius: 50%;
-      animation: escribiendo 1.4s infinite;
-    }
-
-    .indicador-escribiendo span:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-
-    .indicador-escribiendo span:nth-child(3) {
-      animation-delay: 0.4s;
-    }
-
-    @keyframes escribiendo {
-      0%, 60%, 100% {
-        transform: translateY(0);
-      }
-      30% {
-        transform: translateY(-10px);
-      }
-    }
-
-    .area-entrada {
-      padding: 1rem;
-      background: white;
-      border-top: 1px solid #e2e8f0;
-    }
-
-    .formulario-mensaje {
-      display: flex;
-      gap: 0.75rem;
-    }
-
+    /* Input de mensaje */
     .input-mensaje {
-      flex: 1;
-      padding: 0.75rem 1rem;
-      border: 1px solid #e2e8f0;
-      border-radius: 24px;
-      font-size: 0.875rem;
-      outline: none;
-      transition: border-color 0.3s;
+      padding: var(--espacio-md);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .input-mensaje:focus {
-      border-color: #667eea;
-    }
-
-    .input-mensaje:disabled {
-      background: #f7fafc;
-      cursor: not-allowed;
-    }
-
-    .boton-enviar {
-      background: #667eea;
-      border: none;
-      color: white;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      cursor: pointer;
+    .contenedor-input {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s;
+      gap: var(--espacio-sm);
+      margin-bottom: var(--espacio-sm);
     }
 
-    .boton-enviar:hover:not(:disabled) {
-      background: #764ba2;
-      transform: scale(1.1);
+    .campo-mensaje {
+      flex: 1;
+      padding: var(--espacio-md);
+      background: var(--cristal-claro);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radio-lg);
+      color: var(--color-texto);
+      outline: none;
+      transition: var(--transicion-suave);
     }
 
-    .boton-enviar:disabled {
-      background: #cbd5e0;
-      cursor: not-allowed;
+    .campo-mensaje:focus {
+      border-color: var(--color-primario);
+      box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
     }
 
+    /* Animaciones */
+    @keyframes pulsoSuave {
+      0%, 100% { box-shadow: 0 8px 30px rgba(0, 212, 255, 0.3); }
+      50% { box-shadow: 0 12px 40px rgba(0, 212, 255, 0.6); }
+    }
+
+    @keyframes aparecerPanel {
+      from { 
+        opacity: 0; 
+        transform: translateY(20px) scale(0.95); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+      }
+    }
+
+    @keyframes parpadeoOjos {
+      0%, 90%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.1); }
+    }
+
+    /* Variables CSS */
+    :root {
+      --color-primario: #00d4ff;
+      --gradiente-principal: linear-gradient(135deg, #00d4ff 0%, #ff6b9d 100%);
+      --fondo-oscuro: #0f1419;
+      --cristal-oscuro: rgba(15, 20, 25, 0.95);
+      --cristal-claro: rgba(255, 255, 255, 0.1);
+      --color-texto: #e2e8f0;
+      --transicion-suave: all 0.3s ease;
+      --espacio-sm: 0.5rem;
+      --espacio-md: 1rem;
+      --espacio-lg: 1.5rem;
+      --radio-lg: 12px;
+      --radio-xl: 16px;
+      --sombra-profunda: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Responsive */
     @media (max-width: 768px) {
-      .contenedor-asistente {
-        width: 100%;
-        height: 100%;
-        bottom: 0;
-        right: 0;
-        border-radius: 0;
+      .panel-asistente {
+        width: calc(100vw - 2rem);
+        height: calc(100vh - 4rem);
+        bottom: 1rem;
+        right: 1rem;
+        left: 1rem;
+      }
+
+      .boton-asistente {
+        bottom: 1rem;
+        right: 1rem;
       }
     }
   `]
 })
-export class AsistenteIAComponent implements OnInit, AfterViewChecked {
-  @ViewChild('areaMensajes') private areaMensajes?: ElementRef;
+export class AsistenteIAComponent implements OnInit, OnDestroy {
+  private readonly asistenteService = inject(AsistenteIAServicio);
+  
+  protected readonly estadoAsistente = this.asistenteService.estadoAsistente;
+  protected readonly configuracion = this.asistenteService.configuracion;
+  protected readonly historialChat = this.asistenteService.historialChat;
+  protected readonly sugerenciasActivas = this.asistenteService.sugerenciasActivas;
+  protected readonly capacidades = this.asistenteService.capacidades;
 
-  protected readonly mensajes = signal<MensajeChat[]>([]);
-  protected readonly procesando = signal(false);
-  protected readonly estadoAsistente = signal('En línea y lista para ayudar');
+  protected readonly mostrarConfiguracion = signal(false);
   protected mensajeActual = '';
+  protected configuracionTemporal: ConfiguracionAsistente = {
+    nombre: 'InnoBot',
+    personalidad: 'amigable',
+    velocidadHabla: 1.0,
+    usarVoz: true,
+    mostrarSugerencias: true,
+    modoTutorial: false,
+    temaAvatar: 'robot',
+    idioma: 'es'
+  };
 
-  private scrollPendiente = false;
-  private contadorMensajes = 0;
+  protected soportaVoz = false;
+  protected particulasCelebracion: Array<{ id: number, x: number, y: number, color: string }> = [];
 
-  constructor(private readonly servicioIA: ServicioAsistenteIA) {}
+  private subscriptions: Subscription[] = [];
 
-  ngOnInit(): void {
-    this.servicioIA.inicializar();
-  }
-
-  ngAfterViewChecked(): void {
-    if (this.scrollPendiente) {
-      this.scrollAlFinal();
-      this.scrollPendiente = false;
-    }
-  }
-
-  protected enviarMensaje(): void {
-    const texto = this.mensajeActual.trim();
-    if (!texto || this.procesando()) return;
-
-    const mensajeUsuario: MensajeChat = {
-      id: ++this.contadorMensajes,
-      texto,
-      esUsuario: true,
-      fecha: new Date()
-    };
-
-    this.mensajes.update(msgs => [...msgs, mensajeUsuario]);
-    this.mensajeActual = '';
-    this.scrollPendiente = true;
-    this.procesando.set(true);
-    this.estadoAsistente.set('Pensando...');
-
-    this.servicioIA.enviarMensaje(texto).subscribe({
-      next: (respuesta) => {
-        const mensajeIA: MensajeChat = {
-          id: ++this.contadorMensajes,
-          texto: respuesta,
-          esUsuario: false,
-          fecha: new Date()
-        };
-        this.mensajes.update(msgs => [...msgs, mensajeIA]);
-        this.scrollPendiente = true;
-        this.procesando.set(false);
-        this.estadoAsistente.set('En línea y lista para ayudar');
-      },
-      error: () => {
-        const mensajeError: MensajeChat = {
-          id: ++this.contadorMensajes,
-          texto: 'Lo siento, hubo un error. Por favor intenta de nuevo.',
-          esUsuario: false,
-          fecha: new Date()
-        };
-        this.mensajes.update(msgs => [...msgs, mensajeError]);
-        this.scrollPendiente = true;
-        this.procesando.set(false);
-        this.estadoAsistente.set('En línea y lista para ayudar');
+  constructor() {
+    // Efecto para generar partículas de celebración
+    effect(() => {
+      if (this.estadoAsistente().animacion === 'celebrando') {
+        this.generarParticulasCelebracion();
       }
     });
   }
 
-  protected enviarSugerencia(texto: string): void {
-    this.mensajeActual = texto;
-    this.enviarMensaje();
+  ngOnInit(): void {
+    this.configuracionTemporal = { ...this.configuracion() };
+    this.verificarSoporteVoz();
+    this.suscribirEventos();
   }
 
-  protected formatearHora(fecha: Date): string {
-    return fecha.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  protected cerrarAsistente(): void {
-    // Implementar lógica de cierre si es necesario
+  private verificarSoporteVoz(): void {
+    this.soportaVoz = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
   }
 
-  private scrollAlFinal(): void {
-    if (this.areaMensajes) {
-      const elemento = this.areaMensajes.nativeElement;
-      elemento.scrollTop = elemento.scrollHeight;
+  private suscribirEventos(): void {
+    // Suscribirse a nuevos mensajes
+    this.subscriptions.push(
+      this.asistenteService.nuevoMensaje$.subscribe(mensaje => {
+        this.scrollToBottom();
+      })
+    );
+
+    // Suscribirse a cambios de estado
+    this.subscriptions.push(
+      this.asistenteService.estadoCambiado$.subscribe(estado => {
+        // Lógica adicional si es necesaria
+      })
+    );
+  }
+
+  protected toggleAsistente(): void {
+    this.asistenteService.toggleAsistente();
+  }
+
+  protected toggleVoz(): void {
+    if (this.estadoAsistente().escuchando) {
+      this.asistenteService.detenerEscucha();
+    } else {
+      this.asistenteService.iniciarEscucha();
     }
+  }
+
+  protected toggleConfiguracion(): void {
+    this.mostrarConfiguracion.set(!this.mostrarConfiguracion());
+  }
+
+  protected enviarMensaje(): void {
+    if (this.mensajeActual.trim()) {
+      this.asistenteService.enviarMensaje(this.mensajeActual.trim());
+      this.mensajeActual = '';
+    }
+  }
+
+  protected enviarMensajeRapido(tipo: string): void {
+    const mensajes = {
+      ayuda: '¿Puedes ayudarme a usar InnoAd?',
+      tutorial: 'Quiero aprender a crear una campaña',
+      optimizar: '¿Cómo puedo optimizar mis campañas?'
+    };
+
+    const mensaje = mensajes[tipo as keyof typeof mensajes];
+    if (mensaje) {
+      this.asistenteService.enviarMensaje(mensaje);
+    }
+  }
+
+  protected limpiarChat(): void {
+    this.asistenteService.limpiarChat();
+  }
+
+  protected ejecutarAccion(accion: AccionSugerida): void {
+    this.asistenteService.ejecutarAccion(accion);
+  }
+
+  protected actualizarConfiguracion(): void {
+    this.asistenteService.actualizarConfiguracion(this.configuracionTemporal);
+  }
+
+  protected formatearTiempo(fecha: Date): string {
+    return new Intl.DateTimeFormat('es-ES', {
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(new Date(fecha));
+  }
+
+  protected formatearMensaje(contenido: string): string {
+    // Convertir enlaces en HTML
+    const conEnlaces = contenido.replace(
+      /https?:\/\/[^\s]+/g,
+      '<a href="$&" target="_blank" class="enlace-mensaje">$&</a>'
+    );
+
+    // Convertir saltos de línea
+    return conEnlaces.replace(/\n/g, '<br>');
+  }
+
+  protected obtenerNivelEnergia(): string {
+    const energia = this.estadoAsistente().nivelEnergia;
+    if (energia < 30) return 'bajo';
+    if (energia < 70) return 'medio';
+    return 'alto';
+  }
+
+  protected obtenerNivelConfianza(confianza: number): string {
+    if (confianza < 0.5) return 'baja';
+    if (confianza < 0.8) return 'media';
+    return 'alta';
+  }
+
+  private scrollToBottom(): void {
+    setTimeout(() => {
+      const areaChat = document.querySelector('.historial-chat');
+      if (areaChat) {
+        areaChat.scrollTop = areaChat.scrollHeight;
+      }
+    }, 100);
+  }
+
+  private generarParticulasCelebracion(): void {
+    const particulas = [];
+    for (let i = 0; i < 10; i++) {
+      particulas.push({
+        id: i,
+        x: Math.random() * 60,
+        y: Math.random() * 60,
+        color: ['#00d4ff', '#ff6b9d', '#f59e0b', '#22c55e'][Math.floor(Math.random() * 4)]
+      });
+    }
+    this.particulasCelebracion = particulas;
+
+    // Limpiar partículas después de la animación
+    setTimeout(() => {
+      this.particulasCelebracion = [];
+    }, 2000);
   }
 }

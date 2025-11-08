@@ -184,8 +184,8 @@ import { RouterLink } from '@angular/router';
   styles: [`
     .landing-container {
       min-height: 100vh;
-      background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-      color: #fff;
+      background: var(--gradiente-fondo);
+      color: var(--color-texto);
     }
 
     /* Navegación */
@@ -194,10 +194,10 @@ import { RouterLink } from '@angular/router';
       top: 0;
       left: 0;
       right: 0;
-      background: rgba(26, 31, 58, 0.95);
+      background: var(--cristal-oscuro);
       backdrop-filter: blur(10px);
       z-index: 1000;
-      border-bottom: 1px solid rgba(0, 217, 255, 0.2);
+      border-bottom: 1px solid rgba(0, 212, 255, 0.2);
     }
 
     .nav-content {
@@ -211,8 +211,9 @@ import { RouterLink } from '@angular/router';
 
     .logo h1 {
       font-size: 2rem;
-      background: linear-gradient(135deg, #00d9ff, #ff006a);
+      background: var(--gradiente-principal);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
       margin: 0;
     }

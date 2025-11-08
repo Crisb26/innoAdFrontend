@@ -45,6 +45,12 @@ export const routes: Routes = [
     data: { permisos: ['REPORTES_VER', 'ESTADISTICAS_VER'] }
   },
   {
+    path: 'admin',
+    loadChildren: () => import('./modulos/admin/admin.routes').then(m => m.routes),
+    canActivate: [guardAutenticacion, guardPermisos],
+    data: { permisos: ['ADMIN_PANEL_VER'] }
+  },
+  {
     path: 'publicar',
     loadChildren: () => import('./modulos/publicacion/publicacion.routes').then(m => m.routes),
     canActivate: [guardAutenticacion]

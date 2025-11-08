@@ -4,13 +4,22 @@
   "description": "Sistema de Gestión de Publicidad Digital - InnoAd",
   "scripts": {
     "ng": "ng",
+    "start": "ng serve --open --proxy-config proxy.conf.json",
     "iniciar": "ng serve --open",
     "iniciar:proxy": "ng serve --open --proxy-config proxy.conf.json",
     "construir": "ng build --configuration production",
+    "construir:compose": "ng build --configuration compose",
     "observar": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "servir-produccion": "npm run construir && http-server -p 8080 -c-1 dist/innoad-frontend"
+    "servir-produccion": "npm run construir && http-server -p 8080 -c-1 dist/innoad-frontend/browser",
+    "servir-http": "http-server dist/innoad-frontend/browser --port 80 --gzip --brotli --cors -c-1",
+    "analizar": "ng build --configuration production --stats-json && webpack-bundle-analyzer dist/innoad-frontend/browser/stats.json",
+    "docker:build": "docker build -t innoad-frontend:latest .",
+    "docker:build:compose": "docker build --build-arg BUILD_CONFIGURATION=compose -t innoad-frontend:compose .",
+    "docker:run": "docker run -d -p 80:80 --name innoad-frontend innoad-frontend:latest",
+    "docker:stop": "docker stop innoad-frontend && docker rm innoad-frontend",
+    "docker:logs": "docker logs -f innoad-frontend"
   },
   "private": true,
   "dependencies": {

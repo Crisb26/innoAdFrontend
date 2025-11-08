@@ -3,200 +3,335 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
 import { ServicioEstadisticas } from '@core/servicios/estadisticas.servicio';
-import { MetricaKPI } from '@core/modelos';
+import { NavegacionAutenticadaComponent } from '@shared/componentes/navegacion-autenticada.component';
+
+interface MetricaKPI {
+  nombre: string;
+  valor: number;
+  unidad: string;
+  variacion: number;
+  tendencia: 'subiendo' | 'bajando' | 'estable';
+  icono: string;
+  color: string;
+}
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, NavegacionAutenticadaComponent],
   template: `
-    <div class="contenedor-dashboard">
-      <header class="encabezado-dashboard">
-        <div class="info-usuario">
-          <h1 class="saludo">¡Hola, {{ usuarioNombre() }}!</h1>
-          <p class="subtitulo">Bienvenido al sistema InnoAd</p>
+    <!-- Navegación Superior -->
+    <app-navegacion-autenticada></app-navegacion-autenticada>
+    
+    <div class="dashboard-container">
+      <!-- Contenido Principal -->
+      <div class="contenido-principal">
+        <!-- Saludo -->
+        <div class="seccion-saludo">
+          <h1 class="titulo-dashboard">¡Bienvenido, {{ nombreUsuario() }}!</h1>
+          <p class="subtitulo-dashboard">Gestiona tu contenido digital de manera inteligente</p>
         </div>
-        <button (click)="cerrarSesion()" class="boton-innoad boton-cerrar">
-          Cerrar Sesión
-        </button>
-      </header>
 
-      @if (cargando()) {
-        <div class="loader"></div>
-      } @else {
-        <div class="grid-metricas">
-          @for (metrica of metricas(); track metrica.nombre) {
-            <div class="tarjeta-innoad tarjeta-metrica">
-              <div class="icono-metrica" [style.color]="metrica.color">
-                {{ metrica.icono }}
-              </div>
-              <div class="contenido-metrica">
-                <h3>{{ metrica.nombre }}</h3>
-                <p class="valor-metrica">{{ metrica.valor }} {{ metrica.unidad }}</p>
-                <span class="variacion" [class.positiva]="metrica.variacion > 0">
-                  {{ metrica.variacion > 0 ? '↑' : '↓' }} {{ metrica.variacion }}%
-                </span>
+        <!-- Grid de Tarjetas -->
+        <div class="grid-tarjetas">
+          <!-- Tarjeta Campañas -->
+          <div class="tarjeta-dashboard tarjeta-campanas">
+            <div class="icono-tarjeta">📢</div>
+            <div class="contenido-tarjeta">
+              <h3>Campañas</h3>
+              <p>{{ estadisticasCampanas() }}</p>
+              <a routerLink="/campanas" class="btn-tarjeta">
+                Gestionar Campañas
+              </a>
+            </div>
+          </div>
+
+          <!-- Tarjeta Pantallas -->
+          <div class="tarjeta-dashboard tarjeta-pantallas">
+            <div class="icono-tarjeta">📺</div>
+            <div class="contenido-tarjeta">
+              <h3>Pantallas</h3>
+              <p>{{ estadisticasPantallas() }}</p>
+              <a routerLink="/pantallas" class="btn-tarjeta">
+                Ver Pantallas
+              </a>
+            </div>
+          </div>
+
+          <!-- Tarjeta Contenidos -->
+          <div class="tarjeta-dashboard tarjeta-contenidos">
+            <div class="icono-tarjeta">🎨</div>
+            <div class="contenido-tarjeta">
+              <h3>Contenidos</h3>
+              <p>{{ estadisticasContenidos() }}</p>
+              <a routerLink="/contenidos" class="btn-tarjeta">
+                Crear Contenido
+              </a>
+            </div>
+          </div>
+
+          <!-- Tarjeta Reportes -->
+          <div class="tarjeta-dashboard tarjeta-reportes">
+            <div class="icono-tarjeta">📊</div>
+            <div class="contenido-tarjeta">
+              <h3>Reportes</h3>
+              <p>Analytics avanzados</p>
+              <a routerLink="/reportes" class="btn-tarjeta">
+                Ver Reportes
+              </a>
+            </div>
+          </div>
+
+          <!-- Tarjeta Admin (solo para administradores) -->
+          @if (esAdministrador()) {
+            <div class="tarjeta-dashboard tarjeta-admin">
+              <div class="icono-tarjeta">👑</div>
+              <div class="contenido-tarjeta">
+                <h3>Panel Admin</h3>
+                <p>Administración del sistema</p>
+                <a routerLink="/admin" class="btn-tarjeta btn-admin">
+                  Acceder al Panel
+                </a>
               </div>
             </div>
           }
-        </div>
 
-        <div class="seccion-accesos-rapidos">
-          <h2 class="titulo-seccion">Accesos Rápidos</h2>
-          <div class="grid-accesos">
-            <a routerLink="/campanas" class="tarjeta-innoad tarjeta-acceso">
-              <svg class="icono-acceso" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
-                <line x1="4" y1="22" x2="4" y2="15"></line>
-              </svg>
-              <h3>Campanas</h3>
-              <p>Gestionar campanas publicitarias</p>
-            </a>
-            <a routerLink="/pantallas" class="tarjeta-innoad tarjeta-acceso">
-              <svg class="icono-acceso" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                <line x1="8" y1="21" x2="16" y2="21"></line>
-                <line x1="12" y1="17" x2="12" y2="21"></line>
-              </svg>
-              <h3>Pantallas</h3>
-              <p>Administrar dispositivos</p>
-            </a>
-            <a routerLink="/contenidos" class="tarjeta-innoad tarjeta-acceso">
-              <svg class="icono-acceso" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                <polyline points="21 15 16 10 5 21"></polyline>
-              </svg>
-              <h3>Contenidos</h3>
-              <p>Biblioteca de medios</p>
-            </a>
-            <a routerLink="/reportes" class="tarjeta-innoad tarjeta-acceso">
-              <svg class="icono-acceso" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="20" x2="18" y2="10"></line>
-                <line x1="12" y1="20" x2="12" y2="4"></line>
-                <line x1="6" y1="20" x2="6" y2="14"></line>
-              </svg>
-              <h3>Reportes</h3>
-              <p>Estadísticas y análisis</p>
-            </a>
+          <!-- Tarjeta Publicar -->
+          <div class="tarjeta-dashboard tarjeta-publicar">
+            <div class="icono-tarjeta">📤</div>
+            <div class="contenido-tarjeta">
+              <h3>Publicar Ahora</h3>
+              <p>Contenido rápido</p>
+              <a routerLink="/publicar" class="btn-tarjeta">
+                Publicar
+              </a>
+            </div>
           </div>
         </div>
-      }
+
+        <!-- Sección de Actividad Reciente -->
+        <div class="seccion-actividad">
+          <h2>Actividad Reciente</h2>
+          <div class="lista-actividad">
+            <div class="item-actividad">
+              <span class="icono-actividad">📢</span>
+              <div class="info-actividad">
+                <p><strong>Nueva campaña creada:</strong> "Promoción Verano 2024"</p>
+                <small>Hace 2 horas</small>
+              </div>
+            </div>
+            <div class="item-actividad">
+              <span class="icono-actividad">📺</span>
+              <div class="info-actividad">
+                <p><strong>Pantalla actualizada:</strong> "Lobby Principal"</p>
+                <small>Hace 4 horas</small>
+              </div>
+            </div>
+            <div class="item-actividad">
+              <span class="icono-actividad">🎨</span>
+              <div class="info-actividad">
+                <p><strong>Contenido publicado:</strong> "Banner Ofertas"</p>
+                <small>Hace 6 horas</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   `,
   styles: [`
-    .contenedor-dashboard {
-      padding: 2rem;
-      max-width: 1400px;
-      margin: 0 auto;
+    .dashboard-container {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--fondo-oscuro, #0f172a) 0%, var(--fondo-medio, #1e293b) 100%);
     }
 
-    .encabezado-dashboard {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .contenido-principal {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .seccion-saludo {
+      text-align: center;
       margin-bottom: 3rem;
     }
 
-    .saludo {
+    .titulo-dashboard {
       font-size: 2.5rem;
+      background: linear-gradient(135deg, #00d9ff, #ff006a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       margin-bottom: 0.5rem;
-      color: #f7fafc;
+      font-weight: 700;
     }
 
-    .subtitulo {
-      color: #718096;
+    .subtitulo-dashboard {
+      color: var(--color-texto-claro, #b4b8d0);
+      font-size: 1.1rem;
     }
 
-    .boton-cerrar {
-      background: transparent;
-      border: 2px solid #ff4444;
-      color: #ff4444;
-    }
-
-    .boton-cerrar:hover {
-      background: #ff4444;
-      color: white;
-    }
-
-    .grid-metricas {
+    .grid-tarjetas {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
       margin-bottom: 3rem;
     }
 
-    .tarjeta-metrica {
-      display: flex;
-      gap: 1.5rem;
-      align-items: center;
+    .tarjeta-dashboard {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
     }
 
-    .icono-metrica {
+    .tarjeta-dashboard::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--color-primario, #00d4ff), var(--color-secundario, #8b5cf6));
+    }
+
+    .tarjeta-dashboard:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border-color: var(--color-primario, #00d4ff);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .icono-tarjeta {
       font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+      filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.3));
     }
 
-    .contenido-metrica h3 {
-      color: #b4b8d0;
-      font-size: 0.9rem;
+    .contenido-tarjeta h3 {
+      font-size: 1.5rem;
       margin-bottom: 0.5rem;
+      color: var(--color-texto, #ffffff);
     }
 
-    .valor-metrica {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
+    .contenido-tarjeta p {
+      color: var(--color-texto-claro, #b4b8d0);
+      margin-bottom: 1.5rem;
     }
 
-    .variacion {
-      font-size: 0.9rem;
-      color: #ff4444;
+    .btn-tarjeta {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--color-primario, #00d4ff), var(--color-secundario, #8b5cf6));
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
     }
 
-    .variacion.positiva {
-      color: #00ff88;
+    .btn-tarjeta:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
     }
 
-    .seccion-accesos-rapidos {
+    .btn-admin {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    .btn-admin:hover {
+      box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
+    }
+
+    /* Colores específicos para cada tarjeta */
+    .tarjeta-campanas .icono-tarjeta { color: #ff6b6b; }
+    .tarjeta-pantallas .icono-tarjeta { color: #4ecdc4; }
+    .tarjeta-contenidos .icono-tarjeta { color: #45b7d1; }
+    .tarjeta-reportes .icono-tarjeta { color: #96ceb4; }
+    .tarjeta-publicar .icono-tarjeta { color: #feca57; }
+    .tarjeta-admin .icono-tarjeta { color: #f59e0b; }
+
+    /* Sección de Actividad */
+    .seccion-actividad {
       margin-top: 3rem;
     }
 
-    .grid-accesos {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
+    .seccion-actividad h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      color: var(--color-texto, #ffffff);
+      border-left: 4px solid var(--color-primario, #00d4ff);
+      padding-left: 1rem;
     }
 
-    .tarjeta-acceso {
-      text-align: center;
-      padding: 2.5rem;
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
+    .lista-actividad {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1.5rem;
+      backdrop-filter: blur(10px);
     }
 
-    .icono-acceso {
-      width: 48px;
-      height: 48px;
-      display: block;
-      margin: 0 auto 1rem auto;
-      color: #667eea;
-      transition: all 0.3s ease;
+    .item-actividad {
+      display: flex;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .tarjeta-acceso:hover .icono-acceso {
-      color: #00d9ff;
-      transform: scale(1.1);
+    .item-actividad:last-child {
+      border-bottom: none;
     }
 
-    .tarjeta-acceso h3 {
-      margin-bottom: 0.5rem;
+    .icono-actividad {
+      font-size: 1.5rem;
+      margin-right: 1rem;
     }
 
-    .tarjeta-acceso p {
-      color: #b4b8d0;
-      font-size: 0.9rem;
+    .info-actividad {
+      flex: 1;
+    }
+
+    .info-actividad p {
+      color: var(--color-texto-claro, #b4b8d0);
+      margin: 0;
+    }
+
+    .info-actividad small {
+      color: var(--color-texto-claro, #b4b8d0);
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .contenido-principal {
+        padding: 1rem;
+      }
+
+      .titulo-dashboard {
+        font-size: 2rem;
+      }
+
+      .grid-tarjetas {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .tarjeta-dashboard {
+        padding: 1.5rem;
+      }
+
+      .icono-tarjeta {
+        font-size: 2.5rem;
+      }
     }
   `]
 })
@@ -205,15 +340,9 @@ export class DashboardComponent implements OnInit {
   private readonly servicioEstadisticas = inject(ServicioEstadisticas);
 
   protected readonly cargando = signal(true);
-  protected readonly usuarioNombre = signal('Usuario');
   protected readonly metricas = signal<MetricaKPI[]>([]);
 
   ngOnInit(): void {
-    const usuario = this.servicioAuth.usuarioActual();
-    if (usuario) {
-      this.usuarioNombre.set(usuario.nombreCompleto);
-    }
-
     this.cargarEstadisticas();
   }
 
@@ -222,7 +351,7 @@ export class DashboardComponent implements OnInit {
       next: (stats) => {
         this.metricas.set([
           {
-            nombre: 'Campanas Activas',
+            nombre: 'Campañas Activas',
             valor: stats.campanasActivas,
             unidad: '',
             variacion: 12,
@@ -266,7 +395,25 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  protected cerrarSesion(): void {
-    this.servicioAuth.cerrarSesion();
+  protected nombreUsuario(): string {
+    const usuario = this.servicioAuth.usuarioActual();
+    return usuario?.nombreCompleto || usuario?.nombreUsuario || 'Usuario';
+  }
+
+  protected esAdministrador(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    return usuario?.rol?.nombre === 'Administrador' || false;
+  }
+
+  protected estadisticasCampanas(): string {
+    return '12 activas, 5 programadas';
+  }
+
+  protected estadisticasPantallas(): string {
+    return '8 conectadas de 10';
+  }
+
+  protected estadisticasContenidos(): string {
+    return '24 elementos listos';
   }
 }

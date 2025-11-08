@@ -1,15 +1,42 @@
 import { inject } from '@angular/core';
-import { Router, CanActivateFn } from '@angular/router';
+import { Router, CanActivateFn, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { ServicioAutenticacion } from '../servicios/autenticacion.servicio';
 
-export const guardAutenticacion: CanActivateFn = () => {
-  const servicioAuth = inject(ServicioAutenticacion);
+/**
+ * Guard de autenticación mejorado con verificación avanzada
+ */
+export const guardAutenticacion: CanActivateFn = (
+  route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+): boolean => {
+  const authService = inject(ServicioAutenticacion);
   const router = inject(Router);
   
-  if (servicioAuth.estaAutenticado()) {
+  // Verificación rápida para tokens válidos
+  if (authService.estaAutenticado()) {
     return true;
   }
   
-  router.navigate(['/autenticacion/iniciar-sesion']);
+  // No autenticado
+  console.info('Usuario no autenticado, redirigiendo al login');
+  router.navigate(['/autenticacion/iniciar-sesion'], {
+    queryParams: { returnUrl: state.url }
+  });
   return false;
+};
+
+/**
+ * Guard inverso para rutas que no requieren autenticación (como login)
+ */
+export const guardNoAutenticado: CanActivateFn = () => {
+  const authService = inject(ServicioAutenticacion);
+  const router = inject(Router);
+  
+  if (authService.estaAutenticado()) {
+    // Ya está autenticado, redirigir al dashboard
+    router.navigate(['/dashboard']);
+    return false;
+  }
+  
+  return true;
 };
