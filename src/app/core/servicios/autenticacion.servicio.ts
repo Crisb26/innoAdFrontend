@@ -120,7 +120,11 @@ export class ServicioAutenticacion {
   iniciarSesion(solicitud: SolicitudLogin): Observable<RespuestaLogin> {
     this.cargandoSignal.set(true);
     
-    return this.http.post<RespuestaAPI<RespuestaLogin>>(`${this.API_URL}/login`, solicitud)
+    const loginUrl = `${this.API_URL}/login`;
+    console.log('🔐 Login URL:', loginUrl);
+    console.log('🔐 API_URL:', this.API_URL);
+    
+    return this.http.post<RespuestaAPI<RespuestaLogin>>(loginUrl, solicitud)
       .pipe(
         map(respuesta => {
           if (!respuesta.exitoso || !respuesta.datos) {
