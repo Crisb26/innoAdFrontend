@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Observable, BehaviorSubject, combineLatest, timer } from 'rxjs';
 import { map, tap, shareReplay, catchError, switchMap } from 'rxjs/operators';
-import { HttpBaseServicio } from './http-base.servicio';
+import { HttpBaseService } from './http-base.servicio';
 import { Campana } from '../modelos/campana.modelo';
 import { API_ENDPOINTS } from '../config/api.config';
 
@@ -125,7 +125,7 @@ export interface ReproduccionCampana {
   providedIn: 'root'
 })
 export class CampanasServicio {
-  private readonly httpBase = inject(HttpBaseServicio);
+  private readonly httpBase = inject(HttpBaseService);
 
   // Signals para estado reactivo
   private readonly campanasSignal = signal<Campana[]>([]);

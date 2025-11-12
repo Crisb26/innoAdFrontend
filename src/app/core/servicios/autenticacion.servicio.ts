@@ -120,7 +120,7 @@ export class ServicioAutenticacion {
   iniciarSesion(solicitud: SolicitudLogin): Observable<RespuestaLogin> {
     this.cargandoSignal.set(true);
     
-    return this.http.post<RespuestaAPI<RespuestaLogin>>(`${this.API_URL}/iniciar-sesion`, solicitud)
+    return this.http.post<RespuestaAPI<RespuestaLogin>>(`${this.API_URL}/login`, solicitud)
       .pipe(
         map(respuesta => {
           if (!respuesta.exitoso || !respuesta.datos) {
@@ -148,7 +148,7 @@ export class ServicioAutenticacion {
   registrarse(solicitud: SolicitudRegistro): Observable<RespuestaLogin> {
     this.cargandoSignal.set(true);
     
-    return this.http.post<RespuestaAPI<RespuestaLogin>>(`${this.API_URL}/registrarse`, solicitud)
+    return this.http.post<RespuestaAPI<RespuestaLogin>>(`${this.API_URL}/register`, solicitud)
       .pipe(
         map(respuesta => {
           if (!respuesta.exitoso || !respuesta.datos) {
@@ -173,7 +173,7 @@ export class ServicioAutenticacion {
    * Cierra la sesión del usuario actual
    */
   cerrarSesion(): void {
-    this.http.post(`${this.API_URL}/cerrar-sesion`, {})
+    this.http.post(`${this.API_URL}/logout`, {})
       .pipe(catchError(() => of(null)))
       .subscribe();
     
@@ -194,7 +194,7 @@ export class ServicioAutenticacion {
     }
     
     return this.http.post<RespuestaAPI<RespuestaLogin>>(
-      `${this.API_URL}/refrescar-token`,
+      `${this.API_URL}/refresh`,
       { tokenActualizacion: refreshToken }
     ).pipe(
       map(respuesta => {
@@ -218,7 +218,7 @@ export class ServicioAutenticacion {
    * Recupera la contrasena enviando un email
    */
   recuperarContrasena(solicitud: SolicitudRecuperarContrasena): Observable<void> {
-    return this.http.post<RespuestaAPI<void>>(`${this.API_URL}/recuperar-contrasena`, solicitud)
+    return this.http.post<RespuestaAPI<void>>(`${this.API_URL}/reset-password`, solicitud)
       .pipe(
         map(respuesta => {
           if (!respuesta.exitoso) {
@@ -233,7 +233,7 @@ export class ServicioAutenticacion {
    * Restablece la contrasena con el token recibido por email
    */
   restablecerContrasena(solicitud: SolicitudRestablecerContrasena): Observable<void> {
-    return this.http.post<RespuestaAPI<void>>(`${this.API_URL}/restablecer-contrasena`, solicitud)
+    return this.http.post<RespuestaAPI<void>>(`${this.API_URL}/reset-password/confirm`, solicitud)
       .pipe(
         map(respuesta => {
           if (!respuesta.exitoso) {
@@ -248,7 +248,7 @@ export class ServicioAutenticacion {
    * Cambia la contrasena del usuario actual
    */
   cambiarContrasena(solicitud: SolicitudCambioContrasena): Observable<void> {
-    return this.http.put<RespuestaAPI<void>>(`${this.API_URL}/cambiar-contrasena`, solicitud)
+    return this.http.put<RespuestaAPI<void>>(`${this.API_URL}/change-password`, solicitud)
       .pipe(
         map(respuesta => {
           if (!respuesta.exitoso) {
@@ -263,7 +263,7 @@ export class ServicioAutenticacion {
    * Verifica el email del usuario usando el token
    */
   verificarEmail(token: string): Observable<void> {
-    return this.http.get<RespuestaAPI<void>>(`${this.API_URL}/verificar-email`, {
+    return this.http.get<RespuestaAPI<void>>(`${this.API_URL}/verify-email`, {
       params: { token }
     }).pipe(
       map(respuesta => {

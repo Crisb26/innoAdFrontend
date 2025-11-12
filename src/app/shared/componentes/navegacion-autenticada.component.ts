@@ -6,7 +6,7 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
 @Component({
   selector: 'app-navegacion-autenticada',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterLink],
   styleUrls: ['./navegacion-autenticada.component.scss'],
   template: `
     <nav class="navbar-innoad">

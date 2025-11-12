@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { map, tap, shareReplay, catchError } from 'rxjs/operators';
-import { HttpBaseServicio } from './http-base.servicio';
+import { HttpBaseService } from './http-base.servicio';
 import { Usuario } from '../modelos/usuario.modelo';
 import { API_ENDPOINTS } from '../config/api.config';
 
@@ -75,7 +75,7 @@ export interface EstadisticasUsuarios {
   providedIn: 'root'
 })
 export class UsuariosServicio {
-  private readonly httpBase = inject(HttpBaseServicio);
+  private readonly httpBase = inject(HttpBaseService);
 
   // Signals para estado reactivo
   private readonly usuariosSignal = signal<Usuario[]>([]);

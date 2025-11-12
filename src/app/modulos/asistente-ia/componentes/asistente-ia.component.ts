@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-asistente-ia',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   styleUrls: ['./asistente-ia.component.scss'],
   template: `
     <!-- Botón flotante del asistente -->
