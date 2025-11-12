@@ -123,8 +123,18 @@ export class ServicioAutenticacion {
     const loginUrl = `${this.API_URL}/login`;
     console.log('🔐 Login URL:', loginUrl);
     console.log('🔐 API_URL:', this.API_URL);
+    console.log('🔐 Datos enviados:', solicitud);
     
-    return this.http.post<RespuestaAPI<RespuestaLogin>>(loginUrl, solicitud)
+    // Transformar datos al formato que espera el backend
+    const datosBackend = {
+      username: solicitud.nombreUsuarioOEmail,
+      password: solicitud.contrasena,
+      rememberMe: solicitud.recordarme
+    };
+    
+    console.log('🔐 Datos transformados para backend:', datosBackend);
+    
+    return this.http.post<RespuestaAPI<RespuestaLogin>>(loginUrl, datosBackend)
       .pipe(
         map(respuesta => {
           if (!respuesta.exitoso || !respuesta.datos) {
