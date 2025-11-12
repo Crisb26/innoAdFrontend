@@ -1,0 +1,153 @@
+.contenedor-recuperar {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+}
+
+.tarjeta-recuperar {
+  background: rgba(26, 31, 58, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 3rem;
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid rgba(0, 217, 255, 0.2);
+  box-shadow: 0 0 30px rgba(0, 217, 255, 0.3);
+}
+
+.encabezado-recuperar {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.icono-recuperar {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem auto;
+  color: #667eea;
+}
+
+.titulo-recuperar {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00d9ff, #ff006a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.subtitulo-recuperar {
+  color: #b4b8d0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.formulario-recuperar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.grupo-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    color: #b4b8d0;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+}
+
+.boton-recuperar {
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.enlace-login {
+  text-align: center;
+
+  a {
+    color: #00d9ff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #ff006a;
+    }
+  }
+}
+
+.alerta {
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.alerta-error {
+  background: rgba(255, 68, 68, 0.1);
+  border: 1px solid rgba(255, 68, 68, 0.3);
+  color: #ff4444;
+}
+
+.alerta-exito {
+  background: rgba(0, 217, 117, 0.1);
+  border: 1px solid rgba(0, 217, 117, 0.3);
+  color: #00d975;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+
+  p {
+    margin: 0.5rem 0 0 0;
+    font-size: 0.85rem;
+  }
+}
+
+.icono-exito {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.texto-error {
+  color: #ff4444;
+  font-size: 0.8rem;
+}
+
+.texto-exito {
+  color: #00d975;
+  font-size: 0.8rem;
+}
+
+.loader-pequeño {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: girar 0.8s linear infinite;
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .contenedor-recuperar {
+    padding: 1rem;
+  }
+
+  .tarjeta-recuperar {
+    padding: 2rem 1.5rem;
+  }
+
+  .titulo-recuperar {
+    font-size: 2rem;
+  }
+}

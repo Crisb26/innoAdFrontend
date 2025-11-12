@@ -7,13 +7,10 @@ import { AsistenteIAComponent } from './asistente-ia.component';
   selector: 'app-boton-asistente-global',
   standalone: true,
   imports: [CommonModule, AsistenteIAComponent],
+  styleUrls: ['./boton-asistente-global.component.scss'],
   template: `
-    <!-- El componente AsistenteIA ya incluye su botón flotante y panel -->
     <app-asistente-ia></app-asistente-ia>
-  `,
-  styles: [`
-    /* Este componente no necesita estilos propios ya que AsistenteIA se encarga de todo */
-  `]
+  `
 })
 export class BotonAsistenteGlobalComponent {
   private readonly asistenteService = inject(AsistenteIAServicio);
