@@ -65,8 +65,7 @@ export class ServicioAutenticacion {
   private readonly apiGateway = inject(ApiGatewayService);
   private readonly router = inject(Router);
   
-  // Usar API Gateway para URLs (preparado para microservicio de autenticación)
-  private readonly API_URL = this.apiGateway.getAuthUrl();
+  // Constantes para localStorage
   private readonly TOKEN_KEY = 'innoad_access_token';
   private readonly REFRESH_TOKEN_KEY = 'innoad_refresh_token';
   private readonly USUARIO_KEY = 'innoad_usuario';
@@ -120,9 +119,9 @@ export class ServicioAutenticacion {
   iniciarSesion(solicitud: SolicitudLogin): Observable<RespuestaLogin> {
     this.cargandoSignal.set(true);
     
-    const loginUrl = `${this.API_URL}/login`;
+    // Usar apiGateway.getAuthUrl() con el endpoint para evitar doble barra
+    const loginUrl = this.apiGateway.getAuthUrl('/login');
     console.log('🔐 Login URL:', loginUrl);
-    console.log('🔐 API_URL:', this.API_URL);
     console.log('🔐 Datos enviados:', solicitud);
     
     // Transformar datos al formato que espera el backend
@@ -162,7 +161,7 @@ export class ServicioAutenticacion {
   registrarse(solicitud: SolicitudRegistro): Observable<RespuestaLogin> {
     this.cargandoSignal.set(true);
     
-    return this.http.post<RespuestaAPI<RespuestaLogin>>(`${this.API_URL}/register`, solicitud)
+    return this.http.post<RespuestaAPI<RespuestaLogin>>(this.apiGateway.getAuthUrl('/register'), solicitud)
       .pipe(
         map(respuesta => {
           if (!respuesta.exitoso || !respuesta.datos) {
@@ -187,7 +186,7 @@ export class ServicioAutenticacion {
    * Cierra la sesión del usuario actual
    */
   cerrarSesion(): void {
-    this.http.post(`${this.API_URL}/logout`, {})
+    this.http.post(this.apiGateway.getAuthUrl('/logout'), {})
       .pipe(catchError(() => of(null)))
       .subscribe();
     
@@ -208,7 +207,7 @@ export class ServicioAutenticacion {
     }
     
     return this.http.post<RespuestaAPI<RespuestaLogin>>(
-      `${this.API_URL}/refresh`,
+      this.apiGateway.getAuthUrl('/refresh'),
       { tokenActualizacion: refreshToken }
     ).pipe(
       map(respuesta => {
@@ -232,7 +231,7 @@ export class ServicioAutenticacion {
    * Recupera la contrasena enviando un email
    */
   recuperarContrasena(solicitud: SolicitudRecuperarContrasena): Observable<void> {
-    return this.http.post<RespuestaAPI<void>>(`${this.API_URL}/reset-password`, solicitud)
+    return this.http.post<RespuestaAPI<void>>(this.apiGateway.getAuthUrl('/reset-password'), solicitud)
       .pipe(
         map(respuesta => {
           if (!respuesta.exitoso) {
@@ -247,7 +246,7 @@ export class ServicioAutenticacion {
    * Restablece la contrasena con el token recibido por email
    */
   restablecerContrasena(solicitud: SolicitudRestablecerContrasena): Observable<void> {
-    return this.http.post<RespuestaAPI<void>>(`${this.API_URL}/reset-password/confirm`, solicitud)
+    return this.http.post<RespuestaAPI<void>>(this.apiGateway.getAuthUrl('/reset-password/confirm'), solicitud)
       .pipe(
         map(respuesta => {
           if (!respuesta.exitoso) {
@@ -262,7 +261,7 @@ export class ServicioAutenticacion {
    * Cambia la contrasena del usuario actual
    */
   cambiarContrasena(solicitud: SolicitudCambioContrasena): Observable<void> {
-    return this.http.put<RespuestaAPI<void>>(`${this.API_URL}/change-password`, solicitud)
+    return this.http.put<RespuestaAPI<void>>(this.apiGateway.getAuthUrl('/change-password'), solicitud)
       .pipe(
         map(respuesta => {
           if (!respuesta.exitoso) {
@@ -277,7 +276,7 @@ export class ServicioAutenticacion {
    * Verifica el email del usuario usando el token
    */
   verificarEmail(token: string): Observable<void> {
-    return this.http.get<RespuestaAPI<void>>(`${this.API_URL}/verify-email`, {
+    return this.http.get<RespuestaAPI<void>>(this.apiGateway.getAuthUrl('/verify-email'), {
       params: { token }
     }).pipe(
       map(respuesta => {
