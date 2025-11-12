@@ -15,6 +15,7 @@ import {
   RespuestaAPI
 } from '@core/modelos';
 import { HttpBaseService } from './http-base.servicio';
+import { ApiGatewayService } from './api-gateway.servicio';
 import { API_ENDPOINTS } from '@core/config/api.config';
 
 // Interfaces extendidas para funcionalidades avanzadas
@@ -61,9 +62,11 @@ interface ConfiguracionSeguridad {
 export class ServicioAutenticacion {
   private readonly http = inject(HttpClient);
   private readonly httpBase = inject(HttpBaseService);
+  private readonly apiGateway = inject(ApiGatewayService);
   private readonly router = inject(Router);
   
-  private readonly API_URL = `${environment.urlApi}/autenticacion`;
+  // Usar API Gateway para URLs (preparado para microservicio de autenticación)
+  private readonly API_URL = this.apiGateway.getAuthUrl();
   private readonly TOKEN_KEY = 'innoad_access_token';
   private readonly REFRESH_TOKEN_KEY = 'innoad_refresh_token';
   private readonly USUARIO_KEY = 'innoad_usuario';

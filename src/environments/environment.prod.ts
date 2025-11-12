@@ -6,8 +6,25 @@ export const environment = {
   version: '2.0.0',
   
   // ===== CONFIGURACIÓN DE API =====
+  // Preparado para arquitectura de microservicios
   api: {
-    // URLs base para producción
+    // Gateway principal (API Gateway único punto de entrada)
+    gateway: 'https://api.innoad.com/api/v1',
+    
+    // Microservicios individuales (configurables para futura migración)
+    // En producción pueden apuntar a dominios diferentes si se separan
+    services: {
+      auth: 'https://api.innoad.com/api/v1/auth',        // Ej: https://auth.innoad.com
+      users: 'https://api.innoad.com/api/v1/users',      // Ej: https://users.innoad.com
+      campaigns: 'https://api.innoad.com/api/v1/campaigns', // Ej: https://campaigns.innoad.com
+      contents: 'https://api.innoad.com/api/v1/contents',   // Ej: https://contents.innoad.com
+      screens: 'https://api.innoad.com/api/v1/screens',     // Ej: https://screens.innoad.com
+      analytics: 'https://api.innoad.com/api/v1/analytics', // Ej: https://analytics.innoad.com
+      notifications: 'https://api.innoad.com/api/v1/notifications',
+      system: 'https://api.innoad.com/api/v1/system'
+    },
+    
+    // URLs base para producción (legacy compatibility)
     baseUrl: 'https://api.innoad.com/api/v1',
     authUrl: 'https://api.innoad.com/api/v1/auth',
     uploadUrl: 'https://api.innoad.com/api/v1/upload',

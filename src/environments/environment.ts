@@ -6,8 +6,25 @@ export const environment = {
   version: '2.0.0',
   
   // ===== CONFIGURACIÓN DE API =====
+  // Preparado para migración a microservicios
   api: {
-    // URLs base
+    // Gateway principal (API Gateway para microservicios)
+    gateway: '/api/v1',
+    
+    // Microservicios individuales (para futura migración)
+    // Mientras tanto, todas apuntan al gateway
+    services: {
+      auth: '/api/v1/auth',
+      users: '/api/v1/users',
+      campaigns: '/api/v1/campaigns',
+      contents: '/api/v1/contents',
+      screens: '/api/v1/screens',
+      analytics: '/api/v1/analytics',
+      notifications: '/api/v1/notifications',
+      system: '/api/v1/system'
+    },
+    
+    // URLs específicas
     baseUrl: '/api/v1',
     authUrl: '/api/v1/auth',
     uploadUrl: '/api/v1/upload',

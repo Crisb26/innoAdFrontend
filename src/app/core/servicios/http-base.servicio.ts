@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject, throwError, timer, of } from 'rxjs';
 import { retry, delay, timeout, map, catchError, tap, switchMap } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { API_ENDPOINTS, DEFAULT_API_CONFIG, HTTP_STATUS } from '@core/config/api.config';
+import { ApiGatewayService } from './api-gateway.servicio';
 
 /**
  * Interfaces para respuestas de API
@@ -57,8 +58,10 @@ export interface RequestOptions {
 })
 export class HttpBaseService {
   private readonly http = inject(HttpClient);
+  private readonly apiGateway = inject(ApiGatewayService);
   
-  private readonly baseUrl = environment.urlApi || '/api/v1';
+  // Usar API Gateway para obtener URLs (preparado para microservicios)
+  private readonly baseUrl = this.apiGateway.getGatewayUrl();
   private readonly defaultTimeout = DEFAULT_API_CONFIG.timeout;
   private readonly defaultRetryAttempts = DEFAULT_API_CONFIG.retryAttempts;
   private readonly defaultRetryDelay = DEFAULT_API_CONFIG.retryDelay;

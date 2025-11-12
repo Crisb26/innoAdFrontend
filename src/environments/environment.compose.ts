@@ -6,6 +6,42 @@ export const environment = {
   nombreApp: 'InnoAd',
   version: '2.0.0',
 
+  // ===== CONFIGURACIÓN PARA DOCKER COMPOSE =====
+  // Nginx actúa como reverse proxy hacia los servicios del backend
+  // Preparado para múltiples servicios backend
+  api: {
+    // Gateway principal (Nginx hace proxy a los servicios)
+    gateway: '/api/v1',
+    
+    // Microservicios (todos a través de Nginx reverse proxy)
+    services: {
+      auth: '/api/v1/auth',
+      users: '/api/v1/users',
+      campaigns: '/api/v1/campaigns',
+      contents: '/api/v1/contents',
+      screens: '/api/v1/screens',
+      analytics: '/api/v1/analytics',
+      notifications: '/api/v1/notifications',
+      system: '/api/v1/system'
+    },
+    
+    // URLs legacy
+    baseUrl: '/api/v1',
+    authUrl: '/api/v1/auth',
+    uploadUrl: '/api/v1/upload',
+    wsUrl: '/ws',
+    
+    timeout: 30000,
+    maxRetries: 3,
+    retryDelay: 1000,
+    
+    customHeaders: {
+      'X-App-Version': '2.0.0',
+      'X-Client-Type': 'web',
+      'X-Platform': 'angular'
+    }
+  },
+
   // Compose usa Nginx como reverse proxy al backend (service name: backend)
   // Por eso las URLs son relativas al mismo dominio
   urlApi: '/api/v1',
