@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
   selector: 'app-sin-permisos',
   standalone: true,
   imports: [CommonModule, RouterLink],
+  styleUrls: ['./sin-permisos.component.scss'],
   template: `
     <div class="contenedor-sin-permisos">
       <div class="tarjeta-sin-permisos">
@@ -19,50 +20,6 @@ import { RouterLink } from '@angular/router';
         <a routerLink="/dashboard" class="boton-innoad">Volver al Dashboard</a>
       </div>
     </div>
-  `,
-  styles: [`
-    .contenedor-sin-permisos {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
-
-    .tarjeta-sin-permisos {
-      text-align: center;
-      max-width: 500px;
-    }
-
-    .icono-error {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 1rem auto;
-      color: var(--color-error);
-      filter: drop-shadow(0 0 20px rgba(255, 68, 68, 0.5));
-    }
-
-    .titulo-error {
-      font-size: 2.5rem;
-      color: var(--color-error);
-      margin-bottom: 1rem;
-    }
-
-    .mensaje-error {
-      font-size: 1.2rem;
-      color: var(--color-texto-claro);
-      margin-bottom: 0.5rem;
-    }
-
-    .submensaje {
-      color: var(--color-texto-gris);
-      margin-bottom: 2rem;
-    }
-
-    .boton-innoad {
-      display: inline-block;
-      margin-top: 1rem;
-    }
-  `]
+  `
 })
 export class SinPermisosComponent {}
