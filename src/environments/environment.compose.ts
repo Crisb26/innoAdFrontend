@@ -11,24 +11,24 @@ export const environment = {
   // Preparado para múltiples servicios backend
   api: {
     // Gateway principal (Nginx hace proxy a los servicios)
-    gateway: '/api/v1',
+    gateway: '/api',
     
     // Microservicios (todos a través de Nginx reverse proxy)
     services: {
-      auth: '/api/v1/auth',
-      users: '/api/v1/users',
-      campaigns: '/api/v1/campaigns',
-      contents: '/api/v1/contents',
-      screens: '/api/v1/screens',
-      analytics: '/api/v1/analytics',
-      notifications: '/api/v1/notifications',
-      system: '/api/v1/system'
+      auth: '/api/auth',
+      users: '/api/users',
+      campaigns: '/api/campaigns',
+      contents: '/api/contents',
+      screens: '/api/screens',
+      analytics: '/api/analytics',
+      notifications: '/api/notifications',
+      system: '/api/system'
     },
     
     // URLs legacy
-    baseUrl: '/api/v1',
-    authUrl: '/api/v1/auth',
-    uploadUrl: '/api/v1/upload',
+    baseUrl: '/api',
+    authUrl: '/api/auth',
+    uploadUrl: '/api/upload',
     wsUrl: '/ws',
     
     timeout: 30000,
@@ -44,7 +44,7 @@ export const environment = {
 
   // Compose usa Nginx como reverse proxy al backend (service name: backend)
   // Por eso las URLs son relativas al mismo dominio
-  urlApi: '/api/v1',
+  urlApi: '/api',
   urlWebSocket: '/ws',
 
   // Resto de opciones tal cual prod

@@ -82,8 +82,16 @@ export class ServicioAutenticacion {
   public readonly usuarioActual = this.usuarioActualSignal.asReadonly();
   public readonly estaAutenticado = computed(() => !!this.usuarioActualSignal() && !!this.tokenActualSignal() && this.tokenNoExpirado());
   public readonly cargando = this.cargandoSignal.asReadonly();
-  public readonly esAdministrador = computed(() => this.usuarioActualSignal()?.rol.nombre === 'Administrador');
-  public readonly permisos = computed(() => this.usuarioActualSignal()?.permisos.map(p => p.nombre) || []);
+  public readonly esAdministrador = computed(() => {
+    const usuario = this.usuarioActualSignal();
+    if (!usuario) return false;
+    const rol = usuario.rol as any;
+    return rol?.nombre === 'Administrador' || rol === 'Administrador';
+  });
+  public readonly permisos = computed(() => {
+    const permisos = this.usuarioActualSignal()?.permisos || [];
+    return permisos.map(p => (p as any).nombre || p);
+  });
   
   // Subject para actualización automática del token
   private refrescarTokenSub = new BehaviorSubject<boolean>(false);
@@ -124,24 +132,59 @@ export class ServicioAutenticacion {
     console.log('🔐 Login URL:', loginUrl);
     console.log('🔐 Datos enviados:', solicitud);
     
-    // Transformar datos al formato que espera el backend
+    // Transformar datos al formato que espera el backend (español)
     const datosBackend = {
-      username: solicitud.nombreUsuarioOEmail,
-      password: solicitud.contrasena,
-      rememberMe: solicitud.recordarme
+      nombreUsuario: solicitud.nombreUsuarioOEmail,
+      contrasena: solicitud.contrasena,
+      recordarme: solicitud.recordarme
     };
     
     console.log('🔐 Datos transformados para backend:', datosBackend);
+    console.log('🔐 JSON que se enviará:', JSON.stringify(datosBackend, null, 2));
     
-    return this.http.post<RespuestaAPI<RespuestaLogin>>(loginUrl, datosBackend)
+    return this.http.post<any>(loginUrl, datosBackend)
       .pipe(
         map(respuesta => {
-          if (!respuesta.exitoso || !respuesta.datos) {
-            throw new Error(respuesta.mensaje || 'Error al iniciar sesión');
+          console.log('🔐 Respuesta completa del backend:', respuesta);
+          
+          // Compatibilidad: manejar formato antiguo y nuevo
+          let datosLogin: RespuestaLogin;
+          
+          // Si la respuesta tiene el formato RespuestaAPI<RespuestaLogin>
+          if (respuesta.exitoso !== undefined && respuesta.datos) {
+            console.log('🔐 Formato nuevo detectado (RespuestaAPI)');
+            if (!respuesta.exitoso || !respuesta.datos) {
+              console.error('❌ Respuesta no exitosa o sin datos');
+              throw new Error(respuesta.mensaje || 'Error al iniciar sesión');
+            }
+            datosLogin = respuesta.datos;
           }
-          return respuesta.datos;
+          // Si la respuesta es directamente RespuestaAutenticacion (formato antiguo)
+          else if (respuesta.token && respuesta.nombreUsuario) {
+            console.log('🔐 Formato antiguo detectado (RespuestaAutenticacion)');
+            // Transformar al formato esperado
+            datosLogin = {
+              token: respuesta.token,
+              tokenActualizacion: respuesta.tokenActualizacion || '',
+              usuario: {
+                id: respuesta.id || 0,
+                nombreUsuario: respuesta.nombreUsuario,
+                email: respuesta.email || '',
+                nombreCompleto: respuesta.nombreCompleto || respuesta.nombreUsuario,
+                rol: respuesta.rol || 'Usuario'
+              },
+              expiraEn: respuesta.expiraEn || 3600
+            };
+          } else {
+            console.error('❌ Formato de respuesta desconocido');
+            throw new Error('Formato de respuesta inválido');
+          }
+          
+          console.log('✅ Datos extraídos correctamente:', datosLogin);
+          return datosLogin;
         }),
         tap(datos => {
+          console.log('✅ Guardando sesión con datos:', datos);
           this.guardarSesion(datos, solicitud.recordarme);
           this.usuarioActualSignal.set(datos.usuario);
           this.tokenActualSignal.set(datos.token);
@@ -149,6 +192,7 @@ export class ServicioAutenticacion {
           this.cargandoSignal.set(false);
         }),
         catchError(error => {
+          console.error('❌ Error capturado en catchError:', error);
           this.cargandoSignal.set(false);
           return throwError(() => this.manejarError(error));
         })
@@ -295,8 +339,9 @@ export class ServicioAutenticacion {
     const usuario = this.usuarioActualSignal();
     if (!usuario) return false;
     
-    return usuario.permisos.some(p => p.nombre === nombrePermiso) ||
-           usuario.rol.nombre === 'Administrador';
+    const permisos = usuario.permisos || [];
+    return permisos.some(p => (p as any).nombre === nombrePermiso || (typeof p === 'string' && p === nombrePermiso)) ||
+           (usuario.rol as any)?.nombre === 'Administrador' || (typeof usuario.rol === 'string' && usuario.rol === 'Administrador');
   }
   
   /**
@@ -815,3 +860,4 @@ export class ServicioAutenticacion {
     localStorage.setItem(this.SEGURIDAD_KEY, JSON.stringify(this.configuracionSeguridadSignal()));
   }
 }
+ 

@@ -9,30 +9,40 @@ export interface Usuario {
   nombreCompleto: string;
   telefono?: string;
   avatarUrl?: string;
-  rol: Rol;
-  permisos: Permiso[];
-  activo: boolean;
-  verificado: boolean;
+  rol: Rol | RolSimple; // Permitir ambos tipos para compatibilidad
+  permisos?: Permiso[] | PermisoSimple[]; // Hacer opcional y permitir ambos tipos
+  activo?: boolean;
+  verificado?: boolean;
   ultimoAcceso?: Date;
-  fechaCreacion: Date;
-  fechaActualizacion: Date;
-  configuracion: ConfiguracionUsuario;
+  fechaCreacion?: Date;
+  fechaActualizacion?: Date;
+  configuracion?: ConfiguracionUsuario;
 }
 
 export interface Rol {
-  id: string;
+  id?: string;
   nombre: string;
-  descripcion: string;
-  permisos: string[];
-  nivel: number;
+  descripcion?: string;
+  permisos?: string[];
+  nivel?: number;
+}
+
+// Rol simplificado del backend
+export interface RolSimple {
+  nombre: string;
 }
 
 export interface Permiso {
-  id: string;
+  id?: string;
   nombre: string;
-  descripcion: string;
-  recurso: string;
-  acciones: string[];
+  descripcion?: string;
+  recurso?: string;
+  acciones?: string[];
+}
+
+// Permiso simplificado del backend
+export interface PermisoSimple {
+  nombre: string;
 }
 
 export interface ConfiguracionUsuario {
@@ -47,7 +57,7 @@ export interface ConfiguracionUsuario {
 export interface RespuestaLogin {
   token: string;
   tokenActualizacion: string;
-  usuario: Usuario;
+  usuario: Usuario; // Usamos Usuario ya que ahora es compatible con lo que envía el backend
   expiraEn: number;
 }
 

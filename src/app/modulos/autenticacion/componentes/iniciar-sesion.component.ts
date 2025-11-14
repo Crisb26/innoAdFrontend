@@ -101,14 +101,25 @@ export class IniciarSesionComponent {
     this.cargando.set(true);
     this.mensajeError.set('');
 
-  const solicitud: SolicitudLogin = this.formulario.getRawValue();
+    const solicitud: SolicitudLogin = this.formulario.getRawValue();
 
     this.servicioAuth.iniciarSesion(solicitud).subscribe({
-      next: () => {
+      next: (respuesta) => {
+        console.log('✅ Login exitoso, navegando a dashboard...', respuesta);
         this.cargando.set(false);
-        this.router.navigate(['/dashboard']);
+        
+        // Navegar al dashboard después de un breve delay para asegurar que todo se guarde
+        setTimeout(() => {
+          this.router.navigate(['/dashboard']).then(navegado => {
+            console.log('✅ Navegación completada:', navegado);
+          }).catch(error => {
+            console.error('❌ Error al navegar:', error);
+            this.mensajeError.set('Error al acceder al dashboard');
+          });
+        }, 100);
       },
       error: (error) => {
+        console.error('❌ Error en login:', error);
         this.cargando.set(false);
         this.mensajeError.set(error.message || 'Error al iniciar sesión');
       }

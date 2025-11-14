@@ -9,25 +9,25 @@ export const environment = {
   // Preparado para arquitectura de microservicios
   api: {
     // Gateway principal (API Gateway único punto de entrada)
-    gateway: 'https://api.innoad.com/api/v1',
+    gateway: 'https://api.innoad.com/api',
     
     // Microservicios individuales (configurables para futura migración)
     // En producción pueden apuntar a dominios diferentes si se separan
     services: {
-      auth: 'https://api.innoad.com/api/v1/auth',        // Ej: https://auth.innoad.com
-      users: 'https://api.innoad.com/api/v1/users',      // Ej: https://users.innoad.com
-      campaigns: 'https://api.innoad.com/api/v1/campaigns', // Ej: https://campaigns.innoad.com
-      contents: 'https://api.innoad.com/api/v1/contents',   // Ej: https://contents.innoad.com
-      screens: 'https://api.innoad.com/api/v1/screens',     // Ej: https://screens.innoad.com
-      analytics: 'https://api.innoad.com/api/v1/analytics', // Ej: https://analytics.innoad.com
-      notifications: 'https://api.innoad.com/api/v1/notifications',
-      system: 'https://api.innoad.com/api/v1/system'
+      auth: 'https://api.innoad.com/api/auth',        // Ej: https://auth.innoad.com
+      users: 'https://api.innoad.com/api/users',      // Ej: https://users.innoad.com
+      campaigns: 'https://api.innoad.com/api/campaigns', // Ej: https://campaigns.innoad.com
+      contents: 'https://api.innoad.com/api/contents',   // Ej: https://contents.innoad.com
+      screens: 'https://api.innoad.com/api/screens',     // Ej: https://screens.innoad.com
+      analytics: 'https://api.innoad.com/api/analytics', // Ej: https://analytics.innoad.com
+      notifications: 'https://api.innoad.com/api/notifications',
+      system: 'https://api.innoad.com/api/system'
     },
     
     // URLs base para producción (legacy compatibility)
-    baseUrl: 'https://api.innoad.com/api/v1',
-    authUrl: 'https://api.innoad.com/api/v1/auth',
-    uploadUrl: 'https://api.innoad.com/api/v1/upload',
+    baseUrl: 'https://api.innoad.com/api',
+    authUrl: 'https://api.innoad.com/api/auth',
+    uploadUrl: 'https://api.innoad.com/api/upload',
     wsUrl: 'wss://api.innoad.com/ws',
     
     // Configuración de timeout y reintentos
@@ -85,7 +85,7 @@ export const environment = {
     level: 'warn', // Solo warnings y errores en producción
     enableConsole: false, // Deshabilitado en producción
     enableRemote: true,
-    remoteEndpoint: 'https://api.innoad.com/api/v1/logs',
+    remoteEndpoint: 'https://api.innoad.com/api/logs',
     maxLocalLogs: 500,
     flushInterval: 30000 // 30 segundos
   },
@@ -153,9 +153,9 @@ export const environment = {
     enableUserActivity: true,
     sampleRate: 0.1, // 10% en producción
     endpoints: {
-      performance: 'https://api.innoad.com/api/v1/monitoring/performance',
-      errors: 'https://api.innoad.com/api/v1/monitoring/errors',
-      activity: 'https://api.innoad.com/api/v1/monitoring/activity'
+      performance: 'https://api.innoad.com/api/monitoring/performance',
+      errors: 'https://api.innoad.com/api/monitoring/errors',
+      activity: 'https://api.innoad.com/api/monitoring/activity'
     }
   },
   
@@ -205,7 +205,7 @@ export const environment = {
   },
   
   // ===== CONFIGURACIÓN LEGACY (MANTENER COMPATIBILIDAD) =====
-  urlApi: 'https://api.innoad.com/api/v1',
+  urlApi: 'https://api.innoad.com/api',
   urlWebSocket: 'wss://api.innoad.com/ws',
   tiempoExpiracionToken: 3600000,
   tiempoActualizacionDatos: 30000,

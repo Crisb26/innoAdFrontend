@@ -7,10 +7,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = servicioAuth.obtenerToken();
 
   // No adjuntar token en endpoints de autenticación ni en actuator/health
-  const esRutaAuth = req.url.includes('/autenticacion/');
+  const esRutaAuth = req.url.includes('/auth/') || req.url.includes('/autenticacion/');
   const esHealth = req.url.includes('/actuator/health');
+  const esPublico = req.url.includes('/public/');
 
-  if (token && !esRutaAuth && !esHealth) {
+  if (token && !esRutaAuth && !esHealth && !esPublico) {
     const clonedRequest = req.clone({
       setHeaders: { Authorization: `Bearer ${token}` }
     });

@@ -9,25 +9,25 @@ export const environment = {
   // Preparado para migración a microservicios
   api: {
     // Gateway principal (API Gateway para microservicios)
-    gateway: '/api/v1',
+    gateway: '/api',
     
     // Microservicios individuales (para futura migración)
     // Mientras tanto, todas apuntan al gateway
     services: {
-      auth: '/api/v1/auth',
-      users: '/api/v1/users',
-      campaigns: '/api/v1/campaigns',
-      contents: '/api/v1/contents',
-      screens: '/api/v1/screens',
-      analytics: '/api/v1/analytics',
-      notifications: '/api/v1/notifications',
-      system: '/api/v1/system'
+      auth: '/api/auth',
+      users: '/api/users',
+      campaigns: '/api/campaigns',
+      contents: '/api/contents',
+      screens: '/api/screens',
+      analytics: '/api/analytics',
+      notifications: '/api/notifications',
+      system: '/api/system'
     },
     
     // URLs específicas
-    baseUrl: '/api/v1',
-    authUrl: '/api/v1/auth',
-    uploadUrl: '/api/v1/upload',
+    baseUrl: '/api',
+    authUrl: '/api/auth',
+    uploadUrl: '/api/upload',
     wsUrl: '/ws',
     
     // Configuración de timeout y reintentos
@@ -85,7 +85,7 @@ export const environment = {
     level: 'debug', // 'error', 'warn', 'info', 'debug'
     enableConsole: true,
     enableRemote: true,
-    remoteEndpoint: '/api/v1/logs',
+    remoteEndpoint: '/api/logs',
     maxLocalLogs: 1000,
     flushInterval: 60000 // 1 minuto
   },
@@ -153,9 +153,9 @@ export const environment = {
     enableUserActivity: true,
     sampleRate: 1.0, // 100% en desarrollo
     endpoints: {
-      performance: '/api/v1/monitoring/performance',
-      errors: '/api/v1/monitoring/errors',
-      activity: '/api/v1/monitoring/activity'
+      performance: '/api/monitoring/performance',
+      errors: '/api/monitoring/errors',
+      activity: '/api/monitoring/activity'
     }
   },
   
@@ -205,7 +205,7 @@ export const environment = {
   },
   
   // ===== CONFIGURACIÓN LEGACY (MANTENER COMPATIBILIDAD) =====
-  urlApi: '/api/v1',
+  urlApi: '/api',
   urlWebSocket: '/ws',
   tiempoExpiracionToken: 3600000,
   tiempoActualizacionDatos: 30000,
