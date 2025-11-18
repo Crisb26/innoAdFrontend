@@ -1,0 +1,52 @@
+# Configuración de Netlify para InnoAd Frontend
+
+[build]
+  # Comando de build
+  command = "npm run construir"
+  
+  # Directorio con los archivos compilados
+  publish = "dist/innoad-frontend/browser"
+  
+  # Directorio base (raíz del proyecto)
+  base = "."
+
+[build.environment]
+  # Versión de Node.js
+  NODE_VERSION = "20"
+
+# Redireccionamiento para Angular routing (SPA)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers de seguridad
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "no-referrer-when-downgrade"
+
+# Cache para assets estáticos
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Sin cache para index.html
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"

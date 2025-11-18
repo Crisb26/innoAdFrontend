@@ -1,0 +1,62 @@
+# Dependencias de Node
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Archivos de construcción
+dist/
+build/
+.angular/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de prueba y cobertura
+coverage/
+*.spec.ts
+e2e/
+karma.conf.js
+*.test.ts
+
+# Archivos de configuración local
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Archivos temporales
+tmp/
+temp/
+.tmp/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentación
+README.md
+CHANGELOG.md
+docs/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+azure-pipelines.yml
+
+# Archivos de desarrollo
+src/**/*.spec.ts
+test-login.html

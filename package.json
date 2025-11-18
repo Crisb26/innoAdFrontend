@@ -17,9 +17,22 @@
     "analizar": "ng build --configuration production --stats-json && webpack-bundle-analyzer dist/innoad-frontend/browser/stats.json",
     "docker:build": "docker build -t innoad-frontend:latest .",
     "docker:build:compose": "docker build --build-arg BUILD_CONFIGURATION=compose -t innoad-frontend:compose .",
+    "docker:build:prod": "docker build --build-arg BUILD_CONFIGURATION=production -t innoad-frontend:prod .",
     "docker:run": "docker run -d -p 80:80 --name innoad-frontend innoad-frontend:latest",
     "docker:stop": "docker stop innoad-frontend && docker rm innoad-frontend",
-    "docker:logs": "docker logs -f innoad-frontend"
+    "docker:restart": "npm run docker:stop && npm run docker:run",
+    "docker:logs": "docker logs -f innoad-frontend",
+    "docker:shell": "docker exec -it innoad-frontend sh",
+    "docker:clean": "docker system prune -f",
+    "docker:size": "docker images innoad-frontend",
+    "compose:up": "docker-compose up -d",
+    "compose:down": "docker-compose down",
+    "compose:logs": "docker-compose logs -f",
+    "compose:restart": "docker-compose restart",
+    "compose:rebuild": "docker-compose up -d --build",
+    "deploy:netlify": "netlify deploy --prod --dir=dist/innoad-frontend/browser",
+    "deploy:vercel": "vercel --prod",
+    "deploy:preview": "netlify deploy --dir=dist/innoad-frontend/browser"
   },
   "private": true,
   "dependencies": {

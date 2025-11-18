@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  # Frontend Angular
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILD_CONFIGURATION: compose
+    image: innoad-frontend:latest
+    container_name: innoad-frontend
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - innoad-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    labels:
+      - "com.innoad.description=InnoAd Frontend Application"
+      - "com.innoad.version=2.0.0"
+
+networks:
+  innoad-network:
+    driver: bridge
+
+# Opcional: Si tienes volúmenes para logs
+# volumes:
+#   nginx_logs:
+#     driver: local
