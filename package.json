@@ -31,7 +31,6 @@
     "compose:restart": "docker-compose restart",
     "compose:rebuild": "docker-compose up -d --build",
     "deploy:netlify": "netlify deploy --prod --dir=dist/innoad-frontend/browser",
-    "deploy:vercel": "vercel --prod",
     "deploy:preview": "netlify deploy --dir=dist/innoad-frontend/browser"
   },
   "private": true,
