@@ -9,25 +9,25 @@ export const environment = {
   // IMPORTANTE: Actualizar estas URLs con la URL de Railway después del despliegue
   // Ejemplo: https://innoad-backend-production.up.railway.app
   api: {
-    // Gateway principal - ACTUALIZAR CON URL DE RAILWAY
-    gateway: 'https://innoad-backend-production.up.railway.app/api',
-    
+    // Gateway principal - ACTUALIZAR CON URL DE AZURE
+    gateway: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api',
+
     // Microservicios individuales
     services: {
-      auth: 'https://innoad-backend-production.up.railway.app/api/auth',
-      users: 'https://innoad-backend-production.up.railway.app/api/users',
-      campaigns: 'https://innoad-backend-production.up.railway.app/api/campaigns',
-      contents: 'https://innoad-backend-production.up.railway.app/api/contents',
-      screens: 'https://innoad-backend-production.up.railway.app/api/screens',
-      analytics: 'https://innoad-backend-production.up.railway.app/api/analytics',
-      notifications: 'https://innoad-backend-production.up.railway.app/api/notifications',
-      system: 'https://innoad-backend-production.up.railway.app/api/system'
+      auth: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/auth',
+      users: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/users',
+      campaigns: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/campaigns',
+      contents: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/contents',
+      screens: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/screens',
+      analytics: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/analytics',
+      notifications: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/notifications',
+      system: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/system'
     },
-    
+
     // URLs base para producción
-    baseUrl: 'https://innoad-backend-production.up.railway.app/api',
-    authUrl: 'https://innoad-backend-production.up.railway.app/api/auth',
-    uploadUrl: 'https://innoad-backend-production.up.railway.app/api/upload',
+    baseUrl: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api',
+    authUrl: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/auth',
+    uploadUrl: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/upload',
     wsUrl: 'wss://innoad-backend-production.up.railway.app/ws',
     
     // Configuración de timeout y reintentos
