@@ -10,24 +10,24 @@ export const environment = {
   // Ejemplo: https://innoad-backend-production.up.railway.app
   api: {
     // Gateway principal - ACTUALIZAR CON URL DE AZURE
-    gateway: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api',
+    gateway: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api',
 
     // Microservicios individuales
     services: {
-      auth: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/auth',
-      users: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/users',
-      campaigns: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/campaigns',
-      contents: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/contents',
-      screens: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/screens',
-      analytics: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/analytics',
-      notifications: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/notifications',
-      system: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/system'
+      auth: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/auth',
+      users: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/users',
+      campaigns: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/campaigns',
+      contents: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/contents',
+      screens: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/screens',
+      analytics: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/analytics',
+      notifications: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/notifications',
+      system: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/system'
     },
 
     // URLs base para producción
-    baseUrl: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api',
-    authUrl: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/auth',
-    uploadUrl: 'https://innoad-backend--0000001.internal.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/upload',
+    baseUrl: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api',
+    authUrl: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/auth',
+    uploadUrl: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/upload',
     wsUrl: 'wss://innoad-backend-production.up.railway.app/ws',
     
     // Configuración de timeout y reintentos
