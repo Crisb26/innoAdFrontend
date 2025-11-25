@@ -25,11 +25,19 @@ export interface ApiEndpoints {
   users: {
     base: string;
     byId: (id: string) => string;
+    list: string;
+    get: string;
+    create: string;
+    update: string;
+    delete: string;
     search: string;
     roles: string;
     permissions: string;
     bulk: string;
     export: string;
+    import: string;
+    invite: string;
+    stats: string;
   };
 
   // Campañas
@@ -122,12 +130,20 @@ export const API_ENDPOINTS: ApiEndpoints = {
 
   users: {
     base: '/users',
+    list: '/users',
+    get: '/users',
+    create: '/users',
+    update: '/users',
+    delete: '/users',
     byId: (id: string) => `/users/${id}`,
     search: '/users/search',
     roles: '/users/roles',
     permissions: '/users/permissions',
     bulk: '/users/bulk',
-    export: '/users/export'
+    export: '/users/export',
+    import: '/users/import',
+    invite: '/users/invite',
+    stats: '/users/stats'
   },
 
   campaigns: {

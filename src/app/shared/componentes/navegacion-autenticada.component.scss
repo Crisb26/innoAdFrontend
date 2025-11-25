@@ -22,17 +22,14 @@
     /* Logo */
     .nav-logo {
       flex-shrink: 0;
-    }
-
-    .logo-link {
-      text-decoration: none;
-      color: inherit;
+      cursor: default; /* No clickeable */
     }
 
     .logo {
       display: flex;
       align-items: center;
       gap: 0.75rem;
+      cursor: default; /* No clickeable */
     }
 
     .logo-icon {
@@ -110,6 +107,11 @@
       position: relative;
       cursor: pointer;
       user-select: none;
+      z-index: 1000;
+
+      &.open {
+        z-index: 10000;
+      }
     }
 
     .user-button {
@@ -139,6 +141,23 @@
       font-weight: 600;
       color: white;
       font-size: 1.1rem;
+      overflow: hidden;
+      border: 2px solid rgba(0, 212, 255, 0.3);
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .avatar-text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+      }
     }
 
     .user-info {
@@ -162,26 +181,32 @@
       color: var(--color-texto-claro, #b4b8d0);
       font-size: 0.8rem;
       transition: transform 0.3s ease;
-    }
 
-    .user-menu.open .dropdown-arrow {
-      transform: rotate(180deg);
+      &.rotated {
+        transform: rotate(180deg);
+      }
     }
 
     /* Dropdown Menu */
     .dropdown-menu {
       position: absolute;
-      top: 100%;
+      top: calc(100% + 0.5rem);
       right: 0;
-      margin-top: 0.5rem;
-      min-width: 220px;
+      min-width: 300px;
+      max-width: 350px;
       background: var(--fondo-oscuro, #0f172a);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(0, 212, 255, 0.3);
       border-radius: 12px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-      padding: 0.5rem;
-      z-index: 1001;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 
+                  0 0 20px rgba(0, 212, 255, 0.2),
+                  0 5px 15px rgba(0, 0, 0, 0.3);
+      padding: 0.75rem;
+      z-index: 9999;
       animation: dropdownAppear 0.3s ease-out;
+      backdrop-filter: blur(10px);
+      display: block;
+      visibility: visible;
+      opacity: 1;
     }
 
     @keyframes dropdownAppear {
@@ -195,35 +220,125 @@
       }
     }
 
+    .dropdown-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba(0, 212, 255, 0.1);
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+      border: 1px solid rgba(0, 212, 255, 0.2);
+    }
+
+    .dropdown-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-primario, #00d4ff), var(--color-secundario, #8b5cf6));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 1.3rem;
+      overflow: hidden;
+      border: 2px solid rgba(0, 212, 255, 0.4);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+      flex-shrink: 0;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .avatar-text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .dropdown-user-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      min-width: 0;
+      flex: 1;
+
+      strong {
+        color: var(--color-texto, #ffffff);
+        font-size: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      span {
+        color: var(--color-texto-claro, #b4b8d0);
+        font-size: 0.85rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .badge-role {
+        display: inline-block;
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(139, 92, 246, 0.2));
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        color: var(--color-primario, #00d4ff);
+        padding: 0.2rem 0.6rem;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-top: 0.25rem;
+        width: fit-content;
+      }
+    }
+
     .dropdown-item {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 0.75rem 1rem;
+      padding: 0.85rem 1rem;
       border-radius: 8px;
       text-decoration: none;
-      color: var(--color-texto-claro, #b4b8d0);
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-      border: none;
+      color: var(--color-texto-claro, #e2e8f0);
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
       background: none;
       width: 100%;
       text-align: left;
       cursor: pointer;
+      font-weight: 500;
     }
 
     .dropdown-item:hover {
-      background: rgba(0, 212, 255, 0.1);
+      background: rgba(0, 212, 255, 0.15);
       color: var(--color-primario, #00d4ff);
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateX(3px);
     }
 
     .logout-item {
-      color: #ff6b6b;
+      color: #ff6b6b !important;
+      font-weight: 700 !important;
+      margin-top: 0.5rem;
+      background: rgba(255, 107, 107, 0.05);
+      border: 1px solid rgba(255, 107, 107, 0.2);
+      font-size: 1rem !important;
     }
 
     .logout-item:hover {
-      background: rgba(255, 107, 107, 0.1);
-      color: #ff6b6b;
+      background: rgba(255, 107, 107, 0.2) !important;
+      color: #ff3b3b !important;
+      border-color: rgba(255, 107, 107, 0.5) !important;
+      transform: translateX(5px) !important;
+      box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
     }
 
     .dropdown-icon {
@@ -235,8 +350,12 @@
     .dropdown-divider {
       border: none;
       height: 1px;
-      background: rgba(255, 255, 255, 0.1);
-      margin: 0.5rem 0;
+      background: linear-gradient(90deg, 
+                  transparent, 
+                  rgba(255, 255, 255, 0.15) 20%, 
+                  rgba(255, 255, 255, 0.15) 80%, 
+                  transparent);
+      margin: 0.6rem 0;
     }
 
     /* Responsive */

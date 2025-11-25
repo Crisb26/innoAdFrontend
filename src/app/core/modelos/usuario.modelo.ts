@@ -7,7 +7,9 @@ export interface Usuario {
   nombreUsuario: string;
   email: string;
   nombreCompleto: string;
+  cedula?: string; // Nuevo campo
   telefono?: string;
+  direccion?: string; // Nuevo campo
   avatarUrl?: string;
   rol: Rol | RolSimple; // Permitir ambos tipos para compatibilidad
   permisos?: Permiso[] | PermisoSimple[]; // Hacer opcional y permitir ambos tipos
@@ -72,6 +74,7 @@ export interface SolicitudRegistro {
   apellido: string;
   nombreUsuario: string;
   email: string;
+  cedula: string;
   contrasena: string;
   telefono?: string;
   empresa?: string;
@@ -90,4 +93,11 @@ export interface SolicitudRestablecerContrasena {
   token: string;
   contrasenaNueva: string;
   confirmarContrasena: string;
+}
+
+export interface SolicitudActualizarPerfil {
+  email?: string;
+  telefono?: string;
+  direccion?: string;
+  avatarUrl?: string;
 }

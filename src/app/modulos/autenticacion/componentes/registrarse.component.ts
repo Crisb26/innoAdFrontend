@@ -97,6 +97,25 @@ import { SolicitudRegistro } from '@core/modelos';
           </div>
 
           <div class="grupo-input">
+            <label for="cedula">Cédula / Documento de Identidad *</label>
+            <input
+              id="cedula"
+              type="text"
+              formControlName="cedula"
+              class="input-innoad"
+              placeholder="1234567890"
+            />
+            @if (formulario.get('cedula')?.invalid && formulario.get('cedula')?.touched) {
+              @if (formulario.get('cedula')?.errors?.['required']) {
+                <span class="texto-error">La cédula es requerida</span>
+              }
+              @if (formulario.get('cedula')?.errors?.['pattern']) {
+                <span class="texto-error">Solo números, mínimo 5 dígitos</span>
+              }
+            }
+          </div>
+
+          <div class="grupo-input">
             <label for="telefono">Teléfono (opcional)</label>
             <input
               id="telefono"
@@ -207,6 +226,7 @@ export class RegistrarseComponent {
       Validators.pattern(/^[a-zA-Z0-9_]+$/)
     ]],
     email: ['', [Validators.required, Validators.email]],
+    cedula: ['', [Validators.required, Validators.pattern(/^[0-9]{5,20}$/)]],
     telefono: [''],
     contrasena: ['', [
       Validators.required,
@@ -259,6 +279,7 @@ export class RegistrarseComponent {
       apellido: valores.apellido,
       nombreUsuario: valores.nombreUsuario,
       email: valores.email,
+      cedula: valores.cedula,
       contrasena: valores.contrasena,
       telefono: valores.telefono || undefined
     };

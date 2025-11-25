@@ -1,7 +1,9 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { Observable, Subject, BehaviorSubject, interval } from 'rxjs';
 import { environment } from '@environments/environment';
+import { ServicioAutenticacion } from './autenticacion.servicio';
 
 // Interfaces para el asistente IA
 export interface MensajeChat {
@@ -69,6 +71,8 @@ export interface CapacidadIA {
 })
 export class AsistenteIAServicio {
   private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
+  private readonly servicioAuth = inject(ServicioAutenticacion);
   private readonly apiUrl = `${environment.urlApi}/asistente-ia`;
 
   // Estado del asistente
@@ -315,6 +319,14 @@ export class AsistenteIAServicio {
     
     // Patrones de intención
     const patrones = {
+      sesion: [
+        { regex: /(?:cerrar|salir|logout|desconectar).*(sesión|sesion|cuenta)/i, accion: 'cerrar_sesion' },
+        { regex: /(?:quiero|voy a).*(salir|irme|cerrar)/i, accion: 'cerrar_sesion' }
+      ],
+      email: [
+        { regex: /(?:enviar|mandar).*(correo|email|mensaje).*(a|al|para)\s*(\w+)/i, accion: 'enviar_correo' },
+        { regex: /(?:correo|email|mensaje)\s*(?:para|a)\s*(\w+)/i, accion: 'enviar_correo' }
+      ],
       navegacion: [
         { regex: /(?:ir|navegar|abrir|mostrar).*(dashboard|inicio|campañas|contenidos|pantallas|reportes|admin)/i, accion: 'navegar' },
         { regex: /(?:cómo|donde).*(llegar|encontrar|ubicar)/i, accion: 'encontrar' }
@@ -344,11 +356,16 @@ export class AsistenteIAServicio {
       for (const patron of patronesCategoria) {
         const match = mensajeLower.match(patron.regex);
         if (match) {
+          const parametros: any = {};
+          // Extraer destinatario para correos
+          if (patron.accion === 'enviar_correo' && match[3]) {
+            parametros.destinatario = match[3];
+          }
           return {
             categoria,
             intencion: patron.accion,
             confianza: 0.8 + (match[0].length / mensaje.length) * 0.2,
-            parametros: match.groups || {}
+            parametros
           };
         }
       }
@@ -378,6 +395,12 @@ export class AsistenteIAServicio {
   }> {
     
     switch (intencion.categoria) {
+      case 'sesion':
+        return this.generarRespuestaSesion(intencion, contexto);
+      
+      case 'email':
+        return this.generarRespuestaEmail(intencion, contexto);
+      
       case 'navegacion':
         return this.generarRespuestaNavegacion(intencion, contexto);
       
@@ -396,6 +419,73 @@ export class AsistenteIAServicio {
       default:
         return this.generarRespuestaConversacional(mensaje, contexto);
     }
+  }
+
+  /**
+   * Generar respuesta para cerrar sesión
+   */
+  private generarRespuestaSesion(intencion: any, contexto: ContextoConversacion): Promise<any> {
+    if (intencion.intencion === 'cerrar_sesion') {
+      return Promise.resolve({
+        texto: "👋 ¡Hasta pronto! Cerrando tu sesión y regresándote a la página principal...",
+        confianza: 0.95,
+        tipo: 'accion' as const,
+        accionSugerida: {
+          id: 'cerrar-sesion',
+          titulo: 'Cerrar Sesión',
+          descripcion: 'Cerrar tu sesión actual',
+          icono: '🚪',
+          accion: () => {
+            setTimeout(() => {
+              this.servicioAuth.cerrarSesion();
+            }, 1500);
+          },
+          categoria: 'accion' as const
+        }
+      });
+    }
+
+    return Promise.resolve({
+      texto: "🤔 No entendí bien qué quieres hacer con tu sesión.",
+      confianza: 0.5,
+      tipo: 'informativa' as const
+    });
+  }
+
+  /**
+   * Generar respuesta para enviar correos
+   */
+  private generarRespuestaEmail(intencion: any, contexto: ContextoConversacion): Promise<any> {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre || (usuario?.rol as any) || 'Usuario';
+    
+    // Verificar si el usuario es Usuario (no puede enviar correos)
+    if (rol === 'Usuario' || rol === 'USUARIO') {
+      return Promise.resolve({
+        texto: "⚠️ Lo siento, pero los usuarios con rol 'Usuario' no tienen permisos para enviar correos. Esta funcionalidad está disponible solo para Administradores, Editores y Creadores.",
+        confianza: 0.9,
+        tipo: 'informativa' as const
+      });
+    }
+
+    const destinatario = intencion.parametros?.destinatario || 'un destinatario';
+
+    return Promise.resolve({
+      texto: `📧 ¡Perfecto! Como ${rol}, puedes enviar correos. Para enviar un correo a ${destinatario}, ve a la sección de mensajería o dime el contenido del mensaje y yo lo procesaré.`,
+      confianza: 0.85,
+      tipo: 'accion' as const,
+      accionSugerida: {
+        id: 'enviar-correo',
+        titulo: 'Enviar Correo',
+        descripcion: `Redactar correo para ${destinatario}`,
+        icono: '✉️',
+        accion: () => {
+          // Aquí iría la lógica para abrir un modal de enviar correo
+          console.log(`Abrir modal para enviar correo a ${destinatario}`);
+        },
+        categoria: 'accion' as const
+      }
+    });
   }
 
   /**
@@ -479,9 +569,62 @@ export class AsistenteIAServicio {
    * Generar respuestas conversacionales
    */
   private generarRespuestaConversacional(mensaje: string, contexto: ContextoConversacion): Promise<any> {
+    const mensajeLower = mensaje.toLowerCase();
+    const usuario = contexto.usuarioActual;
+    
+    // Preguntas sobre el usuario actual
+    if (mensajeLower.includes('quién soy') || mensajeLower.includes('quien soy') || mensajeLower.includes('mi nombre')) {
+      if (usuario) {
+        return Promise.resolve({
+          texto: `📋 Eres ${usuario.nombre}, y tu rol en el sistema es ${usuario.rol}. Tu correo registrado es ${usuario.email}.`,
+          confianza: 1.0,
+          tipo: 'informativa' as const
+        });
+      }
+    }
+
+    // Preguntas sobre rol
+    if (mensajeLower.includes('mi rol') || mensajeLower.includes('qué rol') || mensajeLower.includes('que rol')) {
+      if (usuario) {
+        const permisosRol: {[key: string]: string} = {
+          'Administrador': 'Tienes acceso completo: gestionar usuarios, campañas, contenidos, pantallas, configuración del sistema y enviar correos.',
+          'Editor': 'Puedes crear y editar campañas, contenidos, gestionar pantallas y enviar correos.',
+          'Creador': 'Puedes crear contenidos, campañas básicas y enviar correos.',
+          'Usuario': 'Puedes ver contenidos y pantallas. No puedes enviar correos.'
+        };
+
+        const descripcion = permisosRol[usuario.rol] || 'Tienes permisos básicos en el sistema.';
+        
+        return Promise.resolve({
+          texto: `👤 Tu rol es ${usuario.rol}. ${descripcion}`,
+          confianza: 1.0,
+          tipo: 'informativa' as const
+        });
+      }
+    }
+
+    // Preguntas sobre otros usuarios (solo para no-usuarios)
+    if ((mensajeLower.includes('usuarios') || mensajeLower.includes('quién') || mensajeLower.includes('quien')) && 
+        usuario && usuario.rol !== 'Usuario') {
+      return Promise.resolve({
+        texto: `👥 Como ${usuario.rol}, tienes acceso a la lista de usuarios del sistema. Ve a la sección Admin > Usuarios para ver todos los usuarios registrados y sus roles.`,
+        confianza: 0.85,
+        tipo: 'informativa' as const,
+        accionSugerida: {
+          id: 'ver-usuarios',
+          titulo: 'Ver Usuarios',
+          descripcion: 'Ir a la lista de usuarios',
+          icono: '👥',
+          accion: () => this.router.navigate(['/admin/usuarios']),
+          categoria: 'navegacion' as const
+        }
+      });
+    }
+
     const respuestas = [
       "😊 ¡Qué interesante! Cuéntame más sobre lo que necesitas.",
-      "🤔 Entiendo. ¿Hay algo específico de InnoAd en lo que pueda ayudarte?"
+      "🤔 Entiendo. ¿Hay algo específico de InnoAd en lo que pueda ayudarte?",
+      `👋 Hola ${usuario?.nombre || ''}! ¿En qué puedo asistirte hoy?`
     ];
 
     const respuesta = respuestas[Math.floor(Math.random() * respuestas.length)];
@@ -613,9 +756,17 @@ export class AsistenteIAServicio {
   private iniciarMonitoreoContexto(): void {
     const observarRuta = () => {
       const rutaActual = window.location.pathname;
+      const usuario = this.servicioAuth.usuarioActual();
+      
       this._contextoActual.update(ctx => ({
         ...ctx,
-        paginaActual: rutaActual
+        paginaActual: rutaActual,
+        usuarioActual: usuario ? {
+          id: usuario.id,
+          nombre: usuario.nombreCompleto || usuario.nombreUsuario,
+          rol: usuario.rol?.nombre || usuario.rol || 'Usuario',
+          email: usuario.email
+        } : undefined
       }));
     };
 

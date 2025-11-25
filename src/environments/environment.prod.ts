@@ -6,29 +6,29 @@ export const environment = {
   version: '2.0.0',
   
   // ===== CONFIGURACIÓN DE API =====
-  // Preparado para arquitectura de microservicios
+  // IMPORTANTE: Actualizar estas URLs con la URL de Railway después del despliegue
+  // Ejemplo: https://innoad-backend-production.up.railway.app
   api: {
-    // Gateway principal (API Gateway único punto de entrada)
-    gateway: 'https://api.innoad.com/api',
+    // Gateway principal - ACTUALIZAR CON URL DE RAILWAY
+    gateway: 'https://innoad-backend-production.up.railway.app/api',
     
-    // Microservicios individuales (configurables para futura migración)
-    // En producción pueden apuntar a dominios diferentes si se separan
+    // Microservicios individuales
     services: {
-      auth: 'https://api.innoad.com/api/auth',        // Ej: https://auth.innoad.com
-      users: 'https://api.innoad.com/api/users',      // Ej: https://users.innoad.com
-      campaigns: 'https://api.innoad.com/api/campaigns', // Ej: https://campaigns.innoad.com
-      contents: 'https://api.innoad.com/api/contents',   // Ej: https://contents.innoad.com
-      screens: 'https://api.innoad.com/api/screens',     // Ej: https://screens.innoad.com
-      analytics: 'https://api.innoad.com/api/analytics', // Ej: https://analytics.innoad.com
-      notifications: 'https://api.innoad.com/api/notifications',
-      system: 'https://api.innoad.com/api/system'
+      auth: 'https://innoad-backend-production.up.railway.app/api/auth',
+      users: 'https://innoad-backend-production.up.railway.app/api/users',
+      campaigns: 'https://innoad-backend-production.up.railway.app/api/campaigns',
+      contents: 'https://innoad-backend-production.up.railway.app/api/contents',
+      screens: 'https://innoad-backend-production.up.railway.app/api/screens',
+      analytics: 'https://innoad-backend-production.up.railway.app/api/analytics',
+      notifications: 'https://innoad-backend-production.up.railway.app/api/notifications',
+      system: 'https://innoad-backend-production.up.railway.app/api/system'
     },
     
-    // URLs base para producción (legacy compatibility)
-    baseUrl: 'https://api.innoad.com/api',
-    authUrl: 'https://api.innoad.com/api/auth',
-    uploadUrl: 'https://api.innoad.com/api/upload',
-    wsUrl: 'wss://api.innoad.com/ws',
+    // URLs base para producción
+    baseUrl: 'https://innoad-backend-production.up.railway.app/api',
+    authUrl: 'https://innoad-backend-production.up.railway.app/api/auth',
+    uploadUrl: 'https://innoad-backend-production.up.railway.app/api/upload',
+    wsUrl: 'wss://innoad-backend-production.up.railway.app/ws',
     
     // Configuración de timeout y reintentos
     timeout: 30000, // 30 segundos

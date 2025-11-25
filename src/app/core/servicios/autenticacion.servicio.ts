@@ -237,7 +237,7 @@ export class ServicioAutenticacion {
     this.limpiarSesion();
     this.usuarioActualSignal.set(null);
     this.tokenActualSignal.set(null);
-    this.router.navigate(['/autenticacion/iniciar-sesion']);
+    this.router.navigate(['/inicio']); // Redirigir a landing page en lugar de login
   }
   
   /**
