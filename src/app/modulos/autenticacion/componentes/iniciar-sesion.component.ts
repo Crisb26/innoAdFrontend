@@ -45,6 +45,7 @@ import { SolicitudLogin } from '@core/modelos';
               formControlName="contrasena"
               class="input-innoad"
               placeholder="••••••••"
+              autocomplete="current-password"
             />
             @if (formulario.get('contrasena')?.invalid && formulario.get('contrasena')?.touched) {
               <span class="texto-error">Este campo es requerido</span>
