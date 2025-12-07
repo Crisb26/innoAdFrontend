@@ -6,10 +6,9 @@ export const environment = {
   version: '2.0.0',
   
   // ===== CONFIGURACIÓN DE API =====
-  // IMPORTANTE: Actualizar estas URLs con la URL de Railway después del despliegue
-  // Ejemplo: https://innoad-backend-production.up.railway.app
+  // URLs apuntan al backend en Azure Container Apps
   api: {
-    // Gateway principal - ACTUALIZAR CON URL DE AZURE
+    // Gateway principal (mismo host para todo)
     gateway: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api',
 
     // Microservicios individuales
@@ -28,7 +27,7 @@ export const environment = {
     baseUrl: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api',
     authUrl: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/auth',
     uploadUrl: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/upload',
-    wsUrl: 'wss://innoad-backend-production.up.railway.app/ws',
+    wsUrl: 'wss://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/ws',
     
     // Configuración de timeout y reintentos
     timeout: 30000, // 30 segundos
@@ -85,7 +84,7 @@ export const environment = {
     level: 'warn', // Solo warnings y errores en producción
     enableConsole: false, // Deshabilitado en producción
     enableRemote: true,
-    remoteEndpoint: 'https://api.innoad.com/api/logs',
+    remoteEndpoint: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/logs',
     maxLocalLogs: 500,
     flushInterval: 30000 // 30 segundos
   },
@@ -153,9 +152,9 @@ export const environment = {
     enableUserActivity: true,
     sampleRate: 0.1, // 10% en producción
     endpoints: {
-      performance: 'https://api.innoad.com/api/monitoring/performance',
-      errors: 'https://api.innoad.com/api/monitoring/errors',
-      activity: 'https://api.innoad.com/api/monitoring/activity'
+      performance: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/monitoring/performance',
+      errors: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/monitoring/errors',
+      activity: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/monitoring/activity'
     }
   },
   
@@ -205,8 +204,8 @@ export const environment = {
   },
   
   // ===== CONFIGURACIÓN LEGACY (MANTENER COMPATIBILIDAD) =====
-  urlApi: 'https://api.innoad.com/api',
-  urlWebSocket: 'wss://api.innoad.com/ws',
+  urlApi: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api',
+  urlWebSocket: 'wss://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/ws',
   tiempoExpiracionToken: 3600000,
   tiempoActualizacionDatos: 30000,
   paginacionPorDefecto: 10,
