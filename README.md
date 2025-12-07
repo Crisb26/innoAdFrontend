@@ -1,15 +1,14 @@
 # InnoAd Frontend 🎨
 
-Interfaz web moderna para gestión de publicidad digital con pantallas inteligentes e IA.
+Interfaz Angular para gestionar campañas, login JWT y dashboards conectados al backend en Azure Container Apps.
 
-## 🛠️ Stack Tecnológico
+## 🛠️ Stack
 
-- **Framework**: Angular 18.2.14
-- **Lenguaje**: TypeScript 5.5.4
-- **Estado**: RxJS + Signals
+- **Angular**: 18.2.x
+- **TypeScript**: 5.5.x
+- **Estado**: Signals + RxJS
 - **Estilos**: SCSS
-- **Gráficos**: Chart.js
-- **Autenticación**: JWT
+- **Auth**: JWT
 
 ## 📋 Requisitos
 
@@ -29,23 +28,23 @@ npm start
 
 **Aplicación disponible en**: http://localhost:4200
 
-## ⚙️ Configuración
+## ⚙️ Configuración de entornos
 
-### Entornos
-
-**Desarrollo** (`environment.ts`):
+**Desarrollo** (`environment.ts`)
 ```typescript
 api: {
   baseUrl: 'http://localhost:8080/api'
 }
 ```
 
-**Producción** (`environment.prod.ts`):
+**Producción** (`environment.prod.ts`)
 ```typescript
 api: {
-  baseUrl: 'https://innoad-backend-production.up.railway.app/api'
+  baseUrl: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api'
 }
 ```
+
+WebSocket prod (si aplica): `wss://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/ws`
 
 ### Proxy para Desarrollo
 
@@ -109,15 +108,15 @@ npm run analyze             # Analizar bundle size
 
 ## ☁️ Despliegue
 
-### Vercel (Recomendado)
+- **Prod actual**: Netlify (`https://innoadfrontend.netlify.app`)
+- Backend prod: Azure Container Apps (`https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io`)
+- Para redeploy manual: `netlify deploy --prod --dir=dist/innoad-frontend/browser`
 
-```bash
-# 1. Instalar Vercel CLI
-npm install -g vercel
+## 🆕 Cambios recientes
 
-# 2. Desplegar
-vercel --prod
-```
+- Limpieza de documentación legacy y guías Docker antiguas.
+- URLs de producción actualizadas a Azure Container Apps.
+- Fix de login: el backend ahora usa `JWT_SECRET` Base64 válido y CORS activo para Netlify.
 
 O desde el dashboard de Vercel:
 - Framework: **Angular**
