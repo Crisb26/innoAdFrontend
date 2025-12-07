@@ -1,0 +1,8 @@
+# Redireccionamiento para SPA de Angular
+/*  /index.html  200
+
+# Cache busting para assets
+/assets/*  /assets/:splat  200
+
+# Sin cache para index.html
+/index.html  /index.html  200
