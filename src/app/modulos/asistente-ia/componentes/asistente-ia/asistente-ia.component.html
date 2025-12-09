@@ -1,0 +1,257 @@
+<div class="contenedor-asistente-ia">
+  <!-- Encabezado -->
+  <div class="encabezado-asistente">
+    <div class="titulo-asistente">
+      <h2>🤖 Asistente IA</h2>
+      <p class="subtitulo">Powered by GPT-4</p>
+    </div>
+    
+    <!-- Selector de Configuración -->
+    <div class="selector-configuracion">
+      <label>Modelo:</label>
+      <select [(ngModel)]="configuracionSeleccionada" [compareWith]="compareFn" 
+              [disabled]="procesandoRespuesta">
+        <option *ngFor="let config of configuracionesIA" [ngValue]="config">
+          {{ config.nombre }} ({{ config.modelo }})
+        </option>
+      </select>
+    </div>
+  </div>
+  
+  <!-- Alertas -->
+  <div class="alerta-error" *ngIf="error">
+    <span class="texto-error">{{ error }}</span>
+    <button class="btn-cerrar-alerta" (click)="error = null">×</button>
+  </div>
+  
+  <!-- Panel de Contenido Principal -->
+  <div class="panel-principal">
+    
+    <!-- Sección de Historial (Sidebar) -->
+    <div class="sidebar-historial" [class.abierto]="mostrarHistorial">
+      <div class="encabezado-historial">
+        <h3>Historial</h3>
+        <button class="btn-cerrar-sidebar" (click)="mostrarHistorial = false">
+          ×
+        </button>
+      </div>
+      
+      <!-- Búsqueda en Historial -->
+      <div class="buscador-historial">
+        <input 
+          type="text"
+          [(ngModel)]="busquedaHistorial"
+          placeholder="Buscar en historial..."
+          class="campo-busqueda"
+        />
+      </div>
+      
+      <!-- Lista de Historial -->
+      <div class="lista-historial">
+        <div *ngIf="interaccionesFiltradas.length === 0" class="vacio-historial">
+          <p>No hay interacciones en el historial</p>
+        </div>
+        
+        <div *ngFor="let interaccion of interaccionesFiltradas; let indice = index"
+             class="item-historial"
+             [class.error]="interaccion.estado === 'ERROR'">
+          <div class="contenido-item">
+            <p class="pregunta-item">{{ interaccion.pregunta | slice:0:50 }}...</p>
+            <span class="fecha-item">{{ formatearFecha(interaccion.timestamp) }}</span>
+          </div>
+          <button class="btn-reutilizar"
+                  (click)="reutilizarPregunta(interaccion.pregunta)"
+                  title="Hacer la misma pregunta">
+            ⟲
+          </button>
+        </div>
+      </div>
+      
+      <!-- Botones de Historial -->
+      <div class="botones-historial">
+        <button class="btn-descargar"
+                (click)="descargarHistorial()"
+                [disabled]="interacciones.length === 0">
+          📥 Descargar
+        </button>
+        <button class="btn-limpiar"
+                (click)="limpiarHistorial()"
+                [disabled]="interacciones.length === 0">
+          🗑️ Limpiar
+        </button>
+      </div>
+    </div>
+    
+    <!-- Sección de Respuestas -->
+    <div class="contenedor-respuestas">
+      
+      <!-- Botón de Historial (Mobile) -->
+      <button class="btn-toggle-historial"
+              (click)="mostrarHistorial = !mostrarHistorial">
+        📋 Historial
+      </button>
+      
+      <!-- Respuestas -->
+      <div class="respuestas" #contenedorRespuestas>
+        
+        <!-- Pantalla Inicial (sin interacciones) -->
+        <div class="pantalla-inicial" *ngIf="interacciones.length === 0 && !procesandoRespuesta">
+          <div class="contenido-inicial">
+            <h3>¡Hola! 👋</h3>
+            <p>Soy tu asistente IA. Puedo ayudarte con:</p>
+            <ul class="lista-capacidades">
+              <li>📊 Análisis de datos y estadísticas</li>
+              <li>💡 Generación de ideas y estrategias</li>
+              <li>📝 Redacción y mejora de contenido</li>
+              <li>❓ Respuesta a preguntas técnicas</li>
+              <li>🎯 Asesoría personalizada</li>
+            </ul>
+            <p class="texto-iniciador">¿Cuál es tu pregunta?</p>
+          </div>
+        </div>
+        
+        <!-- Lista de Interacciones -->
+        <div class="lista-interacciones" *ngIf="interacciones.length > 0">
+          <div *ngFor="let interaccion of interacciones; let indice = index"
+               class="grupo-interaccion">
+            
+            <!-- Pregunta -->
+            <div class="pregunta-usuario">
+              <div class="contenido-pregunta">
+                <p>{{ interaccion.pregunta }}</p>
+              </div>
+              <span class="timestamp">{{ formatearFecha(interaccion.timestamp) }}</span>
+            </div>
+            
+            <!-- Respuesta o Estado -->
+            <div class="respuesta-ia" [class.error]="interaccion.estado === 'ERROR'">
+              <div class="contenido-respuesta">
+                <!-- Cargando -->
+                <div *ngIf="interaccion.estado === 'PENDIENTE'" class="indicador-carga">
+                  <div class="spinner-pequeño"></div>
+                  <span>Procesando...</span>
+                </div>
+                
+                <!-- Error -->
+                <div *ngIf="interaccion.estado === 'ERROR'" class="contenido-error">
+                  <p>{{ interaccion.respuesta }}</p>
+                </div>
+                
+                <!-- Respuesta Completada -->
+                <p *ngIf="interaccion.estado === 'RESPONDIDO'" 
+                   class="texto-respuesta">
+                  {{ interaccion.respuesta }}
+                </p>
+              </div>
+              
+              <!-- Información de Metadatos -->
+              <div class="metadata-respuesta" *ngIf="interaccion.estado === 'RESPONDIDO'">
+                <div class="metricas">
+                  <span class="metrica" *ngIf="interaccion.tiempoRespuesta">
+                    ⏱ {{ (interaccion.tiempoRespuesta / 1000).toFixed(2) }}s
+                  </span>
+                  <span class="metrica" *ngIf="interaccion.tokensUsados">
+                    🔤 {{ interaccion.tokensUsados }} tokens
+                  </span>
+                  <span class="metrica" *ngIf="interaccion.costoPregunta">
+                    💰 ${{ interaccion.costoPregunta.toFixed(4) }}
+                  </span>
+                </div>
+                
+                <!-- Botones de Acciones -->
+                <div class="acciones-respuesta">
+                  <button class="btn-copiar"
+                          (click)="copiarRespuesta(interaccion.respuesta)"
+                          title="Copiar respuesta">
+                    📋 Copiar
+                  </button>
+                  <button class="btn-reutilizar-pregunta"
+                          (click)="reutilizarPregunta(interaccion.pregunta)"
+                          title="Hacer pregunta similar">
+                    🔄 Similar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Indicador de Procesamiento Final -->
+        <div class="grupo-interaccion" *ngIf="procesandoRespuesta && interacciones.length > 0">
+          <div class="respuesta-ia">
+            <div class="contenido-respuesta">
+              <div class="indicador-carga">
+                <div class="burbujas-carga">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <span>La IA está pensando...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Estadísticas (Footer) -->
+  <div class="estadisticas-footer" *ngIf="estadisticas">
+    <div class="stat-item">
+      <span class="label">Preguntas:</span>
+      <span class="valor">{{ estadisticas.totalPreguntas }}</span>
+    </div>
+    <div class="stat-item">
+      <span class="label">Tiempo Promedio:</span>
+      <span class="valor">{{ tiempoPromedioFormato }}</span>
+    </div>
+    <div class="stat-item">
+      <span class="label">Tokens Usados:</span>
+      <span class="valor">{{ estadisticas.tokensTotalesUsados }}</span>
+    </div>
+    <div class="stat-item">
+      <span class="label">Costo Total:</span>
+      <span class="valor">${{ estadisticas.costoTotal.toFixed(4) }}</span>
+    </div>
+  </div>
+  
+  <!-- Área de Entrada -->
+  <div class="area-entrada-ia">
+    <div class="contenedor-entrada-ia">
+      <textarea 
+        [(ngModel)]="pregunta"
+        (keyup.ctrl.enter)="enviarPreguntaConStreaming()"
+        (keyup.meta.enter)="enviarPreguntaConStreaming()"
+        [disabled]="procesandoRespuesta"
+        placeholder="Escribe tu pregunta aquí... (Ctrl+Enter para enviar)"
+        class="campo-pregunta"
+        maxlength="2000"
+        rows="3"
+      ></textarea>
+      
+      <div class="controles-entrada">
+        <div class="contador-caracteres">
+          {{ pregunta.length }}/2000
+        </div>
+        
+        <div class="botones-accion">
+          <button class="btn-enviar-normal"
+                  (click)="enviarPregunta()"
+                  [disabled]="procesandoRespuesta || !pregunta.trim()"
+                  title="Enviar pregunta">
+            <span class="icono">📤</span>
+            <span class="texto">Enviar</span>
+          </button>
+          
+          <button class="btn-enviar-streaming"
+                  (click)="enviarPreguntaConStreaming()"
+                  [disabled]="procesandoRespuesta || !pregunta.trim()"
+                  title="Enviar con streaming en tiempo real">
+            <span class="icono">⚡</span>
+            <span class="texto">Streaming</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

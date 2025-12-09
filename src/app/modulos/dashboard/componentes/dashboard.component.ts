@@ -37,7 +37,7 @@ interface MetricaKPI {
         <div class="grid-tarjetas">
           <!-- Tarjeta Campañas -->
           <div class="tarjeta-dashboard tarjeta-campanas">
-            <div class="icono-tarjeta">📢</div>
+            <div class="icono-tarjeta">Campañas</div>
             <div class="contenido-tarjeta">
               <h3>Campañas</h3>
               <p>{{ estadisticasCampanas() }}</p>
@@ -49,7 +49,7 @@ interface MetricaKPI {
 
           <!-- Tarjeta Pantallas -->
           <div class="tarjeta-dashboard tarjeta-pantallas">
-            <div class="icono-tarjeta">📺</div>
+            <div class="icono-tarjeta">Pantallas</div>
             <div class="contenido-tarjeta">
               <h3>Pantallas</h3>
               <p>{{ estadisticasPantallas() }}</p>
@@ -61,7 +61,7 @@ interface MetricaKPI {
 
           <!-- Tarjeta Contenidos -->
           <div class="tarjeta-dashboard tarjeta-contenidos">
-            <div class="icono-tarjeta">🎨</div>
+            <div class="icono-tarjeta">Contenidos</div>
             <div class="contenido-tarjeta">
               <h3>Contenidos</h3>
               <p>{{ estadisticasContenidos() }}</p>
@@ -73,7 +73,7 @@ interface MetricaKPI {
 
           <!-- Tarjeta Reportes -->
           <div class="tarjeta-dashboard tarjeta-reportes">
-            <div class="icono-tarjeta">📊</div>
+            <div class="icono-tarjeta">Reportes</div>
             <div class="contenido-tarjeta">
               <h3>Reportes</h3>
               <p>Analytics avanzados</p>
@@ -83,10 +83,22 @@ interface MetricaKPI {
             </div>
           </div>
 
+          <!-- Tarjeta Graficos -->
+          <div class="tarjeta-dashboard tarjeta-graficos">
+            <div class="icono-tarjeta">Graficos</div>
+            <div class="contenido-tarjeta">
+              <h3>Graficos Avanzados</h3>
+              <p>Visualizacion de datos</p>
+              <a routerLink="/dashboard/graficos" class="btn-tarjeta">
+                Ver Graficos
+              </a>
+            </div>
+          </div>
+
           <!-- Tarjeta Admin (solo para administradores) -->
           @if (esAdministrador()) {
             <div class="tarjeta-dashboard tarjeta-admin">
-              <div class="icono-tarjeta">👑</div>
+              <div class="icono-tarjeta">Admin</div>
               <div class="contenido-tarjeta">
                 <h3>Panel Admin</h3>
                 <p>Administración del sistema</p>
@@ -99,10 +111,10 @@ interface MetricaKPI {
 
           <!-- Tarjeta Publicar -->
           <div class="tarjeta-dashboard tarjeta-publicar">
-            <div class="icono-tarjeta">📤</div>
+            <div class="icono-tarjeta">Publicar</div>
             <div class="contenido-tarjeta">
               <h3>Publicar Ahora</h3>
-              <p>Contenido rápido</p>
+              <p>Contenido rapido</p>
               <a routerLink="/publicar" class="btn-tarjeta">
                 Publicar
               </a>
@@ -115,21 +127,21 @@ interface MetricaKPI {
           <h2>Actividad Reciente</h2>
           <div class="lista-actividad">
             <div class="item-actividad">
-              <span class="icono-actividad">📢</span>
+              <span class="icono-actividad">CAMP</span>
               <div class="info-actividad">
-                <p><strong>Nueva campaña creada:</strong> "Promoción Verano 2024"</p>
+                <p><strong>Nueva campaña creada:</strong> "Promocion Verano 2024"</p>
                 <small>Hace 2 horas</small>
               </div>
             </div>
             <div class="item-actividad">
-              <span class="icono-actividad">📺</span>
+              <span class="icono-actividad">PANT</span>
               <div class="info-actividad">
                 <p><strong>Pantalla actualizada:</strong> "Lobby Principal"</p>
                 <small>Hace 4 horas</small>
               </div>
             </div>
             <div class="item-actividad">
-              <span class="icono-actividad">🎨</span>
+              <span class="icono-actividad">CONT</span>
               <div class="info-actividad">
                 <p><strong>Contenido publicado:</strong> "Banner Ofertas"</p>
                 <small>Hace 6 horas</small>

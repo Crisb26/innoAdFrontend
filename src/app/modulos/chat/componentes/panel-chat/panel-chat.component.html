@@ -1,0 +1,116 @@
+<div class="contenedor-chat">
+  <!-- Encabezado del Chat -->
+  <div class="encabezado-chat">
+    <div class="informacion-chat">
+      <h2>Chat de Soporte</h2>
+      <div class="estado-conexion" [class.conectado]="conectado">
+        <span class="indicador" [class.conectado]="conectado"></span>
+        {{ conectado ? 'Conectado' : 'Desconectado' }}
+      </div>
+    </div>
+    <button class="btn-cerrar-chat" (click)="cerrarChat()" [disabled]="!conectado">
+      <span class="icono">×</span>
+    </button>
+  </div>
+  
+  <!-- Mensaje de Error -->
+  <div class="alerta-error" *ngIf="error">
+    <span class="texto-error">{{ error }}</span>
+    <button class="btn-cerrar-alerta" (click)="error = null">×</button>
+  </div>
+  
+  <!-- Contenedor de Mensajes -->
+  <div class="contenedor-mensajes" #contenedorMensajes>
+    <!-- Indicador de Carga Inicial -->
+    <div class="indicador-carga" *ngIf="cargando">
+      <div class="spinner"></div>
+      <p>Cargando historial...</p>
+    </div>
+    
+    <!-- Lista de Mensajes -->
+    <div class="lista-mensajes" *ngIf="!cargando">
+      <div *ngFor="let mensaje of mensajes; let indice = index" 
+           class="grupo-mensajes"
+           [class.mensaje-propio]="mensaje.idUsuario === idUsuarioActual">
+        
+        <!-- Mensaje -->
+        <div class="mensaje" [class.error]="mensaje.estado === 'ERROR'">
+          <div class="contenido-mensaje">
+            <p class="texto">{{ mensaje.contenido }}</p>
+          </div>
+          
+          <!-- Información del Mensaje -->
+          <div class="informacion-mensaje">
+            <span class="hora">{{ formatearFecha(mensaje.timestamp) }}</span>
+            
+            <!-- Indicador de Estado (solo para mensajes propios) -->
+            <span class="estado-mensaje" 
+                  *ngIf="mensaje.idUsuario === idUsuarioActual"
+                  [class.enviando]="mensaje.estado === 'ENVIANDO'"
+                  [class.enviado]="mensaje.estado === 'ENVIADO'"
+                  [class.leido]="mensaje.leido">
+              <span *ngIf="mensaje.estado === 'ENVIANDO'" class="icono-enviando">⏱</span>
+              <span *ngIf="mensaje.estado === 'ENVIADO' && !mensaje.leido" class="icono-enviado">✓</span>
+              <span *ngIf="mensaje.leido" class="icono-leido">✓✓</span>
+              <span *ngIf="mensaje.estado === 'ERROR'" class="icono-error">!</span>
+            </span>
+          </div>
+        </div>
+        
+        <!-- Separador de Fechas -->
+        <div class="separador-fecha" 
+             *ngIf="indice === 0 || formatearFecha(mensaje.timestamp) !== formatearFecha(mensajes[indice - 1].timestamp)">
+          <span>{{ formatearFecha(mensaje.timestamp) }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Indicador de Usuarios Escribiendo -->
+    <div class="indicador-escribiendo" *ngIf="hayUsuariosEscribiendo()">
+      <div class="burbujas-escritura">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <span class="texto-escribiendo">{{ obtenerNombresEscribiendo() }}</span>
+    </div>
+  </div>
+  
+  <!-- Área de Entrada de Mensajes -->
+  <div class="area-entrada">
+    <!-- Indicador de Conexión -->
+    <div class="alerta-desconexion" *ngIf="!conectado">
+      <span class="icono">⚠</span>
+      <span class="texto">Intentando reconectar...</span>
+    </div>
+    
+    <!-- Formulario de Entrada -->
+    <div class="contenedor-entrada">
+      <input 
+        type="text"
+        class="campo-entrada"
+        [(ngModel)]="mensajeNuevo"
+        (keyup.enter)="enviarMensaje()"
+        (keyup)="notificarEscribiendo()"
+        [disabled]="!conectado"
+        placeholder="Escribe tu mensaje aquí..."
+        maxlength="1000"
+      />
+      
+      <!-- Contador de Caracteres -->
+      <div class="contador-caracteres">
+        {{ mensajeNuevo.length }}/1000
+      </div>
+      
+      <!-- Botón Enviar -->
+      <button 
+        class="btn-enviar"
+        (click)="enviarMensaje()"
+        [disabled]="!conectado || !mensajeNuevo.trim()"
+        title="Enviar mensaje (Enter)"
+      >
+        <span class="icono">➤</span>
+      </button>
+    </div>
+  </div>
+</div>
