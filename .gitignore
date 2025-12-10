@@ -52,3 +52,6 @@ COMANDOS-RAPIDOS.txt
 SCRIPTS-GUIA.md
 # Excluir archivo corrupto  
 src/app/core/servicios/usuarios.servicio.ts  
+
+# Local Netlify folder
+.netlify
