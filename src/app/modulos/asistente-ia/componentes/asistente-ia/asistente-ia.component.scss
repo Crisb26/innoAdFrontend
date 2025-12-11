@@ -1,15 +1,24 @@
-// Variables de Color
-$color-primario: #8e44ad;
-$color-primario-claro: #9b59b6;
-$color-secundario: #e74c3c;
-$color-exito: #2ecc71;
-$color-advertencia: #f39c12;
-$color-fondo: #f8f9fa;
-$color-fondo-oscuro: #ecf0f1;
-$color-texto: #2c3e50;
-$color-texto-claro: #7f8c8d;
-$color-borde: #bdc3c7;
-$color-sombra: rgba(0, 0, 0, 0.1);
+// Variables de Color - Tema Ciberpunk
+$color-primario: #00d4ff;           // Cyan brillante
+$color-primario-claro: #33ddff;     // Cyan más claro
+$color-secundario: #8b5cf6;         // Purple tech
+$color-acento: #f59e0b;             // Orange energético
+$color-error: #ef4444;              // Rojo error
+$color-exito: #10b981;              // Verde éxito
+$color-advertencia: #f59e0b;        // Orange advertencia
+
+// Fondos - Tema oscuro
+$color-fondo: #0f172a;              // Negro azulado profundo
+$color-fondo-oscuro: #1e293b;       // Gris azulado
+$color-fondo-claro: #334155;        // Gris medio
+$color-superficie: #475569;         // Superficie clara
+
+// Texto
+$color-texto: #ffffff;              // Blanco puro
+$color-texto-claro: #b4b8d0;        // Gris claro
+$color-texto-medio: #64748b;        // Gris medio
+$color-borde: #334155;              // Borde oscuro
+$color-sombra: rgba(0, 212, 255, 0.2);
 
 // Variables de Espaciado
 $espaciado-xs: 4px;
@@ -31,7 +40,7 @@ $transicion-lenta: 0.5s ease-out;
   flex-direction: column;
   height: 100vh;
   max-height: 100vh;
-  background-color: $color-fondo;
+  background: linear-gradient(135deg, $color-fondo 0%, $color-fondo-oscuro 100%);
   color: $color-texto;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
@@ -45,9 +54,10 @@ $transicion-lenta: 0.5s ease-out;
   justify-content: space-between;
   align-items: center;
   padding: $espaciado-md $espaciado-lg;
-  background: linear-gradient(135deg, $color-primario 0%, $color-primario-claro 100%);
+  background: linear-gradient(135deg, $color-primario 0%, $color-secundario 100%);
   color: white;
-  box-shadow: 0 4px 12px $color-sombra;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.6), 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-bottom: 2px solid rgba(0, 212, 255, 0.3);
 }
 
 .titulo-asistente {
@@ -77,10 +87,12 @@ $transicion-lenta: 0.5s ease-out;
   label {
     font-weight: 500;
     font-size: 13px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   }
   
   select {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 6px;
@@ -90,7 +102,8 @@ $transicion-lenta: 0.5s ease-out;
     transition: all $transicion-normal;
     
     &:hover:not(:disabled) {
-      background-color: rgba(255, 255, 255, 0.3);
+      background-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
     }
     
     &:disabled {
@@ -99,7 +112,7 @@ $transicion-lenta: 0.5s ease-out;
     }
     
     option {
-      background-color: #2c3e50;
+      background-color: $color-fondo-oscuro;
       color: white;
     }
   }
@@ -110,16 +123,19 @@ $transicion-lenta: 0.5s ease-out;
    =========================== */
 .alerta-error {
   padding: $espaciado-md $espaciado-lg;
-  background-color: #fadbd8;
-  border-left: 4px solid $color-secundario;
+  background-color: rgba(239, 68, 68, 0.1);
+  backdrop-filter: blur(10px);
+  border-left: 4px solid $color-error;
+  border: 1px solid rgba(239, 68, 68, 0.3);
   display: flex;
   justify-content: space-between;
   align-items: center;
   animation: deslizarArriba $transicion-normal;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
 }
 
 .texto-error {
-  color: #c0392b;
+  color: #fca5a5;
   font-size: 13px;
   font-weight: 500;
 }
@@ -127,13 +143,15 @@ $transicion-lenta: 0.5s ease-out;
 .btn-cerrar-alerta {
   background: transparent;
   border: none;
-  color: #c0392b;
+  color: $color-error;
   font-size: 20px;
   cursor: pointer;
   padding: 0 $espaciado-sm;
+  transition: all $transicion-rapida;
   
   &:hover {
-    color: #a93226;
+    color: lighten($color-error, 10%);
+    transform: scale(1.2);
   }
 }
 
@@ -163,12 +181,13 @@ $transicion-lenta: 0.5s ease-out;
    =========================== */
 .sidebar-historial {
   width: 280px;
-  background-color: white;
-  border-right: 1px solid $color-borde;
+  background-color: $color-fondo-oscuro;
+  border-right: 1px solid rgba(0, 212, 255, 0.2);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   transition: transform $transicion-normal, width $transicion-normal;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
   
   @media (max-width: 768px) {
     position: absolute;
@@ -191,8 +210,8 @@ $transicion-lenta: 0.5s ease-out;
   justify-content: space-between;
   align-items: center;
   padding: $espaciado-md;
-  border-bottom: 1px solid $color-borde;
-  background-color: $color-fondo-oscuro;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+  background-color: $color-fondo-claro;
   
   h3 {
     margin: 0;
@@ -226,15 +245,21 @@ $transicion-lenta: 0.5s ease-out;
 .campo-busqueda {
   width: 100%;
   padding: $espaciado-sm $espaciado-md;
-  border: 1px solid $color-borde;
+  background-color: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(0, 212, 255, 0.3);
   border-radius: 6px;
   font-size: 13px;
+  color: $color-texto;
   transition: border-color $transicion-normal;
   
   &:focus {
     outline: none;
     border-color: $color-primario;
-    box-shadow: 0 0 0 3px rgba(142, 68, 173, 0.1);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+  }
+  
+  &::placeholder {
+    color: $color-texto-medio;
   }
 }
 
@@ -253,11 +278,11 @@ $transicion-lenta: 0.5s ease-out;
 }
 
 .lista-historial::-webkit-scrollbar-thumb {
-  background-color: $color-borde;
+  background-color: rgba(0, 212, 255, 0.3);
   border-radius: 3px;
   
   &:hover {
-    background-color: darken($color-borde, 15%);
+    background-color: rgba(0, 212, 255, 0.5);
   }
 }
 
@@ -271,8 +296,9 @@ $transicion-lenta: 0.5s ease-out;
 .item-historial {
   padding: $espaciado-sm;
   margin-bottom: $espaciado-sm;
-  background-color: $color-fondo;
+  background-color: rgba(0, 212, 255, 0.05);
   border-radius: 6px;
+  border-left: 2px solid transparent;
   cursor: pointer;
   transition: all $transicion-normal;
   display: flex;
@@ -281,13 +307,15 @@ $transicion-lenta: 0.5s ease-out;
   gap: $espaciado-sm;
   
   &:hover:not(.error) {
-    background-color: rgba(142, 68, 173, 0.1);
+    background-color: rgba(0, 212, 255, 0.1);
+    border-left-color: $color-primario;
     transform: translateX(4px);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
   }
   
   &.error {
-    border-left: 3px solid $color-secundario;
-    background-color: #fadbd8;
+    border-left: 3px solid $color-error;
+    background-color: rgba(239, 68, 68, 0.1);
   }
 }
 
@@ -351,12 +379,14 @@ $transicion-lenta: 0.5s ease-out;
 }
 
 .btn-descargar {
-  background-color: $color-exito;
+  background: linear-gradient(135deg, $color-exito 0%, darken($color-exito, 10%) 100%);
   color: white;
+  border: 1px solid rgba(16, 185, 129, 0.5);
   
   &:hover:not(:disabled) {
-    background-color: darken($color-exito, 10%);
+    background: linear-gradient(135deg, lighten($color-exito, 5%) 0%, $color-exito 100%);
     transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
   }
   
   &:disabled {
@@ -366,12 +396,14 @@ $transicion-lenta: 0.5s ease-out;
 }
 
 .btn-limpiar {
-  background-color: $color-advertencia;
+  background: linear-gradient(135deg, $color-advertencia 0%, darken($color-advertencia, 10%) 100%);
   color: white;
+  border: 1px solid rgba(245, 158, 11, 0.5);
   
   &:hover:not(:disabled) {
-    background-color: darken($color-advertencia, 10%);
+    background: linear-gradient(135deg, lighten($color-advertencia, 5%) 0%, $color-advertencia 100%);
     transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
   }
   
   &:disabled {
@@ -388,7 +420,7 @@ $transicion-lenta: 0.5s ease-out;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background-color: white;
+  background-color: $color-fondo;
 }
 
 .btn-toggle-historial {
@@ -397,8 +429,8 @@ $transicion-lenta: 0.5s ease-out;
   @media (max-width: 768px) {
     display: block;
     padding: $espaciado-sm $espaciado-md;
-    background-color: $color-fondo;
-    border-bottom: 1px solid $color-borde;
+    background-color: rgba(0, 212, 255, 0.1);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
     border: none;
     cursor: pointer;
     color: $color-primario;
@@ -406,7 +438,8 @@ $transicion-lenta: 0.5s ease-out;
     transition: all $transicion-normal;
     
     &:hover {
-      background-color: darken($color-fondo, 5%);
+      background-color: rgba(0, 212, 255, 0.2);
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
     }
   }
 }
@@ -429,11 +462,11 @@ $transicion-lenta: 0.5s ease-out;
 }
 
 .respuestas::-webkit-scrollbar-thumb {
-  background-color: $color-borde;
+  background-color: rgba(0, 212, 255, 0.3);
   border-radius: 4px;
   
   &:hover {
-    background-color: darken($color-borde, 15%);
+    background-color: rgba(0, 212, 255, 0.5);
   }
 }
 
@@ -455,6 +488,7 @@ $transicion-lenta: 0.5s ease-out;
     font-size: 28px;
     margin-bottom: $espaciado-md;
     color: $color-primario;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
   }
   
   > p {
@@ -522,18 +556,20 @@ $transicion-lenta: 0.5s ease-out;
 .contenido-pregunta {
   max-width: 75%;
   padding: $espaciado-md;
-  background-color: $color-primario;
+  background: linear-gradient(135deg, $color-primario 0%, $color-secundario 100%);
   color: white;
   border-radius: 12px;
   border-bottom-right-radius: 4px;
-  box-shadow: 0 2px 6px rgba(142, 68, 173, 0.2);
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.4), 0 4px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 212, 255, 0.3);
   
   p {
     margin: 0;
     word-wrap: break-word;
     word-break: break-word;
-    line-height: 1.5;
+    line-height: 1.6;
     font-size: 14px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   }
   
   @media (max-width: 768px) {
@@ -550,10 +586,12 @@ $transicion-lenta: 0.5s ease-out;
 .respuesta-ia {
   max-width: 85%;
   padding: $espaciado-md;
-  background-color: $color-fondo;
+  background-color: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(10px);
   border-radius: 12px;
   border-left: 3px solid $color-primario;
-  box-shadow: 0 1px 4px $color-sombra;
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.2), 0 4px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 212, 255, 0.2);
   display: flex;
   flex-direction: column;
   gap: $espaciado-md;
@@ -563,8 +601,9 @@ $transicion-lenta: 0.5s ease-out;
   }
   
   &.error {
-    border-left-color: $color-secundario;
-    background-color: #fadbd8;
+    border-left-color: $color-error;
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
   }
 }
 
@@ -575,9 +614,11 @@ $transicion-lenta: 0.5s ease-out;
     word-wrap: break-word;
     word-break: break-word;
     white-space: pre-wrap;
-    line-height: 1.6;
+    line-height: 1.7;
     font-size: 14px;
     color: $color-texto;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.3px;
   }
 }
 
@@ -653,7 +694,7 @@ $transicion-lenta: 0.5s ease-out;
   justify-content: space-between;
   align-items: center;
   padding-top: $espaciado-md;
-  border-top: 1px solid $color-borde;
+  border-top: 1px solid rgba(0, 212, 255, 0.2);
   gap: $espaciado-md;
   flex-wrap: wrap;
 }
@@ -667,7 +708,8 @@ $transicion-lenta: 0.5s ease-out;
 .metrica {
   font-size: 11px;
   color: $color-texto-claro;
-  background-color: white;
+  background-color: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.3);
   padding: $espaciado-xs $espaciado-sm;
   border-radius: 4px;
   white-space: nowrap;
@@ -681,8 +723,8 @@ $transicion-lenta: 0.5s ease-out;
 .btn-copiar,
 .btn-reutilizar-pregunta {
   padding: $espaciado-xs $espaciado-sm;
-  border: 1px solid $color-borde;
-  background-color: white;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  background-color: rgba(0, 212, 255, 0.05);
   border-radius: 4px;
   font-size: 11px;
   cursor: pointer;
@@ -693,7 +735,8 @@ $transicion-lenta: 0.5s ease-out;
   &:hover {
     border-color: $color-primario;
     color: $color-primario;
-    background-color: rgba(142, 68, 173, 0.05);
+    background-color: rgba(0, 212, 255, 0.15);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
   }
 }
 
@@ -705,9 +748,10 @@ $transicion-lenta: 0.5s ease-out;
   justify-content: space-around;
   padding: $espaciado-md;
   background-color: $color-fondo-oscuro;
-  border-top: 1px solid $color-borde;
+  border-top: 1px solid rgba(0, 212, 255, 0.2);
   flex-wrap: wrap;
   gap: $espaciado-md;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.2), 0 -2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .stat-item {
@@ -734,9 +778,9 @@ $transicion-lenta: 0.5s ease-out;
    =========================== */
 .area-entrada-ia {
   padding: $espaciado-md;
-  background-color: white;
-  border-top: 1px solid $color-borde;
-  box-shadow: 0 -2px 8px $color-sombra;
+  background-color: $color-fondo-oscuro;
+  border-top: 1px solid rgba(0, 212, 255, 0.2);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.2), 0 -2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .contenedor-entrada-ia {
@@ -748,10 +792,13 @@ $transicion-lenta: 0.5s ease-out;
 .campo-pregunta {
   width: 100%;
   padding: $espaciado-md;
-  border: 1px solid $color-borde;
+  background-color: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 212, 255, 0.3);
   border-radius: 8px;
   font-family: inherit;
   font-size: 14px;
+  color: $color-texto;
   resize: none;
   transition: all $transicion-normal;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -759,17 +806,17 @@ $transicion-lenta: 0.5s ease-out;
   &:focus {
     outline: none;
     border-color: $color-primario;
-    box-shadow: 0 0 0 3px rgba(142, 68, 173, 0.1);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.4), 0 0 0 2px rgba(0, 212, 255, 0.2);
   }
   
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    background-color: $color-fondo;
+    background-color: rgba(30, 41, 59, 0.5);
   }
   
   &::placeholder {
-    color: $color-texto-claro;
+    color: $color-texto-medio;
   }
 }
 
@@ -825,20 +872,24 @@ $transicion-lenta: 0.5s ease-out;
 }
 
 .btn-enviar-normal {
-  background-color: $color-primario;
+  background: linear-gradient(135deg, $color-primario 0%, $color-secundario 100%);
   color: white;
+  border: 1px solid rgba(0, 212, 255, 0.3);
   
   &:hover:not(:disabled) {
-    background-color: darken($color-primario, 10%);
+    background: linear-gradient(135deg, $color-primario-claro 0%, lighten($color-secundario, 10%) 100%);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.6), 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 }
 
 .btn-enviar-streaming {
-  background-color: $color-exito;
+  background: linear-gradient(135deg, $color-exito 0%, $color-acento 100%);
   color: white;
+  border: 1px solid rgba(16, 185, 129, 0.3);
   
   &:hover:not(:disabled) {
-    background-color: darken($color-exito, 10%);
+    background: linear-gradient(135deg, lighten($color-exito, 10%) 0%, lighten($color-acento, 10%) 100%);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.6), 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -916,53 +967,13 @@ $transicion-lenta: 0.5s ease-out;
 }
 
 /* ===========================
-   TEMA OSCURO (OPCIONAL)
+   ANIMACIONES ADICIONALES
    =========================== */
-@media (prefers-color-scheme: dark) {
-  .contenedor-asistente-ia {
-    background-color: #1e1e1e;
-    color: #e0e0e0;
+@keyframes pulsoNeon {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
   }
-  
-  .sidebar-historial {
-    background-color: #2a2a2a;
-    border-right-color: #444;
-  }
-  
-  .encabezado-historial,
-  .area-entrada-ia {
-    background-color: #333;
-    border-color: #444;
-  }
-  
-  .item-historial {
-    background-color: #3a3a3a;
-    
-    &:hover:not(.error) {
-      background-color: rgba(142, 68, 173, 0.2);
-    }
-  }
-  
-  .contenedor-respuestas {
-    background-color: #1e1e1e;
-  }
-  
-  .respuesta-ia {
-    background-color: #2a2a2a;
-    border-left-color: $color-primario;
-    
-    .texto-respuesta {
-      color: #e0e0e0;
-    }
-  }
-  
-  .campo-pregunta {
-    background-color: #333;
-    border-color: #444;
-    color: #e0e0e0;
-    
-    &:focus {
-      border-color: $color-primario;
-    }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.8);
   }
 }
