@@ -28,28 +28,28 @@ import { UsuariosAdminService, UsuarioAdmin, EstadisticasUsuarios } from '@core/
       <!-- Estadísticas Rápidas -->
       <div class="grid-estadisticas">
         <div class="tarjeta-cristal stat-card">
-          <div class="stat-icon">👤</div>
+          <div class="stat-icon"></div>
           <div class="stat-info">
             <div class="stat-numero">{{ estadisticas()?.totalUsuarios || 0 }}</div>
             <div class="stat-label">Total Usuarios</div>
           </div>
         </div>
         <div class="tarjeta-cristal stat-card">
-          <div class="stat-icon activo">🟢</div>
+          <div class="stat-icon activo"></div>
           <div class="stat-info">
             <div class="stat-numero">{{ estadisticas()?.usuariosActivos || 0 }}</div>
             <div class="stat-label">Usuarios Activos</div>
           </div>
         </div>
         <div class="tarjeta-cristal stat-card">
-          <div class="stat-icon">✅</div>
+          <div class="stat-icon"></div>
           <div class="stat-info">
             <div class="stat-numero">{{ estadisticas()?.usuariosVerificados || 0 }}</div>
             <div class="stat-label">Verificados</div>
           </div>
         </div>
         <div class="tarjeta-cristal stat-card">
-          <div class="stat-icon">👑</div>
+          <div class="stat-icon"></div>
           <div class="stat-info">
             <div class="stat-numero">{{ estadisticas()?.administradores || 0 }}</div>
             <div class="stat-label">Administradores</div>
@@ -164,7 +164,7 @@ import { UsuariosAdminService, UsuarioAdmin, EstadisticasUsuarios } from '@core/
                       [class.activar]="!usuario.activo"
                       [class.desactivar]="usuario.activo"
                     >
-                      <span class="icono">{{ usuario.activo ? '⏸️' : '▶️' }}</span>
+                      <span class="icono">{{ usuario.activo ? '' : '' }}</span>
                       <span class="tooltip">{{ usuario.activo ? 'Desactivar' : 'Activar' }}</span>
                     </button>
                     
@@ -173,7 +173,7 @@ import { UsuariosAdminService, UsuarioAdmin, EstadisticasUsuarios } from '@core/
                         class="btn-accion verificar tooltip-container" 
                         (click)="verificarUsuario(usuario)"
                       >
-                        <span class="icono">✅</span>
+                        <span class="icono"></span>
                         <span class="tooltip">Verificar</span>
                       </button>
                     }
@@ -182,7 +182,7 @@ import { UsuariosAdminService, UsuarioAdmin, EstadisticasUsuarios } from '@core/
                       class="btn-accion editar tooltip-container" 
                       (click)="abrirModalEdicion(usuario)"
                     >
-                      <span class="icono">✏️</span>
+                      <span class="icono"></span>
                       <span class="tooltip">Editar Rol</span>
                     </button>
                     
@@ -190,7 +190,7 @@ import { UsuariosAdminService, UsuarioAdmin, EstadisticasUsuarios } from '@core/
                       class="btn-accion eliminar tooltip-container" 
                       (click)="confirmarEliminar(usuario)"
                     >
-                      <span class="icono">🗑️</span>
+                      <span class="icono"></span>
                       <span class="tooltip">Eliminar</span>
                     </button>
                   </div>

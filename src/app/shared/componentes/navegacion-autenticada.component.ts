@@ -15,7 +15,7 @@ import { EditarPerfilComponent } from './editar-perfil.component';
         <!-- Logo (Sin enlace - no se puede salir desde aquí) -->
         <div class="nav-logo">
           <div class="logo">
-            <span class="logo-icon">🚀</span>
+            <span class="logo-icon"></span>
             <div class="logo-texto">
               <h1>InnoAd</h1>
               <span class="logo-subtitle">Publicidad Digital</span>
@@ -26,24 +26,24 @@ import { EditarPerfilComponent } from './editar-perfil.component';
         <!-- Navegación Principal -->
         <div class="nav-links">
           <a routerLink="/dashboard" class="nav-item" routerLinkActive="active">
-            <span class="nav-icon">🏠</span>
+            <span class="nav-icon"></span>
             Dashboard
           </a>
           <a routerLink="/campanas" class="nav-item" routerLinkActive="active">
-            <span class="nav-icon">📢</span>
+            <span class="nav-icon"></span>
             Campañas
           </a>
           <a routerLink="/pantallas" class="nav-item" routerLinkActive="active">
-            <span class="nav-icon">📺</span>
+            <span class="nav-icon"></span>
             Pantallas
           </a>
           <a routerLink="/contenidos" class="nav-item" routerLinkActive="active">
-            <span class="nav-icon">🎨</span>
+            <span class="nav-icon"></span>
             Contenidos
           </a>
           @if (esAdministrador()) {
             <a routerLink="/admin" class="nav-item nav-admin" routerLinkActive="active">
-              <span class="nav-icon">👑</span>
+              <span class="nav-icon"></span>
               Admin
             </a>
           }
@@ -87,28 +87,28 @@ import { EditarPerfilComponent } from './editar-perfil.component';
               <hr class="dropdown-divider">
 
               <button class="dropdown-item" (click)="editarPerfil()">
-                <span class="dropdown-icon">✏️</span>
+                <span class="dropdown-icon"></span>
                 Editar Mi Perfil
               </button>
 
               <hr class="dropdown-divider">
 
               <a routerLink="/dashboard" class="dropdown-item" (click)="cerrarMenu()">
-                <span class="dropdown-icon">📊</span>
+                <span class="dropdown-icon"></span>
                 Mi Dashboard
               </a>
               <a routerLink="/publicar" class="dropdown-item" (click)="cerrarMenu()">
-                <span class="dropdown-icon">📤</span>
+                <span class="dropdown-icon"></span>
                 Publicar Contenido
               </a>
               <a routerLink="/reportes" class="dropdown-item" (click)="cerrarMenu()">
-                <span class="dropdown-icon">📈</span>
+                <span class="dropdown-icon"></span>
                 Mis Reportes
               </a>
               @if (esAdministrador()) {
                 <hr class="dropdown-divider">
                 <a routerLink="/admin" class="dropdown-item" (click)="cerrarMenu()">
-                  <span class="dropdown-icon">👑</span>
+                  <span class="dropdown-icon"></span>
                   Panel Admin
                 </a>
               }
@@ -116,7 +116,7 @@ import { EditarPerfilComponent } from './editar-perfil.component';
               <hr class="dropdown-divider">
               
               <button class="dropdown-item logout-item" (click)="cerrarSesion()">
-                <span class="dropdown-icon">🚪</span>
+                <span class="dropdown-icon"></span>
                 Cerrar Sesión
               </button>
             </div>

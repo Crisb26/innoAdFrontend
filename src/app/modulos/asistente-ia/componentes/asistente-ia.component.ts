@@ -110,22 +110,22 @@ import { Subscription } from 'rxjs';
               <div class="estado-asistente">
                 @switch (estadoAsistente().animacion) {
                   @case ('idle') { 
-                    <span>😌 Esperando...</span>
+                    <span>Esperando...</span>
                   }
                   @case ('hablando') { 
-                    <span>💬 Respondiendo...</span>
+                    <span>Respondiendo...</span>
                   }
                   @case ('escuchando') { 
-                    <span>👂 Escuchando...</span>
+                    <span>Escuchando...</span>
                   }
                   @case ('pensando') { 
-                    <span>🤔 Procesando...</span>
+                    <span>Procesando...</span>
                   }
                   @case ('celebrando') { 
-                    <span>🎉 ¡Genial!</span>
+                    <span>¡Genial!</span>
                   }
                   @case ('confundido') { 
-                    <span>😕 Hmm...</span>
+                    <span>Hmm...</span>
                   }
                 }
               </div>
@@ -141,21 +141,21 @@ import { Subscription } from 'rxjs';
                     [class.activo]="estadoAsistente().escuchando"
                     (click)="toggleVoz()"
                     [disabled]="!soportaVoz">
-              <span class="icono">{{ estadoAsistente().escuchando ? '🔴' : '🎤' }}</span>
+              <span class="icono">{{ estadoAsistente().escuchando ? '' : '' }}</span>
               <div class="tooltip">{{ estadoAsistente().escuchando ? 'Detener' : 'Hablar' }}</div>
             </button>
 
             <!-- Configuración -->
             <button class="btn-control config" 
                     (click)="toggleConfiguracion()">
-              <span class="icono">⚙️</span>
+              <span class="icono"></span>
               <div class="tooltip">Configuración</div>
             </button>
 
             <!-- Minimizar/Cerrar -->
             <button class="btn-control cerrar" 
                     (click)="toggleAsistente()">
-              <span class="icono">✕</span>
+              <span class="icono"></span>
               <div class="tooltip">Cerrar</div>
             </button>
           </div>
@@ -168,13 +168,13 @@ import { Subscription } from 'rxjs';
               <div class="mensaje" [attr.data-tipo]="mensaje.tipo">
                 @if (mensaje.tipo === 'usuario') {
                   <div class="contenido-mensaje usuario">
-                    <div class="avatar-usuario">👤</div>
+                    <div class="avatar-usuario"></div>
                     <div class="texto-mensaje">{{ mensaje.contenido }}</div>
                     <div class="timestamp">{{ formatearTiempo(mensaje.timestamp) }}</div>
                   </div>
                 } @else if (mensaje.tipo === 'asistente') {
                   <div class="contenido-mensaje asistente">
-                    <div class="avatar-asistente-mini">🤖</div>
+                    <div class="avatar-asistente-mini"></div>
                     <div class="texto-mensaje">
                       <div class="texto-principal" [innerHTML]="formatearMensaje(mensaje.contenido)"></div>
                       
@@ -206,7 +206,7 @@ import { Subscription } from 'rxjs';
             @if (estadoAsistente().escribiendo) {
               <div class="mensaje escribiendo">
                 <div class="contenido-mensaje asistente">
-                  <div class="avatar-asistente-mini">🤖</div>
+                  <div class="avatar-asistente-mini"></div>
                   <div class="indicador-escritura">
                     <div class="punto-escritura"></div>
                     <div class="punto-escritura"></div>
@@ -220,7 +220,7 @@ import { Subscription } from 'rxjs';
           <!-- Sugerencias rápidas -->
           @if (sugerenciasActivas().length > 0 && !estadoAsistente().escribiendo) {
             <div class="sugerencias-rapidas">
-              <div class="titulo-sugerencias">💡 Sugerencias:</div>
+              <div class="titulo-sugerencias">Sugerencias:</div>
               <div class="lista-sugerencias">
                 @for (sugerencia of sugerenciasActivas(); track sugerencia.id) {
                   <button class="chip-sugerencia" 
@@ -253,7 +253,7 @@ import { Subscription } from 'rxjs';
                 @if (estadoAsistente().escribiendo) {
                   <div class="loader-mini"></div>
                 } @else {
-                  <span class="icono">🚀</span>
+                  <span class="icono"></span>
                 }
               </button>
             </div>
@@ -262,16 +262,16 @@ import { Subscription } from 'rxjs';
           <!-- Accesos rápidos -->
           <div class="accesos-rapidos">
             <button class="btn-rapido" (click)="enviarMensajeRapido('ayuda')">
-              ❓ Ayuda
+              Ayuda
             </button>
             <button class="btn-rapido" (click)="enviarMensajeRapido('tutorial')">
-              🎓 Tutorial
+              Tutorial
             </button>
             <button class="btn-rapido" (click)="enviarMensajeRapido('optimizar')">
-              🚀 Optimizar
+              Optimizar
             </button>
             <button class="btn-rapido" (click)="limpiarChat()">
-              🗑️ Limpiar
+              Limpiar
             </button>
           </div>
         </div>
@@ -280,8 +280,8 @@ import { Subscription } from 'rxjs';
         @if (mostrarConfiguracion()) {
           <div class="panel-configuracion">
             <div class="header-config">
-              <h3>⚙️ Configuración del Asistente</h3>
-              <button class="btn-cerrar-config" (click)="toggleConfiguracion()">✕</button>
+              <h3>Configuración del Asistente</h3>
+              <button class="btn-cerrar-config" (click)="toggleConfiguracion()"></button>
             </div>
             
             <div class="opciones-config">
@@ -298,10 +298,10 @@ import { Subscription } from 'rxjs';
                 <select [(ngModel)]="configuracionTemporal.personalidad"
                         (change)="actualizarConfiguracion()"
                         class="select-config">
-                  <option value="profesional">🎯 Profesional</option>
-                  <option value="amigable">😊 Amigable</option>
-                  <option value="gracioso">😄 Gracioso</option>
-                  <option value="tecnico">🤓 Técnico</option>
+                  <option value="profesional">Profesional</option>
+                  <option value="amigable">Amigable</option>
+                  <option value="gracioso">Gracioso</option>
+                  <option value="tecnico">Técnico</option>
                 </select>
               </div>
 
@@ -350,7 +350,7 @@ import { Subscription } from 'rxjs';
 
             <!-- Estadísticas del asistente -->
             <div class="estadisticas-asistente">
-              <h4>📊 Estadísticas</h4>
+              <h4>Estadísticas</h4>
               <div class="stats-grid">
                 <div class="stat-item">
                   <span class="numero">{{ historialChat().length }}</span>

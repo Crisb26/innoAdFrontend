@@ -107,21 +107,21 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
         <!-- Gestión de Usuarios -->
         <div class="tarjeta-admin tarjeta-usuarios">
           <div class="header-tarjeta">
-            <h3>👥 Gestión de Usuarios</h3>
+            <h3>Gestión de Usuarios</h3>
             <span class="badge-importante">Admin Only</span>
           </div>
           <div class="contenido-usuarios">
             <div class="acciones-usuarios">
               <button class="btn-accion btn-crear">
-                <span class="icono">➕</span>
+                <span class="icono"></span>
                 Crear Usuario
               </button>
               <button class="btn-accion btn-buscar">
-                <span class="icono">🔍</span>
+                <span class="icono"></span>
                 Buscar Usuarios
               </button>
               <button class="btn-accion btn-roles">
-                <span class="icono">🎭</span>
+                <span class="icono"></span>
                 Gestionar Roles
               </button>
             </div>

@@ -101,7 +101,7 @@ export class IniciarSesionComponent {
 
     this.servicioAuth.iniciarSesion(solicitud).subscribe({
       next: (respuesta) => {
-        console.log('✅ Login exitoso, navegando a dashboard...', respuesta);
+        console.log('Login exitoso, navegando a dashboard...', respuesta);
         this.cargando.set(false);
         
         // Obtener el rol del usuario para mostrar en el mensaje
@@ -127,7 +127,7 @@ export class IniciarSesionComponent {
         }, 100);
       },
       error: (error) => {
-        console.error('❌ Error en login:', error);
+        console.error('Error en login:', error);
         this.cargando.set(false);
         
         // Detectar tipo de error y mostrar mensaje específico

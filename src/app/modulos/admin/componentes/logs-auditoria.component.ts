@@ -31,28 +31,28 @@ import { LogsAuditoriaService, LogAuditoria, FiltrosLogs, EstadisticasLogs } fro
       <!-- Estadísticas Rápidas -->
       <div class="grid-estadisticas">
         <div class="tarjeta-cristal stat-card">
-          <div class="stat-icon">📊</div>
+          <div class="stat-icon"></div>
           <div class="stat-info">
             <div class="stat-numero">{{ estadisticas()?.totalLogs || 0 }}</div>
             <div class="stat-label">Total Logs</div>
           </div>
         </div>
         <div class="tarjeta-cristal stat-card">
-          <div class="stat-icon">🔥</div>
+          <div class="stat-icon"></div>
           <div class="stat-info">
             <div class="stat-numero">{{ estadisticas()?.logsHoy || 0 }}</div>
             <div class="stat-label">Hoy</div>
           </div>
         </div>
         <div class="tarjeta-cristal stat-card">
-          <div class="stat-icon error">❌</div>
+          <div class="stat-icon error"></div>
           <div class="stat-info">
             <div class="stat-numero">{{ estadisticas()?.erroresRecientes || 0 }}</div>
             <div class="stat-label">Errores Recientes</div>
           </div>
         </div>
         <div class="tarjeta-cristal stat-card">
-          <div class="stat-icon">👑</div>
+          <div class="stat-icon"></div>
           <div class="stat-info">
             <div class="stat-numero">{{ estadisticas()?.accionesAdmin || 0 }}</div>
             <div class="stat-label">Acciones Admin</div>
@@ -63,7 +63,7 @@ import { LogsAuditoriaService, LogAuditoria, FiltrosLogs, EstadisticasLogs } fro
       <!-- Filtros Avanzados -->
       <div class="tarjeta-cristal filtros-section">
         <div class="filtros-header">
-          <h3>🔍 Filtros de Búsqueda</h3>
+          <h3>Filtros de Búsqueda</h3>
           <button class="btn-limpiar" (click)="limpiarFiltros()">Limpiar Filtros</button>
         </div>
         
@@ -167,10 +167,10 @@ import { LogsAuditoriaService, LogAuditoria, FiltrosLogs, EstadisticasLogs } fro
                 <div class="log-indicator">
                   <div class="log-icon" [attr.data-tipo]="log.tipo">
                     @switch (log.tipo) {
-                      @case ('info') { <span>ℹ️</span> }
-                      @case ('warning') { <span>⚠️</span> }
-                      @case ('error') { <span>❌</span> }
-                      @case ('security') { <span>🛡️</span> }
+                      @case ('info') { <span></span> }
+                      @case ('warning') { <span></span> }
+                      @case ('error') { <span></span> }
+                      @case ('security') { <span></span> }
                     }
                   </div>
                 </div>

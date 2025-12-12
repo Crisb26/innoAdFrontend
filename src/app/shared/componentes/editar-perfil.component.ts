@@ -15,8 +15,8 @@ import { firstValueFrom } from 'rxjs';
     <div class="modal-overlay" (click)="cerrarModal()">
       <div class="modal-content" (click)="$event.stopPropagation()">
         <div class="modal-header">
-          <h2>✏️ Editar Mi Perfil</h2>
-          <button class="btn-close" (click)="cerrarModal()">✕</button>
+          <h2>Editar Mi Perfil</h2>
+          <button class="btn-close" (click)="cerrarModal()"></button>
         </div>
 
         <form [formGroup]="formularioPerfil" (ngSubmit)="guardarCambios()">
@@ -112,12 +112,12 @@ import { firstValueFrom } from 'rxjs';
             <!-- Mensajes -->
             @if (mensajeError()) {
               <div class="alert alert-error">
-                ❌ {{ mensajeError() }}
+                {{ mensajeError() }}
               </div>
             }
             @if (mensajeExito()) {
               <div class="alert alert-success">
-                ✅ {{ mensajeExito() }}
+                {{ mensajeExito() }}
               </div>
             }
           </div>
