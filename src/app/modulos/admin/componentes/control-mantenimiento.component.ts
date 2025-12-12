@@ -25,7 +25,7 @@ import { ServicioMantenimiento } from '@core/servicios/mantenimiento.servicio';
       <div class="tarjeta-control">
         <div class="info-estado">
           <div class="icono-estado" [class.mantenimiento-activo]="modoActivo()">
-            {{ modoActivo() ? '⚠️' : '✅' }}
+            {{ modoActivo() ? '' : '' }}
           </div>
           <div class="texto-estado">
             @if (modoActivo()) {
@@ -47,7 +47,7 @@ import { ServicioMantenimiento } from '@core/servicios/mantenimiento.servicio';
               class="boton-desactivar"
               (click)="abrirModal('desactivar')"
               [disabled]="cargando()">
-              <span class="icono-boton">🔓</span>
+              <span class="icono-boton"></span>
               Desactivar Mantenimiento
             </button>
           } @else {
@@ -55,7 +55,7 @@ import { ServicioMantenimiento } from '@core/servicios/mantenimiento.servicio';
               class="boton-activar"
               (click)="abrirModal('activar')"
               [disabled]="cargando()">
-              <span class="icono-boton">🔧</span>
+              <span class="icono-boton"></span>
               Activar Mantenimiento
             </button>
           }
@@ -73,14 +73,14 @@ import { ServicioMantenimiento } from '@core/servicios/mantenimiento.servicio';
       <!-- Mensajes -->
       @if (mensajeError()) {
         <div class="alerta-error">
-          <span class="icono-alerta">❌</span>
+          <span class="icono-alerta"></span>
           {{ mensajeError() }}
         </div>
       }
 
       @if (mensajeExito()) {
         <div class="alerta-exito">
-          <span class="icono-alerta">✅</span>
+          <span class="icono-alerta"></span>
           {{ mensajeExito() }}
         </div>
       }
@@ -92,10 +92,10 @@ import { ServicioMantenimiento } from '@core/servicios/mantenimiento.servicio';
         <div class="modal-content" (click)="$event.stopPropagation()">
           <div class="modal-header">
             <h2>
-              {{ tipoAccion() === 'activar' ? '🔧 Activar' : '🔓 Desactivar' }} 
+              {{ tipoAccion() === 'activar' ? 'Activar' : 'Desactivar' }} 
               Modo Mantenimiento
             </h2>
-            <button class="btn-cerrar" (click)="cerrarModal()">✕</button>
+            <button class="btn-cerrar" (click)="cerrarModal()"></button>
           </div>
 
           <form [formGroup]="formulario" (ngSubmit)="ejecutarAccion()" class="modal-form">

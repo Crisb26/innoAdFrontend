@@ -212,19 +212,19 @@ export const loggingInterceptor: HttpInterceptorFn = (
     }
   });
 
-  console.group(`🔗 HTTP Request [${requestId}]`);
-  console.log(`📤 ${req.method} ${req.url}`);
-  console.log('📋 Headers:', req.headers.keys().map(key => `${key}: ${req.headers.get(key)}`));
+  console.group(`HTTP Request [${requestId}]`);
+  console.log(`${req.method} ${req.url}`);
+  console.log('Headers:', req.headers.keys().map(key => `${key}: ${req.headers.get(key)}`));
   if (req.body) {
-    console.log('📦 Body:', req.body);
+    console.log('Body:', req.body);
   }
   console.groupEnd();
 
   return next(trackedReq).pipe(
     catchError(error => {
       const duration = performance.now() - startTime;
-      console.group(`❌ HTTP Error [${requestId}] - ${duration.toFixed(2)}ms`);
-      console.error('🚨 Error:', error);
+      console.group(`HTTP Error [${requestId}] - ${duration.toFixed(2)}ms`);
+      console.error('Error:', error);
       console.groupEnd();
       return throwError(() => error);
     }),
@@ -232,8 +232,8 @@ export const loggingInterceptor: HttpInterceptorFn = (
     // Log successful responses
     tap => {
       const duration = performance.now() - startTime;
-      console.group(`✅ HTTP Response [${requestId}] - ${duration.toFixed(2)}ms`);
-      console.log(`📥 Status: ${(tap as any).status || 'Unknown'}`);
+      console.group(`HTTP Response [${requestId}] - ${duration.toFixed(2)}ms`);
+      console.log(`Status: ${(tap as any).status || 'Unknown'}`);
       console.groupEnd();
       return tap;
     }
@@ -291,7 +291,7 @@ export const errorHandlingInterceptor: HttpInterceptorFn = (
       }
 
       // Aquí podrías mostrar una notificación global
-      console.error('🚨 Error HTTP Global:', errorMessage);
+      console.error('Error HTTP Global:', errorMessage);
       
       // Modificar el error para incluir el mensaje procesado
       const enhancedError = new HttpErrorResponse({

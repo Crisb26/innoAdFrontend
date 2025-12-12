@@ -111,15 +111,15 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
                   <div class="servicio-estado" [attr.data-estado]="servicio.estado">
                     @switch (servicio.estado) {
                       @case ('activo') { 
-                        <span class="estado-icon">🟢</span>
+                        <span class="estado-icon"></span>
                         <span>Activo</span>
                       }
                       @case ('inactivo') { 
-                        <span class="estado-icon">🔴</span>
+                        <span class="estado-icon"></span>
                         <span>Inactivo</span>
                       }
                       @case ('error') { 
-                        <span class="estado-icon">🟡</span>
+                        <span class="estado-icon"></span>
                         <span>Error</span>
                       }
                     }

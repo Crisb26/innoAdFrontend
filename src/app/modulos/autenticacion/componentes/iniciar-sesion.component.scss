@@ -108,12 +108,32 @@
 
 .loader-pequeño {
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
+  width: 24px;
+  height: 24px;
+  border: 3px solid transparent;
+  border-top-color: #00d9ff;
+  border-right-color: #00d9ff;
   border-radius: 50%;
-  animation: girar 0.8s linear infinite;
+  animation: spin-futurista 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+  box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+}
+
+@keyframes spin-futurista {
+  0% { 
+    transform: rotate(0deg) scale(1);
+    border-top-color: #00d9ff;
+    border-right-color: #00d9ff;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+    border-top-color: #ff006a;
+    border-right-color: #ff006a;
+  }
+  100% { 
+    transform: rotate(360deg) scale(1);
+    border-top-color: #00d9ff;
+    border-right-color: #00d9ff;
+  }
 }
 
 @keyframes girar {

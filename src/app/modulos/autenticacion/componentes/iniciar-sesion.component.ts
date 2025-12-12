@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
+import { ServicioAlerta } from '@core/servicios/alerta.servicio';
 import { SolicitudLogin } from '@core/modelos';
 
 @Component({
@@ -85,6 +86,7 @@ import { SolicitudLogin } from '@core/modelos';
 export class IniciarSesionComponent {
   private readonly fb = inject(FormBuilder);
   private readonly servicioAuth = inject(ServicioAutenticacion);
+  private readonly servicioAlerta = inject(ServicioAlerta);
   private readonly router = inject(Router);
 
   protected readonly cargando = signal(false);
@@ -102,27 +104,39 @@ export class IniciarSesionComponent {
     this.cargando.set(true);
     this.mensajeError.set('');
 
+    // Mostrar alerta de carga futurista
+    this.servicioAlerta.cargando('Iniciando sesión', 'Verificando credenciales...');
+
     const solicitud: SolicitudLogin = this.formulario.getRawValue();
 
     this.servicioAuth.iniciarSesion(solicitud).subscribe({
       next: (respuesta) => {
-        console.log('✅ Login exitoso, navegando a dashboard...', respuesta);
+        console.log('Login exitoso, navegando a dashboard...', respuesta);
         this.cargando.set(false);
         
-        // Navegar al dashboard después de un breve delay para asegurar que todo se guarde
+        // Cerrar alerta de carga y mostrar éxito
+        this.servicioAlerta.cerrar();
+        this.servicioAlerta.exito('Acceso Concedido', 'Bienvenido a InnoAd');
+        
+        // Navegar al dashboard después de un breve delay
         setTimeout(() => {
           this.router.navigate(['/dashboard']).then(navegado => {
-            console.log('✅ Navegación completada:', navegado);
+            console.log('Navegación completada:', navegado);
           }).catch(error => {
-            console.error('❌ Error al navegar:', error);
-            this.mensajeError.set('Error al acceder al dashboard');
+            console.error('Error al navegar:', error);
+            this.servicioAlerta.error('Error', 'No se pudo acceder al dashboard');
           });
-        }, 100);
+        }, 1500);
       },
       error: (error) => {
-        console.error('❌ Error en login:', error);
+        console.error('Error en login:', error);
         this.cargando.set(false);
-        this.mensajeError.set(error.message || 'Error al iniciar sesión');
+        
+        // Cerrar alerta de carga y mostrar error
+        this.servicioAlerta.cerrar();
+        const mensajeError = error.message || 'Credenciales inválidas';
+        this.servicioAlerta.error('Error de Autenticación', mensajeError);
+        this.mensajeError.set(mensajeError);
       }
     });
   }
