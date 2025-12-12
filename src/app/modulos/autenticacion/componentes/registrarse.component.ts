@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, Validators, AbstractCont
 import { RouterLink } from '@angular/router';
 import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
 import { SolicitudRegistro } from '@core/modelos';
+import NotifyX from 'notifyx';
 
 @Component({
   selector: 'app-registrarse',
@@ -19,14 +20,6 @@ import { SolicitudRegistro } from '@core/modelos';
         </div>
 
         <form [formGroup]="formulario" (ngSubmit)="registrarse()" class="formulario-registro">
-          @if (mensajeError()) {
-            <div class="alerta alerta-error">{{ mensajeError() }}</div>
-          }
-
-          @if (mensajeExito()) {
-            <div class="alerta alerta-exito">{{ mensajeExito() }}</div>
-          }
-
           <div class="grupo-input">
             <label for="nombre">Nombre *</label>
             <input
@@ -214,8 +207,6 @@ export class RegistrarseComponent {
   private readonly servicioAuth = inject(ServicioAutenticacion);
 
   protected readonly cargando = signal(false);
-  protected readonly mensajeError = signal('');
-  protected readonly mensajeExito = signal('');
 
   protected readonly formulario = this.fb.nonNullable.group({
     nombre: ['', [Validators.required, Validators.minLength(2)]],
@@ -266,12 +257,11 @@ export class RegistrarseComponent {
   registrarse(): void {
     if (this.formulario.invalid) {
       this.formulario.markAllAsTouched();
+      this.mostrarErroresCampos();
       return;
     }
 
     this.cargando.set(true);
-    this.mensajeError.set('');
-    this.mensajeExito.set('');
 
     const valores = this.formulario.getRawValue();
     const solicitud: SolicitudRegistro = {
@@ -287,18 +277,124 @@ export class RegistrarseComponent {
     this.servicioAuth.registrarse(solicitud).subscribe({
       next: () => {
         this.cargando.set(false);
-        this.mensajeExito.set(
-          '¡Cuenta creada exitosamente! ' +
-          'Te hemos enviado un correo electrónico de verificación. ' +
-          'Por favor, revisa tu bandeja de entrada (y la carpeta de spam) ' +
-          'y haz clic en el enlace para activar tu cuenta.'
-        );
-        // NO redirigir automáticamente - el usuario debe verificar su email primero
+        
+        // Notificación verde de éxito
+        NotifyX.success('✅ ¡Cuenta creada exitosamente! Revisa tu correo para verificar tu cuenta.', {
+          duration: 5000,
+          dismissible: true
+        });
+        
+        // Limpiar el formulario después del registro exitoso
+        this.formulario.reset({
+          aceptaTerminos: false
+        });
       },
       error: (error) => {
         this.cargando.set(false);
-        this.mensajeError.set(error.message || 'Error al crear la cuenta. Por favor, intente nuevamente.');
+        
+        // Detectar tipo de error y mostrar notificación roja específica
+        const mensajeError = this.detectarTipoError(error);
+        
+        NotifyX.error(mensajeError, {
+          duration: 5000,
+          dismissible: true
+        });
       }
     });
+  }
+
+  /**
+   * Muestra un mensaje de error cuando faltan campos por completar
+   */
+  private mostrarErroresCampos(): void {
+    const camposFaltantes: string[] = [];
+
+    if (this.formulario.get('nombre')?.invalid) camposFaltantes.push('Nombre');
+    if (this.formulario.get('apellido')?.invalid) camposFaltantes.push('Apellido');
+    if (this.formulario.get('nombreUsuario')?.invalid) camposFaltantes.push('Nombre de Usuario');
+    if (this.formulario.get('email')?.invalid) camposFaltantes.push('Correo Electrónico');
+    if (this.formulario.get('cedula')?.invalid) camposFaltantes.push('Cédula');
+    if (this.formulario.get('contrasena')?.invalid) camposFaltantes.push('Contraseña');
+    if (this.formulario.get('confirmarContrasena')?.invalid) camposFaltantes.push('Confirmar Contraseña');
+    if (this.formulario.errors?.['contrasenasNoCoinciden']) {
+      NotifyX.error('❌ Las contraseñas no coinciden. Por favor, verifícalas.', {
+        duration: 4000,
+        dismissible: true
+      });
+      return;
+    }
+    if (this.formulario.get('aceptaTerminos')?.invalid) {
+      NotifyX.error('⚠️ Debes aceptar los Términos y Condiciones para continuar.', {
+        duration: 4000,
+        dismissible: true
+      });
+      return;
+    }
+
+    if (camposFaltantes.length > 0) {
+      const mensaje = camposFaltantes.length === 1
+        ? `⚠️ Por favor, completa el campo: ${camposFaltantes[0]}`
+        : `⚠️ Por favor, completa los siguientes campos: ${camposFaltantes.join(', ')}`;
+      
+      NotifyX.error(mensaje, {
+        duration: 4000,
+        dismissible: true
+      });
+    }
+  }
+
+  /**
+   * Detecta el tipo de error y retorna un mensaje específico
+   */
+  private detectarTipoError(error: any): string {
+    console.log('Analizando error en registro:', error);
+
+    // 1️⃣ Error de conexión (No hay conexión con backend)
+    if (!error.status || error.status === 0) {
+      if (error.name === 'TimeoutError' || error.message?.includes('timeout')) {
+        return '⏱️ Conexión agotada. El servidor tarda demasiado en responder. Intenta nuevamente.';
+      }
+      return '🌐 No hay conexión con el servidor. Verifica tu conexión a internet.';
+    }
+
+    // 2️⃣ Error 400 (Datos inválidos o usuario ya existe)
+    if (error.status === 400) {
+      if (error.error?.mensaje) {
+        return error.error.mensaje;
+      }
+      return '⚠️ Los datos ingresados no son válidos. Verifica la información.';
+    }
+
+    // 3️⃣ Error 409 (Conflicto - Usuario o email ya registrado)
+    if (error.status === 409) {
+      return '👤 El nombre de usuario o correo electrónico ya está registrado. Intenta con otros datos.';
+    }
+
+    // 4️⃣ Error 422 (Entidad no procesable)
+    if (error.status === 422) {
+      return '📝 Los datos del formulario no cumplen con los requisitos. Revisa cada campo.';
+    }
+
+    // 5️⃣ Error 429 (Demasiados intentos)
+    if (error.status === 429) {
+      return '⏸️ Demasiados intentos de registro. Intenta más tarde.';
+    }
+
+    // 6️⃣ Error 500+ (Error del servidor)
+    if (error.status && error.status >= 500) {
+      return '⚠️ Error del servidor. Por favor, intenta más tarde.';
+    }
+
+    // 7️⃣ Mensaje personalizado del backend
+    if (error.error?.mensaje) {
+      return error.error.mensaje;
+    }
+
+    // 8️⃣ Mensaje de error genérico
+    if (error.message) {
+      return error.message;
+    }
+
+    return '❌ Error al crear la cuenta. Por favor, intenta nuevamente.';
   }
 }
