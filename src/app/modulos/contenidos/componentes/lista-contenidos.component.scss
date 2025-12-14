@@ -37,18 +37,32 @@
 
   /* Ajustes para pantallas pequeñas */
   @media (max-width: 480px) {
-    padding: 8.5rem 14px 14px 14px;
+    padding: 10rem 14px 14px 14px;
 
     .header-contenidos {
-      margin-bottom: 1.75rem;
+      margin-bottom: 1.5rem;
       padding-bottom: 0.75rem;
       
       .seccion-titulo h1 {
-        font-size: 22px;
+        font-size: 21px;
       }
       
       .seccion-titulo p {
         font-size: 11px;
+      }
+    }
+  }
+
+  @media (max-width: 420px) {
+    padding: 11rem 12px 14px 12px;
+
+    .header-contenidos {
+      .seccion-titulo h1 {
+        font-size: 20px;
+      }
+      
+      .seccion-titulo p {
+        font-size: 10.5px;
       }
     }
   }
