@@ -25,7 +25,7 @@
   border-radius: 16px;
   max-width: 600px;
   width: 100%;
-  max-height: 85vh;
+  max-height: 90vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -87,25 +87,31 @@
 .modal-body {
   padding: 1.5rem;
   overflow-y: auto;
+  overflow-x: hidden;
   flex: 1;
+  max-height: calc(90vh - 150px);
 
   &::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
   }
 
   &::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(0, 212, 255, 0.3);
-    border-radius: 4px;
+    background: rgba(0, 212, 255, 0.5);
+    border-radius: 5px;
 
     &:hover {
-      background: rgba(0, 212, 255, 0.5);
+      background: rgba(0, 212, 255, 0.7);
     }
   }
+
+  /* Soporte para Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 212, 255, 0.5) rgba(0, 0, 0, 0.3);
 }
 
 .form-section {
@@ -380,7 +386,7 @@ button {
 
   .modal-body {
     padding: 1rem;
-    max-height: calc(95vh - 200px);
+    max-height: calc(95vh - 180px);
   }
 
   .modal-footer {
@@ -407,6 +413,7 @@ button {
   .info-item {
     flex-direction: column;
     gap: 0.5rem;
+    align-items: flex-start;
 
     label {
       margin-bottom: 0;
@@ -415,6 +422,10 @@ button {
 
   .form-section {
     margin-bottom: 1.5rem;
+
+    h3 {
+      font-size: 1rem;
+    }
   }
 
   .form-group {
@@ -424,13 +435,14 @@ button {
 
 @media (max-width: 480px) {
   .modal-overlay {
-    padding: 0.25rem;
+    padding: 0;
   }
 
   .modal-content {
     max-width: 100%;
     max-height: 100vh;
-    border-radius: 8px;
+    height: 100vh;
+    border-radius: 0;
   }
 
   .modal-header {
@@ -443,7 +455,11 @@ button {
 
   .modal-body {
     padding: 0.75rem;
-    max-height: calc(100vh - 180px);
+    max-height: calc(100vh - 160px);
+  }
+
+  .modal-footer {
+    padding: 1rem;
   }
 
   .avatar-section {
@@ -467,5 +483,13 @@ button {
   .btn-danger-outline {
     padding: 0.5rem 0.75rem;
     font-size: 0.8rem;
+  }
+
+  .form-group {
+    input,
+    textarea {
+      font-size: 0.9rem;
+      padding: 0.625rem;
+    }
   }
 }

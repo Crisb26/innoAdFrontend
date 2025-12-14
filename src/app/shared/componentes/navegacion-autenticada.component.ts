@@ -151,7 +151,25 @@ export class NavegacionAutenticadaComponent {
 
   protected rolUsuario(): string {
     const usuario = this.servicioAuth.usuarioActual();
-    return usuario?.rol?.nombre || 'Usuario';
+    const rol = usuario?.rol?.nombre || 'Usuario';
+    return this.formatearNombreRol(rol);
+  }
+
+  private formatearNombreRol(rol: string): string {
+    const rolesMap: { [key: string]: string } = {
+      'Developer': 'Desarrollador',
+      'developer': 'Desarrollador',
+      'Admin': 'Administrador',
+      'Administrador': 'Administrador',
+      'administrador': 'Administrador',
+      'Tecnico': 'Técnico',
+      'tecnico': 'Técnico',
+      'Usuario': 'Usuario',
+      'usuario': 'Usuario',
+      'User': 'Usuario',
+      'user': 'Usuario'
+    };
+    return rolesMap[rol] || rol;
   }
 
   protected avatarUrl(): string | null {
