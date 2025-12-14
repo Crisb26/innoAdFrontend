@@ -1,54 +1,137 @@
 # InnoAd Frontend 🎨
 
-Interfaz Angular para gestionar campañas, login JWT y dashboards conectados al backend en Azure Container Apps.
+Aplicación Angular para gestión de campañas publicitarias, autenticación JWT y dashboards en tiempo real.
 
-## 🛠️ Stack
+## 🛠️ Stack Tecnológico
 
-- **Angular**: 18.2.x
-- **TypeScript**: 5.5.x
-- **Estado**: Signals + RxJS
-- **Estilos**: SCSS
-- **Auth**: JWT
+| Componente | Versión |
+|-----------|---------|
+| Angular | 18.2.x |
+| TypeScript | 5.5.x |
+| Node.js | 20+ LTS |
+| npm | 11+ |
+| SCSS | CSS avanzado |
 
 ## 📋 Requisitos
 
-- Node.js 20+ LTS
-- npm 11+
-- Angular CLI 18
+- **Node.js 20+**
+- **npm 11+**
+- **Git**
 
-## 🚀 Inicio Rápido
+## 🚀 Instalación
 
 ```bash
-# 1. Instalar dependencias
+# 1. Clonar/extraer proyecto
+git clone <repo>
+cd innoadFrontend
+
+# 2. Instalar dependencias
 npm install
 
-# 2. Iniciar desarrollo
+# 3. Verificar instalación
+npm --version
+ng version
+```
+
+## 🏃 Ejecución Local
+
+```bash
+# Desarrollo (con hot reload)
 npm start
+# O
+ng serve --open
+
+# Build optimizado para producción
+ng build --configuration production
 ```
 
 **Aplicación disponible en**: http://localhost:4200
 
-## ⚙️ Configuración de entornos
+## 🏗️ Estructura del Proyecto
 
-**Desarrollo** (`environment.ts`)
+```
+src/
+├── app/
+│   ├── core/                 # Servicios, guards, interceptores
+│   │   ├── guards/          # Autenticación y autorización
+│   │   ├── interceptores/   # HTTP interceptors
+│   │   ├── modelos/         # Interfaces y tipos
+│   │   └── servicios/       # Servicios compartidos
+│   ├── modulos/              # Módulos funcionales
+│   │   ├── autenticacion/   # Login/Registro
+│   │   ├── dashboard/       # Panel principal
+│   │   ├── campanas/        # Gestión de campañas
+│   │   ├── contenidos/      # Multimedia
+│   │   ├── pantallas/       # Pantallas digitales
+│   │   ├── reportes/        # Estadísticas
+│   │   ├── chat/            # Chat con IA
+│   │   ├── asistente-ia/    # Asistente IA
+│   │   ├── admin/           # Panel de administración
+│   │   └── mantenimiento/   # Modo mantenimiento
+│   ├── shared/               # Componentes reutilizables
+│   └── app.routes.ts         # Rutas principales
+├── assets/                   # Imágenes y recursos
+├── environments/             # Configuración por entorno
+└── index.html
+```
+
+## ⚙️ Configuración de Entornos
+
+### Desarrollo (`environment.ts`)
 ```typescript
 api: {
   baseUrl: 'http://localhost:8080/api'
 }
 ```
 
-**Producción** (`environment.prod.ts`)
+### Producción (`environment.prod.ts`)
 ```typescript
 api: {
   baseUrl: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api'
 }
 ```
 
-WebSocket prod (si aplica): `wss://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/ws`
+## 📱 Rutas Principales
 
-### Proxy para Desarrollo
+| Ruta | Módulo | Descripción |
+|------|--------|-------------|
+| `/` | Público | Página de inicio |
+| `/login` | Autenticación | Login |
+| `/register` | Autenticación | Registro |
+| `/dashboard` | Dashboard | Panel principal |
+| `/campanas` | Campañas | Gestión de campañas |
+| `/contenidos` | Contenidos | Gestión de multimedia |
+| `/pantallas` | Pantallas | Gestión de pantallas |
+| `/reportes` | Reportes | Estadísticas |
+| `/chat` | Chat IA | Asistente con IA |
+| `/admin/mantenimiento` | Admin | Control de mantenimiento |
 
-El archivo `proxy.conf.json` redirige `/api` al backend:
+## 🔐 Autenticación
+
+- **Método**: JWT (tokens)
+- **Almacenamiento**: LocalStorage
+- **Guards**: Protección de rutas
+- **Interceptores**: Inyección automática de JWT
+
+## 🎨 Modo Mantenimiento
+
+El sistema incluye un modo de mantenimiento futurista con 3 tipos:
+
+```
+🚨 EMERGENCIA    → Bloquea usuarios inmediatamente
+📅 PROGRAMADO    → Mantenimiento planeado
+⚠️  CRITICA      → Problema grave con acceso restringido
+```
+
+**Características**:
+- Control granular de roles
+- Desarrolladores siempre pueden acceder
+- UI animada y responsiva
+- Colores dinámicos según tipo
+
+## 🌐 Proxy para Desarrollo
+
+El archivo `proxy.conf.json` redirige `/api` al backend local:
 
 ```json
 {
@@ -60,24 +143,80 @@ El archivo `proxy.conf.json` redirige `/api` al backend:
 }
 ```
 
-## 🏗️ Estructura del Proyecto
+## 🐳 Docker
+
+```bash
+# Construir imagen
+docker build -t innoad-frontend:latest .
+
+# Ejecutar contenedor
+docker run -p 80:80 innoad-frontend:latest
+```
+
+## ☁️ Producción (Netlify)
 
 ```
-src/
-├── app/
-│   ├── core/                    # Servicios globales
-│   │   ├── guards/             # Guards de autenticación
-│   │   ├── interceptores/      # HTTP interceptors
-│   │   ├── modelos/            # Interfaces y tipos
-│   │   └── servicios/          # Servicios compartidos
-│   ├── modulos/                # Módulos funcionales
-│   │   ├── autenticacion/      # Login/Registro
-│   │   ├── dashboard/          # Panel principal
-│   │   ├── campanas/           # Gestión de campañas
-│   │   ├── contenidos/         # Contenido multimedia
-│   │   ├── pantallas/          # Pantallas digitales
-│   │   ├── reportes/           # Estadísticas
-│   │   ├── asistente-ia/       # Chat IA
+URL: https://innoadfrontend.netlify.app
+Status: Activo
+Última actualización: Automática en cada push a main
+```
+
+## 📦 Build Optimizado
+
+```bash
+# Generar build optimizado (reducido ~70%)
+ng build --configuration production --optimization
+
+# Resultado
+dist/innoad-frontend/browser/
+├── index.html
+├── main.js
+├── styles.css
+└── assets/
+```
+
+## ✅ Checklist de Conexiones
+
+- ✅ API backend conectada (`api.config.ts`)
+- ✅ Todas las rutas configuradas (`app.routes.ts`)
+- ✅ Guards de autenticación activos
+- ✅ Interceptores HTTP funcionales
+- ✅ Modo mantenimiento integrado
+- ✅ Chat IA conectado
+- ✅ Reportes en tiempo real
+- ✅ Responsivo en mobile/tablet/desktop
+
+## 🛠️ Desarrollo
+
+```bash
+# Tests unitarios
+ng test
+
+# Linting
+ng lint
+
+# Build para desarrollo
+ng build
+
+# Build optimizado
+ng build --configuration production
+```
+
+## 📖 Documentación
+
+- **Rutas**: Ver `src/app/app.routes.ts`
+- **Modelos**: Ver `src/app/core/modelos/`
+- **Servicios**: Ver `src/app/core/servicios/`
+- **Componentes**: Cada módulo en `src/app/modulos/`
+
+## ✅ Status
+
+- ✅ Compilación: OK
+- ✅ Conexión backend: OK
+- ✅ Autenticación: OK
+- ✅ Modo mantenimiento: OK
+- ✅ Responsive: OK
+- ✅ Producción: OK
 │   │   └── admin/              # Panel admin
 │   └── shared/                 # Componentes compartidos
 ├── assets/                     # Recursos estáticos

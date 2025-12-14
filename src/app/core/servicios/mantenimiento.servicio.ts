@@ -15,6 +15,25 @@ export interface EstadoMantenimiento {
   datos: boolean; // true si está en mantenimiento
 }
 
+export interface RespuestaAPI<T> {
+  exitoso: boolean;
+  mensaje: string;
+  datos: T;
+}
+
+export interface ConfiguracionMantenimiento {
+  id: number;
+  activo: boolean;
+  codigoSeguridad: string;
+  mensaje: string;
+  fechaInicio: string;
+  fechaFinEstimada: string;
+  tipoMantenimiento: string;
+  rolesAfectados: string[];
+  rolesExcluidos: string[];
+  urlContactoSoporte: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -27,6 +46,13 @@ export class ServicioMantenimiento {
    */
   obtenerEstado(): Observable<EstadoMantenimiento> {
     return this.http.get<EstadoMantenimiento>(`${this.apiUrl}/estado`);
+  }
+
+  /**
+   * Obtiene la información detallada del mantenimiento activo
+   */
+  obtenerInformacion(): Observable<RespuestaAPI<ConfiguracionMantenimiento>> {
+    return this.http.get<RespuestaAPI<ConfiguracionMantenimiento>>(`${this.apiUrl}/estado`);
   }
 
   /**

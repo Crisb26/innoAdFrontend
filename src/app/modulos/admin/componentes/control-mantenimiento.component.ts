@@ -116,6 +116,65 @@ import { ServicioMantenimiento } from '@core/servicios/mantenimiento.servicio';
             <!-- Campos adicionales para activar -->
             @if (tipoAccion() === 'activar') {
               <div class="grupo-campo">
+                <label class="etiqueta-campo">Tipo de Mantenimiento *</label>
+                <select 
+                  formControlName="tipoMantenimiento"
+                  class="input-innoad"
+                  required>
+                  <option value="" disabled selected>Selecciona un tipo...</option>
+                  <option value="PROGRAMADO">📅 Programado (Mantenimiento Planeado)</option>
+                  <option value="EMERGENCIA">🚨 Emergencia (Urgente)</option>
+                  <option value="CRITICA">⚠️ Crítica (Problema Grave)</option>
+                </select>
+                @if (formulario.get('tipoMantenimiento')?.errors?.['required'] && formulario.get('tipoMantenimiento')?.touched) {
+                  <div class="error-campo">El tipo de mantenimiento es requerido</div>
+                }
+                <div class="ayuda-campo">Define la severidad y naturaleza del mantenimiento</div>
+              </div>
+
+              <div class="grupo-campo">
+                <label class="etiqueta-campo">Roles Afectados (Verán la página de mantenimiento) *</label>
+                <div class="checkbox-group">
+                  <label class="checkbox-custom">
+                    <input 
+                      type="checkbox"
+                      value="VISITANTE"
+                      (change)="actualizarRolesAfectados('VISITANTE', $event)">
+                    <span class="checkbox-label">👤 Visitante</span>
+                  </label>
+                  <label class="checkbox-custom">
+                    <input 
+                      type="checkbox"
+                      value="USUARIO"
+                      (change)="actualizarRolesAfectados('USUARIO', $event)">
+                    <span class="checkbox-label">👥 Usuario</span>
+                  </label>
+                  <label class="checkbox-custom">
+                    <input 
+                      type="checkbox"
+                      value="TECNICO"
+                      (change)="actualizarRolesAfectados('TECNICO', $event)">
+                    <span class="checkbox-label">🔧 Técnico</span>
+                  </label>
+                  <label class="checkbox-custom disabled">
+                    <input 
+                      type="checkbox"
+                      checked
+                      disabled>
+                    <span class="checkbox-label">👨‍💼 Admin (Siempre puede acceder)</span>
+                  </label>
+                  <label class="checkbox-custom disabled">
+                    <input 
+                      type="checkbox"
+                      checked
+                      disabled>
+                    <span class="checkbox-label">👨‍💻 Desarrollador (Siempre puede acceder)</span>
+                  </label>
+                </div>
+                <div class="ayuda-campo">Los administradores y desarrolladores siempre pueden entrar, incluso durante mantenimiento</div>
+              </div>
+
+              <div class="grupo-campo">
                 <label class="etiqueta-campo">Mensaje Personalizado (Opcional)</label>
                 <textarea 
                   formControlName="mensaje"
@@ -123,6 +182,16 @@ import { ServicioMantenimiento } from '@core/servicios/mantenimiento.servicio';
                   rows="3"
                   placeholder="Mensaje que verán los usuarios durante el mantenimiento"></textarea>
                 <div class="ayuda-campo">Si no especificas un mensaje, se usará el predeterminado</div>
+              </div>
+
+              <div class="grupo-campo">
+                <label class="etiqueta-campo">URL de Contacto de Soporte (Opcional)</label>
+                <input 
+                  type="url"
+                  formControlName="urlContactoSoporte"
+                  class="input-innoad"
+                  placeholder="https://soporte.ejemplo.com">
+                <div class="ayuda-campo">Link de soporte que verán los usuarios</div>
               </div>
 
               <div class="grupo-campo">
@@ -170,11 +239,14 @@ export class ControlMantenimientoComponent implements OnInit {
   protected readonly tipoAccion = signal<'activar' | 'desactivar'>('activar');
   protected readonly mensajeError = signal('');
   protected readonly mensajeExito = signal('');
+  protected readonly rolesAfectados = signal<string[]>([]);
 
   protected readonly formulario = this.fb.nonNullable.group({
     codigoSeguridad: ['', [Validators.required]],
+    tipoMantenimiento: ['', [Validators.required]],
     mensaje: [''],
-    fechaFinEstimada: ['']
+    fechaFinEstimada: [''],
+    urlContactoSoporte: ['']
   });
 
   ngOnInit(): void {
@@ -199,6 +271,7 @@ export class ControlMantenimientoComponent implements OnInit {
   abrirModal(tipo: 'activar' | 'desactivar'): void {
     this.tipoAccion.set(tipo);
     this.formulario.reset();
+    this.rolesAfectados.set([]);
     this.mensajeError.set('');
     this.mensajeExito.set('');
     this.mostrarModal.set(true);
@@ -208,6 +281,25 @@ export class ControlMantenimientoComponent implements OnInit {
     this.mostrarModal.set(false);
     this.formulario.reset();
     this.procesando.set(false);
+    this.rolesAfectados.set([]);
+  }
+
+  actualizarRolesAfectados(rol: string, event: any): void {
+    const isChecked = event.target.checked;
+    const rolesActuales = [...this.rolesAfectados()];
+    
+    if (isChecked) {
+      if (!rolesActuales.includes(rol)) {
+        rolesActuales.push(rol);
+      }
+    } else {
+      const index = rolesActuales.indexOf(rol);
+      if (index > -1) {
+        rolesActuales.splice(index, 1);
+      }
+    }
+    
+    this.rolesAfectados.set(rolesActuales);
   }
 
   ejecutarAccion(): void {
@@ -220,8 +312,12 @@ export class ControlMantenimientoComponent implements OnInit {
     if (this.tipoAccion() === 'activar') {
       const solicitud = {
         codigoSeguridad,
+        tipoMantenimiento: this.formulario.value.tipoMantenimiento,
+        rolesAfectados: this.rolesAfectados(),
+        rolesExcluidos: [], // Los desarrolladores siempre se excluyen
         mensaje: this.formulario.value.mensaje || undefined,
-        fechaFinEstimada: this.formulario.value.fechaFinEstimada || undefined
+        fechaFinEstimada: this.formulario.value.fechaFinEstimada || undefined,
+        urlContactoSoporte: this.formulario.value.urlContactoSoporte || undefined
       };
 
       this.servicioMantenimiento.activarMantenimiento(solicitud).subscribe({

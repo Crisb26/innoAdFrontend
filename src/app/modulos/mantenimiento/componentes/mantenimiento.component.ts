@@ -1,5 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ServicioMantenimiento } from '@core/servicios/mantenimiento.servicio';
+
+interface InfoMantenimiento {
+  activo: boolean;
+  mensaje: string;
+  fechaInicio: string;
+  fechaFin: string;
+  tipoMantenimiento: 'EMERGENCIA' | 'PROGRAMADO' | 'CRITICA';
+  urlContacto: string;
+  tiempoRestante: string;
+}
 
 @Component({
   selector: 'app-mantenimiento',
@@ -7,54 +18,164 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   styleUrls: ['./mantenimiento.component.scss'],
   template: `
-    <div class="contenedor-mantenimiento">
+    <div class="contenedor-mantenimiento" [class]="'tipo-' + info.tipoMantenimiento.toLowerCase()">
+      <!-- Fondo Animado -->
       <div class="fondo-animado">
-        <div class="circulo circulo-1"></div>
-        <div class="circulo circulo-2"></div>
-        <div class="circulo circulo-3"></div>
+        <div class="particulas">
+          <div class="particula" *ngFor="let p of particulas"></div>
+        </div>
+        <svg class="fondo-grid" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <defs>
+            <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.1"/>
+            </pattern>
+          </defs>
+          <rect width="100" height="100" fill="url(#grid)"/>
+        </svg>
       </div>
 
-      <div class="tarjeta-mantenimiento">
+      <!-- Contenido Principal -->
+      <div class="contenido-principal">
+        
+        <!-- Icono/Badge de Tipo -->
+        <div class="badge-tipo" [class]="'badge-' + info.tipoMantenimiento.toLowerCase()">
+          <span class="icono">
+            {{ info.tipoMantenimiento === 'EMERGENCIA' ? '⚡' : 
+               info.tipoMantenimiento === 'CRITICA' ? '⚠️' : '🔧' }}
+          </span>
+          <span class="texto">{{ info.tipoMantenimiento }}</span>
+        </div>
+
+        <!-- Logo Animado -->
         <div class="logo-animado">
-          <svg class="icono-engranaje" xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M12 1v6m0 6v6m4.22-13a10 10 0 0 1 0 14M7.78 3a10 10 0 0 0 0 14m9.9-11.31 4.24-4.24m-14.14 0L3.54 5.69m14.14 14.14 4.24 4.24m-14.14 0-4.24-4.24"></path>
+          <svg class="engranajes-rotando" width="200" height="200" viewBox="0 0 200 200">
+            <!-- Engranaje principal -->
+            <g class="engranaje principal">
+              <circle cx="100" cy="100" r="50" fill="none" stroke="currentColor" stroke-width="3"/>
+              <circle cx="100" cy="100" r="8" fill="currentColor"/>
+              <g class="dientes">
+                <rect x="95" y="40" width="10" height="15" rx="2"/>
+                <rect x="95" y="145" width="10" height="15" rx="2"/>
+                <rect x="40" y="95" width="15" height="10" rx="2"/>
+                <rect x="145" y="95" width="15" height="10" rx="2"/>
+              </g>
+            </g>
+            
+            <!-- Engranajes secundarios -->
+            <g class="engranaje secundario-1" transform="translate(140, 70)">
+              <circle cx="0" cy="0" r="30" fill="none" stroke="currentColor" stroke-width="2"/>
+              <circle cx="0" cy="0" r="5" fill="currentColor"/>
+            </g>
+            <g class="engranaje secundario-2" transform="translate(60, 140)">
+              <circle cx="0" cy="0" r="30" fill="none" stroke="currentColor" stroke-width="2"/>
+              <circle cx="0" cy="0" r="5" fill="currentColor"/>
+            </g>
           </svg>
-          <div class="logo-texto">
-            <h1>InnoAd</h1>
+          <div class="logo-innoad">InnoAd</div>
+        </div>
+
+        <!-- Título Principal -->
+        <h1 class="titulo-principal">
+          Sistema en Mantenimiento
+        </h1>
+
+        <!-- Mensaje Personalizado -->
+        <p class="mensaje-personalizado">{{ info.mensaje }}</p>
+
+        <!-- Información de Tiempo -->
+        <div class="info-tiempo">
+          <div class="tiempo-item">
+            <span class="label">Inicio:</span>
+            <span class="valor">{{ info.fechaInicio | date: 'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          <div class="separador">•</div>
+          <div class="tiempo-item">
+            <span class="label">Fin:</span>
+            <span class="valor">{{ info.fechaFin | date: 'dd/MM/yyyy HH:mm' }}</span>
           </div>
         </div>
 
-        <h2 class="titulo-principal">Sistema en Mantenimiento</h2>
-        <p class="mensaje-principal">Estamos realizando mejoras para ofrecerte una mejor experiencia</p>
-
-        <div class="barra-progreso">
-          <div class="barra-progreso-fill"></div>
-        </div>
-
-        <div class="info-contacto">
-          <p class="subtexto">Tiempo estimado: 30 minutos</p>
-          <div class="contacto-items">
-            <div class="contacto-item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
-              </svg>
-              <span>soporte&#64;innoad.com</span>
-            </div>
-            <div class="contacto-item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-              </svg>
-              <span>Soporte 24/7</span>
-            </div>
+        <!-- Barra de Progreso -->
+        <div class="barra-progreso-contenedor">
+          <div class="barra-progreso">
+            <div class="barra-relleno" [style.width]="calcularProgreso() + '%'"></div>
           </div>
+          <div class="tiempo-restante">{{ info.tiempoRestante }}</div>
         </div>
 
-        <p class="mensaje-final">Gracias por tu paciencia</p>
+        <!-- Contacto de Soporte -->
+        <div class="seccion-soporte">
+          <div class="titulo-soporte">¿Necesitas ayuda?</div>
+          <a [href]="'mailto:' + info.urlContacto" class="enlace-soporte">
+            📧 {{ info.urlContacto }}
+          </a>
+          <div class="soporte-disponible">Disponible 24/7</div>
+        </div>
+
+        <!-- Mensaje Final -->
+        <p class="mensaje-final">✨ Volveremos más fuertes ✨</p>
       </div>
     </div>
   `
 })
-export class MantenimientoComponent {}
+export class MantenimientoComponent implements OnInit {
+  private servicioMantenimiento = inject(ServicioMantenimiento);
+  
+  particulas = Array.from({ length: 8 }, (_, i) => i);
+
+  info: InfoMantenimiento = {
+    activo: true,
+    mensaje: 'Estamos mejorando nuestro sistema',
+    fechaInicio: new Date().toISOString(),
+    fechaFin: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
+    tipoMantenimiento: 'PROGRAMADO',
+    urlContacto: 'soporte@innoad.com',
+    tiempoRestante: '2 horas'
+  };
+
+  ngOnInit() {
+    this.cargarInfoMantenimiento();
+    // Actualizar tiempo cada minuto
+    setInterval(() => this.actualizarTiempoRestante(), 60000);
+  }
+
+  cargarInfoMantenimiento() {
+    this.servicioMantenimiento.obtenerInformacion().subscribe({
+      next: (response: any) => {
+        const datos = response.datos;
+        this.info = {
+          activo: datos.modoMantenimientoActivo,
+          mensaje: datos.mensajeMantenimiento,
+          fechaInicio: datos.fechaInicioMantenimiento,
+          fechaFin: datos.fechaFinEstimadaMantenimiento,
+          tipoMantenimiento: datos.tipoMantenimiento || 'PROGRAMADO',
+          urlContacto: datos.urlContactoSoporte,
+          tiempoRestante: datos.tiempoRestante || 'Duración indefinida'
+        };
+      },
+      error: (e) => {
+        console.error('Error cargando mantenimiento:', e);
+      }
+    });
+  }
+
+  actualizarTiempoRestante() {
+    this.servicioMantenimiento.obtenerInformacion().subscribe({
+      next: (response: any) => {
+        this.info.tiempoRestante = response.datos.tiempoRestante || 'Duración indefinida';
+      }
+    });
+  }
+
+  calcularProgreso(): number {
+    const inicio = new Date(this.info.fechaInicio).getTime();
+    const fin = new Date(this.info.fechaFin).getTime();
+    const ahora = new Date().getTime();
+
+    if (fin <= inicio) return 0;
+    if (ahora >= fin) return 100;
+
+    return Math.round(((ahora - inicio) / (fin - inicio)) * 100);
+  }
+}
 
