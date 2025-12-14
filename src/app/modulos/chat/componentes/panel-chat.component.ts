@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import NotifyX from 'notifyx';
+import 'notifyx/style.css';
 
 interface MensajeChat {
   id: number;
@@ -225,10 +227,20 @@ export class PanelChatComponent implements OnInit, OnDestroy {
       next: (respuesta) => {
         if (respuesta.exito) {
           this.nuevoMensaje.set('');
+          NotifyX.success('Mensaje enviado exitosamente', {
+            duration: 3000,
+            dismissible: true
+          });
           this.cargarMensajes();
         }
       },
-      error: (err) => console.error('Error enviando mensaje:', err),
+      error: (err) => {
+        NotifyX.error('Error al enviar el mensaje', {
+          duration: 3000,
+          dismissible: true
+        });
+        console.error('Error enviando mensaje:', err);
+      },
       complete: () => this.cargandoMensaje.set(false)
     });
   }

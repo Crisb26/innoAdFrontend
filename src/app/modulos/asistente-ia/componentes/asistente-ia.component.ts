@@ -9,6 +9,7 @@ import {
   ConfiguracionAsistente 
 } from '@core/servicios/asistente-ia.servicio';
 import { Subscription } from 'rxjs';
+import NotifyX from 'notifyx';
 
 @Component({
   selector: 'app-asistente-ia',
@@ -457,6 +458,10 @@ export class AsistenteIAComponent implements OnInit, OnDestroy {
   protected enviarMensaje(): void {
     if (this.mensajeActual.trim()) {
       this.asistenteService.enviarMensaje(this.mensajeActual.trim());
+      NotifyX.success('Mensaje enviado al asistente', {
+        duration: 2000,
+        dismissible: true
+      });
       this.mensajeActual = '';
     }
   }
@@ -471,6 +476,10 @@ export class AsistenteIAComponent implements OnInit, OnDestroy {
     const mensaje = mensajes[tipo as keyof typeof mensajes];
     if (mensaje) {
       this.asistenteService.enviarMensaje(mensaje);
+      NotifyX.success('Pregunta rápida enviada', {
+        duration: 2000,
+        dismissible: true
+      });
     }
   }
 

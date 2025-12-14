@@ -7,7 +7,6 @@ import { SolicitudActualizarPerfil, Usuario } from '@core/modelos/usuario.modelo
 import { environment } from '@environments/environment';
 import { firstValueFrom } from 'rxjs';
 import NotifyX from 'notifyx';
-import 'notifyx/style.css';
 
 @Component({
   selector: 'app-editar-perfil',

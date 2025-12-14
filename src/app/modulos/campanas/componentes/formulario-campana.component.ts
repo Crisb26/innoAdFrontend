@@ -2,7 +2,6 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import NotifyX from 'notifyx';
-import 'notifyx/style.css';
 
 @Component({
   selector: 'app-formulario-campana',

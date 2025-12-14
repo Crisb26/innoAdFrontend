@@ -2,6 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import NotifyX from 'notifyx';
+import 'notifyx/style.css';
 
 @Component({
   selector: 'app-publicar-contenido',
@@ -327,6 +329,10 @@ export class PublicarContenidoComponent {
     setTimeout(() => {
       this.cargando.set(false);
       this.mensajeExito.set('¡Contenido publicado exitosamente!');
+      NotifyX.success('Publicación de contenido exitosa', {
+        duration: 3000,
+        dismissible: true
+      });
 
       setTimeout(() => {
         this.router.navigate(['/contenidos']);

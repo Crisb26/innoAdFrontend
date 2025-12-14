@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { UsuariosAdminService, UsuarioAdmin, EstadisticasUsuarios } from '@core/servicios/usuarios-admin.servicio';
 import NotifyX from 'notifyx';
-import 'notifyx/style.css';
 
 @Component({
   selector: 'app-gestion-usuarios',

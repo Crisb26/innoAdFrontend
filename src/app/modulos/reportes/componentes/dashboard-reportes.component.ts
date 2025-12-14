@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { NavegacionAutenticadaComponent } from '../../../shared/componentes/navegacion-autenticada.component';
 import NotifyX from 'notifyx';
-import 'notifyx/style.css';
 
 @Component({
   selector: 'app-dashboard-reportes',
