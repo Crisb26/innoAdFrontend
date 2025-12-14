@@ -6,7 +6,7 @@
   bottom: 0;
   width: 100vw;
   min-height: 100vh;
-  padding: 5rem 2rem 2rem 2rem;
+  padding: 6rem 2rem 2rem 2rem;
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   color: #ffffff;
   overflow-y: auto;
@@ -33,6 +33,24 @@
     max-width: 1400px;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  /* Ajustes para pantallas pequeñas */
+  @media (max-width: 480px) {
+    padding: 7.5rem 16px 16px 16px;
+
+    .header-contenidos {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      
+      .seccion-titulo h1 {
+        font-size: 24px;
+      }
+      
+      .seccion-titulo p {
+        font-size: 12px;
+      }
+    }
   }
 
   .header-contenidos {
