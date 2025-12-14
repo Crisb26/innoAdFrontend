@@ -37,7 +37,7 @@
 
   /* Ajustes para pantallas pequeñas */
   @media (max-width: 480px) {
-    padding: 12rem 14px 14px 14px;
+    padding: 17rem 14px 14px 14px;
 
     .header-contenidos {
       margin-bottom: 1.25rem;
@@ -54,7 +54,7 @@
   }
 
   @media (max-width: 420px) {
-    padding: 13rem 12px 14px 12px;
+    padding: 17rem 12px 14px 12px;
 
     .header-contenidos {
       .seccion-titulo h1 {
@@ -71,6 +71,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 10rem;
     margin-bottom: 6rem;
     padding-bottom: 3rem;
     flex-wrap: wrap;
