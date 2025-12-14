@@ -395,6 +395,40 @@
 
       .modal-acciones {
         flex-direction: column;
+        gap: 0.75rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .contenedor-mantenimiento-admin {
+        padding: 0.5rem;
+      }
+
+      .info-estado {
+        gap: 0.75rem;
+      }
+
+      .modal-content {
+        width: 100%;
+        padding: 0.75rem;
+      }
+
+      .modal-header {
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .modal-body {
+        padding: 0.5rem;
+      }
+
+      .modal-acciones {
+        padding: 0.5rem;
+      }
+
+      button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
       }
     }
   

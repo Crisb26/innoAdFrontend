@@ -112,6 +112,26 @@
           background-position: right 8px center;
           background-size: 20px;
           padding-right: 32px;
+          color: #ffffff;
+          background-color: #0f172a;
+
+          option {
+            background: #1e293b;
+            color: #ffffff;
+            padding: 8px;
+            border: none;
+          }
+
+          option:hover,
+          option:focus {
+            background: #334155;
+            color: #ffffff;
+          }
+
+          option:checked {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            color: #ffffff;
+          }
         }
 
         textarea {

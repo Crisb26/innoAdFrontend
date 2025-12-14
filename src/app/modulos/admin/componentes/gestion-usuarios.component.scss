@@ -408,6 +408,24 @@
 
     /* Responsive */
     @media (max-width: 768px) {
+      .gestion-usuarios-container {
+        padding: 1rem;
+      }
+
+      .titulo-seccion h2 {
+        font-size: 1.75rem;
+      }
+
+      .grid-estadisticas {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+      }
+
+      .stat-card {
+        gap: 0.75rem;
+        padding: 0.75rem;
+      }
+
       .tabla-header, .tabla-fila {
         grid-template-columns: 1fr;
         gap: var(--espacio-sm);
@@ -438,6 +456,63 @@
 
       .busqueda-container {
         min-width: auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .gestion-usuarios-container {
+        padding: 0.5rem;
+      }
+
+      .header-section {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .titulo-seccion h2 {
+        font-size: 1.5rem;
+      }
+
+      .grid-estadisticas {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+
+      .stat-card {
+        gap: 0.5rem;
+        padding: 0.5rem;
+      }
+
+      .stat-icon {
+        font-size: 2rem;
+      }
+
+      .stat-numero {
+        font-size: 1.5rem;
+      }
+
+      .stat-label {
+        font-size: 0.8rem;
+      }
+
+      .filtros-section {
+        padding: 0.5rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .filtros-content {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .tabla-header, .tabla-fila {
+        gap: 0.25rem;
+        padding: 0.5rem;
+      }
+
+      .tabla-header {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.8rem;
       }
     }
   

@@ -25,7 +25,7 @@
   border-radius: 16px;
   max-width: 600px;
   width: 100%;
-  max-height: 90vh;
+  max-height: 85vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -360,14 +360,33 @@ button {
 
 /* Responsive */
 @media (max-width: 768px) {
+  .modal-overlay {
+    padding: 0.5rem;
+  }
+
   .modal-content {
     max-width: 100%;
-    max-height: 100vh;
-    border-radius: 0;
+    max-height: 95vh;
+    border-radius: 12px;
+  }
+
+  .modal-header {
+    padding: 1.25rem;
+
+    h2 {
+      font-size: 1.25rem;
+    }
+  }
+
+  .modal-body {
+    padding: 1rem;
+    max-height: calc(95vh - 200px);
   }
 
   .modal-footer {
+    padding: 1rem;
     flex-direction: column;
+    gap: 0.75rem;
 
     button {
       width: 100%;
@@ -383,5 +402,70 @@ button {
       width: 100%;
       justify-content: center;
     }
+  }
+
+  .info-item {
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      margin-bottom: 0;
+    }
+  }
+
+  .form-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 0.25rem;
+  }
+
+  .modal-content {
+    max-width: 100%;
+    max-height: 100vh;
+    border-radius: 8px;
+  }
+
+  .modal-header {
+    padding: 1rem;
+
+    h2 {
+      font-size: 1.125rem;
+    }
+  }
+
+  .modal-body {
+    padding: 0.75rem;
+    max-height: calc(100vh - 180px);
+  }
+
+  .avatar-section {
+    padding: 1rem;
+  }
+
+  .avatar-preview {
+    width: 100px;
+    height: 100px;
+  }
+
+  .avatar-placeholder {
+    font-size: 2.5rem;
+  }
+
+  button {
+    padding: 0.625rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .btn-danger-outline {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
   }
 }

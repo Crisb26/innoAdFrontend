@@ -6,6 +6,8 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
 import { SolicitudActualizarPerfil, Usuario } from '@core/modelos/usuario.modelo';
 import { environment } from '@environments/environment';
 import { firstValueFrom } from 'rxjs';
+import NotifyX from 'notifyx';
+import 'notifyx/style.css';
 
 @Component({
   selector: 'app-editar-perfil',
@@ -192,12 +194,20 @@ export class EditarPerfilComponent implements OnInit {
       // Validar tamaño (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         this.mensajeError.set('La imagen no debe superar los 5MB');
+        NotifyX.error('La imagen no debe superar los 5MB', {
+          duration: 3000,
+          dismissible: true
+        });
         return;
       }
 
       // Validar tipo
       if (!file.type.startsWith('image/')) {
         this.mensajeError.set('Solo se permiten archivos de imagen');
+        NotifyX.error('Solo se permiten archivos de imagen', {
+          duration: 3000,
+          dismissible: true
+        });
         return;
       }
 
@@ -207,6 +217,10 @@ export class EditarPerfilComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = (e) => {
         this.avatarPreview.set(e.target?.result as string);
+        NotifyX.success('Imagen de perfil cargada', {
+          duration: 3000,
+          dismissible: true
+        });
       };
       reader.readAsDataURL(file);
       
@@ -251,6 +265,11 @@ export class EditarPerfilComponent implements OnInit {
       
       // Actualizar el usuario actual en el servicio
       this.servicioAuth.actualizarUsuarioActual(usuarioActualizado);
+      
+      NotifyX.success('Perfil actualizado correctamente', {
+        duration: 3000,
+        dismissible: true
+      });
       
       this.mensajeExito.set('Perfil actualizado correctamente');
       

@@ -2,6 +2,8 @@ import { Component, signal, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { PantallasService, SolicitudPantalla, RespuestaPantalla } from '../../../core/servicios/pantallas.service';
+import NotifyX from 'notifyx';
+import 'notifyx/style.css';
 
 @Component({
   selector: 'app-formulario-pantalla',
@@ -125,7 +127,12 @@ export class FormularioPantallaComponent {
           next: (response) => {
             this.cargando.set(false);
             if (response.exitoso) {
+              NotifyX.success('Pantalla actualizada exitosamente', {
+                duration: 3000,
+                dismissible: true
+              });
               this.pantallasService.cargarPantallas();
+              this.cerrar();
               this.guardarExitoso.emit();
             }
           },
@@ -139,7 +146,12 @@ export class FormularioPantallaComponent {
           next: (response) => {
             this.cargando.set(false);
             if (response.exitoso) {
+              NotifyX.success('Pantalla creada exitosamente', {
+                duration: 3000,
+                dismissible: true
+              });
               this.pantallasService.cargarPantallas();
+              this.cerrar();
               this.guardarExitoso.emit();
             }
           },

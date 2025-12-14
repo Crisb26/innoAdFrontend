@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { UsuariosAdminService, UsuarioAdmin, EstadisticasUsuarios } from '@core/servicios/usuarios-admin.servicio';
+import NotifyX from 'notifyx';
+import 'notifyx/style.css';
 
 @Component({
   selector: 'app-gestion-usuarios',
@@ -398,9 +400,22 @@ export class GestionUsuariosComponent implements OnInit {
       next: () => {
         usuario.activo = !usuario.activo;
         this.usuarios.update(usuarios => [...usuarios]);
+        const mensaje = usuario.activo 
+          ? `${usuario.nombreCompleto} ha sido activado`
+          : `${usuario.nombreCompleto} ha sido desactivado`;
+        NotifyX.success(mensaje, {
+          duration: 3000,
+          dismissible: true
+        });
         this.aplicarFiltros();
       },
-      error: (error) => console.error(`Error al ${accion} usuario:`, error)
+      error: (error) => {
+        NotifyX.error(`Error al ${accion} usuario`, {
+          duration: 3000,
+          dismissible: true
+        });
+        console.error(`Error al ${accion} usuario:`, error);
+      }
     });
   }
 
@@ -409,9 +424,19 @@ export class GestionUsuariosComponent implements OnInit {
       next: () => {
         usuario.verificado = true;
         this.usuarios.update(usuarios => [...usuarios]);
+        NotifyX.success(`${usuario.nombreCompleto} ha sido verificado correctamente`, {
+          duration: 3000,
+          dismissible: true
+        });
         this.aplicarFiltros();
       },
-      error: (error) => console.error('Error al verificar usuario:', error)
+      error: (error) => {
+        NotifyX.error('Error al verificar usuario', {
+          duration: 3000,
+          dismissible: true
+        });
+        console.error('Error al verificar usuario:', error);
+      }
     });
   }
 
@@ -435,10 +460,20 @@ export class GestionUsuariosComponent implements OnInit {
       next: () => {
         usuario.rol.nombre = this.nuevoRol;
         this.usuarios.update(usuarios => [...usuarios]);
+        NotifyX.success(`Rol de ${usuario.nombreCompleto} actualizado a ${this.nuevoRol}`, {
+          duration: 3000,
+          dismissible: true
+        });
         this.aplicarFiltros();
         this.cerrarModalEdicion();
       },
-      error: (error) => console.error('Error al cambiar rol:', error)
+      error: (error) => {
+        NotifyX.error('Error al cambiar el rol del usuario', {
+          duration: 3000,
+          dismissible: true
+        });
+        console.error('Error al cambiar rol:', error);
+      }
     });
   }
 
@@ -459,10 +494,20 @@ export class GestionUsuariosComponent implements OnInit {
     this.usuariosService.eliminarUsuario(usuario.id).subscribe({
       next: () => {
         this.usuarios.update(usuarios => usuarios.filter(u => u.id !== usuario.id));
+        NotifyX.error(`Usuario ${usuario.nombreCompleto} ha sido eliminado`, {
+          duration: 3000,
+          dismissible: true
+        });
         this.aplicarFiltros();
         this.cerrarModalEliminar();
       },
-      error: (error) => console.error('Error al eliminar usuario:', error)
+      error: (error) => {
+        NotifyX.error('Error al eliminar el usuario', {
+          duration: 3000,
+          dismissible: true
+        });
+        console.error('Error al eliminar usuario:', error);
+      }
     });
   }
 }
