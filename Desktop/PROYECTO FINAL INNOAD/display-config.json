@@ -1,0 +1,10 @@
+{
+  "id": "RPI-INNOAD-001",
+  "nombre": "Pantalla Lobby Principal",
+  "ubicacion": "Entrada",
+  "resolucion": "1920x1080",
+  "url_backend": "http://localhost:8080/api",
+  "token_api": "tu-token-jwt-aqui",
+  "intervalo_sincronizacion": 300,
+  "modo_simulacion": true
+}
