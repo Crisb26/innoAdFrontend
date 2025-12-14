@@ -265,12 +265,12 @@ export class EditarPerfilComponent implements OnInit {
       // Actualizar el usuario actual en el servicio
       this.servicioAuth.actualizarUsuarioActual(usuarioActualizado);
       
-      NotifyX.success('Perfil actualizado correctamente', {
+      NotifyX.success('✅ Guardó los cambios', {
         duration: 3000,
         dismissible: true
       });
       
-      this.mensajeExito.set('Perfil actualizado correctamente');
+      this.mensajeExito.set('✅ Guardó los cambios');
       
       // Cerrar modal después de 1.5 segundos
       setTimeout(() => {

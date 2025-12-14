@@ -27,6 +27,29 @@
   }
 }
 
+.seccion-bienvenida-hero {
+  text-align: center;
+  padding: 3rem 2rem;
+  margin-bottom: 2rem;
+
+  .titulo-bienvenida-hero {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #00d4ff 0%, #0099ff 50%, #9966ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 0 1rem 0;
+    text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+  }
+
+  .subtitulo-bienvenida-hero {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+  }
+}
+
 .contenido-principal {
   max-width: 1400px;
   margin: 0 auto;

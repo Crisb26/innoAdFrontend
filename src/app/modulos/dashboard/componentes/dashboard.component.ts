@@ -25,13 +25,16 @@ interface MetricaKPI {
     <app-navegacion-autenticada></app-navegacion-autenticada>
     
     <div class="dashboard-container">
+      <!-- Sección de Bienvenida Hero -->
+      <div class="seccion-bienvenida-hero">
+        <h1 class="titulo-bienvenida-hero">¡Bienvenido, {{ nombreUsuario() }}!</h1>
+        <p class="subtitulo-bienvenida-hero">Gestiona tu contenido digital de manera inteligente</p>
+      </div>
+
       <!-- Contenido Principal -->
       <div class="contenido-principal">
-        <!-- Saludo -->
+        <!-- Saludo vacío para mantener estructura -->
         <div class="seccion-saludo">
-          <h1 class="titulo-dashboard">¡Bienvenido, {{ nombreUsuario() }}!</h1>
-          <p class="subtitulo-dashboard">Gestiona tu contenido digital de manera inteligente</p>
-        </div>
 
         <!-- Grid de Tarjetas -->
         <div class="grid-tarjetas">

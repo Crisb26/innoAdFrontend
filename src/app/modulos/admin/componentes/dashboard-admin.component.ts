@@ -21,6 +21,12 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
   styleUrls: ['./dashboard-admin.component.scss'],
   template: `
     <div class="contenedor-dashboard-admin">
+      <!-- Sección de Bienvenida -->
+      <div class="seccion-bienvenida">
+        <h1 class="titulo-bienvenida">¡Bienvenido, {{ usuarioActual() }}!</h1>
+        <p class="subtitulo-bienvenida">Gestiona tu contenido digital de manera inteligente</p>
+      </div>
+
       <!-- Header Admin -->
       <div class="header-admin">
         <div class="titulo-admin">

@@ -1,8 +1,8 @@
 import { Component, inject, Input, Output, EventEmitter, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ServicioContenidos } from '@core/servicios/contenidos.servicio';
-import { Contenido, SolicitudSubirContenido, SolicitudActualizarContenido } from '@core/modelos';
+import { ServicioContenidos } from '../../../core/servicios/contenidos.servicio';
+import { Contenido, SolicitudSubirContenido, SolicitudActualizarContenido } from '../../../core/modelos';
 import NotifyX from 'notifyx';
 
 @Component({
@@ -248,7 +248,7 @@ export class FormularioContenidoComponent implements OnInit {
       };
 
       this.servicio.subir(solicitud).subscribe({
-        next: (evento) => {
+        next: (evento: any) => {
           if (evento.type === 4) {
             this.enviando.set(false);
             NotifyX.success('Contenido creado exitosamente', {
@@ -258,7 +258,7 @@ export class FormularioContenidoComponent implements OnInit {
             this.guardar.emit(evento.body);
           }
         },
-        error: (error) => {
+        error: (error: any) => {
           NotifyX.error('Error al crear el contenido', {
             duration: 3000,
             dismissible: true
@@ -276,7 +276,7 @@ export class FormularioContenidoComponent implements OnInit {
       };
 
       this.servicio.actualizar(solicitud).subscribe({
-        next: (contenido) => {
+        next: (contenido: any) => {
           this.enviando.set(false);
           NotifyX.success('Contenido actualizado exitosamente', {
             duration: 3000,
@@ -284,7 +284,7 @@ export class FormularioContenidoComponent implements OnInit {
           });
           this.guardar.emit(contenido);
         },
-        error: (error) => {
+        error: (error: any) => {
           NotifyX.error('Error al actualizar el contenido', {
             duration: 3000,
             dismissible: true

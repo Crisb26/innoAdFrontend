@@ -34,6 +34,29 @@
     margin-right: auto;
   }
 
+  .seccion-bienvenida {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 3rem 2rem;
+
+    .titulo-bienvenida {
+      font-size: 3.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #00d4ff 0%, #0099ff 50%, #9966ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0 0 1rem 0;
+      text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+    }
+
+    .subtitulo-bienvenida {
+      font-size: 1.3rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0;
+    }
+  }
+
     .header-admin {
       display: flex;
       justify-content: space-between;
