@@ -113,11 +113,11 @@ export class FormularioPantallaComponent {
     if (this.form.valid) {
       this.cargando.set(true);
       const solicitud: SolicitudPantalla = {
-        nombre: this.form.get('nombre')?.value,
-        ubicacion: this.form.get('ubicacion')?.value,
-        resolucion: this.form.get('resolucion')?.value,
+        nombre: this.form.get('nombre')?.value || '',
+        ubicacion: this.form.get('ubicacion')?.value || undefined,
+        resolucion: this.form.get('resolucion')?.value || undefined,
         orientacion: this.form.get('orientacion')?.value as 'HORIZONTAL' | 'VERTICAL',
-        descripcion: this.form.get('descripcion')?.value
+        descripcion: this.form.get('descripcion')?.value || undefined
       };
 
       if (this.esEdicion && this.pantalla) {

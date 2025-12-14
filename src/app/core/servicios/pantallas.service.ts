@@ -53,7 +53,7 @@ export interface RespuestaAPI<T> {
   providedIn: 'root'
 })
 export class PantallasService {
-  private apiUrl = `${environment.apiUrl}/api/v1/pantallas`;
+  private apiUrl = `${environment.api.baseUrl}/v1/pantallas`;
   
   // BehaviorSubject para mantener lista en tiempo real
   private pantallasSubject = new BehaviorSubject<RespuestaPantalla[]>([]);

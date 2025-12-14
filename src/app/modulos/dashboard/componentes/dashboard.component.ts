@@ -1,9 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
-import { ServicioEstadisticas } from '@core/servicios/estadisticas.servicio';
-import { NavegacionAutenticadaComponent } from '@shared/componentes/navegacion-autenticada.component';
+import { ServicioAutenticacion } from '../../../core/servicios/autenticacion.servicio';
+import { ServicioEstadisticas } from '../../../core/servicios/estadisticas.servicio';
+import { NavegacionAutenticadaComponent } from '../../../shared/componentes/navegacion-autenticada.component';
 
 interface MetricaKPI {
   nombre: string;

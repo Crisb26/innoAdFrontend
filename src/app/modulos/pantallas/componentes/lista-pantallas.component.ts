@@ -31,7 +31,6 @@ import { PantallasService, RespuestaPantalla } from '../../../core/servicios/pan
           type="text" 
           placeholder="Buscar pantalla..."
           [(ngModel)]="busqueda"
-          (input)="busqueda = $event"
           class="entrada-busqueda"
         >
         <div class="filtros">

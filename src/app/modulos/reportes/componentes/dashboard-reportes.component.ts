@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { NavegacionAutenticadaComponent } from '@shared/componentes/navegacion-autenticada.component';
+import { NavegacionAutenticadaComponent } from '../../../shared/componentes/navegacion-autenticada.component';
 
 @Component({
   selector: 'app-dashboard-reportes',
@@ -78,7 +78,7 @@ import { NavegacionAutenticadaComponent } from '@shared/componentes/navegacion-a
             <h3>Ingresos</h3>
             <span class="icono">dollar</span>
           </div>
-          <div class="kpi-valor">${{ metricas().ingresos }}K</div>
+          <div class="kpi-valor">\${{ metricas().ingresos }}K</div>
           <div class="kpi-cambio positivo">+25% esta semana</div>
         </div>
       </div>
@@ -179,7 +179,7 @@ import { NavegacionAutenticadaComponent } from '@shared/componentes/navegacion-a
             </div>
             <div class="resumen-item">
               <span class="label">Ingresos Totales</span>
-              <span class="valor">${{ metricas().ingresos }}K</span>
+              <span class="valor">\${{ metricas().ingresos }}K</span>
             </div>
           </div>
         </div>

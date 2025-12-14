@@ -4,12 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NavegacionAutenticadaComponent } from '@shared/componentes/navegacion-autenticada.component';
 import { ServicioContenidos } from '@core/servicios/contenidos.servicio';
-import { Contenido, FiltroContenidos, RespuestaPaginada } from '@core/modelos';
+import { Contenido, FiltroContenidos, RespuestaPaginada, TipoContenido } from '@core/modelos';
+import { FormularioContenidoComponent } from './formulario-contenido.component';
 
 @Component({
   selector: 'app-lista-contenidos',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, NavegacionAutenticadaComponent],
+  imports: [CommonModule, FormsModule, RouterLink, NavegacionAutenticadaComponent, FormularioContenidoComponent],
   styleUrls: ['./lista-contenidos.component.scss'],
   template: `
     <app-navegacion-autenticada></app-navegacion-autenticada>
@@ -61,13 +62,6 @@ import { Contenido, FiltroContenidos, RespuestaPaginada } from '@core/modelos';
           </button>
           <button 
             class="filtro-boton" 
-            [class.activo]="filtroTipo === 'texto'"
-            (click)="filtroTipo = 'texto'; aplicarFiltros()"
-          >
-            Texto
-          </button>
-          <button 
-            class="filtro-boton" 
             [class.activo]="filtroTipo === 'html'"
             (click)="filtroTipo = 'html'; aplicarFiltros()"
           >
@@ -104,18 +98,18 @@ import { Contenido, FiltroContenidos, RespuestaPaginada } from '@core/modelos';
                     <div class="icono-video">play</div>
                   </div>
                 }
-                @if (contenido.tipo === 'texto' || contenido.tipo === 'html') {
+                @if (contenido.tipo === 'html' || contenido.tipo === 'html-interactivo') {
                   <div class="texto-preview">
-                    <span class="icono-tipo">{{ contenido.tipo === 'html' ? 'code' : 'note' }}</span>
+                    <span class="icono-tipo">code</span>
                   </div>
                 }
                 
                 <div class="badges-contenido">
                   <span class="badge-tipo">{{ contenido.tipo | uppercase }}</span>
-                  @if (contenido.estado === 'activo') {
+                  @if (contenido.estado === 'disponible') {
                     <span class="badge-estado activo">Activo</span>
                   } @else {
-                    <span class="badge-estado inactivo">Inactivo</span>
+                    <span class="badge-estado inactivo">{{ contenido.estado }}</span>
                   }
                 </div>
               </div>
@@ -196,7 +190,7 @@ import { Contenido, FiltroContenidos, RespuestaPaginada } from '@core/modelos';
             </div>
             <app-formulario-contenido 
               [esNuevo]="false"
-              [contenido]="contenidoEnEdicion()"
+              [contenido]="contenidoEnEdicion() || undefined"
               (guardar)="guardarEdicion($event)"
               (cerrar)="cerrarEdicion()"
             ></app-formulario-contenido>
@@ -227,7 +221,7 @@ export class ListaContenidosComponent implements OnInit {
   contenidos = signal<Contenido[]>([]);
   cargando = signal(false);
   filtro = { pagina: 1, tamaño: 12, busqueda: '' };
-  filtroTipo: string = 'todos';
+  filtroTipo: TipoContenido | 'todos' = 'todos';
   totalPaginas = signal(1);
   totalElementos = signal(0);
 
@@ -247,7 +241,7 @@ export class ListaContenidosComponent implements OnInit {
       pagina: this.filtro.pagina,
       tamaño: this.filtro.tamaño,
       busqueda: this.filtro.busqueda,
-      tipo: this.filtroTipo === 'todos' ? undefined : this.filtroTipo,
+      tipo: this.filtroTipo === 'todos' ? undefined : this.filtroTipo as TipoContenido,
       categoria: undefined
     };
 

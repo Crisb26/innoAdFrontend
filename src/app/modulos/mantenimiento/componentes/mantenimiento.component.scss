@@ -50,12 +50,12 @@
 
 @for $i from 1 through 8 {
   .particula-#{$i} {
-    width: #{150 + $i * 30}px;
-    height: #{150 + $i * 30}px;
-    top: #{10 + $i * 11}%;
-    left: #{10 + $i * 9}%;
-    animation-delay: #{$i * 2}s;
-    opacity: #{0.3 + $i * 0.05};
+    width: calc(150px + #{$i} * 30px);
+    height: calc(150px + #{$i} * 30px);
+    top: calc(10% + #{$i} * 11%);
+    left: calc(10% + #{$i} * 9%);
+    animation-delay: calc(#{$i} * 2s);
+    opacity: calc(0.3 + #{$i} * 0.05);
   }
 }
 

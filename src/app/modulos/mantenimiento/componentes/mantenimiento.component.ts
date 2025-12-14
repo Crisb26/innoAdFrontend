@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ServicioMantenimiento } from '@core/servicios/mantenimiento.servicio';
+import { ServicioMantenimiento } from '../../../core/servicios/mantenimiento.servicio';
 
 interface InfoMantenimiento {
   activo: boolean;

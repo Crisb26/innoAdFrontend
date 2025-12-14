@@ -241,7 +241,9 @@ export class FormularioContenidoComponent implements OnInit {
         descripcion: this.formulario.get('descripcion')?.value,
         tipo: this.formulario.get('tipo')?.value,
         etiquetas: this.formulario.get('etiquetas')?.value?.split(',').map((e: string) => e.trim()) || [],
-        duracionSegundos: this.formulario.get('duracion')?.value || 30
+        categoria: 'general',
+        visibilidad: 'privado',
+        duracion: this.formulario.get('duracion')?.value || 30
       };
 
       this.servicio.subir(solicitud).subscribe({
