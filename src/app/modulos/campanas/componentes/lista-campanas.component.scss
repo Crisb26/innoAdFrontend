@@ -6,7 +6,7 @@
   bottom: 0;
   width: 100vw;
   min-height: 100vh;
-  padding: 24px;
+  padding: 5rem 24px 24px 24px;
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   color: #ffffff;
   overflow-y: auto;
@@ -39,8 +39,8 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 6rem;
-    padding-bottom: 3rem;
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
 
     > div {
       flex: 1;
