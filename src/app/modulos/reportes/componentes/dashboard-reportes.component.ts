@@ -2,6 +2,8 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { NavegacionAutenticadaComponent } from '../../../shared/componentes/navegacion-autenticada.component';
+import NotifyX from 'notifyx';
+import 'notifyx/style.css';
 
 @Component({
   selector: 'app-dashboard-reportes',
@@ -207,11 +209,17 @@ export class DashboardReportesComponent implements OnInit {
 
   exportarPDF() {
     console.log('Exportar PDF del periodo:', this.periodoSeleccionado);
-    alert('Descargando reporte PDF...');
+    NotifyX.success('Descargando reporte PDF...', {
+      duration: 3000,
+      dismissible: true
+    });
   }
 
   exportarCSV() {
     console.log('Exportar CSV del periodo:', this.periodoSeleccionado);
-    alert('Descargando reporte CSV...');
+    NotifyX.success('Descargando reporte CSV...', {
+      duration: 3000,
+      dismissible: true
+    });
   }
 }

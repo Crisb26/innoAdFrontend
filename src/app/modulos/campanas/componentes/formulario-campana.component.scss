@@ -112,6 +112,21 @@
           background-position: right 8px center;
           background-size: 20px;
           padding-right: 32px;
+          color: #e2e8f0;
+          background-color: #0f172a;
+          box-shadow: 0 0 12px rgba(0, 212, 255, 0.08) inset;
+        }
+
+        /* Mejora la visibilidad del menú desplegable */
+        select option {
+          background-color: #0f172a;
+          color: #e2e8f0;
+        }
+
+        /* Estado de foco más notorio */
+        select:focus {
+          border-color: #00d4ff;
+          box-shadow: 0 0 15px rgba(0, 212, 255, 0.25);
         }
 
         textarea {

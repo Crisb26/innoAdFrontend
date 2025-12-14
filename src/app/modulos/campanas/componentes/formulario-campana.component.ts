@@ -1,6 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import NotifyX from 'notifyx';
+import 'notifyx/style.css';
 
 @Component({
   selector: 'app-formulario-campana',
@@ -93,6 +95,12 @@ export class FormularioCampanaComponent {
   guardar() {
     if (this.form.valid) {
       console.log('Guardar campaña:', this.form.value);
+      // Mostrar notificación de éxito
+      NotifyX.success('Campaña creada exitosamente', {
+        duration: 3000,
+        dismissible: true
+      });
+      this.cerrar();
     }
   }
 
