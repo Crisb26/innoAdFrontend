@@ -13,7 +13,10 @@
 
   .detalle-modal {
     max-width: 600px;
-  }
+
+    @media (max-width: 420px) {
+      max-width: 95vw;
+    }
 
   .modal-header {
     padding: 20px 24px;

@@ -28,6 +28,10 @@
   position: relative;
   overflow: hidden;
   padding: 2rem;
+
+  @media (max-width: 420px) {
+    padding: 1rem;
+  }
 }
 
 .fondo-animado {

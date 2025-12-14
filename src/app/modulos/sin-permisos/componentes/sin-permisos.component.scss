@@ -4,6 +4,10 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
+
+  @media (max-width: 420px) {
+    padding: 1rem;
+  }
 }
 
 .tarjeta-sin-permisos {
@@ -23,6 +27,10 @@
   font-size: 2.5rem;
   color: var(--color-error);
   margin-bottom: 1rem;
+
+  @media (max-width: 420px) {
+    font-size: 1.8rem;
+  }
 }
 
 .mensaje-error {

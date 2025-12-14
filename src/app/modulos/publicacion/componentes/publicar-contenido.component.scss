@@ -12,6 +12,10 @@
   color: #ffffff;
   overflow-y: auto;
 
+  @media (max-width: 420px) {
+    padding: 1rem;
+  }
+
   &::-webkit-scrollbar {
     width: 10px;
   }

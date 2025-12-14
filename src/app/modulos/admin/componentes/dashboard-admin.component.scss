@@ -10,6 +10,10 @@
   padding: 2rem;
   overflow-y: auto;
 
+  @media (max-width: 420px) {
+    padding: 1rem;
+  }
+
   &::-webkit-scrollbar {
     width: 10px;
   }
@@ -36,7 +40,7 @@
 
   .seccion-bienvenida {
     text-align: center;
-    margin: 6rem 0 8rem 0;
+    margin: 10rem 0 8rem 0;
     padding: 8rem 2rem 7rem 2rem;
 
     .titulo-bienvenida {
@@ -57,6 +61,16 @@
     }
   }
 
+  @media (max-width: 420px) {
+    .seccion-bienvenida .titulo-bienvenida {
+      font-size: 2.2rem;
+    }
+
+    .seccion-bienvenida .subtitulo-bienvenida {
+      font-size: 1rem;
+    }
+  }
+
     .header-admin {
       display: flex;
       justify-content: space-between;
@@ -68,6 +82,15 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
+    @media (max-width: 420px) {
+      .header-admin {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+        gap: 1rem;
+      }
+    }
+
     .titulo-admin h1 {
       color: var(--color-texto, #ffffff);
       font-size: 2.5rem;
@@ -75,6 +98,12 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+    }
+
+    @media (max-width: 420px) {
+      .titulo-admin h1 {
+        font-size: 1.8rem;
+      }
     }
 
     .titulo-admin p {

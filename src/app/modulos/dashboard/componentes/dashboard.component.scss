@@ -9,6 +9,10 @@
   background: linear-gradient(135deg, var(--fondo-oscuro, #0f172a) 0%, var(--fondo-medio, #1e293b) 100%);
   overflow-y: auto;
 
+  @media (max-width: 420px) {
+    padding: 1rem;
+  }
+
   &::-webkit-scrollbar {
     width: 10px;
   }
@@ -30,7 +34,7 @@
 .seccion-bienvenida-hero {
   text-align: center;
   padding: 8rem 2rem 7rem 2rem;
-  margin: 6rem 0 8rem 0;
+  margin: 10rem 0 8rem 0;
 
   .titulo-bienvenida-hero {
     font-size: 3.5rem;
@@ -47,6 +51,16 @@
     font-size: 1.3rem;
     color: rgba(255, 255, 255, 0.7);
     margin: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .seccion-bienvenida-hero .titulo-bienvenida-hero {
+    font-size: 2.2rem;
+  }
+
+  .seccion-bienvenida-hero .subtitulo-bienvenida-hero {
+    font-size: 1rem;
   }
 }
 

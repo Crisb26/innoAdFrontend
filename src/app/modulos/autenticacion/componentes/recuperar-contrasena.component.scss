@@ -5,6 +5,10 @@
   justify-content: center;
   padding: 2rem;
   background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+
+  @media (max-width: 420px) {
+    padding: 1rem;
+  }
 }
 
 .tarjeta-recuperar {
