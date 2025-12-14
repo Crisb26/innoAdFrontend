@@ -5,7 +5,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import NotifyX from 'notifyx';
-import 'notifyx/style.css';
 
 interface MensajeChat {
   id: number;

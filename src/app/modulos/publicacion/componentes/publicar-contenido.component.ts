@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import NotifyX from 'notifyx';
-import 'notifyx/style.css';
 
 @Component({
   selector: 'app-publicar-contenido',

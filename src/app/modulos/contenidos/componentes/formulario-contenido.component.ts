@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { ServicioContenidos } from '@core/servicios/contenidos.servicio';
 import { Contenido, SolicitudSubirContenido, SolicitudActualizarContenido } from '@core/modelos';
 import NotifyX from 'notifyx';
-import 'notifyx/style.css';
 
 @Component({
   selector: 'app-formulario-contenido',
