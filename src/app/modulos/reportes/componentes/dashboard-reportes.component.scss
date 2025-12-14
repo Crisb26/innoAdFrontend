@@ -39,7 +39,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-top: 10rem;
+    margin-top: 12rem;
     margin-bottom: 3rem;
     padding-bottom: 1.5rem;
     flex-wrap: wrap;
@@ -410,15 +410,37 @@
   }
 
   @media (max-width: 420px) {
-    padding: 17rem 12px 14px 12px;
+    padding: 18rem 12px 14px 12px;
 
     .header-reportes {
-      > div h1 {
-        font-size: 19px;
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      gap: 8px;
+
+      > div {
+        min-width: 150px;
+
+        h1 {
+          font-size: 1.6rem;
+          margin-bottom: 4px;
+        }
+
+        p {
+          font-size: 0.75rem;
+        }
       }
 
-      > div p {
-        font-size: 10px;
+      .controles-periodo {
+        gap: 6px;
+        min-width: 100%;
+
+        button {
+          padding: 8px 10px;
+          font-size: 0.65rem;
+          white-space: nowrap;
+          flex: 1;
+          min-width: 50px;
+        }
       }
     }
   }

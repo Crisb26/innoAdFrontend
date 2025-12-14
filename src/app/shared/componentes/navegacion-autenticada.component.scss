@@ -416,6 +416,31 @@
       .dropdown-menu {
         right: 0;
         min-width: 200px;
+        max-width: 85vw;
+
+        .dropdown-header {
+          gap: 0.5rem;
+          padding: 0.75rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .dropdown-avatar {
+          width: 40px;
+          height: 40px;
+        }
+
+        .dropdown-user-info h3 {
+          font-size: 0.85rem;
+        }
+
+        .dropdown-user-info p {
+          font-size: 0.7rem;
+        }
+
+        .dropdown-item {
+          padding: 0.5rem 0.75rem;
+          font-size: 0.8rem;
+        }
       }
     }
 
