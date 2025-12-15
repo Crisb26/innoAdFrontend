@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 export interface Usuario {
   id: number;
@@ -18,29 +15,44 @@ export class PermisosServicio {
   private usuarioActual$ = new BehaviorSubject<Usuario | null>(null);
   private rolesActuales$ = new BehaviorSubject<string[]>([]);
   private permisosActuales$ = new BehaviorSubject<string[]>([]);
+  private readonly USUARIO_KEY = 'innoad_usuario';
 
-  constructor(private http: HttpClient) {
+  constructor() {
     this.cargarUsuarioActual();
   }
 
   /**
-   * Cargar usuario actual y sus permisos
+   * Cargar usuario actual desde localStorage/sessionStorage
    */
   cargarUsuarioActual(): void {
-    this.http.get<Usuario>('/api/auth/usuario-actual')
-      .pipe(
-        tap(usuario => {
-          this.usuarioActual$.next(usuario);
-          this.rolesActuales$.next(usuario.roles || []);
-          this.cargarPermisos();
-        }),
-        catchError(() => {
-          this.usuarioActual$.next(null);
-          this.rolesActuales$.next([]);
-          return of(null);
-        })
-      )
-      .subscribe();
+    const usuarioJson = localStorage.getItem(this.USUARIO_KEY) || 
+                       sessionStorage.getItem(this.USUARIO_KEY);
+    
+    if (usuarioJson) {
+      try {
+        const usuario = JSON.parse(usuarioJson);
+        this.usuarioActual$.next(usuario);
+        
+        // Extraer roles del usuario (manejar tanto 'rol' como 'roles')
+        let roles: string[] = [];
+        if (usuario.roles && Array.isArray(usuario.roles)) {
+          roles = usuario.roles;
+        } else if (usuario.rol) {
+          // Si es un único rol, convertir a array
+          roles = typeof usuario.rol === 'string' ? [usuario.rol] : [];
+        }
+        
+        this.rolesActuales$.next(roles);
+        this.cargarPermisos();
+      } catch (error) {
+        console.error('Error al cargar usuario desde storage:', error);
+        this.usuarioActual$.next(null);
+        this.rolesActuales$.next([]);
+      }
+    } else {
+      this.usuarioActual$.next(null);
+      this.rolesActuales$.next([]);
+    }
   }
 
   /**
