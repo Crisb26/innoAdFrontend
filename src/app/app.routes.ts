@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { guardAutenticacion } from './core/guards/autenticacion.guard';
 import { RolGuard } from './core/guards/rol.guard';
 
+// Rutas de la aplicación InnoAd - Fase 4 completada
 export const routes: Routes = [
   // Rutas públicas
   {
