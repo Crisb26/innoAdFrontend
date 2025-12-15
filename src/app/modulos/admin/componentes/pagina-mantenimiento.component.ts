@@ -181,7 +181,7 @@ export class PaginaMantenimientoComponent implements OnInit {
   nuevoMensaje = '';
   confirmarActivacion = false;
 
-  private apiUrl = `${environment.apiUrl}/api/mantenimiento`;
+  private apiUrl = `${environment.api.baseUrl}/mantenimiento`;
 
   ngOnInit() {
     this.cargarEstado();
