@@ -6,6 +6,7 @@ import { GestionUsuariosComponent } from './gestion-usuarios.component';
 import { LogsAuditoriaComponent } from './logs-auditoria.component';
 import { MonitoreoSistemaComponent } from './monitoreo-sistema.component';
 import { GestionRolesComponent } from './gestion-roles.component';
+import { PaginaMantenimientoComponent } from './pagina-mantenimiento.component';
 import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
 
 @Component({
@@ -18,7 +19,8 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
     GestionUsuariosComponent,
     LogsAuditoriaComponent,
     MonitoreoSistemaComponent,
-    GestionRolesComponent
+    GestionRolesComponent,
+    PaginaMantenimientoComponent
   ],
   styleUrls: ['./dashboard-admin.component.scss'],
   template: `
@@ -82,6 +84,13 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
           (click)="cambiarPestana('roles')"
         >
           🔐 Roles
+        </button>
+        <button 
+          class="pestana" 
+          [class.activa]="pestanaActiva() === 'mantenimiento'"
+          (click)="cambiarPestana('mantenimiento')"
+        >
+          ⚙️ Mantenimiento
         </button>
       </div>
 
@@ -297,6 +306,10 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
     @if (pestanaActiva() === 'roles') {
       <app-gestion-roles></app-gestion-roles>
     }
+
+    @if (pestanaActiva() === 'mantenimiento') {
+      <app-pagina-mantenimiento></app-pagina-mantenimiento>
+    }
   </div>
 </div>
   `
@@ -313,7 +326,7 @@ export class DashboardAdminComponent implements OnInit {
   protected readonly logsRecientes = signal(23);
   
   // Control de pestañas
-  protected readonly pestanaActiva = signal<'dashboard' | 'usuarios' | 'logs' | 'monitoreo' | 'roles'>('dashboard');
+  protected readonly pestanaActiva = signal<'dashboard' | 'usuarios' | 'logs' | 'monitoreo' | 'roles' | 'mantenimiento'>('dashboard');
 
   ngOnInit(): void {
     // Cargar datos del usuario actual
@@ -324,7 +337,7 @@ export class DashboardAdminComponent implements OnInit {
     this.cargarEstadisticas();
   }
 
-  protected cambiarPestana(pestana: 'dashboard' | 'usuarios' | 'logs' | 'monitoreo' | 'roles'): void {
+  protected cambiarPestana(pestana: 'dashboard' | 'usuarios' | 'logs' | 'monitoreo' | 'roles' | 'mantenimiento'): void {
     this.pestanaActiva.set(pestana);
   }
 
