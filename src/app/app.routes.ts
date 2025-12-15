@@ -26,7 +26,7 @@ export const routes: Routes = [
   // Rutas protegidas
   {
     path: 'dashboard',
-    redirectTo: 'campanas',
+    redirectTo: 'inicio',
     pathMatch: 'full'
   },
 
