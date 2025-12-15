@@ -5,6 +5,7 @@ import { ControlMantenimientoComponent } from './control-mantenimiento.component
 import { GestionUsuariosComponent } from './gestion-usuarios.component';
 import { LogsAuditoriaComponent } from './logs-auditoria.component';
 import { MonitoreoSistemaComponent } from './monitoreo-sistema.component';
+import { GestionRolesComponent } from './gestion-roles.component';
 import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
 
 @Component({
@@ -16,7 +17,8 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
     ControlMantenimientoComponent,
     GestionUsuariosComponent,
     LogsAuditoriaComponent,
-    MonitoreoSistemaComponent
+    MonitoreoSistemaComponent,
+    GestionRolesComponent
   ],
   styleUrls: ['./dashboard-admin.component.scss'],
   template: `
@@ -73,6 +75,13 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
           (click)="cambiarPestana('monitoreo')"
         >
           🖥️ Monitoreo
+        </button>
+        <button 
+          class="pestana" 
+          [class.activa]="pestanaActiva() === 'roles'"
+          (click)="cambiarPestana('roles')"
+        >
+          🔐 Roles
         </button>
       </div>
 
@@ -284,6 +293,10 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
     @if (pestanaActiva() === 'monitoreo') {
       <app-monitoreo-sistema></app-monitoreo-sistema>
     }
+
+    @if (pestanaActiva() === 'roles') {
+      <app-gestion-roles></app-gestion-roles>
+    }
   </div>
 </div>
   `
@@ -300,7 +313,7 @@ export class DashboardAdminComponent implements OnInit {
   protected readonly logsRecientes = signal(23);
   
   // Control de pestañas
-  protected readonly pestanaActiva = signal<'dashboard' | 'usuarios' | 'logs' | 'monitoreo'>('dashboard');
+  protected readonly pestanaActiva = signal<'dashboard' | 'usuarios' | 'logs' | 'monitoreo' | 'roles'>('dashboard');
 
   ngOnInit(): void {
     // Cargar datos del usuario actual
@@ -311,7 +324,7 @@ export class DashboardAdminComponent implements OnInit {
     this.cargarEstadisticas();
   }
 
-  protected cambiarPestana(pestana: 'dashboard' | 'usuarios' | 'logs' | 'monitoreo'): void {
+  protected cambiarPestana(pestana: 'dashboard' | 'usuarios' | 'logs' | 'monitoreo' | 'roles'): void {
     this.pestanaActiva.set(pestana);
   }
 

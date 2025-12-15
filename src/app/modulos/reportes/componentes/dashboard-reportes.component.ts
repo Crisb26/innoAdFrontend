@@ -207,18 +207,110 @@ export class DashboardReportesComponent implements OnInit {
   }
 
   exportarPDF() {
-    console.log('Exportar PDF del periodo:', this.periodoSeleccionado);
-    NotifyX.success('Descargando reporte PDF...', {
-      duration: 3000,
-      dismissible: true
-    });
+    try {
+      const doc = new (window as any).jspdf.jsPDF();
+      const titulo = `Reporte de ${this.periodoSeleccionado}`;
+      const fecha = new Date().toLocaleDateString('es-CO');
+      
+      // Encabezado
+      doc.setFillColor(30, 41, 59); // Color del tema
+      doc.rect(0, 0, 210, 30, 'F');
+      doc.setTextColor(0, 212, 255);
+      doc.setFontSize(18);
+      doc.text(titulo, 15, 20);
+      doc.setFontSize(10);
+      doc.text(`Fecha: ${fecha}`, 15, 26);
+      
+      // Contenido
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(12);
+      let y = 50;
+      
+      // Métricas principales
+      doc.text('MÉTRICAS PRINCIPALES', 15, y);
+      y += 10;
+      
+      const metricas = [
+        `Reproducciones: ${this.metricas().reproducciones}`,
+        `Usuarios Activos: ${this.metricas().usuariosActivos}`,
+        `Contenidos: ${this.metricas().contenidos}`,
+        `Ingresos: $${this.metricas().ingresos}K`
+      ];
+      
+      metricas.forEach((metrica) => {
+        doc.text(metrica, 20, y);
+        y += 10;
+      });
+      
+      y += 10;
+      doc.text('Periodo seleccionado: ' + this.periodoSeleccionado.toUpperCase(), 15, y);
+      
+      // Footer
+      const totalPages = doc.internal.getNumberOfPages();
+      for (let i = 1; i <= totalPages; i++) {
+        doc.setPage(i);
+        doc.setFontSize(9);
+        doc.text(
+          `Página ${i} de ${totalPages}`,
+          doc.internal.pageSize.getWidth() / 2,
+          doc.internal.pageSize.getHeight() - 10,
+          { align: 'center' }
+        );
+      }
+      
+      doc.save(`Reporte_${this.periodoSeleccionado}_${new Date().getTime()}.pdf`);
+      
+      NotifyX.success('Reporte PDF descargado exitosamente', {
+        duration: 3000,
+        dismissible: true
+      });
+    } catch (error) {
+      console.error('Error generando PDF:', error);
+      NotifyX.error('Error al descargar el PDF. Intenta nuevamente.', {
+        duration: 3000,
+        dismissible: true
+      });
+    }
   }
 
   exportarCSV() {
-    console.log('Exportar CSV del periodo:', this.periodoSeleccionado);
-    NotifyX.success('Descargando reporte CSV...', {
-      duration: 3000,
-      dismissible: true
-    });
+    try {
+      const metricas = this.metricas();
+      const csv = [
+        ['Métrica', 'Valor'],
+        ['Reproducciones', metricas.reproducciones.toString()],
+        ['Usuarios Activos', metricas.usuariosActivos.toString()],
+        ['Contenidos', metricas.contenidos.toString()],
+        ['Ingresos', `$${metricas.ingresos}K`],
+        [],
+        ['Período', this.periodoSeleccionado],
+        ['Fecha de Exportación', new Date().toLocaleDateString('es-CO')]
+      ]
+        .map(row => row.join(','))
+        .join('\n');
+      
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      
+      link.setAttribute('href', url);
+      link.setAttribute('download', `Reporte_${this.periodoSeleccionado}_${new Date().getTime()}.csv`);
+      link.style.visibility = 'hidden';
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      NotifyX.success('Reporte CSV descargado exitosamente', {
+        duration: 3000,
+        dismissible: true
+      });
+    } catch (error) {
+      console.error('Error generando CSV:', error);
+      NotifyX.error('Error al descargar el CSV. Intenta nuevamente.', {
+        duration: 3000,
+        dismissible: true
+      });
+    }
   }
 }

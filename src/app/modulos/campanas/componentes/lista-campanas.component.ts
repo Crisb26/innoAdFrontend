@@ -118,7 +118,10 @@ import { FormularioCampanaComponent } from './formulario-campana.component';
     </div>
 
     @if (mostrarFormulario()) {
-      <app-formulario-campana></app-formulario-campana>
+      <app-formulario-campana 
+        (campaniaCreada)="onCampaniaCreada($event)"
+        (cerrarModal)="mostrarFormulario.set(false)"
+      ></app-formulario-campana>
     }
   `
 })
@@ -160,6 +163,15 @@ export class ListaCampanasComponent implements OnInit {
 
   ngOnInit() {
     setTimeout(() => this.cargando.set(false), 500);
+  }
+
+  onCampaniaCreada(campana: any) {
+    const nuevaCampana = {
+      ...campana,
+      id: Date.now().toString(),
+      estado: 'programada'
+    };
+    this.campanas.update(c => [...c, nuevaCampana]);
   }
 
   aplicarFiltros() {}

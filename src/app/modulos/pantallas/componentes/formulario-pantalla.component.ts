@@ -164,6 +164,7 @@ export class FormularioPantallaComponent {
   }
 
   cerrar() {
+    if (this.cargando()) return; // Evitar cerrar mientras se guarda
     this.guardarExitoso.emit();
   }
 }

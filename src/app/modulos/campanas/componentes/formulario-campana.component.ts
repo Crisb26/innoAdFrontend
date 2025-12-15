@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import NotifyX from 'notifyx';
@@ -81,7 +81,11 @@ import NotifyX from 'notifyx';
   styleUrls: ['./formulario-campana.component.scss']
 })
 export class FormularioCampanaComponent {
-  fb = new FormBuilder();
+  @Output() campaniaCreada = new EventEmitter<any>();
+  @Output() cerrarModal = new EventEmitter<void>();
+  
+  private readonly fb = inject(FormBuilder);
+  guardando = signal(false);
   
   form = this.fb.group({
     nombre: ['', Validators.required],
@@ -93,17 +97,18 @@ export class FormularioCampanaComponent {
 
   guardar() {
     if (this.form.valid) {
-      console.log('Guardar campaña:', this.form.value);
-      // Mostrar notificación de éxito
+      this.guardando.set(true);
       NotifyX.success('Campaña creada exitosamente', {
         duration: 3000,
         dismissible: true
       });
-      this.cerrar();
+      this.campaniaCreada.emit(this.form.value);
+      setTimeout(() => this.cerrar(), 500);
     }
   }
 
   cerrar() {
-    console.log('Cerrar formulario');
+    this.guardando.set(false);
+    this.cerrarModal.emit();
   }
 }
