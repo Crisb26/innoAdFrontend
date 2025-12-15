@@ -27,7 +27,7 @@ export const routes: Routes = [
   // Rutas protegidas
   {
     path: 'dashboard',
-    redirectTo: 'inicio',
+    redirectTo: '',
     pathMatch: 'full'
   },
 
