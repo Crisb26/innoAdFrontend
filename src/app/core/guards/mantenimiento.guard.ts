@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { ServicioMantenimiento } from '@core/servicios/mantenimiento.servicio';
+import { AdminService } from '@core/servicios/admin.service';
+import { AutenticacionServicio } from '../../modulos/autenticacion/servicios/autenticacion.servicio';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -9,34 +10,33 @@ import { of } from 'rxjs';
 })
 export class GuardMantenimiento implements CanActivate {
   private router = inject(Router);
-  private servicioMantenimiento = inject(ServicioMantenimiento);
+  private adminService = inject(AdminService);
+  private autenticacionServicio = inject(AutenticacionServicio);
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     // Si es la ruta de mantenimiento, permitir
-    if (state.url.includes('mantenimiento')) {
+    if (state.url.includes('/mantenimiento') || state.url.includes('admin/mantenimiento')) {
       return true;
     }
 
-    // Verificar si hay acceso de admin guardado
-    const adminMantenimiento = localStorage.getItem('admin_mantenimiento');
-    if (adminMantenimiento === 'true') {
+    // Obtener usuario actual
+    const usuarioActual = this.autenticacionServicio.obtenerUsuarioActual();
+    const esAdmin = usuarioActual?.roles?.includes('ADMIN') || usuarioActual?.rol === 'ADMIN';
+
+    // Si es admin, permitir siempre
+    if (esAdmin) {
       return true;
     }
 
-    // Verificar estado del mantenimiento
-    return this.servicioMantenimiento.obtenerEstado().pipe(
-      map((estado) => {
-        if (estado.datos) {
-          // Está en mantenimiento, redirigir
-          this.router.navigate(['/mantenimiento']);
-          return false;
-        }
-        return true;
-      }),
-      catchError(() => {
-        // Si hay error al obtener estado, permitir el acceso
-        return of(true);
-      })
-    );
+    // Verificar si el modo mantenimiento está activo
+    const esMantenimiento = this.adminService.esMantenimientoActivo();
+    if (esMantenimiento) {
+      // Redirigir a página de mantenimiento
+      this.router.navigate(['/mantenimiento']);
+      return false;
+    }
+
+    return true;
   }
 }
+

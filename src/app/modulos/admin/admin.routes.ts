@@ -7,6 +7,6 @@ export const routes: Routes = [
   },
   {
     path: 'mantenimiento',
-    loadComponent: () => import('./componentes/control-mantenimiento.component').then(m => m.ControlMantenimientoComponent)
+    loadComponent: () => import('./componentes/modo-mantenimiento/modo-mantenimiento.component').then(m => m.ModoMantenimientoComponent)
   }
 ];

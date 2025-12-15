@@ -133,8 +133,8 @@ export const routes: Routes = [
   // Mantenimiento
   {
     path: 'mantenimiento',
-    loadComponent: () => import('./modulos/mantenimiento/componentes/mantenimiento.component')
-      .then(m => m.MantenimientoComponent)
+    loadComponent: () => import('./modulos/pantallas/componentes/pagina-mantenimiento/pagina-mantenimiento.component')
+      .then(m => m.PaginaMantenimientoComponent)
   },
 
   // Ruta por defecto
