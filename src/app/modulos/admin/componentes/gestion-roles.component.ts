@@ -34,7 +34,6 @@ const PERMISOS_DISPONIBLES = [
   selector: 'app-gestion-roles',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  styleUrls: ['./gestion-roles.component.scss'],
   template: `
     <div class="contenedor-roles">
       <div class="header-roles">

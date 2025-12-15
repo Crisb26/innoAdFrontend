@@ -47,13 +47,13 @@ export const routes: Routes = [
   },
 
   // Panel desarrollador - DEVELOPER
-  {
-    path: 'developer',
-    loadComponent: () => import('./modulos/dashboard/componentes/developer-dashboard.component')
-      .then(m => m.DeveloperDashboardComponent),
-    canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['DEVELOPER'] }
-  },
+  // {
+  //   path: 'developer',
+  //   loadComponent: () => import('./modulos/dashboard/componentes/developer-dashboard.component')
+  //     .then(m => m.DeveloperDashboardComponent),
+  //   canActivate: [guardAutenticacion, RolGuard],
+  //   data: { roles: ['DEVELOPER'] }
+  // },
 
   // Campañas
   {
@@ -88,12 +88,12 @@ export const routes: Routes = [
   },
 
   // Publicación
-  {
-    path: 'publicacion',
-    loadChildren: () => import('./modulos/publicacion/publicacion.routes').then(m => m.routes),
-    canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['USUARIO', 'ADMIN', 'TECNICO'] }
-  },
+  // {
+  //   path: 'publicacion',
+  //   loadChildren: () => import('./modulos/publicacion/publicacion.routes').then(m => m.routes),
+  //   canActivate: [guardAutenticacion, RolGuard],
+  //   data: { roles: ['USUARIO', 'ADMIN', 'TECNICO'] }
+  // },
 
   // Usuario - USUARIO
   {
@@ -104,11 +104,11 @@ export const routes: Routes = [
   },
 
   // Chat
-  {
-    path: 'chat',
-    loadChildren: () => import('./modulos/chat/chat.routes').then(m => m.routes),
-    canActivate: [guardAutenticacion]
-  },
+  // {
+  //   path: 'chat',
+  //   loadChildren: () => import('./modulos/chat/chat.routes').then(m => m.routes),
+  //   canActivate: [guardAutenticacion]
+  // },
 
   // IA
   {
