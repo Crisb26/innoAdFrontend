@@ -1,14 +1,13 @@
 import { Routes } from '@angular/router';
-// import { ChatListaComponent } from './componentes/chat-lista.component';
-// import { ChatDetalleComponent } from './componentes/chat-detalle.component';
+import { RolGuard } from '../../core/guards/rol.guard';
 
 export const routes: Routes = [
-  // {
-  //   path: '',
-  //   component: ChatListaComponent
-  // },
-  // {
-  //   path: ':id',
-  //   component: ChatDetalleComponent
-  // }
+  {
+    path: '',
+    loadComponent: () => import('./componentes/chat-lista.component').then(m => m.ChatListaComponent),
+    canActivate: [RolGuard],
+    data: { 
+      rolesRequeridos: ['ADMINISTRADOR', 'TECNICO', 'USUARIO', 'DESARROLLADOR']
+    }
+  }
 ];
