@@ -117,7 +117,7 @@ export class ServicioAutenticacion {
   constructor() {
     this.inicializarRefrescoAutomaticoToken();
     this.inicializarMonitoreoSeguridad();
-    this.cargarSesionesActivas();
+    // this.cargarSesionesActivas(); // Deshabilitado - endpoint no implementado en backend
     this.configurarInterceptores();
   }
   
@@ -681,7 +681,10 @@ export class ServicioAutenticacion {
   private cargarSesionesActivas(): void {
     if (this.estaAutenticado()) {
       this.obtenerSesionesActivas().subscribe({
-        error: (error) => console.warn('No se pudieron cargar las sesiones activas:', error)
+        error: (error) => {
+          // Silenciosamente ignorar el error si el endpoint no existe
+          console.debug('Endpoint de sesiones activas no disponible:', error);
+        }
       });
     }
   }
