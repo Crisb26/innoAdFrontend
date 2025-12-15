@@ -27,8 +27,7 @@ export const routes: Routes = [
   // Rutas protegidas
   {
     path: 'dashboard',
-    redirectTo: '',
-    pathMatch: 'full'
+    loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes)
   },
 
   // Panel administrativo - ADMIN
@@ -40,21 +39,17 @@ export const routes: Routes = [
   },
 
   // Panel técnico - TECNICO
-  // {
-  //   path: 'tecnico',
-  //   loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes),
-  //   canActivate: [guardAutenticacion, RolGuard],
-  //   data: { roles: ['TECNICO'] }
-  // },
+  {
+    path: 'tecnico',
+    loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes)
+  },
 
   // Panel desarrollador - DEVELOPER
-  // {
-  //   path: 'developer',
-  //   loadComponent: () => import('./modulos/dashboard/componentes/developer-dashboard.component')
-  //     .then(m => m.DeveloperDashboardComponent),
-  //   canActivate: [guardAutenticacion, RolGuard],
-  //   data: { roles: ['DEVELOPER'] }
-  // },
+  {
+    path: 'developer',
+    loadComponent: () => import('./modulos/dashboard/componentes/developer-dashboard.component')
+      .then(m => m.DeveloperDashboardComponent)
+  },
 
   // Campañas
   {
@@ -105,17 +100,27 @@ export const routes: Routes = [
   // },
 
   // Chat
-  // {
-  //   path: 'chat',
-  //   loadChildren: () => import('./modulos/chat/chat.routes').then(m => m.routes),
-  //   canActivate: [guardAutenticacion]
-  // },
+  {
+    path: 'chat',
+    loadChildren: () => import('./modulos/chat/chat.routes').then(m => m.routes)
+  },
 
   // IA
   {
     path: 'asistente-ia',
-    loadChildren: () => import('./modulos/asistente-ia/asistente-ia.routes').then(m => m.routes),
-    canActivate: [guardAutenticacion]
+    loadChildren: () => import('./modulos/asistente-ia/asistente-ia.routes').then(m => m.routes)
+  },
+
+  // Usuario - USUARIO
+  {
+    path: 'usuario',
+    loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes)
+  },
+
+  // Publicación
+  {
+    path: 'publicacion',
+    loadChildren: () => import('./modulos/publicacion/publicacion.routes').then(m => m.routes)
   },
 
   // Sin permisos
