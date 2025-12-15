@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { PermisosServicio } from '../../core/servicios/permisos.servicio';
+import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
 
 @Component({
   selector: 'app-developer-dashboard',

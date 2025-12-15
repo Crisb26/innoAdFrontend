@@ -208,7 +208,12 @@ export class DashboardReportesComponent implements OnInit {
 
   exportarPDF() {
     try {
-      const doc = new (window as any).jspdf.jsPDF();
+      const jsPDF = (window as any).jsPDF;
+      if (!jsPDF) {
+        throw new Error('jsPDF no está disponible. Por favor, recarga la página.');
+      }
+
+      const doc = new jsPDF.jsPDF();
       const titulo = `Reporte de ${this.periodoSeleccionado}`;
       const fecha = new Date().toLocaleDateString('es-CO');
       
@@ -266,7 +271,7 @@ export class DashboardReportesComponent implements OnInit {
       });
     } catch (error) {
       console.error('Error generando PDF:', error);
-      NotifyX.error('Error al descargar el PDF. Intenta nuevamente.', {
+      NotifyX.error(`Error al descargar el PDF: ${error instanceof Error ? error.message : 'Error desconocido'}`, {
         duration: 3000,
         dismissible: true
       });
