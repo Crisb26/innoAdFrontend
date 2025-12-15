@@ -24,11 +24,11 @@ export const routes: Routes = [
   },
 
   // Rutas protegidas
-  {
-    path: 'dashboard',
-    loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes),
-    canActivate: [guardAutenticacion]
-  },
+  // {
+  //   path: 'dashboard',
+  //   loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes),
+  //   canActivate: [guardAutenticacion]
+  // },
 
   // Panel administrativo - ADMIN
   {
@@ -39,12 +39,12 @@ export const routes: Routes = [
   },
 
   // Panel técnico - TECNICO
-  {
-    path: 'tecnico',
-    loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes),
-    canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['TECNICO'] }
-  },
+  // {
+  //   path: 'tecnico',
+  //   loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes),
+  //   canActivate: [guardAutenticacion, RolGuard],
+  //   data: { roles: ['TECNICO'] }
+  // },
 
   // Panel desarrollador - DEVELOPER
   // {
@@ -96,12 +96,12 @@ export const routes: Routes = [
   // },
 
   // Usuario - USUARIO
-  {
-    path: 'usuario',
-    loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes),
-    canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['USUARIO'] }
-  },
+  // {
+  //   path: 'usuario',
+  //   loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes),
+  //   canActivate: [guardAutenticacion, RolGuard],
+  //   data: { roles: ['USUARIO'] }
+  // },
 
   // Chat
   // {
