@@ -95,6 +95,14 @@ export const routes: Routes = [
     data: { roles: ['USUARIO', 'ADMIN', 'TECNICO'] }
   },
 
+  // Usuario - USUARIO
+  {
+    path: 'usuario',
+    loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes),
+    canActivate: [guardAutenticacion, RolGuard],
+    data: { roles: ['USUARIO'] }
+  },
+
   // Chat
   {
     path: 'chat',

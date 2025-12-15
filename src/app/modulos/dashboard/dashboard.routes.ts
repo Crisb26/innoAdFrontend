@@ -8,5 +8,9 @@ export const routes: Routes = [
   {
     path: 'graficos',
     loadComponent: () => import('./componentes/graficos-analytics/graficos-analytics.component').then(m => m.GraficosAnalyticsComponent)
+  },
+  {
+    path: 'usuario',
+    loadComponent: () => import('./componentes/usuario-dashboard.component').then(m => m.UsuarioDashboardComponent)
   }
 ];
