@@ -45,11 +45,12 @@ export const routes: Routes = [
   },
 
   // Panel desarrollador - DEVELOPER
-  {
-    path: 'developer',
-    loadComponent: () => import('./modulos/dashboard/componentes/developer-dashboard.component')
-      .then(m => m.DeveloperDashboardComponent)
-  },
+  // COMMENTED: developer-dashboard component has CSS parsing errors
+  // {
+  //   path: 'developer',
+  //   loadComponent: () => import('./modulos/dashboard/componentes/developer-dashboard.component')
+  //     .then(m => m.DeveloperDashboardComponent)
+  // },
 
   // Campañas
   {

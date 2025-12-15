@@ -29,7 +29,7 @@ import { CommonModule } from '@angular/common';
         </div>
         
         <div class="footer">
-          <p>Si tienes alguna pregunta, contacta a: <strong>support@innoad.com</strong></p>
+          <p>Si tienes alguna pregunta, contacta a: <strong>support&#64;innoad.com</strong></p>
           <p class="reload-info">
             <em>Actualiza la página en unos minutos para ver si ya estamos disponibles.</em>
           </p>
