@@ -1,0 +1,213 @@
+<div class="usuario-dashboard-container">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <h1>👤 Panel de Usuario</h1>
+      <p class="subtitulo">Gestiona tus publicidades y seguimiento</p>
+    </div>
+    <button class="btn-logout" (click)="logout()">Cerrar Sesión</button>
+  </header>
+
+  <!-- Navegación rápida -->
+  <nav class="quick-nav">
+    <a routerLink="/publicacion/seleccionar-ubicaciones" class="nav-link activo">
+      <span class="icono">✨</span>
+      <span>Crear Publicidad</span>
+    </a>
+    <a routerLink="/usuario/mis-publicidades" class="nav-link">
+      <span class="icono">📋</span>
+      <span>Mis Publicidades</span>
+    </a>
+    <a routerLink="/usuario/estadisticas" class="nav-link">
+      <span class="icono">📊</span>
+      <span>Estadísticas</span>
+    </a>
+    <a routerLink="/usuario/facturacion" class="nav-link">
+      <span class="icono">💳</span>
+      <span>Facturación</span>
+    </a>
+  </nav>
+
+  <!-- Contenido principal -->
+  <main class="contenido-principal">
+    <!-- Tarjetas de acción rápida -->
+    <section class="seccion-acciones">
+      <h2>🚀 Acciones Rápidas</h2>
+      <div class="acciones-grid">
+        <!-- Crear nueva publicidad -->
+        <div class="accion-card crear">
+          <div class="card-header">
+            <span class="icono-grande">➕</span>
+          </div>
+          <h3>Crear Nueva Publicidad</h3>
+          <p>Lanza una nueva campaña para tus productos o servicios</p>
+          <button class="btn-action" (click)="irACrearPublicidad()">
+            Comenzar
+          </button>
+        </div>
+
+        <!-- Ver mis publicidades -->
+        <div class="accion-card mis-publicidades">
+          <div class="card-header">
+            <span class="icono-grande">📺</span>
+          </div>
+          <h3>Mis Publicidades</h3>
+          <p class="cantidad">{{ publicidades.length }} publicidades</p>
+          <p>Revisa el estado de todas tus campañas</p>
+          <button class="btn-action" (click)="irAMisPublicidades()">
+            Ver
+          </button>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="accion-card estadisticas">
+          <div class="card-header">
+            <span class="icono-grande">📈</span>
+          </div>
+          <h3>Estadísticas</h3>
+          <p>Analiza el desempeño de tus publicidades</p>
+          <button class="btn-action" (click)="irAEstadisticas()">
+            Analizar
+          </button>
+        </div>
+
+        <!-- Facturación -->
+        <div class="accion-card facturacion">
+          <div class="card-header">
+            <span class="icono-grande">💰</span>
+          </div>
+          <h3>Facturación</h3>
+          <p class="monto">Saldo a pagar: ${{ saldoPendiente | number:'1.2' }}</p>
+          <button class="btn-action" (click)="irAFacturacion()">
+            Ver Facturas
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Publicidades recientes -->
+    <section class="seccion-recientes">
+      <div class="section-header">
+        <h2>📰 Publicidades Recientes</h2>
+        <a routerLink="/usuario/mis-publicidades" class="link-ver-todas">
+          Ver todas →
+        </a>
+      </div>
+
+      <div *ngIf="publicidades.length === 0" class="sin-publicidades">
+        <div class="empty-state">
+          <span class="empty-icono">📭</span>
+          <h3>Aún no tienes publicidades</h3>
+          <p>Crea tu primera publicidad para comenzar</p>
+          <button class="btn-crear-primera" (click)="irACrearPublicidad()">
+            ✨ Crear primera publicidad
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="publicidades.length > 0" class="publicidades-list">
+        <div *ngFor="let pub of publicidades | slice:0:3" 
+             class="publicidad-item"
+             [class.pendiente]="pub.estado === 'PENDIENTE'"
+             [class.aprobado]="pub.estado === 'APROBADO'"
+             [class.rechazado]="pub.estado === 'RECHAZADO'"
+             [class.publicado]="pub.estado === 'PUBLICADO'"
+             [class.finalizado]="pub.estado === 'FINALIZADO'">
+          
+          <div class="pub-header">
+            <div class="pub-info">
+              <h4>{{ pub.titulo }}</h4>
+              <p class="pub-descripcion">{{ pub.descripcion | slice:0:80 }}...</p>
+            </div>
+            <span class="badge" [ngClass]="'badge-' + pub.estado.toLowerCase()">
+              {{ getEstadoLabel(pub.estado) }}
+            </span>
+          </div>
+
+          <div class="pub-detalles">
+            <span class="detalle">
+              📍 {{ pub.ubicaciones }} ubicación(es)
+            </span>
+            <span class="detalle">
+              💰 ${{ pub.costoTotal | number:'1.2' }}
+            </span>
+            <span class="detalle">
+              📅 {{ pub.fechaCreacion | date:'short' }}
+            </span>
+          </div>
+
+          <div class="pub-progreso">
+            <div class="barra-progreso">
+              <div class="progreso-interior" [style.width.%]="pub.progreso"></div>
+            </div>
+            <span class="porcentaje">{{ pub.progreso }}% completado</span>
+          </div>
+
+          <button class="btn-ver-detalles" (click)="verDetalles(pub.id)">
+            Ver detalles →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resumen de actividad -->
+    <section class="seccion-actividad">
+      <h2>📊 Resumen de Actividad</h2>
+      <div class="actividad-grid">
+        <div class="card-actividad">
+          <h3>Total Publicidades</h3>
+          <p class="numero">{{ publicidades.length }}</p>
+        </div>
+        <div class="card-actividad">
+          <h3>En Revisión</h3>
+          <p class="numero">{{ contar('PENDIENTE') }}</p>
+        </div>
+        <div class="card-actividad">
+          <h3>Publicadas</h3>
+          <p class="numero">{{ contar('PUBLICADO') }}</p>
+        </div>
+        <div class="card-actividad">
+          <h3>Costo Total</h3>
+          <p class="numero">${{ calcularCostoTotal() | number:'1.2' }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Información útil -->
+    <section class="seccion-info">
+      <h2>💡 Información Útil</h2>
+      <div class="info-grid">
+        <div class="info-card">
+          <h3>¿Cómo crear una publicidad?</h3>
+          <ol>
+            <li>Haz clic en "Crear Nueva Publicidad"</li>
+            <li>Completa los datos de tu campaña</li>
+            <li>Selecciona las ubicaciones donde se transmitirá</li>
+            <li>Sube tu contenido (video o imagen)</li>
+            <li>Envía para aprobación</li>
+          </ol>
+        </div>
+        <div class="info-card">
+          <h3>Proceso de Aprobación</h3>
+          <p>Todas las publicidades son revisadas por nuestro equipo técnico en un máximo de 24 horas.</p>
+          <p><strong>Criterios:</strong></p>
+          <ul>
+            <li>✓ Contenido apropiado</li>
+            <li>✓ Buena calidad de video/imagen</li>
+            <li>✓ Descripción clara</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3>Costos</h3>
+          <p>El costo se calcula según:</p>
+          <ul>
+            <li>Número de ubicaciones</li>
+            <li>Cantidad de pisos por ubicación</li>
+            <li>Duración de la campaña (días)</li>
+          </ul>
+          <p>Se cobra al momento de aprobación de tu publicidad.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

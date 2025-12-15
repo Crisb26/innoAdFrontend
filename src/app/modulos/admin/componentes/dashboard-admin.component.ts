@@ -40,6 +40,9 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
         <div class="info-admin">
           <div class="badge-admin">Administrador</div>
           <div class="usuario-actual">{{ usuarioActual() }}</div>
+          <a routerLink="/admin/mantenimiento" class="btn-mantenimiento-rapido">
+            🔧 Modo Mantenimiento
+          </a>
         </div>
       </div>
 

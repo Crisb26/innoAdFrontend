@@ -1,0 +1,235 @@
+<div class="publicacion-crear-container">
+  <header class="header">
+    <button class="btn-volver" (click)="volver()">← Volver</button>
+    <h1>✏️ Crear Nueva Publicidad</h1>
+  </header>
+
+  <div class="contenido">
+    <!-- Formulario principal -->
+    <div class="formulario-principal">
+      <!-- Paso 1: Información básica -->
+      <div class="paso-seccion">
+        <div class="paso-numero">1</div>
+        <div class="paso-contenido">
+          <h2>Información de la Publicidad</h2>
+
+          <div class="form-group">
+            <label>Título de la Publicidad *</label>
+            <input type="text"
+                   [(ngModel)]="formulario.titulo"
+                   placeholder="Ej: Promoción de Primavera"
+                   maxlength="100">
+            <small>{{ formulario.titulo.length }}/100</small>
+          </div>
+
+          <div class="form-group">
+            <label>Descripción *</label>
+            <textarea [(ngModel)]="formulario.descripcion"
+                      placeholder="Describe tu publicidad..."
+                      rows="4"
+                      maxlength="500"></textarea>
+            <small>{{ formulario.descripcion.length }}/500</small>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Duración (días) *</label>
+              <input type="number"
+                     [(ngModel)]="formulario.duracionDias"
+                     min="1"
+                     max="365"
+                     (change)="actualizarCosto()">
+            </div>
+            <div class="form-group">
+              <label>Tipo de Contenido *</label>
+              <select [(ngModel)]="formulario.tipoContenido">
+                <option value="">Seleccionar</option>
+                <option value="VIDEO">Video</option>
+                <option value="IMAGEN">Imagen</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 2: Contenido -->
+      <div class="paso-seccion">
+        <div class="paso-numero">2</div>
+        <div class="paso-contenido">
+          <h2>Contenido de la Publicidad</h2>
+
+          <div class="form-group">
+            <label>
+              {{ formulario.tipoContenido === 'VIDEO' ? '🎬 Video' : '🖼️ Imagen' }} *
+            </label>
+            <div class="upload-area"
+                 [class.dragging]="isDragging"
+                 (drop)="onDrop($event)"
+                 (dragover)="onDragOver($event)"
+                 (dragleave)="onDragLeave($event)">
+              <input type="file"
+                     #fileInput
+                     hidden
+                     [accept]="formulario.tipoContenido === 'VIDEO' ? 'video/*' : 'image/*'"
+                     (change)="onFileSelected($event)">
+              
+              <div class="upload-content" (click)="fileInput.click()">
+                <span class="upload-icon">
+                  {{ formulario.tipoContenido === 'VIDEO' ? '📹' : '🖼️' }}
+                </span>
+                <p>Arrastra tu archivo aquí o haz clic para seleccionar</p>
+                <small>
+                  {{ formulario.tipoContenido === 'VIDEO' 
+                    ? 'Máximo 100 MB • Formatos: MP4, WebM, Ogg' 
+                    : 'Máximo 20 MB • Formatos: JPG, PNG, WebP' }}
+                </small>
+              </div>
+
+              <div *ngIf="previewArchivo" class="preview">
+                <div *ngIf="formulario.tipoContenido === 'VIDEO'" class="preview-video">
+                  <video [src]="previewArchivo" controls></video>
+                </div>
+                <div *ngIf="formulario.tipoContenido === 'IMAGEN'" class="preview-imagen">
+                  <img [src]="previewArchivo" alt="preview">
+                </div>
+                <button class="btn-cambiar-archivo" (click)="fileInput.click()">
+                  Cambiar archivo
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paso 3: Ubicaciones -->
+      <div class="paso-seccion">
+        <div class="paso-numero">3</div>
+        <div class="paso-contenido">
+          <h2>Ubicaciones de Transmisión</h2>
+
+          <div *ngIf="ubicacionesSeleccionadas.length === 0" class="sin-ubicaciones">
+            <p>No hay ubicaciones seleccionadas aún</p>
+            <button class="btn-link" (click)="irASeleccionarUbicaciones()">
+              + Seleccionar ubicaciones
+            </button>
+          </div>
+
+          <div *ngIf="ubicacionesSeleccionadas.length > 0" class="ubicaciones-lista">
+            <div class="ubicaciones-header">
+              <span>{{ ubicacionesSeleccionadas.length }} ubicación(es) seleccionada(s)</span>
+              <button class="btn-link" (click)="irASeleccionarUbicaciones()">
+                ✏️ Modificar
+              </button>
+            </div>
+
+            <div class="ubicaciones-grid">
+              <div *ngFor="let ubicacion of ubicacionesSeleccionadas" class="ubicacion-card">
+                <h4>{{ ubicacion.ciudadNombre }}</h4>
+                <p class="lugar-nombre">{{ ubicacion.lugarNombre }}</p>
+                <p class="pisos-info">
+                  📍 {{ ubicacion.pisos.length }} piso(s)
+                </p>
+                <p class="costo-info">${{ ubicacion.costoPorDia | number:'1.2' }}/día</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel lateral: Resumen y costos -->
+    <div class="panel-lateral">
+      <div class="resumen-card">
+        <h2>📊 Resumen</h2>
+
+        <!-- Estado del formulario -->
+        <div class="validacion-section">
+          <div class="item-validacion" [class.ok]="formulario.titulo.length > 0">
+            <span class="icono">{{ formulario.titulo.length > 0 ? '✓' : '○' }}</span>
+            <span>Título completado</span>
+          </div>
+          <div class="item-validacion" [class.ok]="formulario.descripcion.length > 0">
+            <span class="icono">{{ formulario.descripcion.length > 0 ? '✓' : '○' }}</span>
+            <span>Descripción completada</span>
+          </div>
+          <div class="item-validacion" [class.ok]="formulario.tipoContenido !== ''">
+            <span class="icono">{{ formulario.tipoContenido !== '' ? '✓' : '○' }}</span>
+            <span>Contenido seleccionado</span>
+          </div>
+          <div class="item-validacion" [class.ok]="previewArchivo !== null">
+            <span class="icono">{{ previewArchivo !== null ? '✓' : '○' }}</span>
+            <span>Archivo cargado</span>
+          </div>
+          <div class="item-validacion" [class.ok]="ubicacionesSeleccionadas.length > 0">
+            <span class="icono">{{ ubicacionesSeleccionadas.length > 0 ? '✓' : '○' }}</span>
+            <span>Ubicaciones seleccionadas</span>
+          </div>
+        </div>
+
+        <!-- Detalles de duración -->
+        <div class="duracion-section">
+          <h3>Duración</h3>
+          <p class="duracion-valor">{{ formulario.duracionDias }} días</p>
+        </div>
+
+        <!-- Cálculo de costos -->
+        <div class="costos-section" *ngIf="ubicacionesSeleccionadas.length > 0">
+          <h3>Cálculo de Costos</h3>
+          
+          <div class="costo-item">
+            <span>Ubicaciones:</span>
+            <span class="valor">{{ ubicacionesSeleccionadas.length }}</span>
+          </div>
+          
+          <div class="costo-item">
+            <span>Pisos Totales:</span>
+            <span class="valor">{{ calcularTotalPisos() }}</span>
+          </div>
+          
+          <div class="costo-item">
+            <span>Costo por día:</span>
+            <span class="valor">${{ costoPromedioPorDia | number:'1.2' }}</span>
+          </div>
+          
+          <div class="costo-total">
+            <span>Costo Total:</span>
+            <span class="precio">${{ costoTotal | number:'1.2' }}</span>
+          </div>
+
+          <small class="nota-costo">
+            *Se cobrará al aprobar la publicidad
+          </small>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="acciones">
+          <button class="btn-guardar-borrador"
+                  [disabled]="!formulario.titulo || !formulario.descripcion"
+                  (click)="guardarBorrador()">
+            💾 Guardar Borrador
+          </button>
+          <button class="btn-enviar-aprobacion"
+                  [disabled]="!puedeEnviar()"
+                  (click)="enviarParaAprobacion()">
+            ✓ Enviar para Aprobación
+          </button>
+        </div>
+
+        <small class="info-aprobacion">
+          Una vez enviado, el equipo técnico revisará tu publicidad en las próximas 24 horas.
+        </small>
+      </div>
+
+      <!-- Info útil -->
+      <div class="info-card">
+        <h3>💡 Consejos</h3>
+        <ul>
+          <li>Usa títulos claros y atractivos</li>
+          <li>Descripciones detalladas tienen mayor aprobación</li>
+          <li>Videos en HD se aprueban más rápido</li>
+          <li>Múltiples ubicaciones = mayor alcance</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

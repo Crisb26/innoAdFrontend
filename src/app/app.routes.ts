@@ -45,12 +45,13 @@ export const routes: Routes = [
   },
 
   // Panel desarrollador - DEVELOPER
-  // COMMENTED: developer-dashboard component has CSS parsing errors
-  // {
-  //   path: 'developer',
-  //   loadComponent: () => import('./modulos/dashboard/componentes/developer-dashboard.component')
-  //     .then(m => m.DeveloperDashboardComponent)
-  // },
+  {
+    path: 'developer',
+    loadComponent: () => import('./modulos/dashboard/componentes/developer-dashboard.component')
+      .then(m => m.DeveloperDashboardComponent),
+    canActivate: [RolGuard],
+    data: { role: 'DESARROLLADOR' }
+  },
 
   // Campañas
   {

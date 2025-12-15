@@ -1,0 +1,108 @@
+<div class="developer-dashboard">
+  <header class="dashboard-header">
+    <h1>Panel Developer</h1>
+    <p>Herramientas de desarrollo y código</p>
+  </header>
+
+  <div class="dashboard-grid">
+    <!-- Código y API -->
+    <div class="dashboard-card" (click)="navegarA('codigo')">
+      <div class="card-icon">💻</div>
+      <h2>Código y API</h2>
+      <p class="card-description">Acceso a documentación de API y ejemplos de código</p>
+      <div class="card-meta">
+        <span class="badge badge-info">v1.0 Activa</span>
+      </div>
+    </div>
+
+    <!-- Logs y Debugging -->
+    <div class="dashboard-card" (click)="navegarA('logs')">
+      <div class="card-icon">🔍</div>
+      <h2>Logs y Debugging</h2>
+      <p class="card-description">Análisis de errores y debugging en tiempo real</p>
+      <div class="card-meta">
+        <span class="badge badge-success">Sistema estable</span>
+      </div>
+    </div>
+
+    <!-- Infraestructura -->
+    <div class="dashboard-card" (click)="navegarA('infraestructura')">
+      <div class="card-icon">🏗️</div>
+      <h2>Infraestructura</h2>
+      <p class="card-description">Estado de servidores y configuración de despliegue</p>
+      <div class="card-meta">
+        <span class="badge badge-success">12 servidores activos</span>
+      </div>
+    </div>
+
+    <!-- Herramientas de Desarrollo -->
+    <div class="dashboard-card" (click)="navegarA('herramientas')">
+      <div class="card-icon">🛠️</div>
+      <h2>Herramientas Dev</h2>
+      <p class="card-description">Git, builds, tests y deployment automation</p>
+    </div>
+
+    <!-- Métricas de Performance -->
+    <div class="dashboard-card" (click)="navegarA('performance')">
+      <div class="card-icon">⚡</div>
+      <h2>Performance</h2>
+      <p class="card-description">Análisis de velocidad y optimización</p>
+      <div class="card-meta">
+        <span class="badge badge-success">98% uptime</span>
+      </div>
+    </div>
+
+    <!-- Documentación -->
+    <div class="dashboard-card" (click)="navegarA('documentacion')">
+      <div class="card-icon">📚</div>
+      <h2>Documentación</h2>
+      <p class="card-description">Guías técnicas y arquitectura del sistema</p>
+    </div>
+  </div>
+
+  <!-- Información de Sistema -->
+  <section class="sistema-info">
+    <h2>Información del Sistema</h2>
+    <div class="info-grid">
+      <div class="info-item">
+        <label>Versión API</label>
+        <span>v1.0.0</span>
+      </div>
+      <div class="info-item">
+        <label>Base de Datos</label>
+        <span>PostgreSQL 17.6</span>
+      </div>
+      <div class="info-item">
+        <label>Framework Backend</label>
+        <span>Spring Boot 3.5.8</span>
+      </div>
+      <div class="info-item">
+        <label>Framework Frontend</label>
+        <span>Angular 18.2.x</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Links Rápidos -->
+  <section class="quick-links">
+    <h2>Links de Desarrollo</h2>
+    <div class="links-grid">
+      <a href="http://localhost:8080/swagger-ui.html" target="_blank" class="link-card">
+        <span class="icon">📖</span>
+        <span>Swagger API</span>
+      </a>
+      <a href="/admin" class="link-card">
+        <span class="icon">⚙️</span>
+        <span>Panel Admin</span>
+      </a>
+      <a href="http://localhost:5432" target="_blank" class="link-card">
+        <span class="icon">🗄️</span>
+        <span>Base de Datos</span>
+      </a>
+      <a href="#" class="link-card" (click)="mostrarCredenciales()">
+        <span class="icon">🔐</span>
+        <span>Credenciales</span>
+      </a>
+    </div>
+  </section>
+</div>
