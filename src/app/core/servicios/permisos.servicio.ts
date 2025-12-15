@@ -62,8 +62,8 @@ export class PermisosServicio {
     const roles = this.rolesActuales$.value;
     const permisos: string[] = [];
 
-    // ADMIN - Acceso total
-    if (roles.includes('ADMIN')) {
+    // ADMINISTRADOR - Acceso total
+    if (roles.includes('ADMINISTRADOR')) {
       permisos.push(
         // Panel admin
         'admin.ver', 'admin.dashboard', 'admin.usuarios', 'admin.roles',
@@ -112,8 +112,8 @@ export class PermisosServicio {
       );
     }
 
-    // DEVELOPER - Acceso a herramientas y código
-    if (roles.includes('DEVELOPER')) {
+    // DESARROLLADOR - Acceso a herramientas y código
+    if (roles.includes('DESARROLLADOR')) {
       permisos.push(
         // Panel developer
         'developer.dashboard', 'developer.codigo', 'developer.logs',
@@ -222,7 +222,7 @@ export class PermisosServicio {
    * Es admin?
    */
   esAdmin(): boolean {
-    return this.tieneRol('ADMIN');
+    return this.tieneRol('ADMINISTRADOR');
   }
 
   /**
@@ -236,7 +236,7 @@ export class PermisosServicio {
    * Es developer?
    */
   esDeveloper(): boolean {
-    return this.tieneRol('DEVELOPER');
+    return this.tieneRol('DESARROLLADOR');
   }
 
   /**

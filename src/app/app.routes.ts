@@ -30,12 +30,12 @@ export const routes: Routes = [
     loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes)
   },
 
-  // Panel administrativo - ADMIN
+  // Panel administrativo - ADMINISTRADOR
   {
     path: 'admin',
     loadChildren: () => import('./modulos/admin/admin.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMIN'] }
+    data: { roles: ['ADMINISTRADOR'] }
   },
 
   // Panel técnico - TECNICO
@@ -57,7 +57,7 @@ export const routes: Routes = [
     path: 'campanas',
     loadChildren: () => import('./modulos/campanas/campanas.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMIN', 'TECNICO', 'DEVELOPER', 'USUARIO'] }
+    data: { roles: ['ADMINISTRADOR', 'TECNICO', 'DESARROLLADOR', 'USUARIO'] }
   },
 
   // Pantallas
@@ -65,7 +65,7 @@ export const routes: Routes = [
     path: 'pantallas',
     loadChildren: () => import('./modulos/pantallas/pantallas.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMIN', 'TECNICO', 'DEVELOPER'] }
+    data: { roles: ['ADMINISTRADOR', 'TECNICO', 'DESARROLLADOR'] }
   },
 
   // Contenidos
@@ -73,7 +73,7 @@ export const routes: Routes = [
     path: 'contenidos',
     loadChildren: () => import('./modulos/contenidos/contenidos.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMIN', 'TECNICO', 'DEVELOPER', 'USUARIO'] }
+    data: { roles: ['ADMINISTRADOR', 'TECNICO', 'DESARROLLADOR', 'USUARIO'] }
   },
 
   // Reportes
@@ -81,7 +81,7 @@ export const routes: Routes = [
     path: 'reportes',
     loadChildren: () => import('./modulos/reportes/reportes.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMIN', 'TECNICO', 'USUARIO'] }
+    data: { roles: ['ADMINISTRADOR', 'TECNICO', 'USUARIO'] }
   },
 
   // Publicación
