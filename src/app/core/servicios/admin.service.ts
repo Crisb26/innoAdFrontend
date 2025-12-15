@@ -12,7 +12,7 @@ export interface EstadoMantenimiento {
   providedIn: 'root'
 })
 export class AdminService {
-  private readonly apiUrl = environment.api.baseUrl;
+  private readonly apiUrl = environment.api.gateway || '/api';
   private readonly mantenimientoUrl = `${this.apiUrl}/admin/mantenimiento`;
   
   // Estado en memoria como fallback

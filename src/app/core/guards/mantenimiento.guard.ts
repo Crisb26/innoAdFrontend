@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { AdminService } from '@core/servicios/admin.service';
-import { AutenticacionServicio } from '../../modulos/autenticacion/servicios/autenticacion.servicio';
+import { AdminService } from '../servicios/admin.service';
+import { AutenticacionServicio } from '../servicios/autenticacion.servicio';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 

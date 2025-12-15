@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AdminService } from '../../servicios/admin.service';
+import { AdminService } from '@core/servicios/admin.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
