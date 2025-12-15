@@ -24,11 +24,11 @@ export const routes: Routes = [
   },
 
   // Rutas protegidas
-  // {
-  //   path: 'dashboard',
-  //   loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes),
-  //   canActivate: [guardAutenticacion]
-  // },
+  {
+    path: 'dashboard',
+    redirectTo: 'admin',
+    pathMatch: 'full'
+  },
 
   // Panel administrativo - ADMIN
   {
