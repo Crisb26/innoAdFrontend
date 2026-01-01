@@ -69,13 +69,13 @@
           <input
             type="password"
             [(ngModel)]="password"
-            placeholder="Contraseña"
-            (keyup.enter)="verificarContraseña()"
+            placeholder="Contrasena"
+            (keyup.enter)="verificarContrasena()"
             [disabled]="bloqueado || cargando"
             class="password-input"
           />
           <button
-            (click)="verificarContraseña()"
+            (click)="verificarContrasena()"
             [disabled]="bloqueado || cargando"
             class="btn-verificar"
           >

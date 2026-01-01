@@ -19,7 +19,7 @@ export interface EstadoMantenimiento {
   };
 }
 
-export interface VerificacionContraseña {
+export interface VerificacionContrasena {
   autorizado: boolean;
   mensaje: string;
 }
@@ -36,8 +36,8 @@ export class ServicioMantenimiento {
     return this.http.get<EstadoMantenimiento>(`${this.apiUrl}/estado`);
   }
 
-  verificarContraseña(password: string): Observable<VerificacionContraseña> {
-    return this.http.post<VerificacionContraseña>(`${this.apiUrl}/verificar-acceso`, {
+  verificarContrasena(password: string): Observable<VerificacionContrasena> {
+    return this.http.post<VerificacionContrasena>(`${this.apiUrl}/verificar-acceso`, {
       contrasena: password
     });
   }

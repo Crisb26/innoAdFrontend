@@ -1,0 +1,306 @@
+.contenedor-analytics {
+  padding: 2rem;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+/* Encabezado Premium */
+.encabezado-analytics {
+  margin-bottom: 3rem;
+  color: white;
+  text-align: center;
+  animation: fadeInDown 0.6s ease;
+
+  h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #4F46E5 0%, #A855F7 50%, #EC4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 3s ease infinite;
+
+    @media (max-width: 768px) {
+      font-size: 1.8rem;
+    }
+  }
+
+  .subtitulo {
+    font-size: 1.1rem;
+    margin: 0.5rem 0 0 0;
+    opacity: 0.95;
+    font-weight: 300;
+  }
+}
+
+/* Selector de Período Premium */
+.selector-periodo {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.6s ease 0.1s both;
+
+  .btn-periodo {
+    padding: 0.8rem 2rem;
+    border: 2px solid rgba(79, 70, 229, 0.4);
+    background: rgba(79, 70, 229, 0.05);
+    color: white;
+    border-radius: 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+
+    &:hover:not(:disabled) {
+      background: rgba(79, 70, 229, 0.15);
+      border-color: #A855F7;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(79, 70, 229, 0.3);
+    }
+
+    &.activo {
+      background: linear-gradient(135deg, #4F46E5, #A855F7);
+      color: white;
+      border-color: #EC4899;
+      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.4);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+/* Indicador de Carga */
+.indicador-carga {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  color: white;
+  animation: fadeIn 0.3s ease;
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(79, 70, 229, 0.2);
+    border-top-color: #4F46E5;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}
+
+/* Cards Premium */
+.card {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.08) 0%, rgba(168, 85, 247, 0.05) 100%);
+  border: 2px solid rgba(79, 70, 229, 0.3);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(79, 70, 229, 0.1);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow: hidden;
+  position: relative;
+  backdrop-filter: blur(15px);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #4F46E5, #A855F7, #EC4899, transparent);
+  }
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 48px rgba(79, 70, 229, 0.25);
+    border-color: #A855F7;
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.12) 0%, rgba(168, 85, 247, 0.08) 100%);
+  }
+
+  .etiqueta {
+    font-size: 0.85rem;
+    color: rgba(168, 85, 247, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+  }
+
+  .valor {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .descripcion {
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    margin-top: 0.5rem;
+  }
+}
+
+.card-especial {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(168, 85, 247, 0.08));
+  border-left: 4px solid #4caf50;
+
+  .valor {
+    color: #86efac;
+  }
+}
+
+.card-error {
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.1), rgba(229, 57, 53, 0.08));
+  border-left: 4px solid #f44336;
+
+  .valor {
+    color: #ef5350;
+  }
+
+  .porcentaje-error {
+    font-size: 0.9rem;
+    color: #d32f2f;
+    font-weight: 600;
+  }
+}
+
+/* Barra de Progreso Premium */
+.barra-progreso {
+  background: rgba(79, 70, 229, 0.1);
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 0.8rem;
+
+  .barra {
+    height: 100%;
+    background: linear-gradient(90deg, #4F46E5, #A855F7);
+    border-radius: 3px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px rgba(79, 70, 229, 0.5);
+  }
+}
+
+/* Secciones */
+.seccion {
+  margin-bottom: 3rem;
+  animation: fadeInUp 0.6s ease;
+
+  .titulo-seccion {
+    color: white;
+    font-size: 1.5rem;
+    margin: 0 0 1.5rem 0;
+    font-weight: 600;
+    padding-left: 0.5rem;
+    border-left: 4px solid #A855F7;
+    animation: slideInLeft 0.6s ease;
+  }
+
+  .grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 480px) {
+  .contenedor-analytics {
+    padding: 1rem;
+  }
+
+  .encabezado-analytics h1 {
+    font-size: 1.5rem;
+  }
+
+  .selector-periodo {
+    gap: 0.5rem;
+
+    .btn-periodo {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  .card {
+    padding: 1.2rem;
+
+    .valor {
+      font-size: 1.8rem;
+    }
+  }
+}

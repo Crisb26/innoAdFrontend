@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { retry, retryWhen, timer, mergeMap, finalize, tap } from 'rxjs/operators';
-import { environment } from '@environments/environment';
+import { Observable, throwError, timer } from 'rxjs';
+import { retry, retryWhen, mergeMap, finalize, tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 export interface RespuestaGraficos {
   estadisticas: {

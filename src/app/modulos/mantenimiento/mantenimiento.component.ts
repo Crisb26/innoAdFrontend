@@ -61,11 +61,11 @@ export class MantenimientoComponent implements OnInit, OnDestroy {
       });
   }
 
-  verificarContraseña(): void {
+  verificarContrasena(): void {
     if (this.bloqueado) return;
 
     this.servicioMantenimiento
-      .verificarContraseña(this.password)
+      .verificarContrasena(this.password)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (respuesta) => {
@@ -81,12 +81,12 @@ export class MantenimientoComponent implements OnInit, OnDestroy {
             if (this.intentosFallidos >= 3) {
               this.bloquearIntento();
             } else {
-              this.mensaje = `Contraseña incorrecta. Intentos restantes: ${3 - this.intentosFallidos}`;
+              this.mensaje = `Contrasena incorrecta. Intentos restantes: ${3 - this.intentosFallidos}`;
             }
           }
         },
         error: (error) => {
-          console.error('Error al verificar contraseña:', error);
+          console.error('Error al verificar contrasena:', error);
           this.mensaje = 'Error al procesar solicitud. Intenta más tarde.';
         }
       });
