@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
 /**
@@ -112,8 +113,17 @@ export class PantallasService {
   /**
    * Crea una nueva pantalla
    */
-  crearPantalla(solicitud: SolicitudPantalla): Observable<RespuestaAPI<RespuestaPantalla>> {
-    return this.http.post<RespuestaAPI<RespuestaPantalla>>(this.apiUrl, solicitud);
+  crearPantalla(solicitud: SolicitudPantalla): Observable<any> {
+    return this.http.post<any>(this.apiUrl, solicitud).pipe(
+      map(response => {
+        // Normalizar respuesta: el backend usa 'success', nosotros usamos 'exitoso'
+        return {
+          exitoso: response.success || response.exitoso || false,
+          mensaje: response.message || response.mensaje || '',
+          datos: response.data || response.datos || null
+        };
+      })
+    );
   }
 
   /**
@@ -134,8 +144,14 @@ export class PantallasService {
   /**
    * Actualiza una pantalla existente
    */
-  actualizarPantalla(id: number, solicitud: SolicitudPantalla): Observable<RespuestaAPI<RespuestaPantalla>> {
-    return this.http.put<RespuestaAPI<RespuestaPantalla>>(`${this.apiUrl}/${id}`, solicitud);
+  actualizarPantalla(id: number, solicitud: SolicitudPantalla): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, solicitud).pipe(
+      map(response => ({
+        exitoso: response.success || response.exitoso || false,
+        mensaje: response.message || response.mensaje || '',
+        datos: response.data || response.datos || null
+      }))
+    );
   }
 
   /**
@@ -156,8 +172,14 @@ export class PantallasService {
   /**
    * Elimina una pantalla
    */
-  eliminarPantalla(id: number): Observable<RespuestaAPI<void>> {
-    return this.http.delete<RespuestaAPI<void>>(`${this.apiUrl}/${id}`);
+  eliminarPantalla(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`).pipe(
+      map(response => ({
+        exitoso: response.success || response.exitoso || false,
+        mensaje: response.message || response.mensaje || '',
+        datos: response.data || response.datos || null
+      }))
+    );
   }
 
   /**
