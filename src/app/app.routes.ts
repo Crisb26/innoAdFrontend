@@ -85,6 +85,13 @@ export const routes: Routes = [
     data: { roles: ['ADMINISTRADOR', 'TECNICO', 'USUARIO'] }
   },
 
+  // Pagos - FASE 5
+  {
+    path: 'pagos',
+    loadChildren: () => import('./modulos/pagos/pagos.routes').then(m => m.routes),
+    canActivate: [guardAutenticacion]
+  },
+
   // Publicación
   // {
   //   path: 'publicacion',
