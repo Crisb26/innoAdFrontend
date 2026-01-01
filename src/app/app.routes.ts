@@ -110,7 +110,9 @@ export const routes: Routes = [
   // IA
   {
     path: 'asistente-ia',
-    loadChildren: () => import('./modulos/asistente-ia/asistente-ia.routes').then(m => m.routes)
+    loadChildren: () => import('./modulos/asistente-ia/asistente-ia.routes').then(m => m.routes),
+    canActivate: [guardAutenticacion, RolGuard],
+    data: { roles: ['ADMINISTRADOR', 'TECNICO', 'USUARIO'] }
   },
 
   // Usuario - USUARIO
