@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, interval } from 'rxjs';
-import { tap, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, interval, throwError } from 'rxjs';
+import { tap, switchMap, retryWhen, mergeMap, timer } from 'rxjs/operators';
+import { environment } from '@environments/environment';
 
 export interface Publicacion {
   id: number;
@@ -42,6 +43,8 @@ export class PublicacionServicio {
   private publicacionesPendientes$ = new BehaviorSubject<Publicacion[]>([]);
   private alertas$ = new BehaviorSubject<AlertaPublicacion[]>([]);
   private todasPublicaciones$ = new BehaviorSubject<Publicacion[]>([]);
+  private readonly API_URL = `${environment.urlApi}/publicaciones`;
+  private readonly maxIntentos = 3;
 
   constructor(private http: HttpClient) {
     // Cargar publicaciones pendientes cada 2 minutos (como requiere el sistema)
@@ -54,11 +57,16 @@ export class PublicacionServicio {
   private iniciarSincronizacion(): void {
     interval(2 * 60 * 1000) // 2 minutos
       .pipe(
-        switchMap(() => this.http.get<Publicacion[]>('/api/publicaciones/pendientes'))
+        switchMap(() => this.obtenerPublicacionesPendientesConReintentos())
       )
-      .subscribe(publicaciones => {
-        this.publicacionesPendientes$.next(publicaciones);
-        this.generarAlertas(publicaciones);
+      .subscribe({
+        next: (publicaciones) => {
+          this.publicacionesPendientes$.next(publicaciones);
+          this.generarAlertas(publicaciones);
+        },
+        error: (error) => {
+          console.error('Error al sincronizar publicaciones:', error);
+        }
       });
 
     // Primera carga inmediata
@@ -66,17 +74,44 @@ export class PublicacionServicio {
   }
 
   /**
+   * Obtener publicaciones con reintentos exponenciales
+   */
+  private obtenerPublicacionesPendientesConReintentos(): Observable<Publicacion[]> {
+    return this.http.get<Publicacion[]>(`${this.API_URL}/pendientes`).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          mergeMap((error, index) => {
+            if (
+              (error.status === 0 || error.status === 503 || error.status === 504) &&
+              index < this.maxIntentos
+            ) {
+              const delayMs = Math.pow(2, index) * 1000;
+              console.warn(
+                `[Publicaciones] Reintentando en ${delayMs}ms (intento ${index + 1}/${this.maxIntentos})`
+              );
+              return timer(delayMs);
+            }
+            return throwError(() => error);
+          })
+        )
+      )
+    );
+  }
+
+  /**
    * Cargar publicaciones pendientes de aprobación
    */
   cargarPublicacionesPendientes(): void {
-    this.http.get<Publicacion[]>('/api/publicaciones/pendientes')
+    this.obtenerPublicacionesPendientesConReintentos()
       .pipe(
         tap(publicaciones => {
           this.publicacionesPendientes$.next(publicaciones);
           this.generarAlertas(publicaciones);
         })
       )
-      .subscribe();
+      .subscribe({
+        error: (error) => console.error('Error al cargar publicaciones:', error)
+      });
   }
 
   /**
@@ -114,14 +149,28 @@ export class PublicacionServicio {
    * Obtener una publicación específica
    */
   obtenerPublicacion(id: number): Observable<Publicacion> {
-    return this.http.get<Publicacion>(`/api/publicaciones/${id}`);
+    return this.http.get<Publicacion>(`${this.API_URL}/${id}`).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          mergeMap((error, index) => {
+            if (
+              (error.status === 0 || error.status === 503) &&
+              index < this.maxIntentos
+            ) {
+              return timer(Math.pow(2, index) * 1000);
+            }
+            return throwError(() => error);
+          })
+        )
+      )
+    );
   }
 
   /**
    * Crear nueva publicación
    */
   crearPublicacion(datos: any): Observable<Publicacion> {
-    return this.http.post<Publicacion>('/api/publicaciones', datos)
+    return this.http.post<Publicacion>(`${this.API_URL}`, datos)
       .pipe(
         tap(() => this.cargarPublicacionesPendientes())
       );
@@ -131,9 +180,22 @@ export class PublicacionServicio {
    * Aprobar una publicación
    */
   aprobarPublicacion(id: number, notas?: string): Observable<Publicacion> {
-    return this.http.post<Publicacion>(`/api/publicaciones/${id}/aprobar`, { notas })
+    return this.http.post<Publicacion>(`${this.API_URL}/${id}/aprobar`, { notas })
       .pipe(
-        tap(() => this.cargarPublicacionesPendientes())
+        tap(() => this.cargarPublicacionesPendientes()),
+        retryWhen(errors =>
+          errors.pipe(
+            mergeMap((error, index) => {
+              if (
+                (error.status === 0 || error.status === 503) &&
+                index < this.maxIntentos
+              ) {
+                return timer(Math.pow(2, index) * 1000);
+              }
+              return throwError(() => error);
+            })
+          )
+        )
       );
   }
 
@@ -141,7 +203,7 @@ export class PublicacionServicio {
    * Rechazar una publicación
    */
   rechazarPublicacion(id: number, motivo: string): Observable<Publicacion> {
-    return this.http.post<Publicacion>(`/api/publicaciones/${id}/rechazar`, { motivo })
+    return this.http.post<Publicacion>(`${this.API_URL}/${id}/rechazar`, { motivo })
       .pipe(
         tap(() => this.cargarPublicacionesPendientes())
       );
@@ -151,9 +213,22 @@ export class PublicacionServicio {
    * Publicar una publicación aprobada
    */
   publicarPublicacion(id: number, datosPublicacion: any): Observable<Publicacion> {
-    return this.http.post<Publicacion>(`/api/publicaciones/${id}/publicar`, datosPublicacion)
+    return this.http.post<Publicacion>(`${this.API_URL}/${id}/publicar`, datosPublicacion)
       .pipe(
-        tap(() => this.cargarPublicacionesPendientes())
+        tap(() => this.cargarPublicacionesPendientes()),
+        retryWhen(errors =>
+          errors.pipe(
+            mergeMap((error, index) => {
+              if (
+                (error.status === 0 || error.status === 503) &&
+                index < this.maxIntentos
+              ) {
+                return timer(Math.pow(2, index) * 1000);
+              }
+              return throwError(() => error);
+            })
+          )
+        )
       );
   }
 
@@ -180,20 +255,62 @@ export class PublicacionServicio {
    * Obtener publicaciones de un usuario
    */
   obtenerPublicacionesUsuario(usuarioId: number): Observable<Publicacion[]> {
-    return this.http.get<Publicacion[]>(`/api/publicaciones/usuario/${usuarioId}`);
+    return this.http.get<Publicacion[]>(`${this.API_URL}/usuario/${usuarioId}`).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          mergeMap((error, index) => {
+            if (
+              (error.status === 0 || error.status === 503) &&
+              index < this.maxIntentos
+            ) {
+              return timer(Math.pow(2, index) * 1000);
+            }
+            return throwError(() => error);
+          })
+        )
+      )
+    );
   }
 
   /**
    * Obtener todas las publicaciones publicadas (para feed público)
    */
   obtenerPublicacionesPublicadas(): Observable<Publicacion[]> {
-    return this.http.get<Publicacion[]>('/api/publicaciones/publicadas');
+    return this.http.get<Publicacion[]>(`${this.API_URL}/publicadas`).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          mergeMap((error, index) => {
+            if (
+              (error.status === 0 || error.status === 503) &&
+              index < this.maxIntentos
+            ) {
+              return timer(Math.pow(2, index) * 1000);
+            }
+            return throwError(() => error);
+          })
+        )
+      )
+    );
   }
 
   /**
    * Obtener estadísticas de una publicación
    */
   obtenerEstadisticas(publicacionId: number): Observable<any> {
-    return this.http.get(`/api/publicaciones/${publicacionId}/estadisticas`);
+    return this.http.get(`${this.API_URL}/${publicacionId}/estadisticas`).pipe(
+      retryWhen(errors =>
+        errors.pipe(
+          mergeMap((error, index) => {
+            if (
+              (error.status === 0 || error.status === 503) &&
+              index < this.maxIntentos
+            ) {
+              return timer(Math.pow(2, index) * 1000);
+            }
+            return throwError(() => error);
+          })
+        )
+      )
+    );
   }
 }
