@@ -135,8 +135,9 @@ export const routes: Routes = [
   // Mantenimiento
   {
     path: 'mantenimiento',
-    loadComponent: () => import('./modulos/pantallas/componentes/pagina-mantenimiento/pagina-mantenimiento.component')
-      .then(m => m.PaginaMantenimientoComponent)
+    loadChildren: () => import('./modulos/mantenimiento/mantenimiento.routes').then(m => m.routes),
+    canActivate: [guardAutenticacion, RolGuard],
+    data: { roles: ['ADMINISTRADOR', 'TECNICO'] }
   },
 
   // Ruta por defecto

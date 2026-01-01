@@ -1,7 +1,8 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, inject, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { NavegacionAutenticadaComponent } from '../../../shared/componentes/navegacion-autenticada.component';
+import { ServicioExportacion } from '@core/servicios/exportacion.servicio';
 import NotifyX from 'notifyx';
 
 @Component({
@@ -189,6 +190,11 @@ import NotifyX from 'notifyx';
   `
 })
 export class DashboardReportesComponent implements OnInit {
+  private readonly servicioExportacion = inject(ServicioExportacion);
+  
+  @ViewChild('tablaCampanas') tablaCampanas?: ElementRef;
+  @ViewChild('tablaPantallas') tablaPantallas?: ElementRef;
+
   periodoSeleccionado = 'mes';
   
   metricas = signal({
@@ -206,64 +212,28 @@ export class DashboardReportesComponent implements OnInit {
     console.log('Cargando reportes para:', this.periodoSeleccionado);
   }
 
+  /**
+   * Exporta el reporte a PDF
+   */
   exportarPDF() {
     try {
-      const jsPDF = (window as any).jsPDF;
-      if (!jsPDF) {
-        throw new Error('jsPDF no está disponible. Por favor, recarga la página.');
-      }
+      const metricas = this.metricas();
+      const contenido = `
+        <h2>Métricas Principales</h2>
+        <ul>
+          <li><strong>Reproducciones:</strong> ${metricas.reproducciones}</li>
+          <li><strong>Usuarios Activos:</strong> ${metricas.usuariosActivos}</li>
+          <li><strong>Contenidos:</strong> ${metricas.contenidos}</li>
+          <li><strong>Ingresos:</strong> $${metricas.ingresos}K</li>
+        </ul>
+        <h2>Período</h2>
+        <p><strong>${this.periodoSeleccionado.toUpperCase()}</strong></p>
+      `;
 
-      const doc = new jsPDF.jsPDF();
       const titulo = `Reporte de ${this.periodoSeleccionado}`;
-      const fecha = new Date().toLocaleDateString('es-CO');
-      
-      // Encabezado
-      doc.setFillColor(30, 41, 59); // Color del tema
-      doc.rect(0, 0, 210, 30, 'F');
-      doc.setTextColor(0, 212, 255);
-      doc.setFontSize(18);
-      doc.text(titulo, 15, 20);
-      doc.setFontSize(10);
-      doc.text(`Fecha: ${fecha}`, 15, 26);
-      
-      // Contenido
-      doc.setTextColor(0, 0, 0);
-      doc.setFontSize(12);
-      let y = 50;
-      
-      // Métricas principales
-      doc.text('MÉTRICAS PRINCIPALES', 15, y);
-      y += 10;
-      
-      const metricas = [
-        `Reproducciones: ${this.metricas().reproducciones}`,
-        `Usuarios Activos: ${this.metricas().usuariosActivos}`,
-        `Contenidos: ${this.metricas().contenidos}`,
-        `Ingresos: $${this.metricas().ingresos}K`
-      ];
-      
-      metricas.forEach((metrica) => {
-        doc.text(metrica, 20, y);
-        y += 10;
-      });
-      
-      y += 10;
-      doc.text('Periodo seleccionado: ' + this.periodoSeleccionado.toUpperCase(), 15, y);
-      
-      // Footer
-      const totalPages = doc.internal.getNumberOfPages();
-      for (let i = 1; i <= totalPages; i++) {
-        doc.setPage(i);
-        doc.setFontSize(9);
-        doc.text(
-          `Página ${i} de ${totalPages}`,
-          doc.internal.pageSize.getWidth() / 2,
-          doc.internal.pageSize.getHeight() - 10,
-          { align: 'center' }
-        );
-      }
-      
-      doc.save(`Reporte_${this.periodoSeleccionado}_${new Date().getTime()}.pdf`);
+      const nombreArchivo = `Reporte_${this.periodoSeleccionado}_${new Date().getTime()}`;
+
+      this.servicioExportacion.exportarPDFSimple(titulo, contenido, nombreArchivo);
       
       NotifyX.success('Reporte PDF descargado exitosamente', {
         duration: 3000,
@@ -278,33 +248,33 @@ export class DashboardReportesComponent implements OnInit {
     }
   }
 
+  /**
+   * Exporta el reporte a CSV
+   */
   exportarCSV() {
     try {
       const metricas = this.metricas();
-      const csv = [
-        ['Métrica', 'Valor'],
-        ['Reproducciones', metricas.reproducciones.toString()],
-        ['Usuarios Activos', metricas.usuariosActivos.toString()],
-        ['Contenidos', metricas.contenidos.toString()],
-        ['Ingresos', `$${metricas.ingresos}K`],
-        [],
-        ['Período', this.periodoSeleccionado],
-        ['Fecha de Exportación', new Date().toLocaleDateString('es-CO')]
-      ]
-        .map(row => row.join(','))
-        .join('\n');
-      
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      const url = URL.createObjectURL(blob);
-      
-      link.setAttribute('href', url);
-      link.setAttribute('download', `Reporte_${this.periodoSeleccionado}_${new Date().getTime()}.csv`);
-      link.style.visibility = 'hidden';
-      
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const datos = [
+        {
+          'Métrica': 'Reproducciones',
+          'Valor': metricas.reproducciones.toString()
+        },
+        {
+          'Métrica': 'Usuarios Activos',
+          'Valor': metricas.usuariosActivos.toString()
+        },
+        {
+          'Métrica': 'Contenidos',
+          'Valor': metricas.contenidos.toString()
+        },
+        {
+          'Métrica': 'Ingresos',
+          'Valor': `$${metricas.ingresos}K`
+        }
+      ];
+
+      const nombreArchivo = `Reporte_${this.periodoSeleccionado}_${new Date().getTime()}`;
+      this.servicioExportacion.exportarCSV(datos, nombreArchivo);
       
       NotifyX.success('Reporte CSV descargado exitosamente', {
         duration: 3000,
