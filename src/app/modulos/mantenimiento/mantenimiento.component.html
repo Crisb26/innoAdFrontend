@@ -1,0 +1,124 @@
+<div class="mantenimiento-container">
+  <!-- Pantalla de carga -->
+  <div *ngIf="cargando" class="loader-wrapper">
+    <div class="spinner"></div>
+    <p>Verificando estado del sistema...</p>
+  </div>
+
+  <!-- Contenido principal -->
+  <div *ngIf="!cargando && estadoMantenimiento" class="mantenimiento-content">
+    <!-- Panel de mantenimiento -->
+    <div class="maintenance-panel">
+      <!-- Icono de mantenimiento -->
+      <div class="maintenance-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+          <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+        </svg>
+      </div>
+
+      <!-- Información principal -->
+      <h1>Sistema en Mantenimiento</h1>
+      <p class="motivo">{{ estadoMantenimiento.data?.motivo }}</p>
+      
+      <!-- Mensaje del administrador -->
+      <div class="mensaje-admin" *ngIf="estadoMantenimiento.data?.mensaje">
+        <p>{{ estadoMantenimiento.data.mensaje }}</p>
+      </div>
+
+      <!-- Barra de progreso -->
+      <div class="progress-section">
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="porcentajeProgreso"></div>
+        </div>
+        <div class="progress-info">
+          <span class="tiempo">Tiempo restante: {{ tiempoRestante }}</span>
+          <span class="porcentaje">{{ porcentajeProgreso | number:'1.0-0' }}%</span>
+        </div>
+      </div>
+
+      <!-- Información de restricciones -->
+      <div class="restricciones" *ngIf="estadoMantenimiento.data">
+        <h3>Restricciones Activas:</h3>
+        <ul>
+          <li *ngIf="estadoMantenimiento.data.bloqueaGraficos">
+            <span class="icon">📊</span>
+            <span>Gráficos deshabilitados</span>
+          </li>
+          <li *ngIf="estadoMantenimiento.data.bloqueaPublicacion">
+            <span class="icon">📤</span>
+            <span>Publicación de campañas deshabilitada</span>
+          </li>
+          <li *ngIf="estadoMantenimiento.data.bloqueaDescarga">
+            <span class="icon">📥</span>
+            <span>Descarga de reportes deshabilitada</span>
+          </li>
+          <li *ngIf="estadoMantenimiento.data.permiteLectura">
+            <span class="icon">👁️</span>
+            <span>Lectura permitida sin modificaciones</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Sección de contraseña -->
+      <div *ngIf="!autorizado" class="password-section">
+        <h3>¿Necesitas acceso?</h3>
+        <p class="hint">Ingresa la contraseña proporcionada por el administrador</p>
+        
+        <div class="password-input-group">
+          <input
+            type="password"
+            [(ngModel)]="password"
+            placeholder="Contraseña"
+            (keyup.enter)="verificarContraseña()"
+            [disabled]="bloqueado || cargando"
+            class="password-input"
+          />
+          <button
+            (click)="verificarContraseña()"
+            [disabled]="bloqueado || cargando"
+            class="btn-verificar"
+          >
+            <span *ngIf="!cargando">Verificar Acceso</span>
+            <span *ngIf="cargando">Verificando...</span>
+          </button>
+        </div>
+
+        <div *ngIf="bloqueado" class="bloqueado-message">
+          <p>🔒 Demasiados intentos fallidos. Intenta nuevamente en 5 minutos.</p>
+        </div>
+
+        <div *ngIf="intentosFallidos > 0 && !bloqueado" class="intentos-warning">
+          <p>⚠️ Intento {{ intentosFallidos }} de 3</p>
+        </div>
+      </div>
+
+      <!-- Sección de acceso permitido -->
+      <div *ngIf="autorizado" class="autorizado-section">
+        <div class="success-message">
+          <span class="icon">✓</span>
+          <p>Acceso permitido. Puedes continuar navegando el sistema.</p>
+        </div>
+        <button (click)="volverAlInicio()" class="btn-volver">
+          Ir al Dashboard
+        </button>
+      </div>
+
+      <!-- Botón para volver (siempre visible) -->
+      <button
+        *ngIf="!autorizado"
+        (click)="volverAlInicio()"
+        class="btn-volver-secondary"
+      >
+        ← Volver al Dashboard
+      </button>
+    </div>
+
+    <!-- Animación de fondo -->
+    <div class="background-animation">
+      <div class="dot dot-1"></div>
+      <div class="dot dot-2"></div>
+      <div class="dot dot-3"></div>
+    </div>
+  </div>
+</div>

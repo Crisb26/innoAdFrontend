@@ -132,12 +132,11 @@ export const routes: Routes = [
       .then(m => m.SinPermisosComponent)
   },
 
-  // Mantenimiento
+  // Mantenimiento - RUTA PÚBLICA (accessible durante mantenimiento)
   {
     path: 'mantenimiento',
-    loadChildren: () => import('./modulos/mantenimiento/mantenimiento.routes').then(m => m.routes),
-    canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMINISTRADOR', 'TECNICO'] }
+    loadComponent: () => import('./modulos/mantenimiento/mantenimiento.component')
+      .then(m => m.MantenimientoComponent)
   },
 
   // Ruta por defecto

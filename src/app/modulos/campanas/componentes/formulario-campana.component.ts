@@ -56,6 +56,7 @@ import NotifyX from 'notifyx';
             <select formControlName="pantallasAsignadas" class="entrada">
               <option value="">Seleccionar cantidad</option>
               <option value="1">1 pantalla</option>
+              <option value="2">2 pantallas</option>
               <option value="3">3 pantallas</option>
               <option value="5">5 pantallas</option>
               <option value="8">8 pantallas</option>
