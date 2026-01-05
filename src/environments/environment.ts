@@ -9,26 +9,26 @@ export const environment = {
   // Preparado para migración a microservicios
   api: {
     // Gateway principal (API Gateway para microservicios)
-    gateway: '/api',
+    gateway: 'http://localhost:8080/api',
     
     // Microservicios individuales (para futura migración)
     // Mientras tanto, todas apuntan al gateway
     services: {
-      auth: '/api/auth',
-      users: '/api/users',
-      campaigns: '/api/campaigns',
-      contents: '/api/contents',
-      screens: '/api/screens',
-      analytics: '/api/analytics',
-      notifications: '/api/notifications',
-      system: '/api/system'
+      auth: 'http://localhost:8080/api/auth',
+      users: 'http://localhost:8080/api/users',
+      campaigns: 'http://localhost:8080/api/campaigns',
+      contents: 'http://localhost:8080/api/contents',
+      screens: 'http://localhost:8080/api/screens',
+      analytics: 'http://localhost:8080/api/analytics',
+      notifications: 'http://localhost:8080/api/notifications',
+      system: 'http://localhost:8080/api/system'
     },
     
     // URLs específicas
-    baseUrl: '/api',
-    authUrl: '/api/auth',
-    uploadUrl: '/api/upload',
-    wsUrl: '/ws',
+    baseUrl: 'http://localhost:8080/api',
+    authUrl: 'http://localhost:8080/api/auth',
+    uploadUrl: 'http://localhost:8080/api/upload',
+    wsUrl: 'ws://localhost:8080/ws',
     
     // Configuración de timeout y reintentos
     timeout: 30000, // 30 segundos

@@ -313,4 +313,46 @@ export class PublicacionServicio {
       )
     );
   }
+
+  /**
+   * Guardar publicación como borrador
+   */
+  guardarBorrador(datos: any): Observable<Publicacion> {
+    return this.http.post<Publicacion>(`${this.API_URL}/borrador`, datos)
+      .pipe(
+        tap(() => this.cargarPublicacionesPendientes())
+      );
+  }
+
+  /**
+   * Enviar publicación para aprobación
+   */
+  enviarParaAprobacion(datos: any): Observable<Publicacion> {
+    return this.http.post<Publicacion>(`${this.API_URL}`, datos)
+      .pipe(
+        tap(() => this.cargarPublicacionesPendientes())
+      );
+  }
+
+  /**
+   * Obtener mis publicaciones del usuario autenticado
+   */
+  obtenerMisPublicaciones(): Observable<Publicacion[]> {
+    return this.http.get<Publicacion[]>(`${this.API_URL}/mis`)
+      .pipe(
+        retryWhen(errors =>
+          errors.pipe(
+            mergeMap((error, index) => {
+              if (
+                (error.status === 0 || error.status === 503) &&
+                index < this.maxIntentos
+              ) {
+                return timer(Math.pow(2, index) * 1000);
+              }
+              return throwError(() => error);
+            })
+          )
+        )
+      );
+  }
 }

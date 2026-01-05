@@ -19,21 +19,16 @@
 
       <!-- Información principal -->
       <h1>Sistema en Mantenimiento</h1>
-      <p class="motivo">{{ estadoMantenimiento.data?.motivo }}</p>
+      <p class="motivo">{{ estadoMantenimiento.data.motivo }}</p>
       
-      <!-- Mensaje del administrador -->
-      <div class="mensaje-admin" *ngIf="estadoMantenimiento.data?.mensaje">
-        <p>{{ estadoMantenimiento.data.mensaje }}</p>
-      </div>
-
       <!-- Barra de progreso -->
       <div class="progress-section">
         <div class="progress-bar">
-          <div class="progress-fill" [style.width.%]="porcentajeProgreso"></div>
+          <div class="progress-fill" [style.width.%]="50"></div>
         </div>
         <div class="progress-info">
-          <span class="tiempo">Tiempo restante: {{ tiempoRestante }}</span>
-          <span class="porcentaje">{{ porcentajeProgreso | number:'1.0-0' }}%</span>
+          <span class="tiempo">Tiempo restante: {{ estadoMantenimiento.data.fechaFin }}</span>
+          <span class="porcentaje">50%</span>
         </div>
       </div>
 
@@ -41,15 +36,15 @@
       <div class="restricciones" *ngIf="estadoMantenimiento.data">
         <h3>Restricciones Activas:</h3>
         <ul>
-          <li *ngIf="estadoMantenimiento.data.bloqueaGraficos">
+          <li *ngIf="estadoMantenimiento.data.restriccionesActivas.graficos">
             <span class="icon">📊</span>
             <span>Gráficos deshabilitados</span>
           </li>
-          <li *ngIf="estadoMantenimiento.data.bloqueaPublicacion">
+          <li *ngIf="estadoMantenimiento.data.restriccionesActivas.publicacion">
             <span class="icon">📤</span>
             <span>Publicación de campañas deshabilitada</span>
           </li>
-          <li *ngIf="estadoMantenimiento.data.bloqueaDescarga">
+          <li *ngIf="estadoMantenimiento.data.restriccionesActivas.descargas">
             <span class="icon">📥</span>
             <span>Descarga de reportes deshabilitada</span>
           </li>

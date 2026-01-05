@@ -10,5 +10,16 @@ export const routes: Routes = [
     path: 'mantenimiento',
     loadComponent: () => import('./componentes/mantenimiento-login.component')
       .then(m => m.MantenimientoLoginComponent)
+  },
+  {
+    path: 'terminos-condiciones',
+    loadComponent: () => import('./componentes/terminos-condiciones.component')
+      .then(m => m.TerminosCondicionesComponent)
+  },
+  {
+    path: 'privacy-policy',
+    loadComponent: () => import('./componentes/privacy-policy.component')
+      .then(m => m.PrivacyPolicyComponent)
   }
 ];
+

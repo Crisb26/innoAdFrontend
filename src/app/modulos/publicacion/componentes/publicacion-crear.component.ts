@@ -147,8 +147,30 @@ export class PublicacionCrearComponent implements OnInit, OnDestroy {
       return;
     }
 
-    alert('✓ Borrador guardado exitosamente');
-    // En un caso real, enviaría al servidor
+    // Crear objeto de borrador
+    const borrador = {
+      titulo: this.formulario.titulo,
+      descripcion: this.formulario.descripcion,
+      tipoContenido: this.formulario.tipoContenido || null,
+      duracionDias: this.formulario.duracionDias,
+      ubicaciones: this.ubicacionesSeleccionadas,
+      costoTotal: this.costoTotal,
+      estado: 'BORRADOR'
+    };
+
+    // Enviar al servicio
+    this.publicacionServicio.guardarBorrador(borrador)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (respuesta) => {
+          alert('✓ Borrador guardado exitosamente');
+          this.router.navigate(['/usuario/dashboard']);
+        },
+        error: (error) => {
+          console.error('Error al guardar borrador:', error);
+          alert('Error al guardar el borrador: ' + error.message);
+        }
+      });
   }
 
   enviarParaAprobacion(): void {

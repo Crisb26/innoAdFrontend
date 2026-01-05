@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject, interval } from 'rxjs';
 import { map, catchError, switchMap, retry } from 'rxjs/operators';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 export interface RaspberryPiStatus {
   id: string;

@@ -53,7 +53,44 @@ export class UsuarioDashboardComponent implements OnInit, OnDestroy {
   }
 
   cargarPublicidades(): void {
-    // Simulación de datos hasta que el backend esté listo
+    // Cargar publicaciones reales del backend
+    this.publicacionServicio.obtenerMisPublicaciones()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (publicidades) => {
+          this.publicidades = publicidades.map(p => ({
+            id: p.id,
+            titulo: p.titulo,
+            descripcion: p.descripcion,
+            estado: p.estado,
+            ubicaciones: p.ubicaciones.length,
+            costoTotal: p.costo || 0,
+            fechaCreacion: p.fechaCreacion.toString(),
+            progreso: this.calcularProgreso(p.estado)
+          }));
+          this.calcularSaldo();
+        },
+        error: (error) => {
+          console.error('Error al cargar publicidades:', error);
+          // Fallback a datos de simulación
+          this.cargarPublicidadesSimuladas();
+        }
+      });
+  }
+
+  private calcularProgreso(estado: string): number {
+    const progresoPorEstado: Record<string, number> = {
+      'PENDIENTE': 20,
+      'APROBADO': 50,
+      'PUBLICADO': 100,
+      'RECHAZADO': 0,
+      'FINALIZADO': 100
+    };
+    return progresoPorEstado[estado] || 0;
+  }
+
+  private cargarPublicidadesSimuladas(): void {
+    // Datos de simulación para cuando no hay conexión
     this.publicidades = [
       {
         id: 1,
@@ -116,10 +153,13 @@ export class UsuarioDashboardComponent implements OnInit, OnDestroy {
   }
 
   irACrearPublicidad(): void {
+    // Navegar a la pantalla de crear publicación
     this.router.navigate(['/publicacion/seleccionar-ubicaciones']);
   }
 
   irAMisPublicidades(): void {
+    // Recargar publicidades y navegar
+    this.cargarPublicidades();
     this.router.navigate(['/usuario/mis-publicidades']);
   }
 
@@ -132,7 +172,18 @@ export class UsuarioDashboardComponent implements OnInit, OnDestroy {
   }
 
   verDetalles(publicidadId: number): void {
-    this.router.navigate(['/usuario/publicidades', publicidadId]);
+    // Obtener detalles del backend y navegar
+    this.publicacionServicio.obtenerPublicacion(publicidadId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/usuario/publicidades', publicidadId]);
+        },
+        error: (error) => {
+          console.error('Error al obtener publicación:', error);
+          alert('No se pudo cargar la publicación');
+        }
+      });
   }
 
   logout(): void {

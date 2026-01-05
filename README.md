@@ -1,30 +1,28 @@
 ﻿# InnoAd Frontend 🎨
 
-> **Fase 4 ✅ COMPLETADA** - Build exitoso, login funcional, nuevo sistema de mantenimiento implementado
+> **Fase 5 ✅ EN PROGRESO** - Compilación limpia en progreso, integración Raspberry Pi, endpoints nuevos implementados
 
 Aplicación Angular profesional para gestión de campañas publicitarias digitales con IA integrada, sistema de roles y pantallas en tiempo real.
 
-## 📌 Últimas Actualizaciones - Fase 4
+**Versión:** 2.0.0 | **Estado:** Compilando con nuevas features | **Fecha:** 4 Enero 2026
+
+## 📌 Últimas Actualizaciones - Fase 5
 
 ### ✅ Completado
-- Build Angular 18 compilando sin errores
-- 4 errores críticos de compilación corregidos
-- Login y autenticación totalmente funcionales
-- Todas las rutas principales restauradas
-- **Nuevo**: Sistema de Modo Mantenimiento para admins
-- Deploy en Netlify con auto-deploy desde GitHub
+- Limpieza de archivos innecesarios (.log, .txt, .sh, .ps1 antiguos) **HOY**
+- Estructura de carpetas optimizada
+- Todos los errores de compilación Frontend resueltos (5 archivos)
+- 2 endpoints nuevos para Raspberry Pi implementados en Backend
+- Documentación arquitectónica completa (ARQUITECTURA-INNOAD-RESPUESTAS.md)
 
-### 🆕 Nuevo: Modo Mantenimiento
-- Panel de control en `/admin/mantenimiento`
-- Página amigable de mantenimiento en `/mantenimiento`
-- Guards automáticos (admins siempre pueden acceder)
-- Estado persistente (fallback en memoria)
+### 🆕 Integraciones Nuevas
+- **Endpoints Raspberry Pi**: GET `/api/v1/pantallas/codigo/{codigo}` y `/contenido`
+- **Polling automático**: Sistema listo para consultas cada 30 segundos
+- **Arquitectura de Pantallas**: Flujo completo Usuario → Campaña → Pantalla → Raspberry
 
-### 📚 Documentación Generada
-- `FASE_4_COMPLETADA.md` - Detalles técnicos completos
-- `RESUMEN_FASE_4.md` - Resumen ejecutivo y checklist
-
-Para más información, ver [FASE_4_COMPLETADA.md](./FASE_4_COMPLETADA.md)
+### 📚 Documentación
+- `README.md` - Este archivo (actualizado)
+- `ARQUITECTURA-INNOAD-RESPUESTAS.md` - Análisis completo de arquitectura (NUEVO)
 
 ---
 
@@ -32,14 +30,15 @@ Para más información, ver [FASE_4_COMPLETADA.md](./FASE_4_COMPLETADA.md)
 
 | Componente | Versión |
 |-----------|---------|
-| Angular | 18.2.x |
+| Angular | 19.x |
 | TypeScript | 5.5.x |
 | Node.js | 20+ LTS |
 | npm | 11+ |
-| SCSS | Personalizado |
+| SCSS | Personalizado y responsivo |
 | Autenticación | JWT + Spring Security |
 | Notificaciones | NotifyX |
 | Exportación | jsPDF + CSV |
+| Responsive Design | Mobile (320px) → Desktop (1920px) |
 
 ## 📋 Requisitos
 
