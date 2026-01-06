@@ -108,7 +108,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
                 </div>
                 <div class="info-item">
                   <label>Costo:</label>
-                  <span>${{ publicacionSeleccionada.costo | number:'1.2' }}</span>
+                  <span>{{ publicacionSeleccionada.costo | number:'1.2' }}</span>
                 </div>
                 <div class="info-item">
                   <label>Duración:</label>

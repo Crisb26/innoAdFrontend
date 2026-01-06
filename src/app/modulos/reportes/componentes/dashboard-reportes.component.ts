@@ -80,7 +80,7 @@ import NotifyX from 'notifyx';
             <h3>Ingresos</h3>
             <span class="icono">dollar</span>
           </div>
-          <div class="kpi-valor">\${{ metricas().ingresos }}K</div>
+          <div class="kpi-valor">$ {{ metricas().ingresos }}K</div>
           <div class="kpi-cambio positivo">+25% esta semana</div>
         </div>
       </div>
@@ -181,7 +181,7 @@ import NotifyX from 'notifyx';
             </div>
             <div class="resumen-item">
               <span class="label">Ingresos Totales</span>
-              <span class="valor">\${{ metricas().ingresos }}K</span>
+              <span class="valor">$ {{ metricas().ingresos }}K</span>
             </div>
           </div>
         </div>

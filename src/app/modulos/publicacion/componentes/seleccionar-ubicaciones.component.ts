@@ -55,7 +55,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
                          (click)="$event.stopPropagation()">
                   <div class="lugar-info">
                     <h3>{{ lugar.nombre }}</h3>
-                    <small>{{ lugar.pisos }} pisos • ${{ lugar.costoBase | number:'1.2' }}/día</small>
+                    <small>{{ lugar.pisos }} pisos • {{ lugar.costoBase | number:'1.2' }}/día</small>
                   </div>
                   <span *ngIf="lugar.disponible" class="badge-disponible">✓ Disponible</span>
                   <span *ngIf="!lugar.disponible" class="badge-no-disponible">✗ No disponible</span>
@@ -100,7 +100,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
                   </button>
                 </div>
                 <p class="ubicacion-detalles">
-                  {{ ubicacion.pisos.length }} piso(s) • ${{ ubicacion.costoPorDia | number:'1.2' }}/día
+                  {{ ubicacion.pisos.length }} piso(s) • {{ ubicacion.costoPorDia | number:'1.2' }}/día
                 </p>
               </div>
             </div>
@@ -132,7 +132,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
               </div>
               <div class="costo-total">
                 <span>Costo Total:</span>
-                <span class="precio">${{ costoTotal | number:'1.2' }}</span>
+                <span class="precio">{{ costoTotal | number:'1.2' }}</span>
               </div>
               <small class="nota-costo">
                 *Costo = Σ(CostoPorDía × Pisos × Duración)
