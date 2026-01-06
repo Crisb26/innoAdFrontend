@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, interval, throwError } from 'rxjs';
-import { tap, switchMap, retryWhen, mergeMap, timer } from 'rxjs/operators';
+import { BehaviorSubject, Observable, interval, throwError, timer } from 'rxjs';
+import { tap, switchMap, retryWhen, mergeMap } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 
 export interface Publicacion {

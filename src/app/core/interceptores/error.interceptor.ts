@@ -1,7 +1,7 @@
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, throwError, retry, delay, take } from 'rxjs';
+import { catchError, throwError, retry, timer, take } from 'rxjs';
 import { ServicioAutenticacion } from '../servicios/autenticacion.servicio';
 import NotifyX from 'notifyx';
 
@@ -11,13 +11,14 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   
   return next(req).pipe(
     retry({ 
-      count: 2, 
-      delay: (error: HttpErrorResponse) => {
+      count: 2,
+      delay: (error, retryCount) => {
         // No reintentar en errores 401, 403, 404
         if ([401, 403, 404].includes(error.status)) {
           return throwError(() => error);
         }
-        return delay(1000);
+        // Esperar 1 segundo entre reintentos
+        return timer(1000);
       }
     }),
     catchError((error: HttpErrorResponse) => {

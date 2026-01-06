@@ -122,7 +122,7 @@ import { RouterModule } from '@angular/router';
             Para preguntas sobre estos términos, contáctanos:
           </p>
           <ul>
-            <li>Email: legal@innoad.com</li>
+            <li>Email: legal&#64;innoad.com</li>
             <li>Teléfono: [Tu Teléfono]</li>
           </ul>
         </section>

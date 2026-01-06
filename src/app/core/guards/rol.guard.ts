@@ -84,11 +84,11 @@ export class RolGuard implements CanActivate, CanActivateChild {
       const permisosRequeridos: string[] = route.data['permisos'];
       const rol = (rolNombre as unknown) as Rol;
       
-      const tienePermiso = permisosRequeridos.some(p => 
+      const tieneTodosPermisos = permisosRequeridos.some(p => 
         tienePermiso(rol, p as Permiso)
       );
 
-      if (!tienePermiso) {
+      if (!tieneTodosPermisos) {
         NotifyX.warning('No tienes los permisos necesarios para acceder a esta sección.', {
           duration: 3000,
           dismissible: true
