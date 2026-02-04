@@ -1,0 +1,83 @@
+<div class="navegacion-mantenimiento">
+  <div class="nav-titulo">
+    <i class="bi bi-lightning-charge"></i>
+    <h3>Módulos de Mantenimiento</h3>
+  </div>
+
+  <div class="nav-items">
+    <a routerLink="/mantenimiento" routerLinkActive="activo" class="nav-item dashboard">
+      <i class="bi bi-speedometer2"></i>
+      <div class="nav-contenido">
+        <span class="nav-titulo-item">Dashboard Principal</span>
+        <small>Estado general del sistema</small>
+      </div>
+      <i class="bi bi-chevron-right"></i>
+    </a>
+
+    <a routerLink="/mantenimiento/alertas-tiempo-real" routerLinkActive="activo" class="nav-item alertas-tiempo-real">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <div class="nav-contenido">
+        <span class="nav-titulo-item">Centro de Alertas en Tiempo Real</span>
+        <small>Monitoreo y gestión de alertas</small>
+        @if (numeroAlertasPendientes() > 0) {
+          <span class="badge-notificacion">{{ numeroAlertasPendientes() }}</span>
+        }
+      </div>
+      <i class="bi bi-chevron-right"></i>
+    </a>
+
+    <a routerLink="/mantenimiento/configuracion" routerLinkActive="activo" class="nav-item configuracion">
+      <i class="bi bi-gear-fill"></i>
+      <div class="nav-contenido">
+        <span class="nav-titulo-item">Configuración</span>
+        <small>Ajustes del demonio de mantenimiento</small>
+      </div>
+      <i class="bi bi-chevron-right"></i>
+    </a>
+
+    <a routerLink="/mantenimiento/raspberrypi" routerLinkActive="activo" class="nav-item dispositivos">
+      <i class="bi bi-phone-vibrate"></i>
+      <div class="nav-contenido">
+        <span class="nav-titulo-item">Gestor Raspberry Pi</span>
+        <small>Administración de dispositivos</small>
+        @if (dispositivosConectados() > 0) {
+          <span class="badge-dispositivos">{{ dispositivosConectados() }} activos</span>
+        }
+      </div>
+      <i class="bi bi-chevron-right"></i>
+    </a>
+
+    <a routerLink="/mantenimiento/alertas" routerLinkActive="activo" class="nav-item alertas">
+      <i class="bi bi-bell-fill"></i>
+      <div class="nav-contenido">
+        <span class="nav-titulo-item">Centro de Alertas</span>
+        <small>Gestión y filtrado de alertas</small>
+      </div>
+      <i class="bi bi-chevron-right"></i>
+    </a>
+
+    <a routerLink="/mantenimiento/historial" routerLinkActive="activo" class="nav-item historial">
+      <i class="bi bi-clock-history"></i>
+      <div class="nav-contenido">
+        <span class="nav-titulo-item">Historial de Mantenimiento</span>
+        <small>Timeline de eventos y cambios</small>
+      </div>
+      <i class="bi bi-chevron-right"></i>
+    </a>
+  </div>
+
+  <!-- Estado de Conexión WebSocket -->
+  <div class="estado-websocket">
+    <div class="indicador-ws" [class.conectado]="webSocketConectado()">
+      <span class="punto-ws"></span>
+      <span class="texto-ws">
+        {{ webSocketConectado() ? 'WebSocket Conectado' : 'Desconectado' }}
+      </span>
+    </div>
+    @if (!webSocketConectado()) {
+      <button class="btn-reconectar" (click)="reconectar()">
+        <i class="bi bi-arrow-clockwise"></i> Reconectar
+      </button>
+    }
+  </div>
+</div>

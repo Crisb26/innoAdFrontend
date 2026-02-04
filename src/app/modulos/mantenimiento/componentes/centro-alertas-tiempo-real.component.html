@@ -1,0 +1,238 @@
+<div class="centro-alertas-contenedor">
+  <!-- Header del Centro -->
+  <div class="centro-alertas-header">
+    <div class="titulo-seccion">
+      <h2>Centro de Alertas en Tiempo Real</h2>
+      <div class="estado-conexion" [class.conectado]="webSocketConectado()">
+        <span class="indicador-estado"></span>
+        <span class="texto-estado">{{ webSocketConectado() ? 'Conectado' : 'Desconectado' }}</span>
+      </div>
+    </div>
+    <div class="acciones-header">
+      <button class="btn btn-sm btn-outline-primary" (click)="reconectarWebSocket()">
+        <i class="bi bi-arrow-clockwise"></i> Reconectar
+      </button>
+      <button class="btn btn-sm btn-outline-secondary" (click)="limpiarAlertas()">
+        <i class="bi bi-trash"></i> Limpiar
+      </button>
+    </div>
+  </div>
+
+  <!-- Estadísticas Rápidas -->
+  <div class="estadisticas-rapidas">
+    <div class="stat-card critica">
+      <div class="stat-numero">{{ contarPorTipo('CRITICA') }}</div>
+      <div class="stat-label">Críticas</div>
+    </div>
+    <div class="stat-card advertencia">
+      <div class="stat-numero">{{ contarPorTipo('ADVERTENCIA') }}</div>
+      <div class="stat-label">Advertencias</div>
+    </div>
+    <div class="stat-card info">
+      <div class="stat-numero">{{ contarPorTipo('INFO') }}</div>
+      <div class="stat-label">Información</div>
+    </div>
+    <div class="stat-card exito">
+      <div class="stat-numero">{{ contarPorTipo('EXITO') }}</div>
+      <div class="stat-label">Éxito</div>
+    </div>
+  </div>
+
+  <!-- Filtros y Búsqueda -->
+  <div class="filtros-alertas">
+    <div class="filtro-grupo">
+      <label class="filtro-label">Tipo de Alerta:</label>
+      <select class="form-select form-select-sm" [(ngModel)]="filtroTipo" (change)="aplicarFiltros()">
+        <option value="">Todas</option>
+        <option value="CRITICA">Críticas</option>
+        <option value="ADVERTENCIA">Advertencias</option>
+        <option value="INFO">Información</option>
+        <option value="EXITO">Éxito</option>
+      </select>
+    </div>
+    <div class="filtro-grupo">
+      <label class="filtro-label">Estado:</label>
+      <select class="form-select form-select-sm" [(ngModel)]="filtroEstado" (change)="aplicarFiltros()">
+        <option value="">Todos</option>
+        <option value="ACTIVA">Activas</option>
+        <option value="RESUELTA">Resueltas</option>
+        <option value="ESCALADA">Escaladas</option>
+      </select>
+    </div>
+    <div class="filtro-grupo">
+      <label class="filtro-label">Buscar:</label>
+      <input type="text" class="form-control form-control-sm" placeholder="Buscar por título..." 
+             [(ngModel)]="textoBusqueda" (keyup)="aplicarFiltros()">
+    </div>
+  </div>
+
+  <!-- Lista de Alertas -->
+  <div class="alertas-lista">
+    @if (alertasFiltradas().length > 0) {
+      <div class="alertas-items">
+        @for (alerta of alertasFiltradas(); track alerta.id) {
+          <div class="alerta-item" [class]="'alerta-' + alerta.tipo.toLowerCase()">
+            <!-- Indicador de Tipo -->
+            <div class="alerta-indicador" [style.background-color]="obtenerColorTipo(alerta.tipo)"></div>
+            
+            <!-- Contenido Principal -->
+            <div class="alerta-contenido">
+              <div class="alerta-encabezado">
+                <h5 class="alerta-titulo">{{ alerta.titulo }}</h5>
+                <span class="badge" [class]="'badge-' + alerta.tipo.toLowerCase()">
+                  {{ alerta.tipo }}
+                </span>
+                <span class="badge badge-estado">{{ alerta.estado }}</span>
+              </div>
+              
+              @if (alerta.descripcion) {
+                <p class="alerta-descripcion">{{ alerta.descripcion }}</p>
+              }
+              
+              <div class="alerta-meta">
+                <small class="meta-item">
+                  <i class="bi bi-clock"></i> {{ alerta.fechaCreacion | date:'short' }}
+                </small>
+                <small class="meta-item">
+                  <i class="bi bi-lightning"></i> Prioridad: {{ alerta.prioridad }}/5
+                </small>
+                @if (alerta.origen) {
+                  <small class="meta-item">
+                    <i class="bi bi-diagram-2"></i> {{ alerta.origen }}
+                  </small>
+                }
+                @if (alerta.dispositivoId) {
+                  <small class="meta-item">
+                    <i class="bi bi-phone"></i> Dispositivo: {{ alerta.dispositivoId }}
+                  </small>
+                }
+              </div>
+            </div>
+
+            <!-- Acciones -->
+            <div class="alerta-acciones">
+              @if (alerta.estado === 'ACTIVA') {
+                <button class="btn-accion btn-resolver" title="Resolver" (click)="abrirModalResolver(alerta)">
+                  <i class="bi bi-check-circle"></i>
+                </button>
+                <button class="btn-accion btn-escalar" title="Escalar" (click)="escalarAlerta(alerta.id!)">
+                  <i class="bi bi-exclamation-triangle"></i>
+                </button>
+                <button class="btn-accion btn-ignorar" title="Ignorar" (click)="ignorarAlerta(alerta.id!)">
+                  <i class="bi bi-x-circle"></i>
+                </button>
+              }
+              <button class="btn-accion btn-detalles" title="Detalles" (click)="mostrarDetalles(alerta)">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="sin-alertas">
+        <i class="bi bi-inbox"></i>
+        <p>No hay alertas para mostrar</p>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Modal para Resolver Alerta -->
+<div class="modal fade" id="modalResolver" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Resolver Alerta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Descripción de Resolución:</label>
+          <textarea class="form-control" rows="4" [(ngModel)]="descripcionResolucion" 
+                    placeholder="Describe cómo se resolvió..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="confirmarResolver()">
+          <i class="bi bi-check"></i> Resolver
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para Detalles -->
+<div class="modal fade" id="modalDetalles" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalles de la Alerta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        @if (alertaSeleccionada) {
+          <div class="detalles-contenedor">
+            <div class="detalle-fila">
+              <label>ID:</label>
+              <span>{{ alertaSeleccionada.id }}</span>
+            </div>
+            <div class="detalle-fila">
+              <label>Título:</label>
+              <span>{{ alertaSeleccionada.titulo }}</span>
+            </div>
+            <div class="detalle-fila">
+              <label>Descripción:</label>
+              <span>{{ alertaSeleccionada.descripcion }}</span>
+            </div>
+            <div class="detalle-fila">
+              <label>Tipo:</label>
+              <span class="badge" [class]="'badge-' + alertaSeleccionada.tipo.toLowerCase()">
+                {{ alertaSeleccionada.tipo }}
+              </span>
+            </div>
+            <div class="detalle-fila">
+              <label>Estado:</label>
+              <span class="badge badge-estado">{{ alertaSeleccionada.estado }}</span>
+            </div>
+            <div class="detalle-fila">
+              <label>Prioridad:</label>
+              <span>{{ alertaSeleccionada.prioridad }}/5</span>
+            </div>
+            <div class="detalle-fila">
+              <label>Origen:</label>
+              <span>{{ alertaSeleccionada.origen }}</span>
+            </div>
+            @if (alertaSeleccionada.dispositivoId) {
+              <div class="detalle-fila">
+                <label>Dispositivo:</label>
+                <span>{{ alertaSeleccionada.dispositivoId }}</span>
+              </div>
+            }
+            <div class="detalle-fila">
+              <label>Fecha de Creación:</label>
+              <span>{{ alertaSeleccionada.fechaCreacion | date:'medium' }}</span>
+            </div>
+            @if (alertaSeleccionada.estado === 'RESUELTA') {
+              <div class="detalle-fila">
+                <label>Resuelto por:</label>
+                <span>{{ alertaSeleccionada.usuarioResolucion }}</span>
+              </div>
+              <div class="detalle-fila">
+                <label>Descripción de Resolución:</label>
+                <span>{{ alertaSeleccionada.descripcionResolucion }}</span>
+              </div>
+            }
+            @if (alertaSeleccionada.detalles) {
+              <div class="detalle-fila">
+                <label>Detalles Adicionales:</label>
+                <pre>{{ alertaSeleccionada.detalles | json }}</pre>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

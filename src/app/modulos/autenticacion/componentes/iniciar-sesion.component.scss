@@ -1,0 +1,149 @@
+.contenedor-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+
+  @media (max-width: 420px) {
+    padding: 1rem;
+  }
+}
+
+.tarjeta-login {
+  background: rgba(26, 31, 58, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 3rem;
+  width: 100%;
+  max-width: 450px;
+  border: 1px solid rgba(0, 217, 255, 0.2);
+  box-shadow: 0 0 30px rgba(0, 217, 255, 0.3);
+}
+
+.encabezado-login {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.titulo-login {
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00d9ff, #ff006a);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+
+  @media (max-width: 420px) {
+    font-size: 1.8rem;
+  }
+}
+
+.subtitulo-login {
+  color: #b4b8d0;
+  font-size: 0.9rem;
+}
+
+.formulario-login {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.grupo-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    color: #b4b8d0;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+}
+
+.grupo-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  label {
+    color: #b4b8d0;
+    font-size: 0.9rem;
+  }
+}
+
+.boton-login {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.enlaces-adicionales {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+
+  a {
+    color: #00d9ff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #ff006a;
+    }
+  }
+}
+
+.alerta {
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.alerta-error {
+  background: rgba(255, 68, 68, 0.1);
+  border: 1px solid rgba(255, 68, 68, 0.3);
+  color: #ff4444;
+}
+
+.texto-error {
+  color: #ff4444;
+  font-size: 0.8rem;
+}
+
+.loader-pequeño {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 3px solid transparent;
+  border-top-color: #00d9ff;
+  border-right-color: #00d9ff;
+  border-radius: 50%;
+  animation: spin-futurista 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+  box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+}
+
+@keyframes spin-futurista {
+  0% { 
+    transform: rotate(0deg) scale(1);
+    border-top-color: #00d9ff;
+    border-right-color: #00d9ff;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+    border-top-color: #ff006a;
+    border-right-color: #ff006a;
+  }
+  100% { 
+    transform: rotate(360deg) scale(1);
+    border-top-color: #00d9ff;
+    border-right-color: #00d9ff;
+  }
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}
