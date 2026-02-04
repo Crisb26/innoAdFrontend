@@ -1,0 +1,56 @@
+# VAULT DE CREDENCIALES Y VARIABLES SENSIBLES
+# Este archivo está cifrado y solo puede ser accedido por Cris930226** y GitHub Copilot.
+# Instrucciones para cifrado/desencriptado:
+# 1. Para cifrar: usa una herramienta como OpenSSL o GPG con la clave Cris930226**
+#    Ejemplo (Windows CMD):
+#    openssl enc -aes-256-cbc -salt -in vault.txt -out vault.enc -k Cris930226**
+# 2. Para descifrar:
+#    openssl enc -d -aes-256-cbc -in vault.enc -out vault.txt -k Cris930226**
+# 3. No compartas la clave ni el archivo sin cifrar.
+# 4. Aquí puedes guardar credenciales de Railway, backend, frontend, despliegues, etc.
+
+# --- VARIABLES DE RAILWAY ---
+DATABASE_PUBLIC_URL=postgresql://postgres:bpujzp0HKqLMVBUDhmPtwLmJTvj8RSw@nozomi.proxy.rlwy.net:29841/railway
+DATABASE_URL=jdbc:postgresql://postgres.railway.internal:5432/railway?user=postgres&password=bpujzp0HKqLMVBUDhmPtwLmJTvj8RSw
+MAIL_PASSWORD=ixtdxwfnivtncnq
+MAIL_USERNAME=buenocris02@gmail.com
+PGDATA=/var/lib/postgresql/data/pgdata
+PGDATABASE=railway
+PGHOST=postgres.railway.internal
+PGPASSWORD=bpujzp0HKqLMVBUDhmPtwLmJTvj8RSw
+PGPORT=5432
+PGUSER=postgres
+POSTGRES_DB=railway
+POSTGRES_PASSWORD=bpujzp0HKqLMVBUDhmPtwLmJTvj8RSw
+POSTGRES_USER=postgres
+SPRING_PROFILES_ACTIVE=prod
+RAILWAY_PRIVATE_DOMAIN=postgres.railway.internal
+RAILWAY_TCP_PROXY_DOMAIN=nozomi.proxy.rlwy.net
+RAILWAY_TCP_PROXY_PORT=29841
+RAILWAY_TCP_APPLICATION_PORT=5432
+RAILWAY_PROJECT_NAME=ingenious-stillness
+RAILWAY_ENVIRONMENT_NAME=production
+RAILWAY_SERVICE_NAME=Postgres
+RAILWAY_PROJECT_ID=a32c3235-e7d1-4018-8f4f-e49ef4f059ad
+RAILWAY_ENVIRONMENT_ID=c5cdc019-ef5d-4985-82cb-5aaf310653a7
+RAILWAY_SERVICE_ID=7c0d42d9-1e88-4df1-84e5-91e863549c9f
+RAILWAY_VOLUME_ID=2db79a19-0df3-4f62-9170-73166cb20834
+RAILWAY_VOLUME_NAME=postgres-volume-sitA
+RAILWAY_VOLUME_MOUNT_PATH=/var/lib/postgresql/data
+RAILWAY_DEPLOYMENT_DRAINING_SEC=60
+SSL_CERT_DAYS=820
+
+# --- AGREGA AQUÍ MÁS CLAVES Y VARIABLES SENSIBLES ---
+# Ejemplo:
+# BACKEND_SECRET_KEY=tu_clave_backend
+# FRONTEND_API_KEY=tu_clave_frontend
+# AZURE_DEPLOYMENT_KEY=tu_clave_azure
+
+# --- CREDENCIALES AZURE POSTGRESQL ---
+AZURE_DB_HOST=innoad-postgres.postgres.database.azure.com
+AZURE_DB_PORT=5432
+AZURE_DB_USER=admininnoad
+AZURE_DB_PASSWORD=InnoAd2025Azure123
+AZURE_DB_NAME=innoad_db
+AZURE_PG_ADMIN_USER=admininnoad
+AZURE_PG_ADMIN_PASSWORD=InnoAd2025!Secure
