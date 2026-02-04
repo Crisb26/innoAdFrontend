@@ -1,7 +1,7 @@
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, throwError, retry, delay, take } from 'rxjs';
+import { catchError, throwError, retry, take } from 'rxjs';
 import { ServicioAutenticacion } from '../servicios/autenticacion.servicio';
 import NotifyX from 'notifyx';
 
@@ -10,16 +10,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const servicioAuth = inject(ServicioAutenticacion);
   
   return next(req).pipe(
-    retry({ 
-      count: 2, 
-      delay: (error: HttpErrorResponse) => {
-        // No reintentar en errores 401, 403, 404
-        if ([401, 403, 404].includes(error.status)) {
-          return throwError(() => error);
-        }
-        return delay(1000);
-      }
-    }),
     catchError((error: HttpErrorResponse) => {
       const mensajeErrorDetallado = error.error?.mensaje || error.message || 'Error desconocido';
       

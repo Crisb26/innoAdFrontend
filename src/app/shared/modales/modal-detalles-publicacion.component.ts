@@ -56,7 +56,7 @@ export interface PublicacionDetalles {
                 </div>
                 <div class="detalle">
                   <label>Costo Total:</label>
-                  <strong>${{ publicacion.costoTotal | number:'1.2-2' }}</strong>
+                  <strong>{{ publicacion.costoTotal | number:'1.2-2' }}</strong>
                 </div>
                 <div class="detalle">
                   <label>Fecha Creación:</label>

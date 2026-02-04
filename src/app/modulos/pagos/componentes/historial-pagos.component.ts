@@ -47,7 +47,7 @@ import { ServicioPagos } from '@core/servicios/pagos.servicio';
               <tr [class.aprobado]="pago.estado === 'APROBADO'">
                 <td>{{ pago.referencia }}</td>
                 <td>{{ pago.planNombre }}</td>
-                <td>${{ pago.monto }}</td>
+                <td>{{ pago.monto }}</td>
                 <td>
                   <span [class]="'badge-' + pago.estado.toLowerCase()">
                     {{ pago.estado }}

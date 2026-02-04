@@ -28,7 +28,7 @@ export interface VerificacionContrasena {
   providedIn: 'root'
 })
 export class ServicioMantenimiento {
-  private readonly apiUrl = `${environment.apiUrl}/v1/mantenimiento`;
+  private readonly apiUrl = `${environment.api.baseUrl}/v1/mantenimiento`;
 
   constructor(private http: HttpClient) {}
 

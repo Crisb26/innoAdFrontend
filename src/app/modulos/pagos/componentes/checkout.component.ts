@@ -120,7 +120,7 @@ import NotifyX from 'notifyx';
             </div>
             <div class="detalle-plan">
               <span class="label">Monto:</span>
-              <span class="valor">${{ montoPlan() }}</span>
+              <span class="valor">{{ montoPlan() }}</span>
             </div>
             <div class="detalle-plan">
               <span class="label">Período:</span>

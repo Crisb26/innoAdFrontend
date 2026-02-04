@@ -32,7 +32,7 @@ import NotifyX from 'notifyx';
               </div>
               <div class="detalle">
                 <span class="label">Monto:</span>
-                <span class="valor">${{ pago()!.monto }}</span>
+                <span class="valor">{{ pago()!.monto }}</span>
               </div>
               <div class="detalle">
                 <span class="label">Plan:</span>

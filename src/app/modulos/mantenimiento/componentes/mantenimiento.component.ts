@@ -129,7 +129,7 @@ export class MantenimientoComponent implements OnInit {
     fechaInicio: new Date().toISOString(),
     fechaFin: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
     tipoMantenimiento: 'PROGRAMADO',
-    urlContacto: 'soporte@innoad.com',
+    urlContacto: 'soporte&#64;innoad.com',
     tiempoRestante: '2 horas'
   };
 

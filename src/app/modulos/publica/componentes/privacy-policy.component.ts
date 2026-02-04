@@ -100,7 +100,7 @@ import { RouterModule } from '@angular/router';
             <li><strong>Consentimiento:</strong> Retirar consentimiento en cualquier momento</li>
           </ul>
           <p>
-            Para ejercer estos derechos, contáctanos en privacy@innoad.com
+            Para ejercer estos derechos, contáctanos en privacy&#64;innoad.com
           </p>
         </section>
 
@@ -153,7 +153,7 @@ import { RouterModule } from '@angular/router';
             Si tienes preguntas sobre esta Política de Privacidad, contáctanos:
           </p>
           <ul>
-            <li>Email: privacy@innoad.com</li>
+            <li>Email: privacy&#64;innoad.com</li>
             <li>Teléfono: [Tu Teléfono]</li>
             <li>Dirección: [Tu Dirección]</li>
           </ul>
