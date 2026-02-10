@@ -1,6 +1,7 @@
-import { Component, signal, Output, EventEmitter, inject } from '@angular/core';
+import { Component, signal, Output, EventEmitter, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { AyudaService } from '../../../core/servicios/ayuda.servicio';
 import NotifyX from 'notifyx';
 
 @Component({
@@ -81,11 +82,12 @@ import NotifyX from 'notifyx';
   `,
   styleUrls: ['./formulario-campana.component.scss']
 })
-export class FormularioCampanaComponent {
+export class FormularioCampanaComponent implements OnInit {
   @Output() campaniaCreada = new EventEmitter<any>();
   @Output() cerrarModal = new EventEmitter<void>();
   
   private readonly fb = inject(FormBuilder);
+  private readonly ayuda = inject(AyudaService);
   guardando = signal(false);
   
   form = this.fb.group({
@@ -111,5 +113,17 @@ export class FormularioCampanaComponent {
   cerrar() {
     this.guardando.set(false);
     this.cerrarModal.emit();
+  }
+
+  ngOnInit(): void {
+    // Esperar a que el modal esté renderizado y mostrar tour anclado
+    setTimeout(() => {
+      this.ayuda.startTourOnce('campana_form', [
+        { element: '.modal-contenido h2', intro: 'Formulario: completa la información básica de la campaña aquí.', position: 'bottom' },
+        { element: 'input[formcontrolname="nombre"]', intro: 'Nombre identificable para la campaña.', position: 'right' },
+        { element: 'textarea[formcontrolname="descripcion"]', intro: 'Descripción breve que explique la campaña.', position: 'right' },
+        { element: '.modal-footer .boton-primario', intro: 'Crear Campaña para guardar y cerrar.', position: 'left' }
+      ], { showProgress: true, exitOnOverlayClick: true });
+    }, 200);
   }
 }

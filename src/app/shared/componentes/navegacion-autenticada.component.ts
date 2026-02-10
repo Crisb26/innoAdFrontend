@@ -1,6 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router, ActivatedRoute } from '@angular/router';
+import { RouterLink, Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import { AyudaService } from '@core/servicios/ayuda.servicio';
 import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
 import { EditarPerfilComponent } from './editar-perfil.component';
 
@@ -133,10 +135,11 @@ import { EditarPerfilComponent } from './editar-perfil.component';
     }
   `
 })
-export class NavegacionAutenticadaComponent {
+export class NavegacionAutenticadaComponent implements OnInit {
   private readonly servicioAuth = inject(ServicioAutenticacion);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly ayuda = inject(AyudaService);
   
 
   protected readonly menuAbierto = signal(false);
@@ -212,6 +215,30 @@ export class NavegacionAutenticadaComponent {
   protected cerrarSesion(): void {
     this.servicioAuth.cerrarSesion();
     this.cerrarMenu();
+  }
+
+  ngOnInit(): void {
+    // Escuchar cambios de ruta y lanzar tour por primera vez según la ruta
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
+      const path = this.router.url.split('?')[0];
+      // Rutas con tours de ejemplo. Mantener textos flotantes para no alterar templates.
+      if (path.startsWith('/campanas')) {
+        this.ayuda.startTourOnce('campanas', [
+          { intro: 'Bienvenido al módulo de Campañas: aquí puedes crear y gestionar tus campañas publicitarias.' },
+          { intro: 'Usa el botón "Crear Campaña" para abrir el formulario y configurar fechas, pantallas y descripción.' },
+          { intro: 'Filtra y ordena tus campañas para encontrar rápidamente las activas o programadas.' }
+        ], { showProgress: true });
+      } else if (path.startsWith('/publicar') || path.startsWith('/publicacion')) {
+        this.ayuda.startTourOnce('publicar', [
+          { intro: 'Pantalla de publicación: aquí configuras contenido y ubicaciones donde se mostrará.' },
+          { intro: 'Revisa las previsualizaciones antes de confirmar la publicación.' }
+        ]);
+      } else if (path.startsWith('/dashboard')) {
+        this.ayuda.startTourOnce('dashboard', [
+          { intro: 'Tu Dashboard muestra métricas clave y accesos rápidos a módulos importantes.' }
+        ]);
+      }
+    });
   }
 
   

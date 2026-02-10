@@ -6,6 +6,7 @@ import { NavegacionAutenticadaComponent } from '@shared/componentes/navegacion-a
 import { ServicioContenidos } from '@core/servicios/contenidos.servicio';
 import { Contenido, FiltroContenidos, RespuestaPaginada, TipoContenido } from '@core/modelos';
 import { FormularioContenidoComponent } from './formulario-contenido.component';
+import { AyudaService } from '../../../core/servicios/ayuda.servicio';
 
 @Component({
   selector: 'app-lista-contenidos',
@@ -217,6 +218,7 @@ import { FormularioContenidoComponent } from './formulario-contenido.component';
 })
 export class ListaContenidosComponent implements OnInit {
   private readonly servicioContenidos = inject(ServicioContenidos);
+  private readonly ayuda = inject(AyudaService);
 
   contenidos = signal<Contenido[]>([]);
   cargando = signal(false);
@@ -233,6 +235,13 @@ export class ListaContenidosComponent implements OnInit {
 
   ngOnInit() {
     this.cargarContenidos();
+    setTimeout(() => {
+      this.ayuda.startTourOnce('contenidos', [
+        { element: '.header-contenidos .boton-primario', intro: 'Crea nuevo contenido multimedia desde aquí.', position: 'left' },
+        { element: '.entrada-busqueda', intro: 'Busca contenidos por nombre o descripción.', position: 'bottom' },
+        { element: '.grid-contenidos .tarjeta-contenido', intro: 'Haz clic en un contenido para editar o ver detalles.', position: 'top' }
+      ], { showProgress: true });
+    }, 600);
   }
 
   cargarContenidos() {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { PublicacionServicio } from '../../../core/servicios/publicacion.servicio';
 import { UbicacionServicio, SeleccionUbicacion } from '../../../core/servicios/ubicacion.servicio';
 import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
+import { AyudaService } from '../../../core/servicios/ayuda.servicio';
 
 @Component({
   selector: 'app-publicacion-crear',
@@ -38,6 +39,8 @@ export class PublicacionCrearComponent implements OnInit, OnDestroy {
     private router: Router
   ) {}
 
+  private readonly ayuda = inject(AyudaService);
+
   ngOnInit(): void {
     // Verificar que es usuario
     if (!this.permisosServicio.esUsuario()) {
@@ -53,6 +56,16 @@ export class PublicacionCrearComponent implements OnInit, OnDestroy {
       this.formulario.duracionDias = state.duracionDias || 30;
       this.costoTotal = state.costoEstimado || 0;
     }
+
+    // Tour introductorio del flujo de creación de publicaciones
+    setTimeout(() => {
+      this.ayuda.startTourOnce('publicacion_crear', [
+        { element: '.publicacion-crear-container .header h1', intro: 'Crea una nueva publicidad paso a paso.', position: 'bottom' },
+        { element: '.formulario-principal .paso-seccion:nth-of-type(1)', intro: 'Completa la información básica: título, descripción y tipo de contenido.', position: 'right' },
+        { element: '.upload-area', intro: 'Aquí subes el archivo (imagen o video) para tu publicidad.', position: 'right' },
+        { element: '.panel-lateral .acciones .btn-enviar-aprobacion', intro: 'Envía para aprobación cuando todo esté listo.', position: 'left' }
+      ], { showProgress: true, exitOnOverlayClick: true });
+    }, 600);
   }
 
   ngOnDestroy(): void {

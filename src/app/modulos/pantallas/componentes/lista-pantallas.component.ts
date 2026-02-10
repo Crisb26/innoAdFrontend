@@ -6,6 +6,7 @@ import { NavegacionAutenticadaComponent } from '@shared/componentes/navegacion-a
 import { FormularioPantallaComponent } from './formulario-pantalla.component';
 import { DetallePantallaComponent } from './detalle-pantalla.component';
 import { PantallasService, RespuestaPantalla } from '../../../core/servicios/pantallas.service';
+import { AyudaService } from '../../../core/servicios/ayuda.servicio';
 
 @Component({
   selector: 'app-lista-pantallas',
@@ -130,6 +131,7 @@ import { PantallasService, RespuestaPantalla } from '../../../core/servicios/pan
   `
 })
 export class ListaPantallasComponent implements OnInit {
+  private readonly ayuda = inject(AyudaService);
   cargando = signal(false);
   mostrarFormulario = signal(false);
   mostrarDetalle = signal(false);
@@ -150,6 +152,14 @@ export class ListaPantallasComponent implements OnInit {
     this.cargando.set(true);
     this.pantallasService.cargarPantallas();
     setTimeout(() => this.cargando.set(false), 1000);
+    // Mostrar ayuda introductoria del módulo Pantallas (una sola vez)
+    setTimeout(() => {
+      this.ayuda.startTourOnce('pantallas', [
+        { element: '.header-pantallas .boton-primario', intro: 'Crea una nueva pantalla para transmitir contenidos.', position: 'left' },
+        { element: '.entrada-busqueda', intro: 'Busca pantallas por nombre o ubicación.' , position: 'bottom'},
+        { element: '.tabla-pantallas', intro: 'En la tabla puedes ver estado, contenidos y acciones disponibles.' , position: 'top'}
+      ], { showProgress: true, exitOnOverlayClick: true });
+    }, 600);
   }
 
   pantallasFiltradasUnicaBusqueda(): RespuestaPantalla[] {

@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ServicioAutenticacion } from '../../../core/servicios/autenticacion.servicio';
+import { AyudaService } from '../../../core/servicios/ayuda.servicio';
 import { ServicioEstadisticas } from '../../../core/servicios/estadisticas.servicio';
 import { NavegacionAutenticadaComponent } from '../../../shared/componentes/navegacion-autenticada.component';
 
@@ -159,12 +160,22 @@ interface MetricaKPI {
 export class DashboardComponent implements OnInit {
   private readonly servicioAuth = inject(ServicioAutenticacion);
   private readonly servicioEstadisticas = inject(ServicioEstadisticas);
+  private readonly ayuda = inject(AyudaService);
 
   protected readonly cargando = signal(true);
   protected readonly metricas = signal<MetricaKPI[]>([]);
 
   ngOnInit(): void {
     this.cargarEstadisticas();
+    // Lanzar tour anclado al dashboard la primera vez (ligero delay para asegurar render)
+    setTimeout(() => {
+      this.ayuda.startTourOnce('dashboard', [
+        { element: '.titulo-bienvenida-hero', intro: 'Este es tu espacio personal. Aquí verás un resumen rápido de tu cuenta y acciones importantes.' , position: 'bottom' },
+        { element: '.tarjeta-campanas .btn-tarjeta', intro: 'Accede al módulo de Campañas para crear, editar y programar tus campañas.', position: 'right' },
+        { element: '.tarjeta-publicar .btn-tarjeta', intro: 'Publica contenido rápidamente desde este acceso directo.', position: 'right' },
+        { element: '.seccion-actividad', intro: 'Actividad reciente: revisa acciones y eventos recientes en tu cuenta.', position: 'left' }
+      ], { showProgress: true, exitOnOverlayClick: true });
+    }, 700);
   }
 
   private cargarEstadisticas(): void {

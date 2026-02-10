@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ServicioIA } from '../../servicios/servicio-ia.service';
 import { ServicioUtilidades } from '../../../../core/servicios/servicio-utilidades.service';
+import { AyudaService } from '../../../../core/servicios/ayuda.servicio';
 
 /**
  * Interfaz para las interacciones con la IA
@@ -84,6 +85,8 @@ export class AsistenteIAComponent implements OnInit, OnDestroy {
     private servicioIA: ServicioIA,
     private servicioUtilidades: ServicioUtilidades
   ) {}
+
+  private readonly ayuda = inject(AyudaService);
   
   /**
    * Método para comparar objetos en selects de Angular
@@ -104,6 +107,17 @@ export class AsistenteIAComponent implements OnInit, OnDestroy {
     
     // Cargar estadísticas
     this.cargarEstadisticas();
+
+    // Mostrar tour introductorio del asistente IA
+    setTimeout(() => {
+      this.ayuda.startTourOnce('asistente_ia', [
+        { element: '.titulo-asistente h2', intro: 'Este es tu asistente IA — formula preguntas y recibe respuestas.' , position: 'bottom' },
+        { element: '.selector-configuracion select', intro: 'Selecciona el modelo y la configuración de IA.', position: 'left' },
+        { element: '.campo-pregunta', intro: 'Escribe tu pregunta aquí y presiona Ctrl+Enter para enviar.', position: 'top' },
+        { element: '.btn-enviar-normal', intro: 'Envía la pregunta y recibe la respuesta completa.', position: 'left' },
+        { element: '.btn-enviar-streaming', intro: 'Envía usando streaming para ver la respuesta en tiempo real.', position: 'left' }
+      ], { showProgress: true });
+    }, 500);
   }
   
   /**
