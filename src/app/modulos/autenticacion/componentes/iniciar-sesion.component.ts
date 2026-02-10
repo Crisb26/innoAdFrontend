@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
+import { GuiaServicio } from '@core/servicios/guia.servicio';
 import { SolicitudLogin } from '@core/modelos';
 import NotifyX from 'notifyx';
 
@@ -17,6 +18,12 @@ import NotifyX from 'notifyx';
         <div class="encabezado-login">
           <h1 class="titulo-login">InnoAd</h1>
           <p class="subtitulo-login">Sistema de Gestión de Publicidad Digital</p>
+          <button
+            type="button"
+            title="Mostrar guía"
+            style="position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:50%;border:none;background:#007bff;color:#fff;font-weight:bold;"
+            (click)="iniciarGuia()"
+          >?</button>
         </div>
 
         <form [formGroup]="formulario" (ngSubmit)="iniciarSesion()" class="formulario-login">
@@ -82,6 +89,7 @@ import NotifyX from 'notifyx';
 export class IniciarSesionComponent {
   private readonly fb = inject(FormBuilder);
   private readonly servicioAuth = inject(ServicioAutenticacion);
+  private readonly guia = inject(GuiaServicio);
   private readonly router = inject(Router);
 
   protected readonly cargando = signal(false);
@@ -139,6 +147,17 @@ export class IniciarSesionComponent {
         });
       }
     });
+  }
+
+  iniciarGuia(): void {
+    const steps = [
+      { element: '#nombreUsuarioOEmail', intro: 'Ingresa tu correo o nombre de usuario aquí.' },
+      { element: '#contrasena', intro: 'Introduce tu contraseña. Usa las credenciales offline si el backend está apagado.' },
+      { element: '.boton-login', intro: 'Haz clic aquí para iniciar sesión.' },
+      { intro: 'Si necesitas crear una cuenta, usa el enlace "Crear cuenta nueva".' }
+    ];
+
+    this.guia.startTour(steps);
   }
 
   /**

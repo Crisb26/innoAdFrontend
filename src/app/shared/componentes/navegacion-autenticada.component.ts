@@ -49,6 +49,8 @@ import { EditarPerfilComponent } from './editar-perfil.component';
           }
         </div>
 
+        
+
         <!-- Menu de Usuario -->
         <div class="user-menu" [class.open]="menuAbierto()" (click)="toggleMenu()">
           <div class="user-button">
@@ -135,6 +137,7 @@ export class NavegacionAutenticadaComponent {
   private readonly servicioAuth = inject(ServicioAutenticacion);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  
 
   protected readonly menuAbierto = signal(false);
   protected readonly mostrarModalPerfil = signal(false);
@@ -210,4 +213,6 @@ export class NavegacionAutenticadaComponent {
     this.servicioAuth.cerrarSesion();
     this.cerrarMenu();
   }
+
+  
 }

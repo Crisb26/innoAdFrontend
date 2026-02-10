@@ -194,6 +194,16 @@ export class ServicioAutenticacion {
         catchError(error => {
           console.error('❌ Error capturado en catchError:', error);
           this.cargandoSignal.set(false);
+
+          // Si la configuración permite autenticación offline, intentar usar usuarios locales
+          try {
+            if ((environment as any).offlineAuth?.enabled) {
+              return this.intentarLoginOffline(solicitud as SolicitudLogin);
+            }
+          } catch (e) {
+            // Ignorar y propagar el error
+          }
+
           return throwError(() => this.manejarError(error));
         })
       );
@@ -492,6 +502,44 @@ export class ServicioAutenticacion {
     }
     
     return new Error(mensaje);
+  }
+
+  /**
+   * Intentar login usando usuarios locales definidos en `environment.offlineAuth`
+   */
+  private intentarLoginOffline(solicitud: SolicitudLogin): Observable<RespuestaLogin> {
+    const cfg: any = (environment as any).offlineAuth || { enabled: false, users: [] };
+    const usuarios: any[] = cfg.users || [];
+
+    const encontrado = usuarios.find(u =>
+      (u.nombreUsuario === solicitud.nombreUsuarioOEmail || u.email === solicitud.nombreUsuarioOEmail) &&
+      u.contrasena === solicitud.contrasena
+    );
+
+    if (!encontrado) {
+      return throwError(() => new Error('Credenciales inválidas (modo offline)'));
+    }
+
+    const datosLogin: RespuestaLogin = {
+      token: 'offline-' + btoa(encontrado.nombreUsuario + ':' + Date.now()).slice(0, 80),
+      tokenActualizacion: '',
+      usuario: {
+        id: 0,
+        nombreUsuario: encontrado.nombreUsuario,
+        email: encontrado.email || '',
+        nombreCompleto: encontrado.nombreCompleto || encontrado.nombreUsuario,
+        rol: encontrado.rol || 'Usuario'
+      } as any,
+      expiraEn: Math.floor(((environment.auth && environment.auth.tokenExpiration) || (8 * 60 * 60 * 1000)) / 1000)
+    };
+
+    // Guardar sesión localmente
+    this.guardarSesion(datosLogin, solicitud.recordarme || false);
+    this.usuarioActualSignal.set(datosLogin.usuario);
+    this.tokenActualSignal.set(datosLogin.token);
+    this.programarRefrescoConExpira(datosLogin.expiraEn);
+
+    return of(datosLogin);
   }
 
   // ===== MÉTODOS AVANZADOS DE AUTENTICACIÓN =====

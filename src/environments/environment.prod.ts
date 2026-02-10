@@ -64,6 +64,11 @@ export const environment = {
     twoFactorEnabled: true,
     backupCodesEnabled: true
   },
+  // Disable offline auth in production by default
+  offlineAuth: {
+    enabled: false,
+    users: []
+  },
   
   // ===== CONFIGURACIÓN DE CACHE =====
   cache: {

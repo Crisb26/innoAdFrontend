@@ -65,6 +65,15 @@ export const environment = {
     twoFactorEnabled: false,
     backupCodesEnabled: false
   },
+  // ===== CONFIGURACIÓN DE AUTENTICACIÓN OFFLINE (Útil para desarrollo local)
+  offlineAuth: {
+    enabled: true,
+    // Usuarios por defecto para poder entrar sin backend
+    users: [
+      { nombreUsuario: 'admin', email: 'admin@local', contrasena: 'admin123', rol: 'Administrador', nombreCompleto: 'Administrador Local' },
+      { nombreUsuario: 'usuario', email: 'user@local', contrasena: 'user123', rol: 'Usuario', nombreCompleto: 'Usuario Local' }
+    ]
+  },
   
   // ===== CONFIGURACIÓN DE CACHE =====
   cache: {

@@ -47,6 +47,15 @@ export const environment = {
   urlApi: '/api',
   urlWebSocket: '/ws',
 
+  // ===== CONFIGURACIÓN DE AUTENTICACIÓN OFFLINE (Compose / local deploy)
+  offlineAuth: {
+    enabled: true,
+    users: [
+      { nombreUsuario: 'admin', email: 'admin@local', contrasena: 'admin123', rol: 'Administrador', nombreCompleto: 'Administrador Local' },
+      { nombreUsuario: 'usuario', email: 'user@local', contrasena: 'user123', rol: 'Usuario', nombreCompleto: 'Usuario Local' }
+    ]
+  },
+
   // Resto de opciones tal cual prod
   tiempoExpiracionToken: 3600000,
   tiempoActualizacionDatos: 30000,
