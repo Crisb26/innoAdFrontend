@@ -108,4 +108,53 @@ export class ServicioPagos {
       { monto, motivo }
     );
   }
+  
+  /**
+   * Solicitar reembolso (usuario)
+   */
+  solicitarReembolso(solicitud: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/reembolsos/solicitar`, solicitud);
+  }
+  
+  /**
+   * Listar reembolsos del usuario
+   */
+  listarReembolsos(page: number = 0, size: number = 10): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/reembolsos?page=${page}&size=${size}`);
+  }
+  
+  /**
+   * Obtener reembolso por ID
+   */
+  obtenerReembolso(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/reembolsos/${id}`);
+  }
+  
+  /**
+   * Listar reembolsos pendientes (admin)
+   */
+  listarReembolsosPendientes(page: number = 0, size: number = 10): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/admin/reembolsos/pendientes?page=${page}&size=${size}`);
+  }
+  
+  /**
+   * Procesar reembolso (admin)
+   */
+  procesarReembolso(id: number, comentario: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/admin/reembolsos/${id}/procesar`, { comentario });
+  }
+  
+  /**
+   * Rechazar reembolso (admin)
+   */
+  rechazarReembolso(id: number, razonRechazo: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/admin/reembolsos/${id}/rechazar`, { razonRechazo });
+  }
+  
+  /**
+   * Obtener estadísticas de reembolsos (admin)
+   */
+  obtenerEstadisticasReembolsos(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/admin/reembolsos/estadisticas`);
+  }
 }
