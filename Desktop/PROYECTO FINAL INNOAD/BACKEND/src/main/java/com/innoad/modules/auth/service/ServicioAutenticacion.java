@@ -71,7 +71,7 @@ public class ServicioAutenticacion {
                 .email(solicitud.getEmail())
                 .nombreUsuario(solicitud.getNombreUsuario())
                 .contrasena(passwordEncoder.encode(solicitud.getContrasena()))
-                .rol(solicitud.getRol() != null ? solicitud.getRol() : RolUsuario.USUARIO)
+                .rol(solicitud.getRol() != null ? solicitud.getRol() : RolUsuario.USER)
                 .telefono(solicitud.getTelefono())
                 .empresa(solicitud.getEmpresa())
                 .cargo(solicitud.getCargo())
@@ -132,14 +132,14 @@ public class ServicioAutenticacion {
             throw new RuntimeException("El email ya está registrado");
         }
 
-        // Crear el usuario con rol USUARIO forzado
+        // Crear el usuario con rol USER forzado
         var usuario = Usuario.builder()
                 .nombre(solicitud.getNombre())
                 .apellido(solicitud.getApellido())
                 .email(solicitud.getEmail())
                 .nombreUsuario(solicitud.getNombreUsuario())
                 .contrasena(passwordEncoder.encode(solicitud.getContrasena()))
-                .rol(RolUsuario.USUARIO) // Siempre USUARIO en registro público
+                .rol(RolUsuario.USER) // Siempre USER en registro público
                 .cedula(solicitud.getCedula())
                 .telefono(solicitud.getTelefono())
                 .empresa(solicitud.getEmpresa())
@@ -333,7 +333,7 @@ public class ServicioAutenticacion {
             case ADMINISTRADOR -> "Administrador";
             case TECNICO -> "Técnico";
             case DESARROLLADOR -> "Desarrollador";
-            case USUARIO -> "Usuario";
+            case USUARIO, USER -> "Usuario";
             case VISITANTE -> "Visitante";
         };
 
@@ -383,7 +383,7 @@ public class ServicioAutenticacion {
             case ADMINISTRADOR -> "Administrador";
             case TECNICO -> "Técnico";
             case DESARROLLADOR -> "Desarrollador";
-            case USUARIO -> "Usuario";
+            case USUARIO, USER -> "Usuario";
             case VISITANTE -> "Visitante";
         };
 
@@ -455,7 +455,7 @@ public class ServicioAutenticacion {
             case ADMINISTRADOR -> "Administrador";
             case TECNICO -> "Técnico";
             case DESARROLLADOR -> "Desarrollador";
-            case USUARIO -> "Usuario";
+            case USUARIO, USER -> "Usuario";
             case VISITANTE -> "Visitante";
         };
         

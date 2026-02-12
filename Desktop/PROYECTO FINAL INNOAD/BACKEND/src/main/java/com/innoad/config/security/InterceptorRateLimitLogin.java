@@ -25,17 +25,18 @@ public class InterceptorRateLimitLogin implements HandlerInterceptor {
             String clientIP = obtenerIPReal(request);
             
             ConsumptionProbe probe = loginRateLimiter.tryConsumeAndReturnRemaining(1);
-            
+
             if (!probe.isConsumed()) {
-                long segundosFaltantes = probe.getSecondsToWait();
-                
+                // Convertir nanosegundos a segundos
+                long segundosFaltantes = probe.getNanosToWaitForRefill() / 1_000_000_000;
+
                 log.warn("Rate limit excedido en login desde IP: {}", clientIP);
-                
+
                 response.setStatus(429); // Too Many Requests
                 response.setContentType("application/json");
-                response.getWriter().write("{\"error\":\"Demasiados intentos de login. Intenta en " + 
+                response.getWriter().write("{\"error\":\"Demasiados intentos de login. Intenta en " +
                     segundosFaltantes + " segundos\"}");
-                
+
                 return false;
             }
         }

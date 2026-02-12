@@ -9,24 +9,29 @@ public enum RolUsuario {
      * Rol de administrador - Acceso completo al sistema
      */
     ADMINISTRADOR,
-    
+
     /**
      * Rol de técnico - Acceso a funciones técnicas y de mantenimiento
      */
     TECNICO,
-    
+
     /**
-     * Rol de desarrollador - Acceso a herramientas de desarrollo y configuración
+     * Rol de desarrollador - Acceso a funciones de desarrollo y configuración avanzada
      */
     DESARROLLADOR,
-    
+
     /**
      * Rol de usuario registrado - Acceso estándar a funcionalidades
      */
     USUARIO,
-    
+
     /**
-     * Rol de visitante - Acceso limitado, solo lectura
+     * Alias de USUARIO para compatibilidad con frontend
+     */
+    USER,
+
+    /**
+     * Rol de visitante - Acceso limitado solo a funciones públicas
      */
     VISITANTE
 }

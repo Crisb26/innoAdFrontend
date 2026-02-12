@@ -129,12 +129,11 @@ public class ServicioHardwareAPI {
         DispositivoIoT dispositivo = dispositivoRepositorio.findById(dispositivoId)
                 .orElseThrow();
 
-        Map<String, Object> sensoresMap = new HashMap<>();
-        sensoresMap.put("temperatura", sensores.getTemperatura());
-        sensoresMap.put("humedad", sensores.getHumedad());
-        sensoresMap.put("presion", sensores.getPresion());
+        // Actualizar valores de sensores directamente en la entidad
+        dispositivo.setTemperatura(sensores.getTemperatura());
+        dispositivo.setHumedad(sensores.getHumedad());
+        // Nota: presion no está en el modelo DispositivoIoT actual
 
-        dispositivo.setSensores(sensoresMap);
         dispositivoRepositorio.save(dispositivo);
     }
 
@@ -190,7 +189,8 @@ public class ServicioHardwareAPI {
 
         ComandoDTO comando = new ComandoDTO();
         comando.setTipo("reproducir");
-        comando.setParametros(Collections.singletonMap("contenidoId", contenidoId));
+        // Parametros como JSON string
+        comando.setParametros("{\"contenidoId\":\"" + contenidoId + "\"}");
 
         return ejecutarComando(dispositivoId, comando);
     }

@@ -193,9 +193,6 @@
                 <configuration>
                     <!-- use release to set both source and target consistently -->
                     <release>21</release>
-                    <compilerArgs>
-                        <arg>--enable-preview</arg>
-                    </compilerArgs>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
