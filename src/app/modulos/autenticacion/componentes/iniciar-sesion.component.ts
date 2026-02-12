@@ -4,7 +4,14 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angu
 import { Router, RouterLink } from '@angular/router';
 import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
 import { SolicitudLogin } from '@core/modelos';
+import { HttpClient } from '@angular/common/http';
 import NotifyX from 'notifyx';
+
+interface TutorialPaso {
+  paso: number;
+  titulo: string;
+  descripcion: string;
+}
 
 @Component({
   selector: 'app-iniciar-sesion',
@@ -13,10 +20,85 @@ import NotifyX from 'notifyx';
   styleUrls: ['./iniciar-sesion.component.scss'],
   template: `
     <div class="contenedor-login">
+      <!-- Tutorial Modal -->
+      <div class="tutorial-modal" *ngIf="mostrarTutorial()" [@slideIn]>
+        <div class="tutorial-contenido">
+          <button class="cerrar-tutorial" (click)="cerrarTutorial()">x</button>
+
+          <h2>Guia Rapida</h2>
+
+          <div class="tutorial-pasos">
+            <div class="paso">
+              <h3>Credenciales de Prueba</h3>
+              <p>Usa estas cuentas para empezar:</p>
+              <div class="credenciales">
+                <div class="cred-item">
+                  <strong>Admin</strong><br/>
+                  Usuario: <code>admin</code><br/>
+                  Contrasena: <code>admin</code>
+                </div>
+                <div class="cred-item">
+                  <strong>Tecnico</strong><br/>
+                  Usuario: <code>tecnico</code><br/>
+                  Contrasena: <code>tecnico</code>
+                </div>
+                <div class="cred-item">
+                  <strong>Usuario</strong><br/>
+                  Usuario: <code>usuario</code><br/>
+                  Contrasena: <code>usuario</code>
+                </div>
+              </div>
+            </div>
+
+            <div class="paso">
+              <h3>Navegacion Rapida</h3>
+              <ul>
+                <li><strong>Dashboard:</strong> Panel de control principal</li>
+                <li><strong>Campanas:</strong> Gestiona tus campanas publicitarias</li>
+                <li><strong>Contenido:</strong> Sube y organiza archivos multimedia</li>
+                <li><strong>Pantallas:</strong> Controla tus dispositivos IoT</li>
+                <li><strong>Reportes:</strong> Analiza metricas y datos</li>
+              </ul>
+            </div>
+
+            <div class="paso">
+              <h3>Consejos Utiles</h3>
+              <ul>
+                <li>Si la contrasena es incorrecta, permaneceras en la pantalla de login</li>
+                <li>Puedes ver este tutorial en cualquier momento</li>
+                <li>Todos los cambios se guardan automaticamente</li>
+                <li>Hace clic en ? en cualquier pantalla para ayuda</li>
+              </ul>
+            </div>
+          </div>
+
+          <button class="boton-innoad boton-iniciar" (click)="cerrarTutorial()">
+            Entendido, Iniciar
+          </button>
+        </div>
+      </div>
+
+      <!-- Login Form -->
       <div class="tarjeta-login">
         <div class="encabezado-login">
           <h1 class="titulo-login">InnoAd</h1>
-          <p class="subtitulo-login">Sistema de Gestión de Publicidad Digital</p>
+          <p class="subtitulo-login">Sistema de Gestion de Publicidad Digital</p>
+          <button class="btn-tutorial" (click)="mostrarTutorial.set(true)" title="Ver guia de usuario">
+            Guia
+          </button>
+        </div>
+
+        <!-- Mensajes de Error -->
+        <div *ngIf="mensajeError()" class="alerta-error" [@slideDown]>
+          <span class="icono-error">!</span>
+          <span class="texto-alerta">{{ mensajeError() }}</span>
+          <button class="btn-cerrar-alerta" (click)="mensajeError.set(null)">x</button>
+        </div>
+
+        <!-- Mensajes de Exito -->
+        <div *ngIf="mensajeExito()" class="alerta-exito" [@slideDown]>
+          <span class="icono-exito">OK</span>
+          <span class="texto-alerta">{{ mensajeExito() }}</span>
         </div>
 
         <form [formGroup]="formulario" (ngSubmit)="iniciarSesion()" class="formulario-login">
@@ -28,6 +110,7 @@ import NotifyX from 'notifyx';
               formControlName="nombreUsuarioOEmail"
               class="input-innoad"
               placeholder="correo@ejemplo.com"
+              (blur)="formulario.get('nombreUsuarioOEmail')?.markAsTouched()"
             />
             @if (formulario.get('nombreUsuarioOEmail')?.invalid && formulario.get('nombreUsuarioOEmail')?.touched) {
               <span class="texto-error">Este campo es requerido</span>
@@ -35,14 +118,15 @@ import NotifyX from 'notifyx';
           </div>
 
           <div class="grupo-input">
-            <label for="contrasena">Contraseña</label>
+            <label for="contrasena">Contrasena</label>
             <input
               id="contrasena"
               type="password"
               formControlName="contrasena"
               class="input-innoad"
-              placeholder="••••••••"
+              placeholder="********"
               autocomplete="current-password"
+              (blur)="formulario.get('contrasena')?.markAsTouched()"
             />
             @if (formulario.get('contrasena')?.invalid && formulario.get('contrasena')?.touched) {
               <span class="texto-error">Este campo es requerido</span>
@@ -64,14 +148,14 @@ import NotifyX from 'notifyx';
             [disabled]="formulario.invalid || cargando()"
           >
             @if (cargando()) {
-              <span class="loader-pequeño"></span>
+              <span class="loader-pequeno"></span>
             } @else {
-              Iniciar Sesión
+              Iniciar Sesion
             }
           </button>
 
           <div class="enlaces-adicionales">
-            <a routerLink="/autenticacion/recuperar-contrasena">¿Olvidaste tu contraseña?</a>
+            <a routerLink="/autenticacion/recuperar-contrasena">Olvidaste tu contrasena?</a>
             <a routerLink="/autenticacion/registrarse">Crear cuenta nueva</a>
           </div>
         </form>
@@ -83,8 +167,12 @@ export class IniciarSesionComponent {
   private readonly fb = inject(FormBuilder);
   private readonly servicioAuth = inject(ServicioAutenticacion);
   private readonly router = inject(Router);
+  private readonly http = inject(HttpClient);
 
   protected readonly cargando = signal(false);
+  protected readonly mostrarTutorial = signal(false);
+  protected readonly mensajeError = signal<string | null>(null);
+  protected readonly mensajeExito = signal<string | null>(null);
 
   protected readonly formulario = this.fb.nonNullable.group({
     nombreUsuarioOEmail: ['', [Validators.required]],
@@ -92,143 +180,74 @@ export class IniciarSesionComponent {
     recordarme: [false]
   });
 
+  cerrarTutorial(): void {
+    this.mostrarTutorial.set(false);
+  }
+
   iniciarSesion(): void {
     if (this.formulario.invalid) return;
 
     this.cargando.set(true);
+    this.mensajeError.set(null);
 
     const solicitud: SolicitudLogin = this.formulario.getRawValue();
 
     this.servicioAuth.iniciarSesion(solicitud).subscribe({
       next: (respuesta) => {
-        console.log('Login exitoso, navegando a dashboard...', respuesta);
+        console.log('Login exitoso', respuesta);
         this.cargando.set(false);
-        
-        // Obtener el rol del usuario para mostrar en el mensaje
-        const rol = this.obtenerNombreRol(respuesta.usuario.rol);
-        
-        // Navegar al dashboard después de un breve delay para asegurar que todo se guarde
+        this.mensajeExito.set('Bienvenido! Navegando al dashboard...');
+
         setTimeout(() => {
-          this.router.navigate(['/dashboard']).then(navegado => {
-            console.log('✅ Navegación completada:', navegado);
-            
-            // Mostrar notificación verde de bienvenida con el rol
-            NotifyX.success(`🎉 ¡Bienvenido! Iniciaste sesión como ${rol}`, {
-              duration: 4000,
-              dismissible: true
-            });
-          }).catch(error => {
-            console.error('❌ Error al navegar:', error);
-            NotifyX.error('Error al acceder al dashboard', {
-              duration: 3000,
-              dismissible: true
-            });
+          this.router.navigate(['/dashboard']).catch(error => {
+            console.error('Error al navegar:', error);
+            this.mensajeError.set('Error al acceder al dashboard');
           });
-        }, 100);
+        }, 500);
       },
       error: (error) => {
         console.error('Error en login:', error);
         this.cargando.set(false);
-        
-        // Detectar tipo de error y mostrar mensaje específico
+
         const mensajeError = this.detectarTipoError(error);
-        
-        NotifyX.error(mensajeError, {
-          duration: 4000,
-          dismissible: true
-        });
+        this.mensajeError.set(mensajeError);
       }
     });
   }
 
   /**
-   * Obtiene el nombre del rol desde el objeto rol
-   */
-  private obtenerNombreRol(rol: any): string {
-    if (!rol) return 'Usuario';
-    
-    // Si el rol es un objeto con propiedad nombre
-    if (typeof rol === 'object' && rol.nombre) {
-      return this.formatearNombreRol(rol.nombre);
-    }
-    
-    // Si el rol es un string directo
-    if (typeof rol === 'string') {
-      return this.formatearNombreRol(rol);
-    }
-    
-    return 'Usuario';
-  }
-
-  /**
-   * Formatea el nombre del rol para mostrar correctamente
-   */
-  private formatearNombreRol(nombre: string): string {
-    // Convertir a título apropiado
-    const rolesMap: { [key: string]: string } = {
-      'administrador': 'Administrador',
-      'admin': 'Administrador',
-      'developer': 'Developer',
-      'desarrollador': 'Developer',
-      'tecnico': 'Técnico',
-      'técnico': 'Técnico',
-      'usuario': 'Usuario',
-      'user': 'Usuario'
-    };
-    
-    const nombreLower = nombre.toLowerCase();
-    return rolesMap[nombreLower] || nombre;
-  }
-
-  /**
-   * Detecta el tipo de error y retorna un mensaje específico
+   * Detecta el tipo de error y retorna un mensaje especifico
    */
   private detectarTipoError(error: any): string {
-    console.log('Analizando error:', error);
+    console.log('Error detectado:', error.status);
 
-    // 1️⃣ Error de conexión (No hay conexión con backend)
     if (!error.status || error.status === 0) {
-      if (error.name === 'TimeoutError' || error.message?.includes('timeout')) {
-        return '⏱️ Conexión agotada. El servidor tarda demasiado en responder. Intenta nuevamente.';
+      if (error.name === 'TimeoutError') {
+        return 'Conexion agotada. Intenta nuevamente.';
       }
-      return '🌐 No hay conexión con el servidor. Verifica tu conexión a internet.';
+      return 'No hay conexion con el servidor. Verifica tu conexion a internet.';
     }
 
-    // 2️⃣ Error 401 (Credenciales incorrectas)
     if (error.status === 401) {
-      return '🔒 Las credenciales son incorrectas. Verifica tu usuario y contraseña.';
+      return 'Usuario o contrasena incorrectos.';
     }
 
-    // 3️⃣ Error 403 (Prohibido - Usuario inactivo o sin permisos)
     if (error.status === 403) {
-      return '🚫 Tu cuenta está desactivada o no tienes permisos. Contacta al administrador.';
+      return 'Tu cuenta esta desactivada.';
     }
 
-    // 4️⃣ Error 404 (Usuario no encontrado)
     if (error.status === 404) {
-      return '👤 Usuario no encontrado. Verifica que el usuario exista.';
+      return 'Usuario no encontrado.';
     }
 
-    // 5️⃣ Error 429 (Demasiados intentos)
     if (error.status === 429) {
-      return '⏸️ Demasiados intentos fallidos. Intenta más tarde.';
+      return 'Demasiados intentos. Intenta mas tarde.';
     }
 
-    // 6️⃣ Error 500+ (Error del servidor)
     if (error.status && error.status >= 500) {
-      return '⚠️ Error del servidor. Por favor, intenta más tarde.';
+      return 'Error del servidor. Intenta mas tarde.';
     }
 
-    // 7️⃣ Mensaje personalizado del backend (si viene en error.error.mensaje)
-    if (error.error?.mensaje) {
-      return error.error.mensaje;
-    }
-
-    // 8️⃣ Mensaje de error genérico
-    if (error.message) {
-      return error.message;
-    }
-
-    return '❌ Error al iniciar sesión. Intenta nuevamente.';
+    return 'Error al iniciar sesion.';
   }
 }
