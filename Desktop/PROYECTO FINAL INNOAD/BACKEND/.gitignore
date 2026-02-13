@@ -1,0 +1,81 @@
+# Build artifacts
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+*.jar
+*.war
+*.ear
+*.class
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+# IDE
+.idea/
+.vscode/
+.classpath
+.project
+.settings/
+.springBeans
+.sts4-cache
+*.iml
+*.iws
+*.ipr
+.apt_generated
+.factorypath
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# OS
+.DS_Store
+Thumbs.db
+nul
+
+# Logs
+logs/
+*.log
+run-log.txt
+run-err.txt
+
+# Environment variables (keep secure/ vault)
+.env
+.env.local
+.env.production
+secrets.properties
+vault_temp.txt
+
+# Docker (keep configs)
+# .dockerignore
+
+# Frontend build
+node_modules/
+dist/
+
+# Dependency Check
+target/dependency-check-report/
+target/dependency-check-data/
+
+# Temporary files
+*.bat
+*.cmd
+*.tmp
+*.bak
+*~
+*.swp
+*.swo
+sql_scripts/
+temp/
+
+# Documentation (keep README.md)
+HELP.md  

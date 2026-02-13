@@ -1,0 +1,13 @@
+# Railway ignore file
+node_modules
+.git
+.env
+.env.example
+*.md
+!README.md
+logs
+target/test-classes
+target/maven-status
+.vscode
+.idea
+*.iml

@@ -1,0 +1,74 @@
+# 🐳 DOCKERFILE BACKEND - Multi-etapa optimizado con layer caching
+# Build: Maven + Java 21
+# Runtime: OpenJDK 21 slim
+# Tamaño optimizado: ~400MB → 150MB
+
+# ==================== STAGE 1: BUILD ====================
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
+
+LABEL stage=builder
+WORKDIR /build
+
+# Copiar pom.xml y descargar dependencias (layer cacheable)
+COPY pom.xml .
+RUN mvn dependency:go-offline -DdownloadSources -DdownloadJavadoc || true
+
+# Copiar código fuente
+COPY src ./src
+
+# Compilar proyecto con optimizaciones
+RUN mvn clean package -DskipTests \
+    -Dmaven.compiler.target=21 \
+    -Dmaven.compiler.source=21 \
+    -Dorg.slf4j.simpleLogger.defaultLogLevel=warn
+
+# ==================== STAGE 2: RUNTIME ====================
+FROM eclipse-temurin:21-jre-jammy
+
+LABEL maintainer="InnoAd Team"
+LABEL version="1.0.0"
+LABEL description="InnoAd Backend - Spring Boot 3.5.8 API"
+
+WORKDIR /app
+
+# Instalar utilidades (curl para health checks)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl ca-certificates && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Crear usuario no-root por seguridad
+RUN useradd -m -u 1000 appuser
+
+# Copiar JAR desde stage 1
+COPY --from=builder /build/target/*.jar app.jar
+
+# Cambiar ownership
+RUN chown -R appuser:appuser /app
+
+# Usar usuario no-root
+USER appuser
+
+# Ports
+EXPOSE 8080 8443
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:8080/actuator/health || exit 1
+
+# Variables de entorno
+ENV JAVA_OPTS="-Xms256m -Xmx512m -XX:+UseG1GC -XX:MaxGCPauseMillis=200"
+ENV SPRING_PROFILES_ACTIVE=prod
+ENV TZ=America/Argentina/Buenos_Aires
+
+# Comando de inicio
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar"]
+
+# Build args para tracking
+ARG BUILD_DATE
+ARG VCS_REF
+ARG BUILD_VERSION=1.0.0
+
+LABEL org.label-schema.build-date=$BUILD_DATE
+LABEL org.label-schema.vcs-ref=$VCS_REF
+LABEL org.label-schema.version=$BUILD_VERSION
