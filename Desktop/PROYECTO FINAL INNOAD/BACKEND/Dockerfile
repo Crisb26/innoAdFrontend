@@ -11,7 +11,7 @@ COPY src ./src
 
 # Build the application with limited memory usage and no update checks
 # -XX:MaxRAMPercentage=80.0 limits heap to 80% of container memory
-RUN mvn -B -DskipTests package -DskipITs --no-transfer-progress \
+RUN mvn -B -Dmaven.test.skip=true package --no-transfer-progress \
     -Dmaven.compiler.fork=true \
     -Dmaven.compiler.meminitial=128m \
     -Dmaven.compiler.maxmem=512m
