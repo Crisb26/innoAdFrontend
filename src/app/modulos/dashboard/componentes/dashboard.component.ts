@@ -29,7 +29,17 @@ interface MetricaKPI {
       <!-- Sección de Bienvenida Hero -->
       <div class="seccion-bienvenida-hero">
         <h1 class="titulo-bienvenida-hero">¡Bienvenido, {{ nombreUsuario() }}!</h1>
-        <p class="subtitulo-bienvenida-hero">Gestiona tu contenido digital de manera inteligente</p>
+        <p class="subtitulo-bienvenida-hero">
+          @if (esAdministrador()) {
+            Administra el sistema, usuarios y configuración de InnoAd
+          } @else if (esTecnico()) {
+            Gestiona pantallas, contenidos y brinda soporte técnico a usuarios
+          } @else if (esUsuario()) {
+            Crea campañas y contenido multimedia para tus públicos digitales
+          } @else {
+            Gestiona tu contenido digital de manera inteligente
+          }
+        </p>
       </div>
 
       <!-- Contenido Principal -->
@@ -39,9 +49,9 @@ interface MetricaKPI {
 
         <!-- Grid de Tarjetas -->
         <div class="grid-tarjetas">
-          <!-- Tarjeta Campañas -->
+          <!-- Tarjeta Campañas (Todos) -->
           <div class="tarjeta-dashboard tarjeta-campanas">
-            <div class="icono-tarjeta">Campañas</div>
+            <div class="icono-tarjeta">📢</div>
             <div class="contenido-tarjeta">
               <h3>Campañas</h3>
               <p>{{ estadisticasCampanas() }}</p>
@@ -51,17 +61,19 @@ interface MetricaKPI {
             </div>
           </div>
 
-          <!-- Tarjeta Pantallas -->
-          <div class="tarjeta-dashboard tarjeta-pantallas">
-            <div class="icono-tarjeta">Pantallas</div>
-            <div class="contenido-tarjeta">
-              <h3>Pantallas</h3>
-              <p>{{ estadisticasPantallas() }}</p>
-              <a routerLink="/pantallas" class="btn-tarjeta">
-                Ver Pantallas
-              </a>
+          <!-- Tarjeta Pantallas (Solo Admin y Tecnico) -->
+          @if (esAdministrador() || esTecnico()) {
+            <div class="tarjeta-dashboard tarjeta-pantallas">
+              <div class="icono-tarjeta">📺</div>
+              <div class="contenido-tarjeta">
+                <h3>Pantallas</h3>
+                <p>{{ estadisticasPantallas() }}</p>
+                <a routerLink="/pantallas" class="btn-tarjeta">
+                  Gestionar Pantallas
+                </a>
+              </div>
             </div>
-          </div>
+          }
 
           <!-- Tarjeta Contenidos -->
           <div class="tarjeta-dashboard tarjeta-contenidos">
@@ -234,7 +246,20 @@ export class DashboardComponent implements OnInit {
 
   protected esAdministrador(): boolean {
     const usuario = this.servicioAuth.usuarioActual();
-    return usuario?.rol?.nombre === 'Administrador' || false;
+    const rol = usuario?.rol?.nombre || '';
+    return rol === 'ADMIN' || rol === 'Administrador' || false;
+  }
+
+  protected esTecnico(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre || '';
+    return rol === 'TECNICO' || rol === 'Tecnico' || false;
+  }
+
+  protected esUsuario(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre || '';
+    return rol === 'USUARIO' || rol === 'Usuario' || false;
   }
 
   protected estadisticasCampanas(): string {
