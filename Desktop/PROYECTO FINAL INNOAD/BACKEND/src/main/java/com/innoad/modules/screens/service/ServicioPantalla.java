@@ -64,8 +64,8 @@ public class ServicioPantalla {
     public RespuestaPantalla actualizarPantalla(Long pantallaId, SolicitudPantalla solicitud, Usuario usuario) {
         Pantalla pantalla = obtenerPantallaPorId(pantallaId);
 
-        // Verificar que el usuario sea el propietario
-        if (!pantalla.getUsuario().getId().equals(usuario.getId()) && !usuario.esAdministrador()) {
+        // Verificar que el usuario sea el propietario, admin o técnico
+        if (!usuario.esAdministrador() && !usuario.esTecnico() && !pantalla.getUsuario().getId().equals(usuario.getId())) {
             throw new IllegalArgumentException("No tienes permiso para actualizar esta pantalla");
         }
 
@@ -115,8 +115,8 @@ public class ServicioPantalla {
     public RespuestaPantalla obtenerPantalla(Long pantallaId, Usuario usuario) {
         Pantalla pantalla = obtenerPantallaPorId(pantallaId);
 
-        // Verificar permisos
-        if (!pantalla.getUsuario().getId().equals(usuario.getId()) && !usuario.esAdministrador()) {
+        // Verificar permisos - Admin y Tecnico pueden ver cualquier pantalla; Usuario solo la suya
+        if (!usuario.esAdministrador() && !usuario.esTecnico() && !pantalla.getUsuario().getId().equals(usuario.getId())) {
             throw new IllegalArgumentException("No tienes permiso para ver esta pantalla");
         }
 
@@ -130,8 +130,8 @@ public class ServicioPantalla {
     public void eliminarPantalla(Long pantallaId, Usuario usuario) {
         Pantalla pantalla = obtenerPantallaPorId(pantallaId);
 
-        // Verificar permisos
-        if (!pantalla.getUsuario().getId().equals(usuario.getId()) && !usuario.esAdministrador()) {
+        // Verificar permisos - Admin y Tecnico pueden eliminar cualquier pantalla; Usuario solo la suya
+        if (!usuario.esAdministrador() && !usuario.esTecnico() && !pantalla.getUsuario().getId().equals(usuario.getId())) {
             throw new IllegalArgumentException("No tienes permiso para eliminar esta pantalla");
         }
 
@@ -146,8 +146,8 @@ public class ServicioPantalla {
     public RespuestaPantalla activarPantalla(Long pantallaId, Usuario usuario) {
         Pantalla pantalla = obtenerPantallaPorId(pantallaId);
 
-        // Verificar permisos
-        if (!pantalla.getUsuario().getId().equals(usuario.getId()) && !usuario.esAdministrador()) {
+        // Verificar permisos - Admin y Tecnico pueden activar cualquier pantalla; Usuario solo la suya
+        if (!usuario.esAdministrador() && !usuario.esTecnico() && !pantalla.getUsuario().getId().equals(usuario.getId())) {
             throw new IllegalArgumentException("No tienes permiso para activar esta pantalla");
         }
 
@@ -165,8 +165,8 @@ public class ServicioPantalla {
     public RespuestaPantalla desactivarPantalla(Long pantallaId, Usuario usuario) {
         Pantalla pantalla = obtenerPantallaPorId(pantallaId);
 
-        // Verificar permisos
-        if (!pantalla.getUsuario().getId().equals(usuario.getId()) && !usuario.esAdministrador()) {
+        // Verificar permisos - Admin y Tecnico pueden desactivar cualquier pantalla; Usuario solo la suya
+        if (!usuario.esAdministrador() && !usuario.esTecnico() && !pantalla.getUsuario().getId().equals(usuario.getId())) {
             throw new IllegalArgumentException("No tienes permiso para desactivar esta pantalla");
         }
 

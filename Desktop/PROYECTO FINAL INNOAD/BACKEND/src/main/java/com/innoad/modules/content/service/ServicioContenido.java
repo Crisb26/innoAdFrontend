@@ -39,7 +39,8 @@ public class ServicioContenido {
         Pantalla pantalla = repositorioPantalla.findById(solicitud.getPantallaId())
                 .orElseThrow(() -> new IllegalArgumentException("Pantalla no encontrada"));
 
-        if (!pantalla.getUsuario().getId().equals(usuario.getId()) && !usuario.esAdministrador()) {
+        // Admin y Tecnico pueden agregar contenido a cualquier pantalla; Usuario solo a las suyas
+        if (!usuario.esAdministrador() && !usuario.esTecnico() && !pantalla.getUsuario().getId().equals(usuario.getId())) {
             throw new IllegalArgumentException("No tienes permiso para agregar contenido a esta pantalla");
         }
 
@@ -120,8 +121,8 @@ public class ServicioContenido {
     public RespuestaContenido actualizarContenido(Long contenidoId, SolicitudContenido solicitud, Usuario usuario) {
         Contenido contenido = obtenerContenidoPorId(contenidoId);
 
-        // Verificar permisos
-        if (!contenido.getUsuario().getId().equals(usuario.getId()) && !usuario.esAdministrador()) {
+        // Verificar permisos - Admin y Tecnico pueden actualizar cualquier contenido; Usuario solo el suyo
+        if (!usuario.esAdministrador() && !usuario.esTecnico() && !contenido.getUsuario().getId().equals(usuario.getId())) {
             throw new IllegalArgumentException("No tienes permiso para actualizar este contenido");
         }
 
@@ -183,7 +184,8 @@ public class ServicioContenido {
         Pantalla pantalla = repositorioPantalla.findById(pantallaId)
                 .orElseThrow(() -> new IllegalArgumentException("Pantalla no encontrada"));
 
-        if (!pantalla.getUsuario().getId().equals(usuario.getId()) && !usuario.esAdministrador()) {
+        // Admin y Tecnico pueden ver contenidos de cualquier pantalla; Usuario solo de las suyas
+        if (!usuario.esAdministrador() && !usuario.esTecnico() && !pantalla.getUsuario().getId().equals(usuario.getId())) {
             throw new IllegalArgumentException("No tienes permiso para ver contenidos de esta pantalla");
         }
 
@@ -201,8 +203,8 @@ public class ServicioContenido {
     public RespuestaContenido obtenerContenido(Long contenidoId, Usuario usuario) {
         Contenido contenido = obtenerContenidoPorId(contenidoId);
 
-        // Verificar permisos
-        if (!contenido.getUsuario().getId().equals(usuario.getId()) && !usuario.esAdministrador()) {
+        // Verificar permisos - Admin y Tecnico pueden ver cualquier contenido; Usuario solo el suyo
+        if (!usuario.esAdministrador() && !usuario.esTecnico() && !contenido.getUsuario().getId().equals(usuario.getId())) {
             throw new IllegalArgumentException("No tienes permiso para ver este contenido");
         }
 
@@ -216,8 +218,8 @@ public class ServicioContenido {
     public void eliminarContenido(Long contenidoId, Usuario usuario) {
         Contenido contenido = obtenerContenidoPorId(contenidoId);
 
-        // Verificar permisos
-        if (!contenido.getUsuario().getId().equals(usuario.getId()) && !usuario.esAdministrador()) {
+        // Verificar permisos - Admin y Tecnico pueden eliminar cualquier contenido; Usuario solo el suyo
+        if (!usuario.esAdministrador() && !usuario.esTecnico() && !contenido.getUsuario().getId().equals(usuario.getId())) {
             throw new IllegalArgumentException("No tienes permiso para eliminar este contenido");
         }
 
@@ -266,8 +268,8 @@ public class ServicioContenido {
     public RespuestaContenido cambiarEstado(Long contenidoId, String nuevoEstado, Usuario usuario) {
         Contenido contenido = obtenerContenidoPorId(contenidoId);
 
-        // Verificar permisos
-        if (!contenido.getUsuario().getId().equals(usuario.getId()) && !usuario.esAdministrador()) {
+        // Verificar permisos - Admin y Tecnico pueden cambiar estado de cualquier contenido; Usuario solo del suyo
+        if (!usuario.esAdministrador() && !usuario.esTecnico() && !contenido.getUsuario().getId().equals(usuario.getId())) {
             throw new IllegalArgumentException("No tienes permiso para cambiar el estado de este contenido");
         }
 
