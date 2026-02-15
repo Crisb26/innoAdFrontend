@@ -1,6 +1,5 @@
 package com.innoad.modules.admin.domain;
 
-import com.innoad.shared.dto.RolUsuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Entidad que almacena la configuración general del sistema InnoAd.
@@ -61,100 +58,10 @@ public class ConfiguracionSistema {
     
     @Column(columnDefinition = "TEXT")
     private String mensajeMantenimiento;
-
-    // ===== NUEVOS CAMPOS: Control de Roles =====
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_mantenimiento")
-    private TipoMantenimiento tipoMantenimiento;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "mantenimiento_roles_afectados",
-                     joinColumns = @JoinColumn(name = "configuracion_id"))
-    @Enumerated(EnumType.STRING)
-    @Column(name = "rol")
-    private List<RolUsuario> rolesAfectados = new ArrayList<>();
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "mantenimiento_roles_excluidos",
-                     joinColumns = @JoinColumn(name = "configuracion_id"))
-    @Enumerated(EnumType.STRING)
-    @Column(name = "rol")
-    private List<RolUsuario> rolesExcluidos = new ArrayList<>();
-
-    @Column(name = "url_contacto_soporte", length = 500)
-    private String urlContactoSoporte;
-
+    
     @PreUpdate
     protected void onUpdate() {
         fechaActualizacion = LocalDateTime.now();
-    }
-
-    // ===== MÉTODOS UTILITY =====
-
-    /**
-     * Verifica si el modo mantenimiento está activo y dentro del rango de tiempo
-     */
-    public boolean estaActivo() {
-        if (!modoMantenimientoActivo) {
-            return false;
-        }
-
-        // Verificar si ya pasó la fecha fin
-        if (fechaFinEstimadaMantenimiento != null) {
-            return LocalDateTime.now().isBefore(fechaFinEstimadaMantenimiento);
-        }
-
-        return true;
-    }
-
-    /**
-     * Verifica si un usuario puede acceder durante el mantenimiento
-     */
-    public boolean puedeAcceder(RolUsuario rol) {
-        if (!estaActivo()) {
-            return true; // Acceso normal
-        }
-
-        // Si está en rolesExcluidos, puede acceder
-        if (rolesExcluidos != null && rolesExcluidos.contains(rol)) {
-            return true;
-        }
-
-        // Si está en rolesAfectados, NO puede acceder
-        if (rolesAfectados != null && rolesAfectados.contains(rol)) {
-            return false;
-        }
-
-        // Por defecto, puede acceder
-        return true;
-    }
-
-    /**
-     * Obtiene el tiempo restante en formato legible
-     */
-    public String getTiempoRestante() {
-        if (!estaActivo()) {
-            return "Mantenimiento finalizado";
-        }
-
-        if (fechaFinEstimadaMantenimiento == null) {
-            return "Duración indefinida";
-        }
-
-        long minutos = java.time.temporal.ChronoUnit.MINUTES
-                .between(LocalDateTime.now(), fechaFinEstimadaMantenimiento);
-
-        if (minutos <= 0) {
-            return "Finalizando...";
-        }
-
-        if (minutos < 60) {
-            return minutos + " minutos";
-        }
-
-        long horas = minutos / 60;
-        return horas + " hora" + (horas > 1 ? "s" : "");
     }
     
     /**

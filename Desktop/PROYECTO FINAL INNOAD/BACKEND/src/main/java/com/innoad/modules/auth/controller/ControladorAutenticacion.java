@@ -21,7 +21,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:8080", "http://127.0.0.1:8080", "https://friendly-lollipop-ce7d8c.netlify.app"})
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:8080", "http://127.0.0.1:8080"})
 public class ControladorAutenticacion {
     
     private final ServicioAutenticacion servicioAutenticacion;

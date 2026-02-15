@@ -1,0 +1,75 @@
+# =====================================================
+# PERFIL: AZURE (PLAN DE EMERGENCIA)
+# Activar con: SPRING_PROFILES_ACTIVE=azure
+# =====================================================
+
+spring:
+  datasource:
+    # Azure PostgreSQL Flexible Server
+    url: jdbc:postgresql://${AZURE_DB_HOST}:${AZURE_DB_PORT:5432}/${AZURE_DB_NAME:innoad_db}?sslmode=require&connectTimeout=30&socketTimeout=0&tcpKeepAlive=true
+    username: ${AZURE_DB_USER}
+    password: ${AZURE_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 5
+      minimum-idle: 2
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-test-query: SELECT 1
+      leak-detection-threshold: 60000
+
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 20
+          time_zone: UTC
+        format_sql: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        temp:
+          use_jdbc_metadata_defaults: false
+
+# Logging optimizado
+logging:
+  level:
+    root: WARN
+    com.innoad: INFO
+    org.springframework.web: WARN
+    org.hibernate: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# Azure Container Apps usa puerto 80 por defecto
+server:
+  port: ${PORT:80}
+  compression:
+    enabled: true
+  error:
+    include-message: always
+    include-stacktrace: never
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+  health:
+    mail:
+      enabled: false
+
+# CORS y frontend para Azure
+innoad:
+  frontend:
+    url: ${FRONTEND_URL:https://innoad.netlify.app}
+    allowed-origins:
+      - https://*.netlify.app
+      - https://innoad.netlify.app
+      - http://localhost:4200

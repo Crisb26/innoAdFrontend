@@ -24,28 +24,16 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-/**
- * ❌ CLASE DESACTIVADA - NO SE USA ❌
- *
- * RAZÓN: Conflicto con ConfiguracionSeguridadAvanzada
- * REEMPLAZO: com.innoad.config.security.ConfiguracionSeguridadAvanzada
- *
- * Esta clase quedó obsoleta después del refactor de seguridad.
- * Todas las anotaciones @Configuration fueron removidas para que Spring ignore esta clase.
- *
- * NO ELIMINAR: Se mantiene como referencia histórica.
- */
-//@Configuration  // ❌ DESACTIVADO
-//@EnableWebSecurity  // ❌ DESACTIVADO
-//@EnableMethodSecurity  // ❌ DESACTIVADO
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
-@Deprecated(since = "2.0.0", forRemoval = true)
 public class ConfiguracionSeguridad {
     
     private final FiltroAutenticacionJWT filtroJwt;
     private final UserDetailsService userDetailsService;
     
-    //@Bean  // ❌ DESACTIVADO - bean definido en ConfiguracionSeguridadAvanzada
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -125,52 +113,38 @@ public class ConfiguracionSeguridad {
         return http.build();
     }
     
-    //@Bean  // ❌ DESACTIVADO - bean definido en ConfiguracionSeguridadAvanzada
+    @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-
-    //@Bean  // ❌ DESACTIVADO - se obtiene automáticamente de AuthenticationConfiguration
+    
+    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
-    //@Bean  // ❌ DESACTIVADO - bean definido en ConfiguracionSeguridadAvanzada
+    
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    //@Bean  // ❌ DESACTIVADO - bean definido en ConfiguracionSeguridadAvanzada
+    
+    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // Origenes permitidos (desarrollo, servidor casero y emergencia cloud)
+        // Origenes permitidos (desarrollo y produccion)
         configuration.setAllowedOriginPatterns(Arrays.asList(
-                // === Desarrollo local ===
-                "http://localhost:*",                       // Desarrollo local (cualquier puerto)
-                "http://localhost",                          // Desarrollo local sin puerto
-                "http://127.0.0.1:*",                      // Desarrollo local IP
-                "http://127.0.0.1",                         // Desarrollo local IP sin puerto
-
-                // === Servidor casero (redes privadas) ===
-                "http://192.168.*:*",                       // Red privada clase C con puerto
-                "http://192.168.*",                          // Red privada clase C sin puerto
-                "http://10.*:*",                             // Red privada clase A con puerto
-                "http://10.*",                               // Red privada clase A sin puerto
-                "http://172.16.*:*",                         // Red privada clase B con puerto
-                "http://172.16.*",                           // Red privada clase B sin puerto
-                "http://*.local:*",                          // mDNS / Bonjour
-                "http://*.local",                            // mDNS / Bonjour sin puerto
-
-                // === Emergencia: Cloud (Azure / Netlify) ===
-                "https://innoad.com",                       // Dominio produccion
-                "https://www.innoad.com",                   // Dominio produccion con www
-                "https://*.netlify.app",                    // Netlify deployment (EMERGENCIA)
-                "https://*.azurecontainerapps.io",          // Azure Container Apps (EMERGENCIA)
-                "https://*.vercel.app"                      // Vercel deployment (EMERGENCIA)
+                "http://localhost:*",           // Desarrollo local (cualquier puerto)
+                "http://127.0.0.1:*",          // Desarrollo local IP
+                "http://100.91.23.46:*",       // Servidor casa (red local)
+                "https://*.ts.net",            // Tailscale Funnel (servidor casa HTTPS)
+                "https://innoad.com",           // Dominio produccion
+                "https://www.innoad.com",       // Dominio produccion con www
+                "https://*.netlify.app",        // Netlify deployment (frontend)
+                "https://*.azurecontainerapps.io" // Azure Container Apps (emergencia)
         ));
         
         // Métodos HTTP permitidos

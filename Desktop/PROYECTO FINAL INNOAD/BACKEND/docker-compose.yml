@@ -1,22 +1,54 @@
 version: '3.8'
 
+# =====================================================
+# Docker Compose - Servidor Casa (PRINCIPAL)
+# Incluye: PostgreSQL + Backend
+# Frontend se despliega en Netlify por separado
+# =====================================================
+
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: innoad-postgres
+    environment:
+      POSTGRES_DB: innoad_db
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-database.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "${DB_EXTERNAL_PORT:-5433}:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d innoad_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - innoad-network
+
   backend:
     build:
       context: .
       dockerfile: Dockerfile
     image: innoad-backend:latest
     container_name: innoad-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
     environment:
+      - SPRING_PROFILES_ACTIVE=server
       - SERVER_PORT=8080
-      - SPRING_PROFILES_ACTIVE=prod
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=innoad_db
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
       - JWT_SECRET=${JWT_SECRET:-MiClaveSecretaSuperSeguraParaInnoAdQueDebeSerMuyLarga2024!}
-      - SPRING_DATASOURCE_URL=${DB_URL:-jdbc:h2:mem:innoad_db}
-      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME:-sa}
-      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-}
-      - SPRING_MAIL_USERNAME=${MAIL_USERNAME:-tu-email@gmail.com}
-      - SPRING_MAIL_PASSWORD=${MAIL_PASSWORD:-tu-password}
-      - INNOAD_FRONTEND_URL=${FRONTEND_URL:-http://localhost:8080}
+      - MAIL_USERNAME=${MAIL_USERNAME:-}
+      - MAIL_PASSWORD=${MAIL_PASSWORD:-}
+      - FRONTEND_URL=${FRONTEND_URL:-https://innoad.netlify.app}
     ports:
       - "8080:8080"
     restart: unless-stopped
@@ -25,9 +57,13 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
+      start_period: 60s
     networks:
       - innoad-network
+
+volumes:
+  postgres_data:
+    driver: local
 
 networks:
   innoad-network:

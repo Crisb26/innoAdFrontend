@@ -3,19 +3,17 @@ spring:
     name: innoad-backend
   main:
     web-application-type: servlet
-  
+
   # ===== CONFIGURACION POSTGRESQL DATABASE =====
   datasource:
-    # Railway puede inyectar DATABASE_URL directamente. Ajusta para usarlo si existe.
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/innoad_db}
     driver-class-name: org.postgresql.Driver
-    # Evitar credenciales sensibles hardcodeadas. Usa variables de entorno en Railway.
     username: ${DATABASE_USERNAME:postgres}
     password: ${DATABASE_PASSWORD:}
     hikari:
       connection-timeout: 30000
-      maximum-pool-size: 100
-      minimum-idle: 20
+      maximum-pool-size: 20
+      minimum-idle: 5
       idle-timeout: 600000
       max-lifetime: 1800000
       leak-detection-threshold: 60000
@@ -32,13 +30,13 @@ spring:
         jdbc:
           batch_size: 20
         default_schema: public
-  
-  # Configuración de correo electrónico
+
+  # Configuracion de correo electronico
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}
     port: ${MAIL_PORT:587}
-    username: ${MAIL_USERNAME:tu-email@gmail.com}
-    password: ${MAIL_PASSWORD:tu-password-de-aplicacion}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
     properties:
       mail:
         smtp:
@@ -49,122 +47,70 @@ spring:
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000
-  
-  # Configuración de Redis para caché
-    data:
-      redis:
-        host: ${REDIS_HOST:innoad-redis}
-        port: ${REDIS_PORT:6379}
-        password: ${REDIS_PASSWORD:}
-        timeout: 60000ms
-  
-  # Configuración de caché
+
+  # Configuracion de cache (en memoria, sin Redis)
   cache:
     type: simple
-  
-  # Configuración de multipart (subida de archivos)
+
+  # Configuracion de multipart (subida de archivos)
   servlet:
     multipart:
       enabled: true
       max-file-size: 10MB
       max-request-size: 10MB
-  
-  # Configuración de seguridad
+
+  # Configuracion de seguridad
   security:
     user:
       name: admin
       password: ${ADMIN_PASSWORD:Admin123!}
 
 
-# Configuración de JWT
+# Configuracion de JWT
 jwt:
-  secret: ${JWT_SECRET:TWlDbGF2ZVNlY3JldGFTdXBlclNlZ3VyYVBhcmFJbm5vQWRRdWVEZWJlU2VyTXV5TGFyZ2EyMDI0ITM0ZGFlZmM0MTY2NzQ1YWVhMWM4MWY3N2MzMGIwYTNj}
-  expiration: 86400000 # 24 horas en milisegundos
-  refresh-expiration: 604800000 # 7 días
+  secret: ${JWT_SECRET:MiClaveSecretaSuperSeguraParaInnoAdQueDebeSerMuyLarga2024!}
+  expiration: 86400000
+  refresh-expiration: 604800000
 
 
-# Configuración de la aplicación
+# Configuracion de la aplicacion
 innoad:
-  # Código de seguridad para modo mantenimiento
   maintenance:
     security-code: ${MAINTENANCE_CODE:93022611184}
     email-for-recovery: ${MAINTENANCE_EMAIL:admin@innoad.com}
 
-  # Configuración del agente de IA
   ai:
     api-url: ${AI_API_URL:https://api.openai.com/v1}
-    api-key: ${AI_API_KEY:tu-api-key-aqui}
+    api-key: ${AI_API_KEY:}
     model: ${AI_MODEL:gpt-4}
     max-tokens: 2000
     temperature: 0.7
 
-# ============================================================================
-# Configuración de OpenAI (propiedades específicas)
-# ============================================================================
-openai:
-  api-key: ${OPENAI_API_KEY:${AI_API_KEY:sk-xxxxxxxx}}
-  api-url: ${OPENAI_API_URL:https://api.openai.com/v1}
-  model: ${OPENAI_MODEL:gpt-4}
-  max-tokens: ${OPENAI_MAX_TOKENS:2000}
-  temperature: ${OPENAI_TEMPERATURE:0.7}
-  timeout-seconds: ${OPENAI_TIMEOUT_SECONDS:30}
-  max-retries: ${OPENAI_MAX_RETRIES:3}
-  retry-delay-ms: ${OPENAI_RETRY_DELAY_MS:1000}
-
-# ============================================================================
-# Configuración de Email (propiedades específicas)
-# ============================================================================
-mail:
-  host: ${EMAIL_SMTP_HOST:${MAIL_HOST:smtp.gmail.com}}
-  port: ${EMAIL_SMTP_PORT:${MAIL_PORT:587}}
-  username: ${EMAIL_SMTP_USER:${MAIL_USERNAME:tu-email@gmail.com}}
-  password: ${EMAIL_SMTP_PASSWORD:${MAIL_PASSWORD:}}
-  from: ${EMAIL_FROM:soporte@innoad.com}
-  from-name: ${EMAIL_FROM_NAME:InnoAd - Soporte}
-  auth: true
-  start-tls-enable: true
-  start-tls-required: true
-  max-retries: ${MAIL_MAX_RETRIES:3}
-  retry-delay-ms: ${MAIL_RETRY_DELAY_MS:2000}
-  debug: ${MAIL_DEBUG:false}
-  timeout-ms: 10000
-  connection-timeout-ms: 5000
-
-  # Capacidad maxima de usuarios
   max-users: 2000
 
-  # Configuracion de almacenamiento de archivos
   storage:
     directory: ${STORAGE_DIRECTORY:uploads}
-    base-url: ${STORAGE_BASE_URL:http://localhost:8081/uploads}
+    base-url: ${STORAGE_BASE_URL:http://localhost:8080/uploads}
 
-  # URLs del frontend
   frontend:
     url: ${FRONTEND_URL:http://localhost:4200}
     allowed-origins:
       - http://localhost:4200
       - http://localhost:3000
-      - http://localhost:5173
-      - http://localhost:8080
       - http://127.0.0.1:4200
       - http://127.0.0.1:3000
-      - http://127.0.0.1:5173
-      - http://127.0.0.1:8080
-      - https://innoad.com
-      - https://www.innoad.com
 
 
 # Configuracion de servidor
 server:
-  # Prioriza PORT (Railway) luego SERVER_PORT y por último 8080.
-  port: ${PORT:${SERVER_PORT:8080}}
+  port: ${SERVER_PORT:8080}
   tomcat:
     threads:
-      max: 400
-      min-spare: 50
+      max: 200
+      min-spare: 20
     connection-timeout: 30s
-    max-connections: 10000
-    accept-count: 200
+    max-connections: 8192
+    accept-count: 100
   error:
     include-message: always
     include-binding-errors: always
@@ -176,15 +122,15 @@ server:
     min-response-size: 1024
 
 
-# Configuración de logging
+# Configuracion de logging
 logging:
   level:
     root: INFO
     com.innoad: DEBUG
     com.innoad.shared.security: DEBUG
     com.innoad.modules.auth: DEBUG
-    org.springframework.web: DEBUG
-    org.springframework.security: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: INFO
     org.hibernate.SQL: WARN
   pattern:
     console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'
@@ -195,25 +141,16 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,prometheus
+        include: health,info,metrics
   endpoint:
     health:
       show-details: when-authorized
-  metrics:
-    export:
-      prometheus:
-        enabled: true
-
-  # Desactivar por defecto indicadores de salud que requieren servicios externos
-  # (evita que /actuator/health devuelva DOWN en entornos locales sin configuración)
   health:
     mail:
       enabled: false
-    redis:
-      enabled: false
 
 
-# Configuración de Springdoc OpenAPI
+# Configuracion de Springdoc OpenAPI
 springdoc:
   api-docs:
     path: /api-docs
@@ -221,11 +158,3 @@ springdoc:
     path: /swagger-ui.html
     operations-sorter: method
     tags-sorter: alpha
-
-# Configuración de Mercado Pago - Fase 5
-mercado-pago:
-  access-token: ${MERCADO_PAGO_ACCESS_TOKEN:}
-  public-key: ${MERCADO_PAGO_PUBLIC_KEY:}
-  webhook-url: ${MERCADO_PAGO_WEBHOOK_URL:}
-  client-id: ${MERCADO_PAGO_CLIENT_ID:}
-  client-secret: ${MERCADO_PAGO_CLIENT_SECRET:}

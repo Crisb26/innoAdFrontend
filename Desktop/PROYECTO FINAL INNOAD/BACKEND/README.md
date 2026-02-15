@@ -1,240 +1,123 @@
 # InnoAd Backend 🚀
 
-API REST para gestión de campañas publicitarias con autenticación JWT, IA integrada, sistema de roles y pantallas digitales.
-
-**Versión:** 2.0.0 | **Estado:** Compilado con nuevos endpoints de Raspberry Pi | **Fecha:** 4 Enero 2026
+API REST para gestión de campañas publicitarias digitales con pantallas inteligentes e IA integrada.
 
 ## 🛠️ Stack Tecnológico
 
-| Componente | Versión |
-|-----------|---------|
-| Spring Boot | 3.5.8 |
-| Java | 21 LTS (--enable-preview activado) |
-| PostgreSQL | 17.6 (Azure) |
-| Maven | 3.9.x |
-| Seguridad | Spring Security + JWT (BCrypt 12 rounds) |
-| Documentación | Swagger/OpenAPI 3.0 |
-| WebSocket | spring-boot-starter-websocket (disponible) |
+- **Framework**: Spring Boot 2.0.0
+- **Lenguaje**: Java 21
+- **Base de Datos**: PostgreSQL 17.6 (Azure)
+- **Build**: Maven 3.9.11
+- **Seguridad**: Spring Security + JWT
+- **Contenedores**: Docker
+- **Cloud**: Microsoft Azure PostgreSQL
 
 ## 📋 Requisitos
 
-- **Java 21+**
-- **Maven 3.9+**
-- **Git**
-- **PostgreSQL 17.6+** (para producción)
+- Java JDK 21+
+- Maven 3.9.11+
+- PostgreSQL Client 18.0+ (para desarrollo local)
+- Docker (para containerización)
+- Credenciales Azure (ver `secure/vault.enc.aes`)
 
-## 🚀 Instalación
+## 🚀 Inicio Rápido
 
-```bash
-# 1. Clonar/extraer proyecto
-git clone <repo>
-cd innoadBackend
-
-# 2. Compilar
-mvn clean compile
-
-# 3. Ver estructura
-dir src\main\java\com\innoad\modules\
-```
-
-## 🏃 Ejecución Local
+### Compilación
 
 ```bash
-# Perfil desarrollo (H2 en memoria)
-mvn spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=dev"
+# Compilar sin tests
+mvn clean package -DskipTests
 
-# Perfil producción (PostgreSQL Azure)
-mvn spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=prod"
+# El JAR se genera en: target/innoad-backend-2.0.0.jar
 ```
 
-**Backend disponible en**: http://localhost:8080  
-**Swagger UI**: http://localhost:8080/swagger-ui.html
-
-## 📚 Módulos Principales
-
-```
-src/main/java/com/innoad/modules/
-├── admin/              # Control de mantenimiento y seguridad
-├── auth/               # Autenticación y autorización
-├── campanas/           # Gestión de campañas
-├── contenidos/         # Almacenamiento de multimedia
-├── pantallas/          # Gestión de pantallas digitales
-├── usuarios/           # Gestión de usuarios
-├── reportes/           # Estadísticas y reportes
-├── chat/               # Sistema de chat con IA
-└── mantenimiento/      # Modo mantenimiento del sistema
-```
-
-### 🆕 Módulos Nuevos (Fase 4)
-
-**1. Sistema de Roles** (`roles/`)
-- Entidad: `Rol.java`
-- Repositorio: `RepositorioRol.java`
-- Servicio: `ServicioRol.java` (7 métodos CRUD)
-- Controlador: `ControladorRol.java` (9 endpoints REST)
-- Permisos: 20+ tipos configurables
-
-**2. Modo Mantenimiento** (`mantenimiento/`)
-- Entidad: `ModoMantenimiento.java`
-- Servicio: `ServicioModoMantenimiento.java` (5 métodos)
-- Controlador: `ControladorModoMantenimiento.java` (5 endpoints)
-- Endpoints:
-  - `GET /api/mantenimiento/estado` - Estado actual
-  - `POST /api/mantenimiento/activar` - Activar con mensaje
-  - `POST /api/mantenimiento/desactivar` - Desactivar
-
-**3. Servicio de Correos** (`correos/`)
-- Clase: `ServicioCorreos.java`
-- 7 métodos de notificación:
-  - `enviarEmailSimple()`
-  - `enviarEmailMultipleDestinatarios()`
-  - `enviarEmailHtml()`
-  - `notificarCreacionCampana()`
-  - `notificarPublicacionContenido()`
-  - `notificarModoMantenimiento()`
-  - `notificarReportesGenerados()`
-
-## 🔐 Seguridad
-
-- **Autenticación**: JWT (tokens seguros)
-- **Hashing**: BCrypt 12 rounds
-- **Autorización**: Control de roles (ADMIN, USUARIO, VISITANTE, OPERADOR, GERENTE)
-- **Base Datos**: Credenciales en variables de entorno
-- **Modo Mantenimiento**: Sistema profesional con acceso administrativo
-- **Validación**: Anotaciones Jakarta Validation
-
-## 📡 Endpoints Principales
-
-| Método | Ruta | Descripción | Autenticación |
-|--------|------|-------------|---------|
-| POST | `/api/auth/register` | Registrar usuario | No |
-| POST | `/api/auth/login` | Autenticación | No |
-| GET | `/api/campanas` | Listar campañas | JWT |
-| POST | `/api/campanas` | Crear campaña | JWT |
-| GET | `/api/pantallas` | Listar pantallas | JWT |
-| GET | `/api/pantallas/{id}` | Obtener pantalla | JWT |
-| **GET** | **`/api/v1/pantallas/codigo/{codigo}`** | **Obtener pantalla por código (Raspberry Pi)** | **No** |
-| **GET** | **`/api/v1/pantallas/codigo/{codigo}/contenido`** | **Obtener campaña/contenido actual (Raspberry Pi)** | **No** |
-| GET | `/api/mantenimiento/estado` | Estado del sistema | JWT |
-| POST | `/api/mantenimiento/activar` | Activar mantenimiento | JWT |
-| GET | `/api/roles` | Listar roles | JWT |
-| POST | `/api/roles` | Crear rol personalizado | JWT |
-
-### 🆕 Endpoints para Raspberry Pi (v1)
-
-Los nuevos endpoints `GET /api/v1/pantallas/codigo/{codigo}` y `GET /api/v1/pantallas/codigo/{codigo}/contenido` permiten que dispositivos Raspberry Pi:
-- Consulten su configuración sin autenticación JWT
-- Obtengan el contenido actual asignado via polling (recomendado cada 30 segundos)
-- Reciban información en tiempo real sin cargar JWT
-
-## 🗄️ Base de Datos
-
-### Entornos
-
-- **DEV**: H2 en memoria (sin configuración)
-- **PROD**: PostgreSQL 17.6 en Azure Flexible Server
-
-### Tablas Principales
-
-- `usuarios` - Cuenta de usuario con JPA UserDetails
-- `roles` - Roles del sistema con permisos
-- `modo_mantenimiento` - Estado del mantenimiento
-- `campanas` - Campañas publicitarias
-- `pantallas` - Dispositivos de reproducción
-- `contenidos` - Archivos multimedia
-
-### Conexión
-
-Las credenciales se cargan desde variables de entorno:
-
-```
-DB_HOST=servidor.postgres.database.azure.com
-DB_PORT=5432
-DB_NAME=innoad
-DB_USER=usuario
-DB_PASSWORD=contraseña
-```
-
-## 🐳 Docker
+### Con Docker
 
 ```bash
 # Construir imagen
 docker build -t innoad-backend:latest .
 
 # Ejecutar contenedor
-docker run -p 8080:8080 \
-  -e SPRING_PROFILES_ACTIVE=prod \
-  -e DB_HOST=servidor.postgres.database.azure.com \
-  -e DB_USER=usuario \
-  -e DB_PASSWORD=contraseña \
-  innoad-backend:latest
+docker run -p 8080:8080 innoad-backend:latest
 ```
 
-## ☁️ Producción (Azure Container Apps)
+## ☁️ Despliegue en Azure
 
-```
-URL: https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io
-Health: /actuator/health
-Versión actual: v2.0.4
-Región: East US 2
-```
+### Credenciales y Configuración
 
-## 🛠️ Desarrollo
+**Las credenciales están encriptadas en**: `secure/vault.enc.aes`
 
+**Para desencriptar** (solo para ver, no commitear):
 ```bash
-# Compilar con tests
-mvn clean test
-
-# Generar JAR ejecutable
-mvn clean package
-
-# Archivo JAR
-target/innoad-backend-2.0.0.jar
+openssl enc -d -aes-256-cbc -in secure/vault.enc.aes -k 'Cris930226**'
 ```
 
-## 📖 Documentación API
+### Pasos de Despliegue
 
-- **Swagger UI**: http://localhost:8080/swagger-ui.html
-- **API Docs**: http://localhost:8080/v3/api-docs
-- **Postman Collection**: Incluida en raíz del proyecto
-- **Estructura**: Ver `src/main/java/com/innoad/`
-- **Configuración**: `src/main/resources/application*.yml`
+1. **Construir y taggear imagen**
+   ```bash
+   docker build -t innoad-backend:latest .
+   docker tag innoad-backend:latest InnoAdRegistry.azurecr.io/innoad-backend:latest
+   ```
 
-## 📊 Estadísticas del Proyecto
+2. **Autenticarse en Azure Container Registry**
+   ```bash
+   az login
+   az acr login --name InnoAdRegistry
+   ```
 
-- **Controladores REST**: 15+
-- **Endpoints Totales**: 65+
-- **Entidades JPA**: 12+
-- **Servicios Negocio**: 10+
-- **Métodos Validados**: 100%
+3. **Pushear imagen**
+   ```bash
+   docker push InnoAdRegistry.azurecr.io/innoad-backend:latest
+   ```
 
-## ✅ Status
+4. **Actualizar Container App**
+   ```bash
+   az containerapp update --name innoad-backend --resource-group innoad-rg \
+     --image InnoAdRegistry.azurecr.io/innoad-backend:latest
+   ```
 
-- ✅ Compilación: OK
-- ✅ Seguridad: Implementada
-- ✅ Sistema de Roles: Completado
-- ✅ Modo Mantenimiento: Activo
-- ✅ Servicio Correos: Integrado
-- ✅ IA Chat: Integrada
-- ✅ Azure: Desplegado
-- ✅ PostgreSQL: Conectado
-
-## 🎯 Próximos Pasos
-
-- [ ] Webhooks para integraciones externas
-- [ ] WebSocket para actualizaciones en tiempo real
-- [ ] Caché distribuido (Redis)
-- [ ] Message Broker (RabbitMQ)
-- [ ] Auditoría avanzada
-
-## 🆕 Cambios recientes
-
-- Se limpió documentación legacy y logs del repo.
-- `JWT_SECRET` ahora es Base64 válido para evitar `Illegal base64 character` en login.
-- Esquema de `usuarios` alineado (columnas añadidas, constraint `password` relajada).
-- Frontend apunta al Container App en Azure.
+**Ver guía detallada**: [INSTRUCCIONES_KEVIN_DOCKER.md](../INSTRUCCIONES_KEVIN_DOCKER.md)
 
 ## 📁 Estructura del Proyecto
+
+```
+src/main/java/com/innoad/
+├── configuracion/       # Configuración (CORS, Security, JWT)
+├── modules/
+│   ├── auth/           # Autenticación y usuarios
+│   ├── campaigns/      # Gestión de campañas
+│   ├── content/        # Contenido multimedia
+│   ├── screens/        # Pantallas digitales
+│   ├── ia/             # Asistente IA
+│   └── reports/        # Reportes y estadísticas
+└── shared/             # Utilidades compartidas
+```
+
+## 🔐 Seguridad
+
+- JWT para autenticación
+- Roles: Administrador, Editor, Usuario
+- Encriptación BCrypt
+- CORS configurado
+
+## 📝 Endpoints Principales
+
+### Autenticación
+- `POST /api/auth/registrarse` - Registro
+- `POST /api/auth/iniciar-sesion` - Login
+- `GET /api/auth/perfil` - Perfil usuario
+- `PUT /api/auth/perfil` - Actualizar perfil
+
+### Campañas
+- `GET /api/campanias` - Listar campañas
+- `POST /api/campanias` - Crear campaña
+- `PUT /api/campanias/{id}` - Actualizar
+- `DELETE /api/campanias/{id}` - Eliminar
+
+### Contenidos
+- `GET /api/contenidos` - Listar contenidos
+- `POST /api/contenidos` - Subir contenido
 - `DELETE /api/contenidos/{id}` - Eliminar
 
 ### IA Asistente
