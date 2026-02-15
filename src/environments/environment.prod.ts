@@ -9,25 +9,25 @@ export const environment = {
   // URLs apuntan al backend en el SERVIDOR DE CASA (principal)
   api: {
     // Gateway principal (mismo host para todo)
-    gateway: 'http://100.91.23.46:8080/api',
+    gateway: 'https://azure-pro.tail2a2f73.ts.net/api',
 
     // Microservicios individuales
     services: {
-      auth: 'http://100.91.23.46:8080/api/auth',
-      users: 'http://100.91.23.46:8080/api/users',
-      campaigns: 'http://100.91.23.46:8080/api/campaigns',
-      contents: 'http://100.91.23.46:8080/api/contents',
-      screens: 'http://100.91.23.46:8080/api/screens',
-      analytics: 'http://100.91.23.46:8080/api/analytics',
-      notifications: 'http://100.91.23.46:8080/api/notifications',
-      system: 'http://100.91.23.46:8080/api/system'
+      auth: 'https://azure-pro.tail2a2f73.ts.net/api/auth',
+      users: 'https://azure-pro.tail2a2f73.ts.net/api/users',
+      campaigns: 'https://azure-pro.tail2a2f73.ts.net/api/campaigns',
+      contents: 'https://azure-pro.tail2a2f73.ts.net/api/contents',
+      screens: 'https://azure-pro.tail2a2f73.ts.net/api/screens',
+      analytics: 'https://azure-pro.tail2a2f73.ts.net/api/analytics',
+      notifications: 'https://azure-pro.tail2a2f73.ts.net/api/notifications',
+      system: 'https://azure-pro.tail2a2f73.ts.net/api/system'
     },
 
     // URLs base para producción
-    baseUrl: 'http://100.91.23.46:8080/api',
-    authUrl: 'http://100.91.23.46:8080/api/auth',
-    uploadUrl: 'http://100.91.23.46:8080/api/upload',
-    wsUrl: 'ws://100.91.23.46:8080/ws',
+    baseUrl: 'https://azure-pro.tail2a2f73.ts.net/api',
+    authUrl: 'https://azure-pro.tail2a2f73.ts.net/api/auth',
+    uploadUrl: 'https://azure-pro.tail2a2f73.ts.net/api/upload',
+    wsUrl: 'wss://azure-pro.tail2a2f73.ts.net/ws',
     
     // Configuración de timeout y reintentos
     timeout: 30000, // 30 segundos
@@ -89,7 +89,7 @@ export const environment = {
     level: 'warn', // Solo warnings y errores en producción
     enableConsole: false, // Deshabilitado en producción
     enableRemote: true,
-    remoteEndpoint: 'http://100.91.23.46:8080/api/logs',
+    remoteEndpoint: 'https://azure-pro.tail2a2f73.ts.net/api/logs',
     maxLocalLogs: 500,
     flushInterval: 30000 // 30 segundos
   },
@@ -157,9 +157,9 @@ export const environment = {
     enableUserActivity: true,
     sampleRate: 0.1, // 10% en producción
     endpoints: {
-      performance: 'http://100.91.23.46:8080/api/monitoring/performance',
-      errors: 'http://100.91.23.46:8080/api/monitoring/errors',
-      activity: 'http://100.91.23.46:8080/api/monitoring/activity'
+      performance: 'https://azure-pro.tail2a2f73.ts.net/api/monitoring/performance',
+      errors: 'https://azure-pro.tail2a2f73.ts.net/api/monitoring/errors',
+      activity: 'https://azure-pro.tail2a2f73.ts.net/api/monitoring/activity'
     }
   },
   
@@ -209,8 +209,8 @@ export const environment = {
   },
   
   // ===== CONFIGURACIÓN LEGACY (MANTENER COMPATIBILIDAD) =====
-  urlApi: 'http://100.91.23.46:8080/api',
-  urlWebSocket: 'ws://100.91.23.46:8080/ws',
+  urlApi: 'https://azure-pro.tail2a2f73.ts.net/api',
+  urlWebSocket: 'wss://azure-pro.tail2a2f73.ts.net/ws',
   tiempoExpiracionToken: 3600000,
   tiempoActualizacionDatos: 30000,
   paginacionPorDefecto: 10,
