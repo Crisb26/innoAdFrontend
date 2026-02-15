@@ -39,17 +39,12 @@ public class InicializadorDatos {
 
         crearSiNoExiste(
                 "admin", "admin@innoad.com", "Admin123!", "Admin", "InnoAd",
-                RolUsuario.ADMINISTRADOR
+                RolUsuario.ADMIN
         );
 
         crearSiNoExiste(
                 "tecnico", "tecnico@innoad.com", "Tecnico123!", "Tec", "Nico",
                 RolUsuario.TECNICO
-        );
-
-        crearSiNoExiste(
-                "developer", "dev@innoad.com", "Dev123!", "Devel", "Oper",
-                RolUsuario.DESARROLLADOR
         );
 
         crearSiNoExiste(

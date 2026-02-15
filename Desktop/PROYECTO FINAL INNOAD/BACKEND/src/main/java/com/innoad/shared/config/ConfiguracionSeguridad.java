@@ -79,15 +79,15 @@ public class ConfiguracionSeguridad {
 
                         // ===== ENDPOINTS ADMINISTRATIVOS =====
                         .requestMatchers(
-                                "/api/admin/**", 
+                                "/api/admin/**",
                                 "/api/v1/admin/**",
-                                "/api/mantenimiento/activar", 
+                                "/api/mantenimiento/activar",
                                 "/api/mantenimiento/desactivar"
-                        ).hasRole("ADMINISTRADOR")
+                        ).hasRole("ADMIN")
 
                         // ===== ENDPOINTS TÉCNICOS =====
                         .requestMatchers("/api/tecnico/**", "/api/v1/tecnico/**")
-                        .hasAnyRole("ADMINISTRADOR", "TECNICO", "DESARROLLADOR")
+                        .hasAnyRole("ADMIN", "TECNICO")
 
                         // ===== ENDPOINTS AUTENTICADOS =====
                         .requestMatchers(

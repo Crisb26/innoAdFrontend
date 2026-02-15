@@ -330,11 +330,9 @@ public class ServicioAutenticacion {
         var refreshToken = servicioJWT.generarTokenRefresh(usuario);
 
         var rolNombre = switch (usuario.getRol()) {
-            case ADMINISTRADOR -> "Administrador";
+            case ADMIN -> "Administrador";
             case TECNICO -> "Técnico";
-            case DESARROLLADOR -> "Desarrollador";
             case USUARIO -> "Usuario";
-            case VISITANTE -> "Visitante";
         };
 
         var usuarioLogin = RespuestaLogin.UsuarioLogin.builder()
@@ -380,11 +378,9 @@ public class ServicioAutenticacion {
         var nuevoAccessToken = servicioJWT.generarToken(usuario);
 
         var rolNombre = switch (usuario.getRol()) {
-            case ADMINISTRADOR -> "Administrador";
+            case ADMIN -> "Administrador";
             case TECNICO -> "Técnico";
-            case DESARROLLADOR -> "Desarrollador";
             case USUARIO -> "Usuario";
-            case VISITANTE -> "Visitante";
         };
 
         var usuarioLogin = RespuestaLogin.UsuarioLogin.builder()
@@ -452,11 +448,9 @@ public class ServicioAutenticacion {
         
         // Construir respuesta
         var rolNombre = switch (usuario.getRol()) {
-            case ADMINISTRADOR -> "Administrador";
+            case ADMIN -> "Administrador";
             case TECNICO -> "Técnico";
-            case DESARROLLADOR -> "Desarrollador";
             case USUARIO -> "Usuario";
-            case VISITANTE -> "Visitante";
         };
         
         return RespuestaLogin.UsuarioLogin.builder()

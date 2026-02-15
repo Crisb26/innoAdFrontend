@@ -119,7 +119,7 @@ public class ServicioAdministracion {
 
         RolUsuario rolAnterior = usuario.getRol();
 
-        if (usuario.getId().equals(administrador.getId()) && nuevoRol != RolUsuario.ADMINISTRADOR) {
+        if (usuario.getId().equals(administrador.getId()) && nuevoRol != RolUsuario.ADMIN) {
             throw new RuntimeException("No puedes cambiar tu propio rol de administrador");
         }
 

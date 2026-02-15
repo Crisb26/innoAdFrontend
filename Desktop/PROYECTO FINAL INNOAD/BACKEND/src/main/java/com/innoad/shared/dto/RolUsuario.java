@@ -5,28 +5,7 @@ package com.innoad.shared.dto;
  * Cada rol tiene permisos y accesos diferentes en la aplicación.
  */
 public enum RolUsuario {
-    /**
-     * Rol de administrador - Acceso completo al sistema
-     */
-    ADMINISTRADOR,
-    
-    /**
-     * Rol de técnico - Acceso a funciones técnicas y de mantenimiento
-     */
+    ADMIN,
     TECNICO,
-    
-    /**
-     * Rol de desarrollador - Acceso a herramientas de desarrollo y configuración
-     */
-    DESARROLLADOR,
-    
-    /**
-     * Rol de usuario registrado - Acceso estándar a funcionalidades
-     */
-    USUARIO,
-    
-    /**
-     * Rol de visitante - Acceso limitado, solo lectura
-     */
-    VISITANTE
+    USUARIO
 }

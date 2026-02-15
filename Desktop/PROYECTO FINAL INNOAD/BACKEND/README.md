@@ -1,16 +1,15 @@
-# InnoAd Backend 🚀
+# InnoAd Backend
 
-API REST para gestión de campañas publicitarias digitales con pantallas inteligentes e IA integrada.
+API REST para gestión de campañas publicitarias digitales con pantallas inteligentes.
 
-## 🛠️ Stack Tecnológico
+## Stack Tecnológico
 
-- **Framework**: Spring Boot 2.0.0
-- **Lenguaje**: Java 21
-- **Base de Datos**: PostgreSQL 17.6 (Azure)
-- **Build**: Maven 3.9.11
-- **Seguridad**: Spring Security + JWT
-- **Contenedores**: Docker
-- **Cloud**: Microsoft Azure PostgreSQL
+- Framework: Spring Boot 3.5.8
+- Lenguaje: Java 21 (LTS)
+- Base de Datos: PostgreSQL 16
+- Build: Maven 3.9.4
+- Seguridad: Spring Security + JWT
+- Contenedores: Docker
 
 ## 📋 Requisitos
 
