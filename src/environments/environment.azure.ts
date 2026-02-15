@@ -6,28 +6,28 @@ export const environment = {
   version: '2.0.0',
   
   // ===== CONFIGURACIÓN DE API =====
-  // URLs apuntan al backend en el SERVIDOR DE CASA (principal)
+  // URLs apuntan al backend en AZURE (plan de emergencia)
   api: {
     // Gateway principal (mismo host para todo)
-    gateway: 'http://100.91.23.46:8080/api',
+    gateway: 'https://TU_AZURE_BACKEND_URL/api',
 
     // Microservicios individuales
     services: {
-      auth: 'http://100.91.23.46:8080/api/auth',
-      users: 'http://100.91.23.46:8080/api/users',
-      campaigns: 'http://100.91.23.46:8080/api/campaigns',
-      contents: 'http://100.91.23.46:8080/api/contents',
-      screens: 'http://100.91.23.46:8080/api/screens',
-      analytics: 'http://100.91.23.46:8080/api/analytics',
-      notifications: 'http://100.91.23.46:8080/api/notifications',
-      system: 'http://100.91.23.46:8080/api/system'
+      auth: 'https://TU_AZURE_BACKEND_URL/api/auth',
+      users: 'https://TU_AZURE_BACKEND_URL/api/users',
+      campaigns: 'https://TU_AZURE_BACKEND_URL/api/campaigns',
+      contents: 'https://TU_AZURE_BACKEND_URL/api/contents',
+      screens: 'https://TU_AZURE_BACKEND_URL/api/screens',
+      analytics: 'https://TU_AZURE_BACKEND_URL/api/analytics',
+      notifications: 'https://TU_AZURE_BACKEND_URL/api/notifications',
+      system: 'https://TU_AZURE_BACKEND_URL/api/system'
     },
 
     // URLs base para producción
-    baseUrl: 'http://100.91.23.46:8080/api',
-    authUrl: 'http://100.91.23.46:8080/api/auth',
-    uploadUrl: 'http://100.91.23.46:8080/api/upload',
-    wsUrl: 'ws://100.91.23.46:8080/ws',
+    baseUrl: 'https://TU_AZURE_BACKEND_URL/api',
+    authUrl: 'https://TU_AZURE_BACKEND_URL/api/auth',
+    uploadUrl: 'https://TU_AZURE_BACKEND_URL/api/upload',
+    wsUrl: 'wss://TU_AZURE_BACKEND_URL/ws',
     
     // Configuración de timeout y reintentos
     timeout: 30000, // 30 segundos
@@ -89,7 +89,7 @@ export const environment = {
     level: 'warn', // Solo warnings y errores en producción
     enableConsole: false, // Deshabilitado en producción
     enableRemote: true,
-    remoteEndpoint: 'http://100.91.23.46:8080/api/logs',
+    remoteEndpoint: 'https://TU_AZURE_BACKEND_URL/api/logs',
     maxLocalLogs: 500,
     flushInterval: 30000 // 30 segundos
   },
@@ -157,9 +157,9 @@ export const environment = {
     enableUserActivity: true,
     sampleRate: 0.1, // 10% en producción
     endpoints: {
-      performance: 'http://100.91.23.46:8080/api/monitoring/performance',
-      errors: 'http://100.91.23.46:8080/api/monitoring/errors',
-      activity: 'http://100.91.23.46:8080/api/monitoring/activity'
+      performance: 'https://TU_AZURE_BACKEND_URL/api/monitoring/performance',
+      errors: 'https://TU_AZURE_BACKEND_URL/api/monitoring/errors',
+      activity: 'https://TU_AZURE_BACKEND_URL/api/monitoring/activity'
     }
   },
   
@@ -209,8 +209,8 @@ export const environment = {
   },
   
   // ===== CONFIGURACIÓN LEGACY (MANTENER COMPATIBILIDAD) =====
-  urlApi: 'http://100.91.23.46:8080/api',
-  urlWebSocket: 'ws://100.91.23.46:8080/ws',
+  urlApi: 'https://TU_AZURE_BACKEND_URL/api',
+  urlWebSocket: 'wss://TU_AZURE_BACKEND_URL/ws',
   tiempoExpiracionToken: 3600000,
   tiempoActualizacionDatos: 30000,
   paginacionPorDefecto: 10,

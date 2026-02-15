@@ -9,6 +9,7 @@
     "iniciar:proxy": "ng serve --open --proxy-config proxy.conf.json",
     "construir": "ng build --configuration production",
     "construir:compose": "ng build --configuration compose",
+    "construir:azure": "ng build --configuration azure",
     "observar": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
