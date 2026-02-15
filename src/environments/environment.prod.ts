@@ -13,14 +13,14 @@ export const environment = {
 
     // Microservicios individuales
     services: {
-      auth: 'https://azure-pro.tail2a2f73.ts.net/api/auth',
-      users: 'https://azure-pro.tail2a2f73.ts.net/api/users',
-      campaigns: 'https://azure-pro.tail2a2f73.ts.net/api/campaigns',
-      contents: 'https://azure-pro.tail2a2f73.ts.net/api/contents',
-      screens: 'https://azure-pro.tail2a2f73.ts.net/api/screens',
-      analytics: 'https://azure-pro.tail2a2f73.ts.net/api/analytics',
-      notifications: 'https://azure-pro.tail2a2f73.ts.net/api/notifications',
-      system: 'https://azure-pro.tail2a2f73.ts.net/api/system'
+      auth: 'https://azure-pro.tail2a2f73.ts.net/api/v1/auth',
+      users: 'https://azure-pro.tail2a2f73.ts.net/api/v1/users',
+      campaigns: 'https://azure-pro.tail2a2f73.ts.net/api/v1/campaigns',
+      contents: 'https://azure-pro.tail2a2f73.ts.net/api/v1/contents',
+      screens: 'https://azure-pro.tail2a2f73.ts.net/api/v1/screens',
+      analytics: 'https://azure-pro.tail2a2f73.ts.net/api/v1/analytics',
+      notifications: 'https://azure-pro.tail2a2f73.ts.net/api/v1/notifications',
+      system: 'https://azure-pro.tail2a2f73.ts.net/api/v1/system'
     },
 
     // URLs base para producción
