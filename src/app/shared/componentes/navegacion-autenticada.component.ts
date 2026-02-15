@@ -27,24 +27,46 @@ import { EditarPerfilComponent } from './editar-perfil.component';
 
         <!-- Navegación Principal -->
         <div class="nav-links">
-          <a routerLink="/dashboard" class="nav-item" routerLinkActive="active">
+          <a routerLink="/dashboard" class="nav-item" routerLinkActive="active" title="Tu dashboard personal">
             <span class="nav-icon"></span>
             Dashboard
           </a>
-          <a routerLink="/campanas" class="nav-item" routerLinkActive="active">
+
+          <!-- Campañas: todos pueden acceder -->
+          <a routerLink="/campanas" class="nav-item" routerLinkActive="active" title="Crear y gestionar campañas publicitarias">
             <span class="nav-icon"></span>
             Campañas
           </a>
-          <a routerLink="/pantallas" class="nav-item" routerLinkActive="active">
-            <span class="nav-icon"></span>
-            Pantallas
-          </a>
-          <a routerLink="/contenidos" class="nav-item" routerLinkActive="active">
+
+          <!-- Pantallas: solo ADMIN y TECNICO -->
+          @if (esAdministrador() || esTecnico()) {
+            <a routerLink="/pantallas" class="nav-item" routerLinkActive="active" title="Gestionar pantallas digitales">
+              <span class="nav-icon"></span>
+              Pantallas
+            </a>
+          }
+
+          <!-- Contenidos: todos pueden acceder -->
+          <a routerLink="/contenidos" class="nav-item" routerLinkActive="active" title="Subir y gestionar contenido multimedia">
             <span class="nav-icon"></span>
             Contenidos
           </a>
+
+          <!-- Reportes: todos pueden acceder -->
+          <a routerLink="/reportes" class="nav-item" routerLinkActive="active" title="Ver estadísticas y reportes">
+            <span class="nav-icon"></span>
+            Reportes
+          </a>
+
+          <!-- Soporte/Chat: todos pueden acceder -->
+          <a routerLink="/chat" class="nav-item" routerLinkActive="active" title="Contactar con soporte técnico">
+            <span class="nav-icon"></span>
+            Soporte
+          </a>
+
+          <!-- Panel Admin: solo ADMIN -->
           @if (esAdministrador()) {
-            <a routerLink="/admin" class="nav-item nav-admin" routerLinkActive="active">
+            <a routerLink="/admin" class="nav-item nav-admin" routerLinkActive="active" title="Panel de administración del sistema">
               <span class="nav-icon"></span>
               Admin
             </a>
@@ -101,19 +123,52 @@ import { EditarPerfilComponent } from './editar-perfil.component';
                 <span class="dropdown-icon"></span>
                 Mi Dashboard
               </a>
-              <a routerLink="/publicar" class="dropdown-item" (click)="cerrarMenu()">
-                <span class="dropdown-icon"></span>
-                Publicar Contenido
-              </a>
+
+              @if (esTecnico()) {
+                <hr class="dropdown-divider">
+                <span class="dropdown-header-text">Funciones Técnico</span>
+                <a routerLink="/pantallas" class="dropdown-item" (click)="cerrarMenu()">
+                  <span class="dropdown-icon"></span>
+                  Gestionar Pantallas
+                </a>
+                <a routerLink="/contenidos" class="dropdown-item" (click)="cerrarMenu()">
+                  <span class="dropdown-icon"></span>
+                  Revisar Contenidos
+                </a>
+              }
+
+              @if (esUsuario()) {
+                <hr class="dropdown-divider">
+                <a routerLink="/contenidos/crear" class="dropdown-item" (click)="cerrarMenu()">
+                  <span class="dropdown-icon"></span>
+                  Subir Contenido
+                </a>
+              }
+
               <a routerLink="/reportes" class="dropdown-item" (click)="cerrarMenu()">
                 <span class="dropdown-icon"></span>
                 Mis Reportes
               </a>
+
+              <a routerLink="/chat" class="dropdown-item" (click)="cerrarMenu()">
+                <span class="dropdown-icon"></span>
+                Soporte Técnico
+              </a>
+
               @if (esAdministrador()) {
                 <hr class="dropdown-divider">
+                <span class="dropdown-header-text">Funciones Admin</span>
                 <a routerLink="/admin" class="dropdown-item" (click)="cerrarMenu()">
                   <span class="dropdown-icon"></span>
-                  Panel Admin
+                  Panel de Control
+                </a>
+                <a routerLink="/admin/usuarios" class="dropdown-item" (click)="cerrarMenu()">
+                  <span class="dropdown-icon"></span>
+                  Gestionar Usuarios
+                </a>
+                <a routerLink="/admin/roles" class="dropdown-item" (click)="cerrarMenu()">
+                  <span class="dropdown-icon"></span>
+                  Configurar Roles
                 </a>
               }
               
@@ -162,18 +217,23 @@ export class NavegacionAutenticadaComponent implements OnInit {
   }
 
   private formatearNombreRol(rol: string): string {
+    // Mapeo de roles del backend (ADMIN, TECNICO, USUARIO) a display
     const rolesMap: { [key: string]: string } = {
-      'Developer': 'Desarrollador',
-      'developer': 'Desarrollador',
-      'Admin': 'Administrador',
-      'Administrador': 'Administrador',
-      'administrador': 'Administrador',
-      'Tecnico': 'Técnico',
-      'tecnico': 'Técnico',
-      'Usuario': 'Usuario',
-      'usuario': 'Usuario',
-      'User': 'Usuario',
-      'user': 'Usuario'
+      'ADMIN': '👑 Administrador',
+      'Admin': '👑 Administrador',
+      'Administrador': '👑 Administrador',
+      'administrador': '👑 Administrador',
+      'TECNICO': '🔧 Técnico',
+      'Tecnico': '🔧 Técnico',
+      'tecnico': '🔧 Técnico',
+      'Técnico': '🔧 Técnico',
+      'USUARIO': '👤 Usuario',
+      'Usuario': '👤 Usuario',
+      'usuario': '👤 Usuario',
+      'User': '👤 Usuario',
+      'user': '👤 Usuario',
+      'Developer': '👨‍💻 Desarrollador',
+      'developer': '👨‍💻 Desarrollador'
     };
     return rolesMap[rol] || rol;
   }
@@ -190,7 +250,20 @@ export class NavegacionAutenticadaComponent implements OnInit {
 
   protected esAdministrador(): boolean {
     const usuario = this.servicioAuth.usuarioActual();
-    return usuario?.rol?.nombre === 'Administrador' || false;
+    const rol = usuario?.rol?.nombre || '';
+    return rol === 'ADMIN' || rol === 'Administrador' || false;
+  }
+
+  protected esTecnico(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre || '';
+    return rol === 'TECNICO' || rol === 'Tecnico' || false;
+  }
+
+  protected esUsuario(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre || '';
+    return rol === 'USUARIO' || rol === 'Usuario' || false;
   }
 
   protected toggleMenu(): void {
