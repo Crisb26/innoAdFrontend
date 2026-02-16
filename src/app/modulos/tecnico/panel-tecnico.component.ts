@@ -1,7 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '@environments/environment';
 
 interface Publicacion {
   id: number;
@@ -85,7 +83,7 @@ interface Pantalla {
                       <h3>{{ pub.titulo }}</h3>
                       <p class="usuario">👤 {{ pub.usuarioNombre }}</p>
                       <p class="ubicacion">📍 {{ pub.ubicacion }}</p>
-                      <p class="precio">💰 COP ${{ pub.precioCOP | number }}</p>
+                      <p class="precio">💰 COP $ {{ pub.precioCOP }}</p>
                       <p class="descripcion">{{ pub.descripcion }}</p>
                       <div class="acciones-publicacion">
                         <button class="btn-aprobar" (click)="aprobarPublicacion(pub.id)">
@@ -107,63 +105,47 @@ interface Pantalla {
         @if (pestanaActiva() === 'pantallas') {
           <div class="contenido-pestana">
             <h2>Estado de Pantallas</h2>
-            <div class="tabla-pantallas">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Estado</th>
-                    <th>Nombre</th>
-                    <th>Ubicación</th>
-                    <th>Última Actualización</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @for (pantalla of pantallasConectadas(); track pantalla.id) {
+            @if (pantallasConectadas().length === 0) {
+              <p>No hay pantallas conectadas</p>
+            } @else {
+              <div class="tabla-pantallas">
+                <table>
+                  <thead>
                     <tr>
-                      <td>
-                        <span class="badge" [class.conectada]="pantalla.estado === 'CONECTADA'">
-                          {{ pantalla.estado === 'CONECTADA' ? '🟢' : '🔴' }}
-                        </span>
-                      </td>
-                      <td>{{ pantalla.nombre }}</td>
-                      <td>{{ pantalla.ubicacion }}</td>
-                      <td>{{ pantalla.ultimaActualizacion }}</td>
+                      <th>Estado</th>
+                      <th>Nombre</th>
+                      <th>Ubicación</th>
+                      <th>Última Actualización</th>
                     </tr>
-                  }
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    @for (pantalla of pantallasConectadas(); track pantalla.id) {
+                      <tr>
+                        <td>
+                          <span class="badge" [class.conectada]="pantalla.estado === 'CONECTADA'">
+                            {{ pantalla.estado === 'CONECTADA' ? '🟢' : '🔴' }}
+                          </span>
+                        </td>
+                        <td>{{ pantalla.nombre }}</td>
+                        <td>{{ pantalla.ubicacion }}</td>
+                        <td>{{ pantalla.ultimaActualizacion }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
           </div>
         }
 
         <!-- PESTAÑA: MAPA -->
         @if (pestanaActiva() === 'mapa') {
           <div class="contenido-pestana">
-            <h2>Mapa de Ubicaciones - Quindío</h2>
+            <h2>🗺️ Mapa de Ubicaciones</h2>
             <div class="contenedor-mapa">
-              <div class="mapa-simple">
-                <!-- Mapa interactivo simple -->
-                <div class="regiones-colombia">
-                  <div class="municipio" *ngFor="let municipio of municipios">
-                    <div class="municipio-nombre">{{ municipio.nombre }}</div>
-                    <div class="puntos">
-                      @for (punto of municipio.puntos; track punto.id) {
-                        <div class="punto" [style.left.%]="punto.x" [style.top.%]="punto.y"
-                             [class.activo]="punto.estado === 'CONECTADA'">
-                          <span class="tooltip">{{ punto.nombre }}</span>
-                        </div>
-                      }
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="leyenda-mapa">
-                <div class="leyenda-item">
-                  <span class="punto-leyenda conectada"></span> Conectada
-                </div>
-                <div class="leyenda-item">
-                  <span class="punto-leyenda desconectada"></span> Desconectada
-                </div>
+              <p>Mapa de pantallas por región</p>
+              <div style="padding: 2rem; background: #f0f0f0; border-radius: 8px; text-align: center;">
+                📍 Mapa interactivo de ubicaciones de pantallas
               </div>
             </div>
           </div>
@@ -172,7 +154,7 @@ interface Pantalla {
         <!-- PESTAÑA: INVENTARIO -->
         @if (pestanaActiva() === 'inventario') {
           <div class="contenido-pestana">
-            <h2>Inventario de Equipos</h2>
+            <h2>📦 Inventario de Equipos</h2>
             <div class="inventario-grid">
               <div class="tarjeta-inventario">
                 <div class="icono">🖥️</div>
@@ -198,138 +180,123 @@ interface Pantalla {
                 <p class="cantidad">8 Disponibles</p>
                 <p class="estado">3 en prueba</p>
               </div>
-              <div class="tarjeta-inventario">
-                <div class="icono">🔗</div>
-                <h3>Conectores</h3>
-                <p class="cantidad">50 Disponibles</p>
-                <p class="estado">Stock completo</p>
-              </div>
-              <div class="tarjeta-inventario">
-                <div class="icono">🎥</div>
-                <h3>Cámaras</h3>
-                <p class="cantidad">5 Disponibles</p>
-                <p class="estado">Todas operativas</p>
-              </div>
             </div>
           </div>
         }
 
-        <!-- PESTAÑA: CHAT -->
+        <!-- PESTAÑA: CHAT SOPORTE -->
         @if (pestanaActiva() === 'chat') {
           <div class="contenido-pestana">
-            <h2>Chat con Usuarios</h2>
-            <div class="panel-chat">
-              <div class="lista-usuarios">
-                <h3>Usuarios en línea</h3>
-                <div class="usuario-chat">
-                  <span class="online-badge">🟢</span>
-                  <span>Juan Pérez</span>
-                </div>
-                <div class="usuario-chat">
-                  <span class="online-badge">🟢</span>
-                  <span>María García</span>
-                </div>
-                <div class="usuario-chat">
-                  <span class="offline-badge">🔴</span>
-                  <span>Carlos López</span>
-                </div>
-              </div>
-              <div class="area-chat">
-                <div class="mensaje-chat">
-                  <strong>Juan Pérez:</strong> ¿Mi publicación fue aprobada?
-                </div>
-                <div class="mensaje-chat propio">
-                  <strong>Tú:</strong> Sí, tu publicación fue aprobada. Está lista para activar.
-                </div>
-              </div>
-              <div class="input-chat">
-                <input type="text" placeholder="Escribe tu respuesta...">
-                <button class="btn-enviar">Enviar</button>
-              </div>
+            <h2>💬 Chat Soporte</h2>
+            <div style="padding: 2rem; background: #f5f5f5; border-radius: 8px; text-align: center;">
+              <p>Sistema de chat en tiempo real con usuarios</p>
+              <p>💬 Comunicación directa con clientes y usuarios del sistema</p>
             </div>
           </div>
         }
-      </div>
-
-      <!-- Botón de Impresión -->
-      <div class="footer-tecnico">
-        <button class="btn-imprimir" (click)="imprimirReporte()">
-          🖨️ Imprimir Reporte
-        </button>
       </div>
     </div>
   `,
   styles: [`
     .panel-tecnico {
-      padding: 20px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 2rem;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
       min-height: 100vh;
+      color: #e2e8f0;
     }
 
     .header-tecnico {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+      padding: 1rem;
+      border-bottom: 2px solid #00d4ff;
     }
 
     .header-tecnico h1 {
-      margin: 0 0 10px 0;
-      color: #333;
+      margin: 0 0 1rem 0;
+      color: #00d4ff;
+      font-size: 2rem;
     }
 
     .info-tecnico {
       display: flex;
-      gap: 20px;
-      color: #666;
+      gap: 2rem;
+      font-size: 0.9rem;
+    }
+
+    .info-tecnico strong {
+      color: #ff006a;
     }
 
     .tabs-navigation {
       display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
       flex-wrap: wrap;
     }
 
     .btn-tab {
-      padding: 10px 20px;
-      background: white;
-      border: none;
+      padding: 0.75rem 1.5rem;
+      border: 2px solid transparent;
+      background: rgba(0, 212, 255, 0.1);
+      color: #cbd5e1;
       border-radius: 8px;
       cursor: pointer;
-      font-weight: 500;
-      transition: all 0.3s;
+      transition: all 0.3s ease;
+      font-weight: 600;
     }
 
     .btn-tab:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      background: rgba(0, 212, 255, 0.2);
+      border-color: #00d4ff;
     }
 
     .btn-tab.activo {
-      background: #667eea;
+      background: linear-gradient(135deg, #00d4ff, #0066ff);
       color: white;
+      border-color: #00d4ff;
     }
 
     .contenido-pestana {
-      background: white;
-      padding: 20px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .contenido-pestana h2 {
+      color: #00d4ff;
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    .sin-elementos {
+      padding: 2rem;
+      text-align: center;
+      background: rgba(16, 185, 129, 0.1);
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
     }
 
     .grid-publicaciones {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
     }
 
     .tarjeta-publicacion {
-      border: 1px solid #ddd;
-      border-radius: 8px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 12px;
       overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .tarjeta-publicacion:hover {
+      border-color: #00d4ff;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
     }
 
     .img-publicacion {
@@ -339,351 +306,222 @@ interface Pantalla {
     }
 
     .info-publicacion {
-      padding: 15px;
+      padding: 1rem;
     }
 
     .info-publicacion h3 {
-      margin: 0 0 10px 0;
+      margin: 0 0 0.5rem 0;
+      color: #00d4ff;
     }
 
-    .usuario, .ubicacion, .precio, .descripcion {
-      font-size: 0.9em;
-      color: #666;
-      margin: 5px 0;
+    .info-publicacion p {
+      margin: 0.25rem 0;
+      font-size: 0.9rem;
+      color: #cbd5e1;
     }
 
     .acciones-publicacion {
       display: flex;
-      gap: 10px;
-      margin-top: 10px;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .btn-aprobar, .btn-rechazar {
+      flex: 1;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
     }
 
     .btn-aprobar {
-      flex: 1;
-      padding: 8px;
-      background: #22c55e;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+      background: rgba(16, 185, 129, 0.3);
+      color: #10b981;
+      border: 1px solid #10b981;
+    }
+
+    .btn-aprobar:hover {
+      background: rgba(16, 185, 129, 0.5);
     }
 
     .btn-rechazar {
-      flex: 1;
-      padding: 8px;
-      background: #ef4444;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+      background: rgba(255, 0, 106, 0.3);
+      color: #ff006a;
+      border: 1px solid #ff006a;
+    }
+
+    .btn-rechazar:hover {
+      background: rgba(255, 0, 106, 0.5);
     }
 
     .tabla-pantallas {
       overflow-x: auto;
-      margin-top: 20px;
     }
 
-    .tabla-pantallas table {
+    table {
       width: 100%;
       border-collapse: collapse;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 8px;
+      overflow: hidden;
     }
 
-    .tabla-pantallas th {
-      background: #f5f5f5;
-      padding: 12px;
+    th {
+      background: rgba(0, 212, 255, 0.1);
+      color: #00d4ff;
+      padding: 1rem;
       text-align: left;
       font-weight: 600;
+      border-bottom: 2px solid rgba(0, 212, 255, 0.3);
     }
 
-    .tabla-pantallas td {
-      padding: 12px;
-      border-bottom: 1px solid #ddd;
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
     }
 
     .badge {
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.9em;
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-weight: 600;
     }
 
     .badge.conectada {
-      background: #dcfce7;
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+
+    .contenedor-mapa {
+      padding: 1.5rem;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 12px;
     }
 
     .inventario-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
     }
 
     .tarjeta-inventario {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 20px;
-      border-radius: 8px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 12px;
+      padding: 1.5rem;
       text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .tarjeta-inventario:hover {
+      border-color: #00d4ff;
+      transform: translateY(-5px);
     }
 
     .icono {
-      font-size: 2em;
-      margin-bottom: 10px;
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .tarjeta-inventario h3 {
+      margin: 0.5rem 0;
+      color: #00d4ff;
     }
 
     .cantidad {
-      font-size: 1.5em;
-      font-weight: bold;
-      margin: 10px 0;
+      color: #10b981;
+      font-weight: 600;
     }
 
     .estado {
-      font-size: 0.9em;
-      opacity: 0.9;
+      color: #ff006a;
+      font-size: 0.9rem;
     }
 
-    .panel-chat {
-      display: grid;
-      grid-template-columns: 200px 1fr;
-      gap: 20px;
-      margin-top: 20px;
-      height: 400px;
-    }
+    @media (max-width: 768px) {
+      .panel-tecnico {
+        padding: 1rem;
+      }
 
-    .lista-usuarios {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 10px;
-    }
+      .tabs-navigation {
+        flex-direction: column;
+      }
 
-    .usuario-chat {
-      padding: 8px;
-      margin: 5px 0;
-      background: #f5f5f5;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-    }
+      .btn-tab {
+        width: 100%;
+      }
 
-    .online-badge { color: #22c55e; font-weight: bold; }
-    .offline-badge { color: #ef4444; font-weight: bold; }
+      .grid-publicaciones {
+        grid-template-columns: 1fr;
+      }
 
-    .area-chat {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 10px;
-      overflow-y: auto;
-      background: #f9f9f9;
-    }
-
-    .mensaje-chat {
-      margin: 10px 0;
-      padding: 10px;
-      background: white;
-      border-radius: 4px;
-    }
-
-    .mensaje-chat.propio {
-      background: #e0e7ff;
-      text-align: right;
-    }
-
-    .input-chat {
-      display: flex;
-      gap: 10px;
-    }
-
-    .input-chat input {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-
-    .btn-enviar {
-      padding: 10px 20px;
-      background: #667eea;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .footer-tecnico {
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    .btn-imprimir {
-      padding: 12px 30px;
-      background: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1em;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: all 0.3s;
-    }
-
-    .btn-imprimir:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-
-    .sin-elementos {
-      padding: 40px 20px;
-      text-align: center;
-      color: #666;
-    }
-
-    .mapa-simple {
-      height: 400px;
-      background: #f0f0f0;
-      border-radius: 8px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .regiones-colombia {
-      width: 100%;
-      height: 100%;
-      position: relative;
-    }
-
-    .municipio {
-      position: absolute;
-      border: 1px solid #ddd;
-      padding: 10px;
-    }
-
-    .municipio-nombre {
-      font-weight: bold;
-      font-size: 0.9em;
-      margin-bottom: 5px;
-    }
-
-    .punto {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #ef4444;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .punto.activo {
-      background: #22c55e;
-      width: 16px;
-      height: 16px;
-      margin-left: -2px;
-      margin-top: -2px;
-    }
-
-    .punto:hover .tooltip {
-      display: block;
-    }
-
-    .tooltip {
-      display: none;
-      position: absolute;
-      background: #333;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 4px;
-      white-space: nowrap;
-      font-size: 0.8em;
-      z-index: 10;
-    }
-
-    .leyenda-mapa {
-      margin-top: 10px;
-      display: flex;
-      gap: 20px;
-    }
-
-    .leyenda-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .punto-leyenda {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-
-    .punto-leyenda.conectada {
-      background: #22c55e;
-    }
-
-    .punto-leyenda.desconectada {
-      background: #ef4444;
-    }
-
-    .contenedor-mapa {
-      margin-top: 20px;
+      .inventario-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
     }
   `]
 })
 export class PanelTecnicoComponent implements OnInit {
-  private http = inject(HttpClient);
+  protected pendientes = signal<Publicacion[]>([]);
+  protected pantallasConectadas = signal<Pantalla[]>([]);
+  protected pestanaActiva = signal<string>('revision');
+  protected municipios: any[] = [];
 
-  pestanaActiva = signal<string>('revision');
-  pendientes = signal<Publicacion[]>([]);
-  pantallasConectadas = signal<Pantalla[]>([]);
-
-  municipios = [
-    { nombre: 'Armenia', puntos: [
-      { id: 1, nombre: 'CC Premium', x: 30, y: 20, estado: 'CONECTADA' },
-      { id: 2, nombre: 'Centro Comercial', x: 50, y: 40, estado: 'CONECTADA' },
-      { id: 3, nombre: 'Plaza Principal', x: 70, y: 60, estado: 'DESCONECTADA' }
-    ]},
-    { nombre: 'Pereira', puntos: [
-      { id: 4, nombre: 'CC Primavera', x: 25, y: 70, estado: 'CONECTADA' },
-      { id: 5, nombre: 'Paseo Peatonal', x: 60, y: 75, estado: 'CONECTADA' }
-    ]},
-    { nombre: 'Manizales', puntos: [
-      { id: 6, nombre: 'Centro', x: 75, y: 25, estado: 'CONECTADA' }
-    ]}
-  ];
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.cargarPublicacionesPendientes();
-    this.cargarPantallas();
+    this.cargarPantallasConectadas();
   }
 
-  cambiarPestana(pestana: string) {
+  protected cambiarPestana(pestana: string): void {
     this.pestanaActiva.set(pestana);
   }
 
-  cargarPublicacionesPendientes() {
-    // Datos estáticos mientras el backend se implementa
-    this.pendientes.set([]);
-  }
-
-  cargarPantallas() {
-    // Simulación de pantallas
-    this.pantallasConectadas.set([
-      { id: 1, nombre: 'Raspberry Pi #1', ubicacion: 'CC Premium', estado: 'CONECTADA', ultimaActualizacion: 'hace 2 min' },
-      { id: 2, nombre: 'Raspberry Pi #2', ubicacion: 'Centro Comercial', estado: 'CONECTADA', ultimaActualizacion: 'hace 5 min' },
-      { id: 3, nombre: 'Raspberry Pi #3', ubicacion: 'Plaza Principal', estado: 'DESCONECTADA', ultimaActualizacion: 'hace 30 min' }
+  private cargarPublicacionesPendientes(): void {
+    // Datos simulados
+    this.pendientes.set([
+      {
+        id: 1,
+        titulo: 'Publicación de prueba 1',
+        descripcion: 'Descripción de la publicación pendiente',
+        imagenUrl: 'https://via.placeholder.com/300x200?text=Publicacion+1',
+        estado: 'PENDIENTE',
+        usuarioNombre: 'Juan Pérez',
+        ubicacion: 'Centro Comercial Norte',
+        precioCOP: 50000,
+        fechaCreacion: '2024-02-15'
+      }
     ]);
   }
 
-  aprobarPublicacion(id: number) {
-    // TODO: Implementar cuando backend esté listo
-    alert('✅ Publicación aprobada (demo)');
+  private cargarPantallasConectadas(): void {
+    // Datos simulados
+    this.pantallasConectadas.set([
+      {
+        id: 1,
+        nombre: 'Pantalla Centro',
+        ubicacion: 'Centro Comercial',
+        estado: 'CONECTADA',
+        ultimaActualizacion: '2024-02-15 10:30'
+      },
+      {
+        id: 2,
+        nombre: 'Pantalla Terminal',
+        ubicacion: 'Terminal de Transporte',
+        estado: 'CONECTADA',
+        ultimaActualizacion: '2024-02-15 10:25'
+      }
+    ]);
   }
 
-  rechazarPublicacion(id: number) {
-    // TODO: Implementar cuando backend esté listo
-    alert('❌ Publicación rechazada (demo)');
+  protected aprobarPublicacion(publicacionId: number): void {
+    alert('✅ Publicación ' + publicacionId + ' aprobada');
   }
 
-  imprimirReporte() {
-    window.print();
+  protected rechazarPublicacion(publicacionId: number): void {
+    alert('❌ Publicación ' + publicacionId + ' rechazada');
   }
 }
