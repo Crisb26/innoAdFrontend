@@ -185,11 +185,11 @@ public class ServicioAutenticacion {
      */
     @Transactional
     public RespuestaAutenticacion autenticar(SolicitudLogin solicitud) {
-        // Buscar usuario por nombre de usuario o email
-        Usuario usuario = repositorioUsuario.findByNombreUsuario(solicitud.getNombreUsuarioOEmail())
+        // Buscar usuario por nombre de usuario (case-insensitive) o email
+        Usuario usuario = repositorioUsuario.findByNombreUsuarioCaseInsensitive(solicitud.getNombreUsuarioOEmail())
                 .or(() -> repositorioUsuario.findByEmail(solicitud.getNombreUsuarioOEmail()))
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        
+
         // Verificar si la cuenta está bloqueada
         if (!usuario.isAccountNonLocked()) {
             throw new RuntimeException("Cuenta bloqueada por múltiples intentos fallidos. Intenta más tarde.");
@@ -297,8 +297,8 @@ public class ServicioAutenticacion {
      */
     @Transactional
     public RespuestaAPI<RespuestaLogin> autenticarV1(SolicitudLogin solicitud) {
-        // Reutilizar lógica existente
-        Usuario usuario = repositorioUsuario.findByNombreUsuario(solicitud.getNombreUsuarioOEmail())
+        // Buscar usuario por nombre (case-insensitive) o email
+        Usuario usuario = repositorioUsuario.findByNombreUsuarioCaseInsensitive(solicitud.getNombreUsuarioOEmail())
                 .or(() -> repositorioUsuario.findByEmail(solicitud.getNombreUsuarioOEmail()))
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 

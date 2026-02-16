@@ -19,9 +19,15 @@ import java.util.Optional;
 public interface RepositorioUsuario extends JpaRepository<Usuario, Long> {
     
     /**
-     * Busca un usuario por su nombre de usuario
+     * Busca un usuario por su nombre de usuario (case-insensitive)
      */
     Optional<Usuario> findByNombreUsuario(String nombreUsuario);
+
+    /**
+     * Busca un usuario por su nombre de usuario sin importar mayúsculas/minúsculas
+     */
+    @Query("SELECT u FROM Usuario u WHERE LOWER(u.nombreUsuario) = LOWER(:nombreUsuario)")
+    Optional<Usuario> findByNombreUsuarioCaseInsensitive(@Param("nombreUsuario") String nombreUsuario);
     
     /**
      * Busca un usuario por su email
