@@ -95,8 +95,8 @@ public class PagoService {
             case "daviplata":
                 procesarNequi(pago);
                 break;
-            case "contra":
-                procesarContraEntrega(pago);
+            case "codigo":
+                procesarCodigoPago(pago);
                 break;
             default:
                 throw new RuntimeException("Método de pago no soportado");
@@ -134,10 +134,12 @@ public class PagoService {
     }
 
     /**
-     * Registrar pago contra entrega
+     * Procesar pago con código (a ser verificado en punto de venta)
      */
-    private void procesarContraEntrega(Pago pago) throws Exception {
-        log.info("Pago registrado como contra entrega: referencia={}", pago.getReferencia());
+    private void procesarCodigoPago(Pago pago) throws Exception {
+        log.info("Pago registrado con código: referencia={}", pago.getReferencia());
+        // El código será verificado en el punto de pago
+        // Por ahora se marca como PENDIENTE_VERIFICACION
         pago.setEstado(Pago.EstadoPago.PENDIENTE);
     }
 
