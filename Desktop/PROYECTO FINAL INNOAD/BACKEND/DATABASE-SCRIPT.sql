@@ -652,19 +652,19 @@ CREATE TABLE IF NOT EXISTS items_factura (
 
 CREATE TABLE IF NOT EXISTS pagos (
     id BIGSERIAL PRIMARY KEY,
-    factura_id BIGINT NOT NULL,
-    monto DECIMAL(15,2) NOT NULL,
-    moneda VARCHAR(10) DEFAULT 'USD',
-    metodo VARCHAR(50) NOT NULL,
+    usuario_id BIGINT NOT NULL,
+    monto_cop DECIMAL(15,2) NOT NULL,
+    estado VARCHAR(20) NOT NULL DEFAULT 'PENDIENTE',
+    metodo_pago VARCHAR(50),
     referencia VARCHAR(100),
-    estado VARCHAR(20) DEFAULT 'completado',
-    fecha_pago TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    notas TEXT,
-    procesado_por BIGINT,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (factura_id) REFERENCES facturas(id) ON DELETE CASCADE,
-    FOREIGN KEY (procesado_por) REFERENCES usuarios(id) ON DELETE SET NULL
+    fecha_procesamiento TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
+
+CREATE INDEX IF NOT EXISTS idx_pagos_usuario ON pagos(usuario_id);
+CREATE INDEX IF NOT EXISTS idx_pagos_estado ON pagos(estado);
+CREATE INDEX IF NOT EXISTS idx_pagos_fecha ON pagos(fecha_creacion DESC);
 
 CREATE TABLE IF NOT EXISTS alertas (
     id BIGSERIAL PRIMARY KEY,
@@ -1193,6 +1193,29 @@ ARRAY['nombre_completo', 'campana_nombre'], 'campanas'),
 '<h1>Factura #{{numero_factura}}</h1><p>Se ha generado una nueva factura por un total de {{total}} {{moneda}}.</p>', 
 ARRAY['numero_factura', 'total', 'moneda'], 'facturas')
 ON CONFLICT (codigo) DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS carrito_items (
+    id BIGSERIAL PRIMARY KEY,
+    usuario_id BIGINT NOT NULL,
+    publicacion_id BIGINT NOT NULL,
+    cantidad INTEGER NOT NULL DEFAULT 1,
+    precio_unitario_cop DECIMAL(15,2) NOT NULL,
+    fecha_agregado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(usuario_id, publicacion_id),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (publicacion_id) REFERENCES publicaciones(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_carrito_usuario ON carrito_items(usuario_id);
+CREATE INDEX IF NOT EXISTS idx_carrito_publicacion ON carrito_items(publicacion_id);
+
+-- Actualizar tabla pagos si necesario (la estructura existente debería ser compatible)
+-- Si es necesario agregar campos específicos, ejecutar:
+-- ALTER TABLE pagos ADD COLUMN IF NOT EXISTS usuario_id BIGINT;
+-- ALTER TABLE pagos ADD COLUMN IF NOT EXISTS montoCOP DECIMAL(15,2);
+-- ALTER TABLE pagos ADD COLUMN IF NOT EXISTS metodoPago VARCHAR(50);
+-- ALTER TABLE pagos ADD COLUMN IF NOT EXISTS estado VARCHAR(20);
+-- ALTER TABLE pagos ADD COLUMN IF NOT EXISTS fechaProcesamiento TIMESTAMP;
 
 INSERT INTO plantillas_notificacion (codigo, titulo, contenido, tipo, categoria, variables) VALUES
 ('campana_creada', 'Nueva Campaña', 'Se creó la campaña "{{campana_nombre}}"', 'info', 'campanas', ARRAY['campana_nombre']),
