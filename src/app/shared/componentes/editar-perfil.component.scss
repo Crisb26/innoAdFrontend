@@ -33,31 +33,6 @@
   animation: slideUp 0.3s ease;
 }
 
-.modal-body {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 0.5rem;
-  
-  /* Scrollbar personalizado */
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: rgba(0, 212, 255, 0.05);
-    border-radius: 10px;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: rgba(0, 212, 255, 0.3);
-    border-radius: 10px;
-    
-    &:hover {
-      background: rgba(0, 212, 255, 0.5);
-    }
-  }
-}
 
 @keyframes slideUp {
   from {
@@ -115,7 +90,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   flex: 1;
-  max-height: calc(94vh - 150px);
+  min-height: 0;
 
   &::-webkit-scrollbar {
     width: 10px;

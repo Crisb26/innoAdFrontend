@@ -5,11 +5,12 @@ import { filter } from 'rxjs/operators';
 import { AyudaService } from '@core/servicios/ayuda.servicio';
 import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
 import { EditarPerfilComponent } from './editar-perfil.component';
+import { ToggleTemaComponent } from './toggle-tema.component';
 
 @Component({
   selector: 'app-navegacion-autenticada',
   standalone: true,
-  imports: [CommonModule, RouterLink, EditarPerfilComponent],
+  imports: [CommonModule, RouterLink, EditarPerfilComponent, ToggleTemaComponent],
   styleUrls: ['./navegacion-autenticada.component.scss'],
   template: `
     <nav class="navbar-innoad">
@@ -73,7 +74,8 @@ import { EditarPerfilComponent } from './editar-perfil.component';
           }
         </div>
 
-        
+        <!-- Toggle Tema -->
+        <app-toggle-tema></app-toggle-tema>
 
         <!-- Menu de Usuario -->
         <div class="user-menu" [class.open]="menuAbierto()" (click)="toggleMenu()">

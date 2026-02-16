@@ -57,8 +57,11 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           '/api/dispositivos',
           '/api/ubicaciones/ciudades',
           '/api/admin/monitoreo',
+          '/api/v1/publicaciones/pendientes-revision',
+          '/api/publicaciones',
           'tutorial',
-          'health-check'
+          'health-check',
+          'assets'
         ];
 
         const esEndpointOpcional = endpointsOpcionalesOAntiguos.some(ep => req.url.includes(ep));
