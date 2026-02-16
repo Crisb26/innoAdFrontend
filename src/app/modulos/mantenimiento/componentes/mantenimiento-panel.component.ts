@@ -14,7 +14,7 @@ import { TipoAlerta, EstadoAlerta } from '@modulos/mantenimiento/modelos/manteni
       <!-- Header -->
       <div class="header-mantenimiento">
         <div class="titulo-seccion">
-          <h1>🔧 Panel de Mantenimiento</h1>
+          <h1>[]� Panel de Mantenimiento</h1>
           <p>Gestiona alertas, dispositivos y estado del sistema</p>
         </div>
 
@@ -58,7 +58,7 @@ import { TipoAlerta, EstadoAlerta } from '@modulos/mantenimiento/modelos/manteni
 
       <!-- Sección de Alertas Activas -->
       <div class="seccion-alertas">
-        <h2>⚠️ Alertas Activas</h2>
+        <h2>[][] Alertas Activas</h2>
         
         @if (cargando()) {
           <div class="loader">Cargando alertas...</div>
@@ -84,7 +84,7 @@ import { TipoAlerta, EstadoAlerta } from '@modulos/mantenimiento/modelos/manteni
                     ✓ Resolver
                   </button>
                   <button (click)="verDetalles(alerta)" class="btn-detalles">
-                    🔍 Detalles
+                    []� Detalles
                   </button>
                 </div>
               </div>
@@ -96,7 +96,7 @@ import { TipoAlerta, EstadoAlerta } from '@modulos/mantenimiento/modelos/manteni
       <!-- Sección Rápida de Dispositivos -->
       <div class="seccion-dispositivos">
         <div class="header-seccion">
-          <h2>📡 Dispositivos Conectados</h2>
+          <h2>[]� Dispositivos Conectados</h2>
           <a routerLink="/mantenimiento/raspberrypi" class="btn-ver-todos">
             Ver Todo →
           </a>
@@ -118,7 +118,7 @@ import { TipoAlerta, EstadoAlerta } from '@modulos/mantenimiento/modelos/manteni
                 </div>
                 <h3>{{ dispositivo.nombre }}</h3>
                 <p class="ip">{{ dispositivo.ipAddress }}:{{ dispositivo.puerto }}</p>
-                <p class="ubicacion">📍 {{ dispositivo.ubicacion }}</p>
+                <p class="ubicacion">[]� {{ dispositivo.ubicacion }}</p>
                 <div class="fecha-actividad">
                   Última actividad: {{ dispositivo.ultimaActividad | date: 'short' }}
                 </div>
@@ -131,7 +131,7 @@ import { TipoAlerta, EstadoAlerta } from '@modulos/mantenimiento/modelos/manteni
       <!-- Sección de Salud del Sistema -->
       @if (estadoSistema()) {
         <div class="seccion-salud">
-          <h2>📊 Estado del Sistema</h2>
+          <h2>[]� Estado del Sistema</h2>
           <div class="metricas-sistema">
             <div class="metrica">
               <label>CPU</label>
@@ -160,10 +160,10 @@ import { TipoAlerta, EstadoAlerta } from '@modulos/mantenimiento/modelos/manteni
 
       <!-- Links de Navegación -->
       <div class="navegacion-mantenimiento">
-        <a routerLink="/mantenimiento/configuracion" class="btn-nav">⚙️ Configuración</a>
-        <a routerLink="/mantenimiento/alertas" class="btn-nav">🔔 Centro de Alertas</a>
-        <a routerLink="/mantenimiento/raspberrypi" class="btn-nav">🍓 Gestión Raspberry</a>
-        <a routerLink="/mantenimiento/historial" class="btn-nav">📜 Historial</a>
+        <a routerLink="/mantenimiento/configuracion" class="btn-nav">⚙[] Configuración</a>
+        <a routerLink="/mantenimiento/alertas" class="btn-nav">[]� Centro de Alertas</a>
+        <a routerLink="/mantenimiento/raspberrypi" class="btn-nav">[]� Gestión Raspberry</a>
+        <a routerLink="/mantenimiento/historial" class="btn-nav">[]� Historial</a>
       </div>
     </div>
   `,

@@ -13,7 +13,7 @@ import NotifyX from 'notifyx';
   template: `
     <div class="raspberrypi-container">
       <div class="header">
-        <h1>🍓 Gestión de Raspberry Pi</h1>
+        <h1>[]� Gestión de Raspberry Pi</h1>
         <button (click)="abrirFormularioNuevo()" class="btn-agregar">+ Agregar Dispositivo</button>
       </div>
 
@@ -53,7 +53,7 @@ import NotifyX from 'notifyx';
             </div>
 
             <div class="form-actions">
-              <button type="submit" class="btn-guardar">💾 Guardar</button>
+              <button type="submit" class="btn-guardar">[]� Guardar</button>
               <button type="button" (click)="cerrarFormulario()" class="btn-cancelar">✕ Cancelar</button>
             </div>
           </form>
@@ -94,8 +94,8 @@ import NotifyX from 'notifyx';
               }
 
               <div class="acciones">
-                <button (click)="editarDispositivo(dispositivo)" class="btn-editar">✏️ Editar</button>
-                <button (click)="eliminarDispositivo(dispositivo.id)" class="btn-eliminar">🗑️ Eliminar</button>
+                <button (click)="editarDispositivo(dispositivo)" class="btn-editar">✏[] Editar</button>
+                <button (click)="eliminarDispositivo(dispositivo.id)" class="btn-eliminar">[]�[] Eliminar</button>
               </div>
             </div>
           }

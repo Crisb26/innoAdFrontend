@@ -15,12 +15,12 @@ import NotifyX from 'notifyx';
       <!-- Header -->
       <div class="header-section">
         <div class="titulo-seccion">
-          <h2>👥 Gestión de Usuarios</h2>
+          <h2>[]� Gestión de Usuarios</h2>
           <p>Administra todos los usuarios del sistema</p>
         </div>
         <div class="acciones-header">
           <button class="btn-futurista" (click)="refrescarDatos()">
-            <span class="icono">🔄</span>
+            <span class="icono">[]�</span>
             Actualizar
           </button>
         </div>
@@ -69,7 +69,7 @@ import NotifyX from 'notifyx';
               placeholder="Buscar usuarios por nombre, email o usuario..."
               class="input-busqueda"
             >
-            <span class="icono-busqueda">🔍</span>
+            <span class="icono-busqueda">[]�</span>
           </div>
           <div class="filtros-adicionales">
             <select [(ngModel)]="filtroRol" (change)="aplicarFiltros()" class="select-futurista">
@@ -99,7 +99,7 @@ import NotifyX from 'notifyx';
           </div>
         } @else if (usuariosFiltrados().length === 0) {
           <div class="empty-state">
-            <div class="empty-icon">👥</div>
+            <div class="empty-icon">[]�</div>
             <h3>No se encontraron usuarios</h3>
             <p>Intenta ajustar los filtros de búsqueda</p>
           </div>
@@ -256,7 +256,7 @@ import NotifyX from 'notifyx';
         <div class="modal-overlay" (click)="cerrarModalEliminar()">
           <div class="modal-contenido modal-peligro" (click)="$event.stopPropagation()">
             <div class="modal-header">
-              <h3>⚠️ Confirmar Eliminación</h3>
+              <h3>[][] Confirmar Eliminación</h3>
               <button class="btn-cerrar" (click)="cerrarModalEliminar()">✕</button>
             </div>
             <div class="modal-body">

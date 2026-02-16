@@ -41,7 +41,7 @@ interface InfoMantenimiento {
         <div class="badge-tipo" [class]="'badge-' + info.tipoMantenimiento.toLowerCase()">
           <span class="icono">
             {{ info.tipoMantenimiento === 'EMERGENCIA' ? '⚡' : 
-               info.tipoMantenimiento === 'CRITICA' ? '⚠️' : '🔧' }}
+               info.tipoMantenimiento === 'CRITICA' ? '[][]' : '[]�' }}
           </span>
           <span class="texto">{{ info.tipoMantenimiento }}</span>
         </div>
@@ -107,7 +107,7 @@ interface InfoMantenimiento {
         <div class="seccion-soporte">
           <div class="titulo-soporte">¿Necesitas ayuda?</div>
           <a [href]="'mailto:' + info.urlContacto" class="enlace-soporte">
-            📧 {{ info.urlContacto }}
+            []� {{ info.urlContacto }}
           </a>
           <div class="soporte-disponible">Disponible 24/7</div>
         </div>

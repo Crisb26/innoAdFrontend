@@ -1,5 +1,5 @@
 /**
- * 🎨 SERVICIO DE UTILIDADES DE ESTILO
+ * []� SERVICIO DE UTILIDADES DE ESTILO
  * Proporciona métodos para aplicar estilos dinámicamente
  */
 

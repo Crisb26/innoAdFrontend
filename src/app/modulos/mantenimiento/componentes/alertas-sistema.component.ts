@@ -10,7 +10,7 @@ import { Alerta, EstadoAlerta } from '@modulos/mantenimiento/modelos/mantenimien
   imports: [CommonModule, RouterModule],
   template: `
     <div class="alertas-container">
-      <h1>ðŸ”” Centro de Alertas</h1>
+      <h1>[]” Centro de Alertas</h1>
 
       <div class="filtros">
         <button 
@@ -48,7 +48,7 @@ import { Alerta, EstadoAlerta } from '@modulos/mantenimiento/modelos/mantenimien
               </div>
               <p class="descripcion">{{ alerta.descripcion }}</p>
               <div class="alerta-footer">
-                <span class="origen">ðŸ”— {{ alerta.origen }}</span>
+                <span class="origen">[]— {{ alerta.origen }}</span>
                 <span class="estado" [class]="alerta.estado.toLowerCase()">{{ alerta.estado }}</span>
               </div>
             </div>

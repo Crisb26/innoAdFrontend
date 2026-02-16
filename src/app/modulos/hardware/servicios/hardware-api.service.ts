@@ -1,5 +1,5 @@
 /**
- * ðŸ”Œ SERVICIO HARDWARE API - CONTROL DE RASPBERRY PI
+ * []Œ SERVICIO HARDWARE API - CONTROL DE RASPBERRY PI
  * Endpoints para gestionar dispositivos IoT y contenido remoto
  */
 

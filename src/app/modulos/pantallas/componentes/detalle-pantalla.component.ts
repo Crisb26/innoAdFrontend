@@ -30,7 +30,7 @@ import { CommonModule } from '@angular/common';
               </div>
               <div class="info-item">
                 <span class="label">Orientación</span>
-                <span class="valor orientacion-horizontal">📺 Horizontal</span>
+                <span class="valor orientacion-horizontal">[]� Horizontal</span>
               </div>
               <div class="info-item">
                 <span class="label">Tipo de Pantalla</span>
