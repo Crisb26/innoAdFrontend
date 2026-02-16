@@ -330,9 +330,10 @@ public class ServicioAutenticacion {
         var refreshToken = servicioJWT.generarTokenRefresh(usuario);
 
         var rolNombre = switch (usuario.getRol()) {
-            case ADMIN -> "Administrador";
-            case TECNICO -> "Técnico";
-            case USUARIO -> "Usuario";
+            case ADMIN -> "ADMIN";
+            case TECNICO -> "TECNICO";
+            case USUARIO -> "USUARIO";
+            default -> "USUARIO";
         };
 
         var usuarioLogin = RespuestaLogin.UsuarioLogin.builder()
@@ -378,9 +379,10 @@ public class ServicioAutenticacion {
         var nuevoAccessToken = servicioJWT.generarToken(usuario);
 
         var rolNombre = switch (usuario.getRol()) {
-            case ADMIN -> "Administrador";
-            case TECNICO -> "Técnico";
-            case USUARIO -> "Usuario";
+            case ADMIN -> "ADMIN";
+            case TECNICO -> "TECNICO";
+            case USUARIO -> "USUARIO";
+            default -> "USUARIO";
         };
 
         var usuarioLogin = RespuestaLogin.UsuarioLogin.builder()
@@ -445,14 +447,15 @@ public class ServicioAutenticacion {
         
         // Guardar cambios
         usuario = repositorioUsuario.save(usuario);
-        
+
         // Construir respuesta
         var rolNombre = switch (usuario.getRol()) {
-            case ADMIN -> "Administrador";
-            case TECNICO -> "Técnico";
-            case USUARIO -> "Usuario";
+            case ADMIN -> "ADMIN";
+            case TECNICO -> "TECNICO";
+            case USUARIO -> "USUARIO";
+            default -> "USUARIO";
         };
-        
+
         return RespuestaLogin.UsuarioLogin.builder()
                 .id(usuario.getId())
                 .nombreUsuario(usuario.getNombreUsuario())
