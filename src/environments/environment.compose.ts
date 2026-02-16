@@ -15,19 +15,19 @@ export const environment = {
     
     // Microservicios (todos a través de Nginx reverse proxy)
     services: {
-      auth: '/api/auth',
-      users: '/api/users',
-      campaigns: '/api/campaigns',
-      contents: '/api/contents',
-      screens: '/api/screens',
-      analytics: '/api/analytics',
-      notifications: '/api/notifications',
-      system: '/api/system'
+      auth: '/api/v1/auth',
+      users: '/api/v1/users',
+      campaigns: '/api/v1/campaigns',
+      contents: '/api/v1/contents',
+      screens: '/api/v1/screens',
+      analytics: '/api/v1/analytics',
+      notifications: '/api/v1/notifications',
+      system: '/api/v1/system'
     },
-    
+
     // URLs legacy
     baseUrl: '/api',
-    authUrl: '/api/auth',
+    authUrl: '/api/v1/auth',
     uploadUrl: '/api/upload',
     wsUrl: '/ws',
     
@@ -47,13 +47,26 @@ export const environment = {
   urlApi: '/api',
   urlWebSocket: '/ws',
 
-  // ===== CONFIGURACIÓN DE AUTENTICACIÓN OFFLINE (Compose / local deploy)
+  // ===== CONFIGURACIÓN DE AUTENTICACIÓN =====
+  auth: {
+    tokenExpiration: 8 * 60 * 60 * 1000, // 8 horas
+    refreshTokenExpiration: 7 * 24 * 60 * 60 * 1000, // 7 días
+    sessionWarningTime: 10 * 60 * 1000, // 10 minutos antes de expirar
+    autoLogoutOnExpiry: true,
+    refreshTokenOnActivity: true,
+    maxLoginAttempts: 5,
+    lockoutDuration: 15 * 60 * 1000, // 15 minutos
+    maxConcurrentSessions: 3,
+    kickOtherSessions: false,
+    trackDeviceFingerprint: true,
+    twoFactorEnabled: false,
+    backupCodesEnabled: false
+  },
+
+  // ===== CONFIGURACIÓN DE AUTENTICACIÓN OFFLINE (DESHABILITADO - Usar solo backend)
   offlineAuth: {
-    enabled: true,
-    users: [
-      { nombreUsuario: 'admin', email: 'admin@local', contrasena: 'admin123', rol: 'Administrador', nombreCompleto: 'Administrador Local' },
-      { nombreUsuario: 'usuario', email: 'user@local', contrasena: 'user123', rol: 'Usuario', nombreCompleto: 'Usuario Local' }
-    ]
+    enabled: false,
+    users: [] // Solo usar backend real
   },
 
   // Resto de opciones tal cual prod

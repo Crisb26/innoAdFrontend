@@ -14,19 +14,19 @@ export const environment = {
     // Microservicios individuales (para futura migración)
     // Mientras tanto, todas apuntan al gateway
     services: {
-      auth: 'http://localhost:8080/api/auth',
-      users: 'http://localhost:8080/api/users',
-      campaigns: 'http://localhost:8080/api/campaigns',
-      contents: 'http://localhost:8080/api/contents',
-      screens: 'http://localhost:8080/api/screens',
-      analytics: 'http://localhost:8080/api/analytics',
-      notifications: 'http://localhost:8080/api/notifications',
-      system: 'http://localhost:8080/api/system'
+      auth: 'http://localhost:8080/api/v1/auth',
+      users: 'http://localhost:8080/api/v1/users',
+      campaigns: 'http://localhost:8080/api/v1/campaigns',
+      contents: 'http://localhost:8080/api/v1/contents',
+      screens: 'http://localhost:8080/api/v1/screens',
+      analytics: 'http://localhost:8080/api/v1/analytics',
+      notifications: 'http://localhost:8080/api/v1/notifications',
+      system: 'http://localhost:8080/api/v1/system'
     },
-    
+
     // URLs específicas
     baseUrl: 'http://localhost:8080/api',
-    authUrl: 'http://localhost:8080/api/auth',
+    authUrl: 'http://localhost:8080/api/v1/auth',
     uploadUrl: 'http://localhost:8080/api/upload',
     wsUrl: 'ws://localhost:8080/ws',
     
@@ -65,14 +65,10 @@ export const environment = {
     twoFactorEnabled: false,
     backupCodesEnabled: false
   },
-  // ===== CONFIGURACIÓN DE AUTENTICACIÓN OFFLINE (Útil para desarrollo local)
+  // ===== CONFIGURACIÓN DE AUTENTICACIÓN OFFLINE (DESHABILITADO - Usar solo backend)
   offlineAuth: {
-    enabled: true,
-    // Usuarios por defecto para poder entrar sin backend
-    users: [
-      { nombreUsuario: 'admin', email: 'admin@local', contrasena: 'admin123', rol: 'Administrador', nombreCompleto: 'Administrador Local' },
-      { nombreUsuario: 'usuario', email: 'user@local', contrasena: 'user123', rol: 'Usuario', nombreCompleto: 'Usuario Local' }
-    ]
+    enabled: false,
+    users: [] // Solo usar backend real
   },
   
   // ===== CONFIGURACIÓN DE CACHE =====
