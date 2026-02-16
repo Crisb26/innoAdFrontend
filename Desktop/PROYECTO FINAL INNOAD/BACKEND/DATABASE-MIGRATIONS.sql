@@ -154,7 +154,62 @@ ADD COLUMN IF NOT EXISTS rol VARCHAR(20) NOT NULL DEFAULT 'USUARIO';
 ALTER TABLE usuarios
 ADD COLUMN IF NOT EXISTS activo BOOLEAN NOT NULL DEFAULT TRUE;
 
--- 12. CREAR ÍNDICES PARA CONSULTAS FRECUENTES
+-- 12. TABLA DE PUBLICACIONES (para usuario upload de imágenes)
+CREATE TABLE IF NOT EXISTS publicaciones (
+    id BIGSERIAL PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    imagen_url VARCHAR(500) NOT NULL,
+    estado VARCHAR(50) NOT NULL DEFAULT 'PENDIENTE_REVISION',
+    formato VARCHAR(20) NOT NULL DEFAULT 'HORIZONTAL',
+    usuario_id BIGINT NOT NULL,
+    ubicacion VARCHAR(255),
+    precio_cop DECIMAL(10, 2),
+    fecha_inicio TIMESTAMP,
+    fecha_fin TIMESTAMP,
+    fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_publicaciones_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_publicaciones_usuario ON publicaciones(usuario_id);
+CREATE INDEX IF NOT EXISTS idx_publicaciones_estado ON publicaciones(estado);
+CREATE INDEX IF NOT EXISTS idx_publicaciones_ubicacion ON publicaciones(ubicacion);
+CREATE INDEX IF NOT EXISTS idx_publicaciones_fecha ON publicaciones(fecha_creacion DESC);
+
+-- 13. TABLA DE PAGOS/ÓRDENES
+CREATE TABLE IF NOT EXISTS pagos (
+    id BIGSERIAL PRIMARY KEY,
+    usuario_id BIGINT NOT NULL,
+    monto_cop DECIMAL(10, 2) NOT NULL,
+    estado VARCHAR(50) NOT NULL DEFAULT 'PENDIENTE',
+    metodo_pago VARCHAR(50),
+    referencia VARCHAR(255),
+    fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fecha_procesamiento TIMESTAMP,
+    CONSTRAINT fk_pagos_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_pagos_usuario ON pagos(usuario_id);
+CREATE INDEX IF NOT EXISTS idx_pagos_estado ON pagos(estado);
+CREATE INDEX IF NOT EXISTS idx_pagos_fecha ON pagos(fecha_creacion DESC);
+
+-- 14. TABLA DE ITEMS DEL CARRITO
+CREATE TABLE IF NOT EXISTS carrito_items (
+    id BIGSERIAL PRIMARY KEY,
+    usuario_id BIGINT NOT NULL,
+    publicacion_id BIGINT NOT NULL,
+    cantidad INTEGER NOT NULL DEFAULT 1,
+    precio_unitario_cop DECIMAL(10, 2) NOT NULL,
+    fecha_agregado TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_carrito_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    CONSTRAINT fk_carrito_publicacion FOREIGN KEY (publicacion_id) REFERENCES publicaciones(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_carrito_usuario ON carrito_items(usuario_id);
+CREATE INDEX IF NOT EXISTS idx_carrito_publicacion ON carrito_items(publicacion_id);
+
+-- 15. CREAR ÍNDICES PARA CONSULTAS FRECUENTES
 CREATE INDEX IF NOT EXISTS idx_usuarios_email ON usuarios(email);
 CREATE INDEX IF NOT EXISTS idx_usuarios_nombre_usuario ON usuarios(nombre_usuario);
 CREATE INDEX IF NOT EXISTS idx_usuarios_rol ON usuarios(rol);
