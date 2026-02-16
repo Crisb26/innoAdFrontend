@@ -80,6 +80,30 @@
   --sombra-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   --sombra-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   --sombra-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* Variables para Theme Toggle - Modo Claro por defecto */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --border-color: #e0e0e0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Modo Oscuro */
+:root.dark-mode {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --border-color: #404040;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+
+  /* Sobrescribir colores principales para dark mode */
+  --fondo-oscuro: #0a0e27;
+  --fondo-medio: #1a1f3a;
+  --color-texto: #f0f0f0;
+  --color-texto-claro: #e8e8e8;
 }
 
 /* Reset y Base */
