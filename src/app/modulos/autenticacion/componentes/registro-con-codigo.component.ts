@@ -518,7 +518,6 @@ export class RegistroConCodigoComponent {
         this.emailAlmacenado = email;
         this.pasoActual.set(2);
         this.tiempoRestante.set(900); // Reset timer
-        this.iniciarContador();
         NotifyX.success('✅ Código enviado a tu correo. Revisa tu bandeja de entrada.', {
           duration: 4000,
           dismissible: true
