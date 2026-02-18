@@ -208,22 +208,22 @@ export class NavegacionAutenticadaComponent implements OnInit {
   protected tieneAccesoCampanas(): boolean {
     const usuario = this.servicioAuth.usuarioActual();
     const rol = usuario?.rol?.nombre?.toUpperCase() || '';
-    // ADMIN, TECNICO, USUARIO pueden acceder
-    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
+    // ADMINISTRADOR, TECNICO, USUARIO pueden acceder
+    return ['ADMINISTRADOR', 'TECNICO', 'USUARIO'].includes(rol);
   }
 
   protected tieneAccesoPantallas(): boolean {
     const usuario = this.servicioAuth.usuarioActual();
     const rol = usuario?.rol?.nombre?.toUpperCase() || '';
-    // ADMIN, TECNICO, USUARIO pueden acceder (USUARIO solo ve sus pantallas)
-    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
+    // ADMINISTRADOR, TECNICO, USUARIO pueden acceder (USUARIO solo ve sus pantallas)
+    return ['ADMINISTRADOR', 'TECNICO', 'USUARIO'].includes(rol);
   }
 
   protected tieneAccesoContenidos(): boolean {
     const usuario = this.servicioAuth.usuarioActual();
     const rol = usuario?.rol?.nombre?.toUpperCase() || '';
-    // ADMIN, TECNICO, USUARIO pueden acceder
-    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
+    // ADMINISTRADOR, TECNICO, USUARIO pueden acceder
+    return ['ADMINISTRADOR', 'TECNICO', 'USUARIO'].includes(rol);
   }
 
   protected tieneAccesoReportes(): boolean {

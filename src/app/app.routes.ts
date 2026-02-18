@@ -30,12 +30,12 @@ export const routes: Routes = [
     loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes)
   },
 
-  // Panel administrativo - ADMIN
+  // Panel administrativo - ADMINISTRADOR
   {
     path: 'admin',
     loadChildren: () => import('./modulos/admin/admin.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMIN'] }
+    data: { roles: ['ADMINISTRADOR'] }
   },
 
   // Panel técnico - TECNICO

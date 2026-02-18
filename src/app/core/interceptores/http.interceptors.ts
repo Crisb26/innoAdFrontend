@@ -82,7 +82,6 @@ export const authInterceptor: HttpInterceptorFn = (
   const publicUrls = [
     '/auth/login',
     '/auth/registrarse',
-    '/auth/register',
     '/auth/refresh',
     '/auth/verificar-email',
     '/auth/recuperar-contrasena',

@@ -124,7 +124,7 @@ export class ServicioEntrenamientoIA {
       const articulosRelacionados = this.mapaPalabrasyArticulos.get(palabra) || [];
 
       articulosRelacionados.forEach((articulo) => {
-        const similitud = this.calcularSimilitud(pregunta, articulo);
+        const similitud = this.calcularSimilitud(pregunta, articulo.contenido);
 
         if (similitud > mejorConfianza) {
           mejorConfianza = similitud;

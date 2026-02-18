@@ -379,9 +379,6 @@ export class AsistenteIAComponent implements OnInit, OnDestroy {
   }
   
   /**
-   * Reutiliza una pregunta del historial
-   */
-  /**
    * Reutiliza una pregunta anterior y la envía nuevamente
    */
   reutilizarPregunta(pregunta: string): void {
@@ -406,7 +403,7 @@ export class AsistenteIAComponent implements OnInit, OnDestroy {
    * Copia una respuesta al portapapeles con feedback visual
    */
   copiarRespuesta(texto: string, event?: Event): void {
-    const boton = (event?.target as HTMLButtonElement);
+    const boton = (event?.currentTarget as HTMLButtonElement);
     
     navigator.clipboard.writeText(texto).then(
       () => {
