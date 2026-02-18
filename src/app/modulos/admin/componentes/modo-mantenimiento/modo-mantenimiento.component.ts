@@ -11,11 +11,11 @@ import { Subject, takeUntil } from 'rxjs';
   template: `
     <div class="mantenimiento-container">
       <div class="mantenimiento-card">
-        <h1>ðŸ”§ Modo Mantenimiento</h1>
+        <h1>[]§ Modo Mantenimiento</h1>
         
         <div class="status-section">
           <div [class.active]="modoActivo" class="status-badge">
-            {{ modoActivo ? 'ðŸ”´ ACTIVO' : 'ðŸŸ¢ INACTIVO' }}
+            {{ modoActivo ? '[]´ ACTIVO' : '[]¢ INACTIVO' }}
           </div>
         </div>
 

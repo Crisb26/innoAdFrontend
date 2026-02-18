@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { ServicioContenidos } from '../../../core/servicios/contenidos.servicio';
 import { Contenido, SolicitudSubirContenido, SolicitudActualizarContenido } from '../../../core/modelos';
 import NotifyX from 'notifyx';
+import { AyudaService } from '../../../core/servicios/ayuda.servicio';
 
 @Component({
   selector: 'app-formulario-contenido',
@@ -160,6 +161,7 @@ import NotifyX from 'notifyx';
 export class FormularioContenidoComponent implements OnInit {
   private readonly servicio = inject(ServicioContenidos);
   private readonly fb = inject(FormBuilder);
+  private readonly ayuda = inject(AyudaService);
 
   @Input() esNuevo: boolean = true;
   @Input() contenido?: Contenido;
@@ -174,6 +176,16 @@ export class FormularioContenidoComponent implements OnInit {
 
   ngOnInit() {
     this.inicializarFormulario();
+    // Mostrar tour específico del formulario de contenido cuando se abra
+    setTimeout(() => {
+      this.ayuda.startTourOnce('contenido_form', [
+        { element: 'input[formcontrolname="nombre"]', intro: 'Nombre del contenido (visible en la biblioteca).', position: 'right' },
+        { element: 'textarea[formcontrolname="descripcion"]', intro: 'Descripción breve del contenido.', position: 'right' },
+        { element: 'select[formcontrolname="tipo"]', intro: 'Selecciona el tipo: imagen, video, texto o HTML.', position: 'left' },
+        { element: '.area-carga', intro: 'Arrastra o selecciona el archivo aquí para subirlo.', position: 'top' },
+        { element: '.acciones-formulario .boton-primario', intro: 'Crear/Actualizar contenido cuando todo esté listo.', position: 'left' }
+      ], { showProgress: true, exitOnOverlayClick: true });
+    }, 200);
   }
 
   private inicializarFormulario() {

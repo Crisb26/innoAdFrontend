@@ -1,5 +1,5 @@
 /**
- * 🤖 COMPONENTE PRINCIPAL - CHAT ASISTENTE IA
+ * []� COMPONENTE PRINCIPAL - CHAT ASISTENTE IA
  * Interfaz conversacional premium con animaciones y efectos
  */
 
@@ -23,7 +23,7 @@ import { takeUntil } from 'rxjs/operators';
       <div class="header-asistente" appTransicion="normal">
         <div class="header-content">
           <h1 appAnimacion="slideInLeft">
-            <span class="icon-ia">🤖</span>
+            <span class="icon-ia">[]�</span>
             InnoAd Assistant
           </h1>
           <p class="subtitle">Tu asistente IA inteligente</p>
@@ -33,13 +33,13 @@ import { takeUntil } from 'rxjs/operators';
             class="btn-info" 
             (click)="toggleSugerencias()"
             appHoverEfecto="lift">
-            💡 Sugerencias
+            []� Sugerencias
           </button>
           <button 
             class="btn-danger" 
             (click)="limpiarChat()"
             appHoverEfecto="lift">
-            🗑️ Limpiar
+            []�[] Limpiar
           </button>
         </div>
       </div>
@@ -49,7 +49,7 @@ import { takeUntil } from 'rxjs/operators';
         <div class="chat-messages">
           <!-- Mensaje vacío inicial -->
           <div *ngIf="historial.length === 0" class="mensaje-vacio" appAnimacion="slideInUp">
-            <div class="icono-vacio">👋</div>
+            <div class="icono-vacio">[]�</div>
             <h2>Bienvenido al Asistente IA</h2>
             <p>Haz preguntas sobre campañas, análisis, pagos y más</p>
           </div>
@@ -72,7 +72,7 @@ import { takeUntil } from 'rxjs/operators';
 
             <!-- Mensaje de IA -->
             <div *ngIf="!mensaje.esUsuario" class="ia-message">
-              <div class="avatar-ia">🤖</div>
+              <div class="avatar-ia">[]�</div>
               <div class="message-content">
                 <div 
                   class="message-bubble ia-bubble"
@@ -120,7 +120,7 @@ import { takeUntil } from 'rxjs/operators';
 
           <!-- Error -->
           <div *ngIf="error" class="alert-error" appAnimacion="slideInDown">
-            <span>❌</span>
+            <span>[]</span>
             {{ error }}
             <button (click)="cerrarError()" class="btn-close">✕</button>
           </div>

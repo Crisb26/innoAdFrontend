@@ -6,28 +6,28 @@ export const environment = {
   version: '2.0.0',
   
   // ===== CONFIGURACIÓN DE API =====
-  // URLs apuntan al backend en Azure Container Apps
+  // URLs apuntan al backend en el SERVIDOR DE CASA (principal)
   api: {
     // Gateway principal (mismo host para todo)
-    gateway: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api',
+    gateway: 'https://azure-pro.tail2a2f73.ts.net/api',
 
     // Microservicios individuales
     services: {
-      auth: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/auth',
-      users: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/users',
-      campaigns: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/campaigns',
-      contents: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/contents',
-      screens: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/screens',
-      analytics: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/analytics',
-      notifications: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/notifications',
-      system: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/system'
+      auth: 'https://azure-pro.tail2a2f73.ts.net/api/v1/auth',
+      users: 'https://azure-pro.tail2a2f73.ts.net/api/v1/users',
+      campaigns: 'https://azure-pro.tail2a2f73.ts.net/api/v1/campaigns',
+      contents: 'https://azure-pro.tail2a2f73.ts.net/api/v1/contents',
+      screens: 'https://azure-pro.tail2a2f73.ts.net/api/v1/screens',
+      analytics: 'https://azure-pro.tail2a2f73.ts.net/api/v1/analytics',
+      notifications: 'https://azure-pro.tail2a2f73.ts.net/api/v1/notifications',
+      system: 'https://azure-pro.tail2a2f73.ts.net/api/v1/system'
     },
 
     // URLs base para producción
-    baseUrl: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api',
-    authUrl: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/auth',
-    uploadUrl: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/upload',
-    wsUrl: 'wss://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/ws',
+    baseUrl: 'https://azure-pro.tail2a2f73.ts.net/api',
+    authUrl: 'https://azure-pro.tail2a2f73.ts.net/api/auth',
+    uploadUrl: 'https://azure-pro.tail2a2f73.ts.net/api/upload',
+    wsUrl: 'wss://azure-pro.tail2a2f73.ts.net/ws',
     
     // Configuración de timeout y reintentos
     timeout: 30000, // 30 segundos
@@ -64,6 +64,11 @@ export const environment = {
     twoFactorEnabled: true,
     backupCodesEnabled: true
   },
+  // Disable offline auth in production by default
+  offlineAuth: {
+    enabled: false,
+    users: []
+  },
   
   // ===== CONFIGURACIÓN DE CACHE =====
   cache: {
@@ -84,7 +89,7 @@ export const environment = {
     level: 'warn', // Solo warnings y errores en producción
     enableConsole: false, // Deshabilitado en producción
     enableRemote: true,
-    remoteEndpoint: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/logs',
+    remoteEndpoint: 'https://azure-pro.tail2a2f73.ts.net/api/logs',
     maxLocalLogs: 500,
     flushInterval: 30000 // 30 segundos
   },
@@ -152,9 +157,9 @@ export const environment = {
     enableUserActivity: true,
     sampleRate: 0.1, // 10% en producción
     endpoints: {
-      performance: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/monitoring/performance',
-      errors: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/monitoring/errors',
-      activity: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api/monitoring/activity'
+      performance: 'https://azure-pro.tail2a2f73.ts.net/api/monitoring/performance',
+      errors: 'https://azure-pro.tail2a2f73.ts.net/api/monitoring/errors',
+      activity: 'https://azure-pro.tail2a2f73.ts.net/api/monitoring/activity'
     }
   },
   
@@ -204,8 +209,8 @@ export const environment = {
   },
   
   // ===== CONFIGURACIÓN LEGACY (MANTENER COMPATIBILIDAD) =====
-  urlApi: 'https://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/api',
-  urlWebSocket: 'wss://innoad-backend.wonderfuldune-d0f51e2f.eastus2.azurecontainerapps.io/ws',
+  urlApi: 'https://azure-pro.tail2a2f73.ts.net/api',
+  urlWebSocket: 'wss://azure-pro.tail2a2f73.ts.net/ws',
   tiempoExpiracionToken: 3600000,
   tiempoActualizacionDatos: 30000,
   paginacionPorDefecto: 10,

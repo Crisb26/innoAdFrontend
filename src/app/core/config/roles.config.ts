@@ -4,9 +4,8 @@
  */
 
 export enum Rol {
-  ADMINISTRADOR = 'ADMINISTRADOR',
+  ADMIN = 'ADMIN',
   TECNICO = 'TECNICO',
-  OPERADOR = 'OPERADOR',
   USUARIO = 'USUARIO'
 }
 
@@ -71,10 +70,10 @@ export enum Permiso {
  * Configuración de permisos por rol
  */
 export const CONFIGURACION_ROLES: Record<Rol, ConfiguracionRol> = {
-  [Rol.ADMINISTRADOR]: {
-    nombre: Rol.ADMINISTRADOR,
+  [Rol.ADMIN]: {
+    nombre: Rol.ADMIN,
     descripcion: 'Control total del sistema. Acceso a todas las funcionalidades.',
-    nivel: 4,
+    nivel: 3,
     permisos: new Set(Object.values(Permiso)),
     rutas: ['/', '/dashboard', '/admin', '/campanas', '/pantallas', '/contenidos', '/reportes', '/pagos', '/asistente-ia', '/chat', '/mantenimiento']
   },
@@ -82,7 +81,7 @@ export const CONFIGURACION_ROLES: Record<Rol, ConfiguracionRol> = {
   [Rol.TECNICO]: {
     nombre: Rol.TECNICO,
     descripcion: 'Gestión técnica de pantallas y contenidos. Monitoreo y control de hardware.',
-    nivel: 3,
+    nivel: 2,
     permisos: new Set([
       // Campañas - lectura
       Permiso.VER_CAMPANA,
@@ -114,34 +113,6 @@ export const CONFIGURACION_ROLES: Record<Rol, ConfiguracionRol> = {
       Permiso.PROGRAMAR_MANTENIMIENTO
     ]),
     rutas: ['/dashboard', '/campanas', '/pantallas', '/contenidos', '/reportes', '/asistente-ia', '/chat', '/mantenimiento']
-  },
-
-  [Rol.OPERADOR]: {
-    nombre: Rol.OPERADOR,
-    descripcion: 'Operación diaria de campañas y monitoreo de pantallas. Sin permisos de eliminación.',
-    nivel: 2,
-    permisos: new Set([
-      // Campañas - lectura y edición
-      Permiso.VER_CAMPANA,
-      Permiso.EDITAR_CAMPANA,
-      Permiso.PUBLICAR_CAMPANA,
-      
-      // Pantallas - lectura
-      Permiso.VER_PANTALLA,
-      Permiso.CONTROLAR_PANTALLA,
-      
-      // Contenidos - lectura
-      Permiso.VER_CONTENIDO,
-      
-      // Reportes
-      Permiso.VER_REPORTES,
-      Permiso.VER_GRAFICOS,
-      
-      // IA
-      Permiso.USAR_ASISTENTE_IA,
-      Permiso.USAR_CHAT
-    ]),
-    rutas: ['/dashboard', '/campanas', '/pantallas', '/contenidos', '/reportes', '/asistente-ia', '/chat']
   },
 
   [Rol.USUARIO]: {

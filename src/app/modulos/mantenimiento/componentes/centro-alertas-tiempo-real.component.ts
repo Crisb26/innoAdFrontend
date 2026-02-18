@@ -147,7 +147,7 @@ export class CentroAlertasTiempoRealComponent implements OnInit, OnDestroy {
     
     switch (alerta.tipo) {
       case 'CRITICA':
-        notificacion = `⚠️ Alerta Crítica: ${alerta.titulo}`;
+        notificacion = `[][] Alerta Crítica: ${alerta.titulo}`;
         NotifyX.error(notificacion);
         break;
       case 'ADVERTENCIA':
@@ -155,11 +155,11 @@ export class CentroAlertasTiempoRealComponent implements OnInit, OnDestroy {
         NotifyX.warning(notificacion);
         break;
       case 'INFO':
-        notificacion = `ℹ️ Información: ${alerta.titulo}`;
+        notificacion = `ℹ[] Información: ${alerta.titulo}`;
         NotifyX.info(notificacion);
         break;
       case 'EXITO':
-        notificacion = `✅ Éxito: ${alerta.titulo}`;
+        notificacion = `[] Éxito: ${alerta.titulo}`;
         NotifyX.success(notificacion);
         break;
     }

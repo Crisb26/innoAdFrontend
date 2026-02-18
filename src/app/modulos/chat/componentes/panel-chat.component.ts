@@ -35,7 +35,7 @@ interface ChatUsuario {
     <div class="contenedor-chat">
       <!-- Header -->
       <div class="header-chat">
-        <h1>💬 Centro de Mensajería</h1>
+        <h1>[]� Centro de Mensajería</h1>
         <p>Comunicación directa con técnicos y soporte</p>
       </div>
 
@@ -126,7 +126,7 @@ interface ChatUsuario {
                 [disabled]="cargandoMensaje() || !nuevoMensaje.trim()"
                 class="btn-enviar"
               >
-                {{ cargandoMensaje() ? '⏳' : '📤' }}
+                {{ cargandoMensaje() ? '⏳' : '[]�' }}
               </button>
             </div>
           } @else {

@@ -35,13 +35,15 @@ export const routes: Routes = [
     path: 'admin',
     loadChildren: () => import('./modulos/admin/admin.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMINISTRADOR'] }
+    data: { roles: ['ADMIN'] }
   },
 
   // Panel técnico - TECNICO
   {
     path: 'tecnico',
-    loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes)
+    loadChildren: () => import('./modulos/tecnico/tecnico.routes').then(m => m.routes),
+    canActivate: [guardAutenticacion, RolGuard],
+    data: { roles: ['TECNICO', 'ADMIN'] }
   },
 
   // Panel desarrollador - DEVELOPER
@@ -50,7 +52,7 @@ export const routes: Routes = [
     loadComponent: () => import('./modulos/dashboard/componentes/developer-dashboard.component')
       .then(m => m.DeveloperDashboardComponent),
     canActivate: [RolGuard],
-    data: { role: 'DESARROLLADOR' }
+    data: { roles: ['ADMIN', 'TECNICO'] }
   },
 
   // Campañas
@@ -58,7 +60,7 @@ export const routes: Routes = [
     path: 'campanas',
     loadChildren: () => import('./modulos/campanas/campanas.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMINISTRADOR', 'TECNICO', 'DESARROLLADOR', 'USUARIO'] }
+    data: { roles: ['ADMIN', 'TECNICO', 'USUARIO'] }
   },
 
   // Pantallas
@@ -66,7 +68,7 @@ export const routes: Routes = [
     path: 'pantallas',
     loadChildren: () => import('./modulos/pantallas/pantallas.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMINISTRADOR', 'TECNICO', 'DESARROLLADOR'] }
+    data: { roles: ['ADMIN', 'TECNICO'] }
   },
 
   // Contenidos
@@ -74,7 +76,7 @@ export const routes: Routes = [
     path: 'contenidos',
     loadChildren: () => import('./modulos/contenidos/contenidos.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMINISTRADOR', 'TECNICO', 'DESARROLLADOR', 'USUARIO'] }
+    data: { roles: ['ADMIN', 'TECNICO', 'USUARIO'] }
   },
 
   // Reportes
@@ -82,7 +84,7 @@ export const routes: Routes = [
     path: 'reportes',
     loadChildren: () => import('./modulos/reportes/reportes.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMINISTRADOR', 'TECNICO', 'USUARIO'] }
+    data: { roles: ['ADMIN', 'TECNICO', 'USUARIO'] }
   },
 
   // Pagos - FASE 5
@@ -119,7 +121,7 @@ export const routes: Routes = [
     path: 'asistente-ia',
     loadChildren: () => import('./modulos/asistente-ia/asistente-ia.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMINISTRADOR', 'TECNICO', 'USUARIO'] }
+    data: { roles: ['ADMIN', 'TECNICO', 'USUARIO'] }
   },
 
   // Usuario - USUARIO

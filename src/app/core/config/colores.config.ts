@@ -1,5 +1,5 @@
 /**
- * 🎨 CONFIGURACIÓN DE COLORES PROFESIONALES
+ * []� CONFIGURACIÓN DE COLORES PROFESIONALES
  * Exportable para componentes Angular
  * Paleta: Índigo #4F46E5, Púrpura #A855F7, Rosa #EC4899
  */

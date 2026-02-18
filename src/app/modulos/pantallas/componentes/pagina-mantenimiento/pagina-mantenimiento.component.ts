@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   template: `
     <div class="mantenimiento-page">
       <div class="mantenimiento-content">
-        <div class="icon">ðŸ”§</div>
+        <div class="icon">[]§</div>
         
         <h1>Estamos en Mantenimiento</h1>
         

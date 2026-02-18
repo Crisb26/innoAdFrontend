@@ -1,12 +1,12 @@
 /**
- * 🤖 SERVICIO DE AGENTE IA - INNOAD ASSISTANT
+ * []� SERVICIO DE AGENTE IA - INNOAD ASSISTANT
  * Servicio para conversación inteligente con memoria y contexto
  * Integración con OpenAI GPT-4 mini (configurado en backend)
  */
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, throwError, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 
@@ -195,23 +195,23 @@ export class ServicioAgenteIA {
   }
 
   /**
-   * Obtener sugerencias de preguntas
+   * Obtener sugerencias de preguntas desde backend (personalizadas por rol)
    */
   obtenerSugerencias(contexto?: string): Observable<string[]> {
-    const payload = {
-      contexto: contexto || this.contexto.rol,
-      sesionId: this.sesionId,
-    };
-
-    return this.http
-      .post<{ sugerencias: string[] }>(`${this.apiUrl}/sugerencias`, payload)
-      .pipe(
-        map((res) => res.sugerencias),
-        catchError((error) => {
-          console.error('Error al obtener sugerencias:', error);
-          return throwError(() => new Error('No se pudieron obtener sugerencias'));
-        })
-      );
+    // Cambiar a usar el nuevo endpoint del backend que usa BaseConocimientoInnoAd
+    return this.http.get<{ sugerencias: string[] }>(`${this.apiUrl}/sugerencias`).pipe(
+      map((res) => res.sugerencias),
+      catchError((error) => {
+        console.error('Error al obtener sugerencias:', error);
+        // Fallback a sugerencias genéricas si falla
+        return of([
+          '¿Cómo creo una campaña?',
+          '¿Cómo subo contenido?',
+          '¿Cómo veo mis estadísticas?',
+          '¿Cómo contacto soporte?'
+        ]);
+      })
+    );
   }
 
   /**

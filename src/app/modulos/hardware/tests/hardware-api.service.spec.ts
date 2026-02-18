@@ -1,5 +1,5 @@
 /**
- * 🧪 TESTS - SERVICIO HARDWARE API
+ * []� TESTS - SERVICIO HARDWARE API
  * Cobertura completa: dispositivos, contenido, comandos, WebSocket, métricas
  */
 

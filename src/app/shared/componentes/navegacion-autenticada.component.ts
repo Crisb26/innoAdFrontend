@@ -1,13 +1,16 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router, ActivatedRoute } from '@angular/router';
+import { RouterLink, Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import { AyudaService } from '@core/servicios/ayuda.servicio';
 import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
 import { EditarPerfilComponent } from './editar-perfil.component';
+import { ToggleTemaComponent } from './toggle-tema.component';
 
 @Component({
   selector: 'app-navegacion-autenticada',
   standalone: true,
-  imports: [CommonModule, RouterLink, EditarPerfilComponent],
+  imports: [CommonModule, RouterLink, EditarPerfilComponent, ToggleTemaComponent],
   styleUrls: ['./navegacion-autenticada.component.scss'],
   template: `
     <nav class="navbar-innoad">
@@ -25,29 +28,54 @@ import { EditarPerfilComponent } from './editar-perfil.component';
 
         <!-- Navegación Principal -->
         <div class="nav-links">
-          <a routerLink="/dashboard" class="nav-item" routerLinkActive="active">
+          <a routerLink="/dashboard" class="nav-item" routerLinkActive="active" title="Tu dashboard personal">
             <span class="nav-icon"></span>
             Dashboard
           </a>
-          <a routerLink="/campanas" class="nav-item" routerLinkActive="active">
+
+          <!-- Campañas: todos pueden acceder -->
+          <a routerLink="/campanas" class="nav-item" routerLinkActive="active" title="Crear y gestionar campañas publicitarias">
             <span class="nav-icon"></span>
             Campañas
           </a>
-          <a routerLink="/pantallas" class="nav-item" routerLinkActive="active">
-            <span class="nav-icon"></span>
-            Pantallas
-          </a>
-          <a routerLink="/contenidos" class="nav-item" routerLinkActive="active">
+
+          <!-- Pantallas: solo ADMIN y TECNICO -->
+          @if (esAdministrador() || esTecnico()) {
+            <a routerLink="/pantallas" class="nav-item" routerLinkActive="active" title="Gestionar pantallas digitales">
+              <span class="nav-icon"></span>
+              Pantallas
+            </a>
+          }
+
+          <!-- Contenidos: todos pueden acceder -->
+          <a routerLink="/contenidos" class="nav-item" routerLinkActive="active" title="Subir y gestionar contenido multimedia">
             <span class="nav-icon"></span>
             Contenidos
           </a>
+
+          <!-- Reportes: todos pueden acceder -->
+          <a routerLink="/reportes" class="nav-item" routerLinkActive="active" title="Ver estadísticas y reportes">
+            <span class="nav-icon"></span>
+            Reportes
+          </a>
+
+          <!-- Soporte/Chat: todos pueden acceder -->
+          <a routerLink="/chat" class="nav-item" routerLinkActive="active" title="Contactar con soporte técnico">
+            <span class="nav-icon"></span>
+            Soporte
+          </a>
+
+          <!-- Panel Admin: solo ADMIN -->
           @if (esAdministrador()) {
-            <a routerLink="/admin" class="nav-item nav-admin" routerLinkActive="active">
+            <a routerLink="/admin" class="nav-item nav-admin" routerLinkActive="active" title="Panel de administración del sistema">
               <span class="nav-icon"></span>
               Admin
             </a>
           }
         </div>
+
+        <!-- Toggle Tema -->
+        <app-toggle-tema></app-toggle-tema>
 
         <!-- Menu de Usuario -->
         <div class="user-menu" [class.open]="menuAbierto()" (click)="toggleMenu()">
@@ -97,19 +125,52 @@ import { EditarPerfilComponent } from './editar-perfil.component';
                 <span class="dropdown-icon"></span>
                 Mi Dashboard
               </a>
-              <a routerLink="/publicar" class="dropdown-item" (click)="cerrarMenu()">
-                <span class="dropdown-icon"></span>
-                Publicar Contenido
-              </a>
+
+              @if (esTecnico()) {
+                <hr class="dropdown-divider">
+                <span class="dropdown-header-text">Funciones Técnico</span>
+                <a routerLink="/pantallas" class="dropdown-item" (click)="cerrarMenu()">
+                  <span class="dropdown-icon"></span>
+                  Gestionar Pantallas
+                </a>
+                <a routerLink="/contenidos" class="dropdown-item" (click)="cerrarMenu()">
+                  <span class="dropdown-icon"></span>
+                  Revisar Contenidos
+                </a>
+              }
+
+              @if (esUsuario()) {
+                <hr class="dropdown-divider">
+                <a routerLink="/contenidos/crear" class="dropdown-item" (click)="cerrarMenu()">
+                  <span class="dropdown-icon"></span>
+                  Subir Contenido
+                </a>
+              }
+
               <a routerLink="/reportes" class="dropdown-item" (click)="cerrarMenu()">
                 <span class="dropdown-icon"></span>
                 Mis Reportes
               </a>
+
+              <a routerLink="/chat" class="dropdown-item" (click)="cerrarMenu()">
+                <span class="dropdown-icon"></span>
+                Soporte Técnico
+              </a>
+
               @if (esAdministrador()) {
                 <hr class="dropdown-divider">
+                <span class="dropdown-header-text">Funciones Admin</span>
                 <a routerLink="/admin" class="dropdown-item" (click)="cerrarMenu()">
                   <span class="dropdown-icon"></span>
-                  Panel Admin
+                  Panel de Control
+                </a>
+                <a routerLink="/admin/usuarios" class="dropdown-item" (click)="cerrarMenu()">
+                  <span class="dropdown-icon"></span>
+                  Gestionar Usuarios
+                </a>
+                <a routerLink="/admin/roles" class="dropdown-item" (click)="cerrarMenu()">
+                  <span class="dropdown-icon"></span>
+                  Configurar Roles
                 </a>
               }
               
@@ -131,10 +192,12 @@ import { EditarPerfilComponent } from './editar-perfil.component';
     }
   `
 })
-export class NavegacionAutenticadaComponent {
+export class NavegacionAutenticadaComponent implements OnInit {
   private readonly servicioAuth = inject(ServicioAutenticacion);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly ayuda = inject(AyudaService);
+  
 
   protected readonly menuAbierto = signal(false);
   protected readonly mostrarModalPerfil = signal(false);
@@ -156,18 +219,23 @@ export class NavegacionAutenticadaComponent {
   }
 
   private formatearNombreRol(rol: string): string {
+    // Mapeo de roles del backend (ADMIN, TECNICO, USUARIO) a display
     const rolesMap: { [key: string]: string } = {
-      'Developer': 'Desarrollador',
-      'developer': 'Desarrollador',
-      'Admin': 'Administrador',
-      'Administrador': 'Administrador',
-      'administrador': 'Administrador',
-      'Tecnico': 'Técnico',
-      'tecnico': 'Técnico',
-      'Usuario': 'Usuario',
-      'usuario': 'Usuario',
-      'User': 'Usuario',
-      'user': 'Usuario'
+      'ADMIN': '👑 Administrador',
+      'Admin': '👑 Administrador',
+      'Administrador': '👑 Administrador',
+      'administrador': '👑 Administrador',
+      'TECNICO': '🔧 Técnico',
+      'Tecnico': '🔧 Técnico',
+      'tecnico': '🔧 Técnico',
+      'Técnico': '🔧 Técnico',
+      'USUARIO': '👤 Usuario',
+      'Usuario': '👤 Usuario',
+      'usuario': '👤 Usuario',
+      'User': '👤 Usuario',
+      'user': '👤 Usuario',
+      'Developer': '👨‍💻 Desarrollador',
+      'developer': '👨‍💻 Desarrollador'
     };
     return rolesMap[rol] || rol;
   }
@@ -184,7 +252,20 @@ export class NavegacionAutenticadaComponent {
 
   protected esAdministrador(): boolean {
     const usuario = this.servicioAuth.usuarioActual();
-    return usuario?.rol?.nombre === 'Administrador' || false;
+    const rol = usuario?.rol?.nombre || '';
+    return rol === 'ADMIN' || rol === 'Administrador' || false;
+  }
+
+  protected esTecnico(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre || '';
+    return rol === 'TECNICO' || rol === 'Tecnico' || false;
+  }
+
+  protected esUsuario(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre || '';
+    return rol === 'USUARIO' || rol === 'Usuario' || false;
   }
 
   protected toggleMenu(): void {
@@ -210,4 +291,30 @@ export class NavegacionAutenticadaComponent {
     this.servicioAuth.cerrarSesion();
     this.cerrarMenu();
   }
+
+  ngOnInit(): void {
+    // Escuchar cambios de ruta y lanzar tour por primera vez según la ruta
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
+      const path = this.router.url.split('?')[0];
+      // Rutas con tours de ejemplo. Mantener textos flotantes para no alterar templates.
+      if (path.startsWith('/campanas')) {
+        this.ayuda.startTourOnce('campanas', [
+          { intro: 'Bienvenido al módulo de Campañas: aquí puedes crear y gestionar tus campañas publicitarias.' },
+          { intro: 'Usa el botón "Crear Campaña" para abrir el formulario y configurar fechas, pantallas y descripción.' },
+          { intro: 'Filtra y ordena tus campañas para encontrar rápidamente las activas o programadas.' }
+        ], { showProgress: true });
+      } else if (path.startsWith('/publicar') || path.startsWith('/publicacion')) {
+        this.ayuda.startTourOnce('publicar', [
+          { intro: 'Pantalla de publicación: aquí configuras contenido y ubicaciones donde se mostrará.' },
+          { intro: 'Revisa las previsualizaciones antes de confirmar la publicación.' }
+        ]);
+      } else if (path.startsWith('/dashboard')) {
+        this.ayuda.startTourOnce('dashboard', [
+          { intro: 'Tu Dashboard muestra métricas clave y accesos rápidos a módulos importantes.' }
+        ]);
+      }
+    });
+  }
+
+  
 }

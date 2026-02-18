@@ -13,16 +13,16 @@ import { LogsAuditoriaService, LogAuditoria, FiltrosLogs, EstadisticasLogs } fro
       <!-- Header -->
       <div class="header-section">
         <div class="titulo-seccion">
-          <h2>📋 Logs de Auditoría</h2>
+          <h2>[]� Logs de Auditoría</h2>
           <p>Registro completo de actividades del sistema</p>
         </div>
         <div class="acciones-header">
           <button class="btn-futurista" (click)="exportarLogs()">
-            <span class="icono">📥</span>
+            <span class="icono">[]�</span>
             Exportar
           </button>
           <button class="btn-futurista" (click)="refrescarLogs()">
-            <span class="icono">🔄</span>
+            <span class="icono">[]�</span>
             Actualizar
           </button>
         </div>
@@ -151,7 +151,7 @@ import { LogsAuditoriaService, LogAuditoria, FiltrosLogs, EstadisticasLogs } fro
           </div>
         } @else if (logs().length === 0) {
           <div class="empty-state">
-            <div class="empty-icon">📋</div>
+            <div class="empty-icon">[]�</div>
             <h3>No se encontraron registros</h3>
             <p>Intenta ajustar los filtros de búsqueda</p>
           </div>
@@ -271,7 +271,7 @@ import { LogsAuditoriaService, LogAuditoria, FiltrosLogs, EstadisticasLogs } fro
         <div class="modal-overlay" (click)="cerrarModalMantenimiento()">
           <div class="modal-contenido" (click)="$event.stopPropagation()">
             <div class="modal-header">
-              <h3>🧹 Mantenimiento de Logs</h3>
+              <h3>[]� Mantenimiento de Logs</h3>
               <button class="btn-cerrar" (click)="cerrarModalMantenimiento()">✕</button>
             </div>
             <div class="modal-body">
@@ -286,7 +286,7 @@ import { LogsAuditoriaService, LogAuditoria, FiltrosLogs, EstadisticasLogs } fro
                 </select>
               </div>
               <div class="advertencia">
-                <strong>⚠️ Esta acción no se puede deshacer.</strong><br>
+                <strong>[][] Esta acción no se puede deshacer.</strong><br>
                 Se eliminarán permanentemente los logs seleccionados.
               </div>
             </div>

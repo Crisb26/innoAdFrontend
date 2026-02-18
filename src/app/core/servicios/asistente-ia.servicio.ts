@@ -157,7 +157,7 @@ export class AsistenteIAServicio {
     const mensajeBienvenida: MensajeChat = {
       id: this.generarId(),
       tipo: 'asistente',
-      contenido: '¡Hola! 👋 Soy InnoBot, tu asistente inteligente para InnoAd. Estoy aquí para ayudarte con todo lo que necesites. ¿En qué puedo asistirte hoy?',
+      contenido: '¡Hola! []� Soy InnoBot, tu asistente inteligente para InnoAd. Estoy aquí para ayudarte con todo lo que necesites. ¿En qué puedo asistirte hoy?',
       timestamp: new Date(),
       metadata: {
         confianza: 1.0,
@@ -256,7 +256,7 @@ export class AsistenteIAServicio {
       const mensajeError: MensajeChat = {
         id: this.generarId(),
         tipo: 'asistente',
-        contenido: '🤔 Hmm, parece que tengo un pequeño problema técnico. ¿Podrías reformular tu pregunta?',
+        contenido: '[]� Hmm, parece que tengo un pequeño problema técnico. ¿Podrías reformular tu pregunta?',
         timestamp: new Date(),
         metadata: {
           confianza: 0.5,
@@ -427,14 +427,14 @@ export class AsistenteIAServicio {
   private generarRespuestaSesion(intencion: any, contexto: ContextoConversacion): Promise<any> {
     if (intencion.intencion === 'cerrar_sesion') {
       return Promise.resolve({
-        texto: "👋 ¡Hasta pronto! Cerrando tu sesión y regresándote a la página principal...",
+        texto: "[]� ¡Hasta pronto! Cerrando tu sesión y regresándote a la página principal...",
         confianza: 0.95,
         tipo: 'accion' as const,
         accionSugerida: {
           id: 'cerrar-sesion',
           titulo: 'Cerrar Sesión',
           descripcion: 'Cerrar tu sesión actual',
-          icono: '🚪',
+          icono: '[]�',
           accion: () => {
             setTimeout(() => {
               this.servicioAuth.cerrarSesion();
@@ -446,7 +446,7 @@ export class AsistenteIAServicio {
     }
 
     return Promise.resolve({
-      texto: "🤔 No entendí bien qué quieres hacer con tu sesión.",
+      texto: "[]� No entendí bien qué quieres hacer con tu sesión.",
       confianza: 0.5,
       tipo: 'informativa' as const
     });
@@ -462,7 +462,7 @@ export class AsistenteIAServicio {
     // Verificar si el usuario es Usuario (no puede enviar correos)
     if (rol === 'Usuario' || rol === 'USUARIO') {
       return Promise.resolve({
-        texto: "⚠️ Lo siento, pero los usuarios con rol 'Usuario' no tienen permisos para enviar correos. Esta funcionalidad está disponible solo para Administradores, Editores y Creadores.",
+        texto: "[][] Lo siento, pero los usuarios con rol 'Usuario' no tienen permisos para enviar correos. Esta funcionalidad está disponible solo para Administradores, Editores y Creadores.",
         confianza: 0.9,
         tipo: 'informativa' as const
       });
@@ -471,14 +471,14 @@ export class AsistenteIAServicio {
     const destinatario = intencion.parametros?.destinatario || 'un destinatario';
 
     return Promise.resolve({
-      texto: `📧 ¡Perfecto! Como ${rol}, puedes enviar correos. Para enviar un correo a ${destinatario}, ve a la sección de mensajería o dime el contenido del mensaje y yo lo procesaré.`,
+      texto: `[]� ¡Perfecto! Como ${rol}, puedes enviar correos. Para enviar un correo a ${destinatario}, ve a la sección de mensajería o dime el contenido del mensaje y yo lo procesaré.`,
       confianza: 0.85,
       tipo: 'accion' as const,
       accionSugerida: {
         id: 'enviar-correo',
         titulo: 'Enviar Correo',
         descripcion: `Redactar correo para ${destinatario}`,
-        icono: '✉️',
+        icono: '[][]',
         accion: () => {
           // Aquí iría la lógica para abrir un modal de enviar correo
           console.log(`Abrir modal para enviar correo a ${destinatario}`);
@@ -494,11 +494,11 @@ export class AsistenteIAServicio {
   private generarRespuestaNavegacion(intencion: any, contexto: ContextoConversacion): Promise<any> {
     const respuestas = {
       dashboard: {
-        texto: "🏠 Te llevo al dashboard principal donde puedes ver un resumen de toda tu actividad en InnoAd.",
+        texto: "[]� Te llevo al dashboard principal donde puedes ver un resumen de toda tu actividad en InnoAd.",
         accion: () => window.location.href = '/dashboard'
       },
       campañas: {
-        texto: "📢 Vamos a la sección de campañas donde puedes crear y gestionar tus campañas publicitarias.",
+        texto: "[]� Vamos a la sección de campañas donde puedes crear y gestionar tus campañas publicitarias.",
         accion: () => window.location.href = '/campanas'
       }
     };
@@ -514,7 +514,7 @@ export class AsistenteIAServicio {
         id: `nav-${destino}`,
         titulo: `Ir a ${destino}`,
         descripcion: 'Navegar a la sección solicitada',
-        icono: '🧭',
+        icono: '[]�',
         accion: respuesta.accion,
         categoria: 'navegacion' as const
       }
@@ -526,7 +526,7 @@ export class AsistenteIAServicio {
    */
   private generarRespuestaAyuda(intencion: any, mensaje: string): Promise<any> {
     return Promise.resolve({
-      texto: "🤝 ¡Estoy aquí para ayudarte! Puedo asistirte con campañas, contenidos, pantallas y más.",
+      texto: "[]� ¡Estoy aquí para ayudarte! Puedo asistirte con campañas, contenidos, pantallas y más.",
       confianza: 0.8,
       tipo: 'informativa' as const
     });
@@ -537,7 +537,7 @@ export class AsistenteIAServicio {
    */
   private generarRespuestaConfiguracion(intencion: any): Promise<any> {
     return Promise.resolve({
-      texto: "⚙️ Te puedo ayudar a configurar tu cuenta y preferencias.",
+      texto: "⚙[] Te puedo ayudar a configurar tu cuenta y preferencias.",
       confianza: 0.85,
       tipo: 'informativa' as const
     });
@@ -548,7 +548,7 @@ export class AsistenteIAServicio {
    */
   private generarRespuestaAcciones(intencion: any, contexto: ContextoConversacion): Promise<any> {
     return Promise.resolve({
-      texto: "🎯 ¡Listo para ayudarte con cualquier acción que necesites!",
+      texto: "[]� ¡Listo para ayudarte con cualquier acción que necesites!",
       confianza: 0.8,
       tipo: 'accion' as const
     });
@@ -559,7 +559,7 @@ export class AsistenteIAServicio {
    */
   private generarRespuestaAnalisis(intencion: any, contexto: ContextoConversacion): Promise<any> {
     return Promise.resolve({
-      texto: "📈 ¡Los datos son fascinantes! Puedo mostrarte análisis detallados.",
+      texto: "[]� ¡Los datos son fascinantes! Puedo mostrarte análisis detallados.",
       confianza: 0.9,
       tipo: 'informativa' as const
     });
@@ -576,7 +576,7 @@ export class AsistenteIAServicio {
     if (mensajeLower.includes('quién soy') || mensajeLower.includes('quien soy') || mensajeLower.includes('mi nombre')) {
       if (usuario) {
         return Promise.resolve({
-          texto: `📋 Eres ${usuario.nombre}, y tu rol en el sistema es ${usuario.rol}. Tu correo registrado es ${usuario.email}.`,
+          texto: `[]� Eres ${usuario.nombre}, y tu rol en el sistema es ${usuario.rol}. Tu correo registrado es ${usuario.email}.`,
           confianza: 1.0,
           tipo: 'informativa' as const
         });
@@ -596,7 +596,7 @@ export class AsistenteIAServicio {
         const descripcion = permisosRol[usuario.rol] || 'Tienes permisos básicos en el sistema.';
         
         return Promise.resolve({
-          texto: `👤 Tu rol es ${usuario.rol}. ${descripcion}`,
+          texto: `[]� Tu rol es ${usuario.rol}. ${descripcion}`,
           confianza: 1.0,
           tipo: 'informativa' as const
         });
@@ -607,14 +607,14 @@ export class AsistenteIAServicio {
     if ((mensajeLower.includes('usuarios') || mensajeLower.includes('quién') || mensajeLower.includes('quien')) && 
         usuario && usuario.rol !== 'Usuario') {
       return Promise.resolve({
-        texto: `👥 Como ${usuario.rol}, tienes acceso a la lista de usuarios del sistema. Ve a la sección Admin > Usuarios para ver todos los usuarios registrados y sus roles.`,
+        texto: `[]� Como ${usuario.rol}, tienes acceso a la lista de usuarios del sistema. Ve a la sección Admin > Usuarios para ver todos los usuarios registrados y sus roles.`,
         confianza: 0.85,
         tipo: 'informativa' as const,
         accionSugerida: {
           id: 'ver-usuarios',
           titulo: 'Ver Usuarios',
           descripcion: 'Ir a la lista de usuarios',
-          icono: '👥',
+          icono: '[]�',
           accion: () => this.router.navigate(['/admin/usuarios']),
           categoria: 'navegacion' as const
         }
@@ -622,9 +622,9 @@ export class AsistenteIAServicio {
     }
 
     const respuestas = [
-      "😊 ¡Qué interesante! Cuéntame más sobre lo que necesitas.",
-      "🤔 Entiendo. ¿Hay algo específico de InnoAd en lo que pueda ayudarte?",
-      `👋 Hola ${usuario?.nombre || ''}! ¿En qué puedo asistirte hoy?`
+      "[]� ¡Qué interesante! Cuéntame más sobre lo que necesitas.",
+      "[]� Entiendo. ¿Hay algo específico de InnoAd en lo que pueda ayudarte?",
+      `[]� Hola ${usuario?.nombre || ''}! ¿En qué puedo asistirte hoy?`
     ];
 
     const respuesta = respuestas[Math.floor(Math.random() * respuestas.length)];
@@ -724,7 +724,7 @@ export class AsistenteIAServicio {
         id: 'crear-campana',
         titulo: 'Crear nueva campaña',
         descripcion: 'Comienza una campaña publicitaria',
-        icono: '🎯',
+        icono: '[]�',
         accion: () => window.location.href = '/campanas/nueva',
         categoria: 'accion'
       }

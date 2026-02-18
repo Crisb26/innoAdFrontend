@@ -12,7 +12,7 @@ import NotifyX from 'notifyx';
   imports: [CommonModule, RouterModule, FormsModule],
   template: `
     <div class="configuracion-container">
-      <h1>⚙️ Configuración de Mantenimiento</h1>
+      <h1>⚙[] Configuración de Mantenimiento</h1>
       
       <div class="tarjeta-config">
         <h2>Parámetros del Demonio</h2>
@@ -87,7 +87,7 @@ import NotifyX from 'notifyx';
                 min="100">
             </div>
 
-            <button type="submit" class="btn-guardar">💾 Guardar Cambios</button>
+            <button type="submit" class="btn-guardar">[]� Guardar Cambios</button>
           </form>
         }
       </div>
@@ -127,7 +127,7 @@ import NotifyX from 'notifyx';
               </label>
             </div>
 
-            <button type="submit" class="btn-guardar">💾 Guardar Cambios</button>
+            <button type="submit" class="btn-guardar">[]� Guardar Cambios</button>
           </form>
         }
       </div>
