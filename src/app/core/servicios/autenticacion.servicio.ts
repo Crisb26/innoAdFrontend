@@ -491,9 +491,35 @@ export class ServicioAutenticacion {
     return Date.now() < expira;
   }
   
-  private manejarError(error: any): any {
-    // Devolver el error original para que preserve status y estructura
-    return error;
+  private manejarError(error: any): Observable<never> {
+    // Normalizar el error para preservar status/estructura pero garantizando un `message`
+    let mensaje = 'Ocurrió un error en la solicitud.';
+
+    if (error) {
+      if (error.error) {
+        // Muchos backends devuelven el mensaje en `error.error` o `error.error.message`
+        if (typeof error.error === 'string') {
+          mensaje = error.error;
+        } else if (typeof error.error.message === 'string') {
+          mensaje = error.error.message;
+        }
+      } else if (typeof error.message === 'string' && error.message.trim() !== '') {
+        mensaje = error.message;
+      }
+    }
+
+    const errorNormalizado: any = new Error(mensaje);
+
+    // Conservar información útil del error HTTP original
+    if (error && typeof error.status !== 'undefined') {
+      errorNormalizado.status = error.status;
+    }
+    if (error && error.error) {
+      errorNormalizado.error = error.error;
+    }
+    errorNormalizado.originalError = error;
+
+    return throwError(() => errorNormalizado);
   }
 
   /**
