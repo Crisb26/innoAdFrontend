@@ -24,7 +24,7 @@ export const environment = {
       notifications: '/api/v1/notifications',
       system: '/api/v1/system'
     },
-    
+
     // URLs legacy
     baseUrl: '/api/v1',
     authUrl: '/api/v1/auth',
@@ -72,11 +72,8 @@ export const environment = {
 
   // ===== CONFIGURACIÓN DE AUTENTICACIÓN OFFLINE (Compose / local deploy)
   offlineAuth: {
-    enabled: true,
-    users: [
-      { nombreUsuario: 'admin', email: 'admin@local', contrasena: 'admin123', rol: 'Administrador', nombreCompleto: 'Administrador Local' },
-      { nombreUsuario: 'usuario', email: 'user@local', contrasena: 'user123', rol: 'Usuario', nombreCompleto: 'Usuario Local' }
-    ]
+    enabled: false,
+    users: [] // Solo usar backend real
   },
 
   // Resto de opciones tal cual prod

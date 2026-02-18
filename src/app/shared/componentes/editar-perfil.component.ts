@@ -36,12 +36,12 @@ import NotifyX from 'notifyx';
                 </div>
                 <div class="avatar-controls">
                   <label class="btn-secondary">
-                    📷 Cambiar Foto
+                    []� Cambiar Foto
                     <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
                   </label>
                   @if (avatarPreview()) {
                     <button type="button" class="btn-danger-outline" (click)="eliminarFoto()">
-                      🗑️ Eliminar
+                      []�[] Eliminar
                     </button>
                   }
                 </div>
@@ -50,7 +50,7 @@ import NotifyX from 'notifyx';
 
             <!-- Información Personal (No Editable) -->
             <div class="form-section">
-              <h3>📋 Información Personal</h3>
+              <h3>[]� Información Personal</h3>
               <div class="info-readonly">
                 <div class="info-item">
                   <label>Nombre Completo:</label>
@@ -71,7 +71,7 @@ import NotifyX from 'notifyx';
 
             <!-- Información de Contacto (Editable) -->
             <div class="form-section">
-              <h3>📧 Información de Contacto</h3>
+              <h3>[]� Información de Contacto</h3>
               <div class="form-group">
                 <label for="email">Correo Electrónico</label>
                 <input 
@@ -131,7 +131,7 @@ import NotifyX from 'notifyx';
               @if (guardando()) {
                 <span class="spinner"></span> Guardando...
               } @else {
-                💾 Guardar Cambios
+                []� Guardar Cambios
               }
             </button>
           </div>
@@ -249,11 +249,13 @@ export class EditarPerfilComponent implements OnInit {
         direccion: this.formularioPerfil.value.direccion || undefined,
       };
 
-      // Si hay archivo, primero subirlo
-      if (this.archivoSeleccionado) {
-        const preview = this.avatarPreview();
-        datosActualizados.avatarUrl = preview || undefined;
-      } else if (!this.avatarPreview()) {
+      // Manejar avatar (foto de perfil)
+      const previewActual = this.avatarPreview();
+      if (previewActual) {
+        // Hay imagen (nueva o existente)
+        datosActualizados.avatarUrl = previewActual;
+      } else {
+        // Imagen fue eliminada
         datosActualizados.avatarUrl = '';
       }
 
@@ -265,12 +267,12 @@ export class EditarPerfilComponent implements OnInit {
       // Actualizar el usuario actual en el servicio
       this.servicioAuth.actualizarUsuarioActual(usuarioActualizado);
       
-      NotifyX.success('✅ Guardó los cambios', {
+      NotifyX.success('[] Guardó los cambios', {
         duration: 3000,
         dismissible: true
       });
       
-      this.mensajeExito.set('✅ Guardó los cambios');
+      this.mensajeExito.set('[] Guardó los cambios');
       
       // Cerrar modal después de 1.5 segundos
       setTimeout(() => {

@@ -13,7 +13,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
   template: `
     <div class="dispositivos-container">
       <header class="header">
-        <h1>📡 Monitoreo de Dispositivos IoT</h1>
+        <h1>[]� Monitoreo de Dispositivos IoT</h1>
         <div class="header-acciones">
           <button class="btn-prueba" (click)="forzarPrueba()">⚡ Forzar Prueba</button>
           <button class="btn-registrar" (click)="abrirRegistro()">+ Registrar Dispositivo</button>
@@ -42,10 +42,10 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
 
       <!-- Alertas pendientes -->
       <div *ngIf="alertasPendientes.length > 0" class="alertas-seccion">
-        <h2>⚠️ Alertas Activas</h2>
+        <h2>[][] Alertas Activas</h2>
         <div class="alertas-list">
           <div *ngFor="let alerta of alertasPendientes" class="alerta-item" [class.critica]="alerta.tipo === 'DESCONEXION'">
-            <span class="icon">🔴</span>
+            <span class="icon">[]�</span>
             <div class="alerta-contenido">
               <strong>{{ alerta.dispositivoNombre }}</strong>
               <p>{{ alerta.mensaje }}</p>
@@ -91,7 +91,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
             </div>
             <div class="col-emitiendo">
               <span *ngIf="dispositivo.emitiendo" class="emitiendo-badge">
-                📺 {{ dispositivo.publicacionActual?.cliente }}
+                []� {{ dispositivo.publicacionActual?.cliente }}
               </span>
               <span *ngIf="!dispositivo.emitiendo" class="sin-emitir">—</span>
             </div>
@@ -102,7 +102,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
               {{ dispositivo.ultimaRespuesta | date:'short' || 'Nunca' }}
             </div>
             <div class="col-acciones">
-              <button class="btn-ver" (click)="verDetalles(dispositivo)">👁️ Ver</button>
+              <button class="btn-ver" (click)="verDetalles(dispositivo)">[]�[] Ver</button>
               <button class="btn-prueba-rápida" (click)="forzarPrueba(dispositivo.id)">⚡</button>
             </div>
           </div>
@@ -164,7 +164,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
             </div>
 
             <div class="seccion-emisión" *ngIf="dispositivoSeleccionado.emitiendo">
-              <h3>🎬 Emitiendo Ahora</h3>
+              <h3>[]� Emitiendo Ahora</h3>
               <div class="emision-info">
                 <p><strong>Cliente:</strong> {{ dispositivoSeleccionado.publicacionActual?.cliente }}</p>
                 <p><strong>Publicación:</strong> {{ dispositivoSeleccionado.publicacionActual?.titulo }}</p>
@@ -176,7 +176,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
                 ⚡ Prueba Inmediata
               </button>
               <button class="btn-eliminar" (click)="eliminarDispositivo(dispositivoSeleccionado!.id); cerrarModal()">
-                🗑️ Eliminar
+                []�[] Eliminar
               </button>
             </div>
           </div>
@@ -743,11 +743,11 @@ export class TecnicoDispositivosComponent implements OnInit, OnDestroy {
   estadoIcono(estado: string): string {
     switch (estado) {
       case 'ACTIVO':
-        return '✅';
+        return '[]';
       case 'INACTIVO':
-        return '❌';
+        return '[]';
       case 'ERROR':
-        return '⚠️';
+        return '[][]';
       default:
         return '❓';
     }

@@ -13,7 +13,7 @@ import { PublicacionServicio, Publicacion } from '../../../core/servicios/public
     <div class="feed-container">
       <!-- Header -->
       <header class="feed-header">
-        <h1>📺 InnoAd - Publicidad en Vivo</h1>
+        <h1>[]� InnoAd - Publicidad en Vivo</h1>
         <p class="subtitulo">Descubre las mejores marcas en las principales ubicaciones</p>
       </header>
 
@@ -39,7 +39,7 @@ import { PublicacionServicio, Publicacion } from '../../../core/servicios/public
           <div class="publicacion-info">
             <div class="info-cliente">
               <h2>{{ publicacionActual.usuarioNombre }}</h2>
-              <p class="ubicacion">📍 {{ ubicacionActual }}</p>
+              <p class="ubicacion">[]� {{ ubicacionActual }}</p>
             </div>
 
             <div class="info-publicacion">
@@ -64,7 +64,7 @@ import { PublicacionServicio, Publicacion } from '../../../core/servicios/public
         <!-- Sin publicaciones -->
         <div *ngIf="!publicacionActual" class="sin-publicaciones-feed">
           <div class="contenido-vacio">
-            <h2>🎬 Pantallas Disponibles</h2>
+            <h2>[]� Pantallas Disponibles</h2>
             <p>Las publicaciones aparecerán aquí en vivo</p>
             <button class="btn-anunciar" (click)="navegarRegistro()">
               Comienza a Anunciar
@@ -94,7 +94,7 @@ import { PublicacionServicio, Publicacion } from '../../../core/servicios/public
       <!-- Sección de información -->
       <section class="info-section">
         <div class="info-card">
-          <h3>🎯 ¿Qué es InnoAd?</h3>
+          <h3>[]� ¿Qué es InnoAd?</h3>
           <p>
             Plataforma de publicidad digital en centros comerciales y ubicaciones estratégicas.
             Alcanza a miles de clientes en tiempo real.
@@ -102,7 +102,7 @@ import { PublicacionServicio, Publicacion } from '../../../core/servicios/public
         </div>
 
         <div class="info-card">
-          <h3>🚀 Comienza Hoy</h3>
+          <h3>[]� Comienza Hoy</h3>
           <p>
             Registra tu marca y comienza a transmitir tus publicidades en las mejores pantallas
             de tu ciudad.
@@ -111,7 +111,7 @@ import { PublicacionServicio, Publicacion } from '../../../core/servicios/public
         </div>
 
         <div class="info-card">
-          <h3>📊 Métricas en Tiempo Real</h3>
+          <h3>[]� Métricas en Tiempo Real</h3>
           <p>
             Visualiza el desempeño de tus publicidades con estadísticas detalladas de
             reproducción y engagement.
@@ -121,7 +121,7 @@ import { PublicacionServicio, Publicacion } from '../../../core/servicios/public
 
       <!-- Ubicaciones disponibles -->
       <section class="ubicaciones-section">
-        <h2>📍 Ubicaciones Disponibles</h2>
+        <h2>[]� Ubicaciones Disponibles</h2>
         <div class="ubicaciones-grid">
           <div *ngFor="let ub of ubicacionesDisponibles" class="ubicacion-card">
             <h4>{{ ub.ciudad }}</h4>

@@ -1,0 +1,119 @@
+name: Deploy to Tailscale Server
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: 📦 Install dependencies
+      run: npm install
+
+    - name: 🔨 Build application (Tailscale)
+      run: npm run build
+
+    - name: 📂 Prepare deployment artifacts
+      run: |
+        mkdir -p deploy
+        cp -r dist deploy/
+        cp Dockerfile deploy/
+        cp nginx.conf deploy/ 2>/dev/null || true
+
+    - name: 🔐 Setup SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.TAILSCALE_SSH_KEY }}" > ~/.ssh/id_ed25519
+        chmod 600 ~/.ssh/id_ed25519
+        ssh-keyscan -H 100.91.23.46 >> ~/.ssh/known_hosts 2>/dev/null || true
+
+    - name: 📡 Deploy to Tailscale Server
+      run: |
+        echo "📤 Transferring build artifacts..."
+        scp -r -o StrictHostKeyChecking=accept-new deploy/dist vboxuser@100.91.23.46:/tmp/innoad-build/
+
+        echo "🚀 Running deployment on server..."
+        ssh -o StrictHostKeyChecking=accept-new vboxuser@100.91.23.46 << 'EOF'
+        set -e
+
+        DEPLOY_DIR="/home/vboxuser/innoad"
+        BACKUP_DIR="/home/vboxuser/innoad-backup-$(date +%Y%m%d-%H%M%S)"
+
+        echo "📂 Creating backup..."
+        if [ -d "$DEPLOY_DIR/dist" ]; then
+          mkdir -p "$BACKUP_DIR"
+          cp -r "$DEPLOY_DIR/dist" "$BACKUP_DIR/" || true
+        fi
+
+        echo "📥 Deploying new build..."
+        mkdir -p "$DEPLOY_DIR"
+        rsync -av --delete /tmp/innoad-build/dist/ "$DEPLOY_DIR/dist/"
+
+        echo "🔄 Restarting frontend service..."
+
+        # If running via Docker
+        if docker ps 2>/dev/null | grep -q innoad-frontend; then
+          echo "  └─ Restarting Docker container..."
+          docker-compose -f "$DEPLOY_DIR/docker-compose.server.yml" restart frontend
+        fi
+
+        # If running via pm2
+        if command -v pm2 &> /dev/null; then
+          echo "  └─ Restarting PM2 process..."
+          pm2 restart innoad-frontend || pm2 start --name innoad-frontend "cd $DEPLOY_DIR/dist && npx http-server -p 80"
+        fi
+
+        # If running via systemd
+        if systemctl list-units --all | grep -q innoad-frontend; then
+          echo "  └─ Restarting systemd service..."
+          sudo systemctl restart innoad-frontend
+        fi
+
+        echo "✅ Frontend deployment complete"
+        echo "🧹 Cleaning up..."
+        rm -rf /tmp/innoad-build
+
+        EOF
+
+    - name: ✅ Verify deployment
+      run: |
+        echo "🔍 Checking if service is responding..."
+        max_attempts=5
+        attempt=0
+
+        while [ $attempt -lt $max_attempts ]; do
+          if curl -sf https://azure-pro.tail2a2f73.ts.net/ > /dev/null 2>&1; then
+            echo "✅ Service is responding"
+            exit 0
+          fi
+
+          attempt=$((attempt + 1))
+          echo "⏳ Attempt $attempt/$max_attempts - waiting for service..."
+          sleep 10
+        done
+
+        echo "⚠️  Service check timed out, but deployment may still be in progress"
+        exit 0
+
+    - name: 📢 Deployment notification
+      if: always()
+      run: |
+        if [ "${{ job.status }}" == "success" ]; then
+          echo "✅ Deployment to Tailscale successful!"
+          echo "🌐 Access at: https://azure-pro.tail2a2f73.ts.net/"
+        else
+          echo "❌ Deployment failed"
+        fi

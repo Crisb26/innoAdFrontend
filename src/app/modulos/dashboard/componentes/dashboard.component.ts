@@ -29,7 +29,17 @@ interface MetricaKPI {
       <!-- Sección de Bienvenida Hero -->
       <div class="seccion-bienvenida-hero">
         <h1 class="titulo-bienvenida-hero">¡Bienvenido, {{ nombreUsuario() }}!</h1>
-        <p class="subtitulo-bienvenida-hero">Gestiona tu contenido digital de manera inteligente</p>
+        <p class="subtitulo-bienvenida-hero">
+          @if (esAdministrador()) {
+            Administra el sistema, usuarios y configuración de InnoAd
+          } @else if (esTecnico()) {
+            Gestiona pantallas, contenidos y brinda soporte técnico a usuarios
+          } @else if (esUsuario()) {
+            Crea campañas y contenido multimedia para tus públicos digitales
+          } @else {
+            Gestiona tu contenido digital de manera inteligente
+          }
+        </p>
       </div>
 
       <!-- Contenido Principal -->
@@ -242,7 +252,20 @@ export class DashboardComponent implements OnInit {
 
   protected esAdministrador(): boolean {
     const usuario = this.servicioAuth.usuarioActual();
-    return usuario?.rol?.nombre === 'Administrador' || false;
+    const rol = usuario?.rol?.nombre || '';
+    return rol === 'ADMIN' || rol === 'Administrador' || false;
+  }
+
+  protected esTecnico(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre || '';
+    return rol === 'TECNICO' || rol === 'Tecnico' || false;
+  }
+
+  protected esUsuario(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre || '';
+    return rol === 'USUARIO' || rol === 'Usuario' || false;
   }
 
   protected tieneAccesoCampanas(): boolean {

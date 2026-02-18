@@ -1,5 +1,5 @@
 /**
- * ðŸŽ¨ DIRECTIVA DE ANIMACIONES PROFESIONALES
+ * []¨ DIRECTIVA DE ANIMACIONES PROFESIONALES
  * Aplica animaciones a elementos automÃ¡ticamente
  * Uso: <div appAnimacion="fadeIn"></div>
  */
@@ -105,7 +105,7 @@ export class AnimacionDirective implements OnInit {
 }
 
 /**
- * ðŸŽ¨ DIRECTIVA PARA HOVER EFFECTS
+ * []¨ DIRECTIVA PARA HOVER EFFECTS
  * Uso: <div appHoverEfecto="lift"></div>
  */
 
@@ -196,7 +196,7 @@ export class HoverEfectoDirective implements OnInit {
 }
 
 /**
- * ðŸŽ¨ DIRECTIVA PARA TRANSICIONES SUAVES
+ * []¨ DIRECTIVA PARA TRANSICIONES SUAVES
  * Uso: <div appTransicion="normal"></div>
  */
 

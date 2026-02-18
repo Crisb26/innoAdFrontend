@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ServicioHardwareAPI, DispositivoIoT, ContenidoRemoto, ComandoDispositivo } from './hardware-api.service';
 
 /**
- * 🧪 TEST SUITE: ServicioHardwareAPI (Frontend)
+ * []� TEST SUITE: ServicioHardwareAPI (Frontend)
  * Pruebas unitarias para el servicio HTTP del hardware API
  */
 describe('ServicioHardwareAPI', () => {
@@ -29,7 +29,7 @@ describe('ServicioHardwareAPI', () => {
   // ==================== DISPOSITIVOS ====================
 
   describe('Dispositivos', () => {
-    it('✅ obtenerDispositivos() debe hacer GET a /dispositivos', (done) => {
+    it('[] obtenerDispositivos() debe hacer GET a /dispositivos', (done) => {
       // Arrange
       const dispositivosMock: DispositivoIoT[] = [
         {
@@ -64,7 +64,7 @@ describe('ServicioHardwareAPI', () => {
       req.flush(dispositivosMock);
     });
 
-    it('✅ obtenerDispositivo() debe hacer GET a /dispositivos/{id}', (done) => {
+    it('[] obtenerDispositivo() debe hacer GET a /dispositivos/{id}', (done) => {
       // Arrange
       const dispositivoMock: DispositivoIoT = {
         id: 'disp-001',
@@ -97,7 +97,7 @@ describe('ServicioHardwareAPI', () => {
       req.flush(dispositivoMock);
     });
 
-    it('✅ registrarDispositivo() debe hacer POST a /dispositivos', (done) => {
+    it('[] registrarDispositivo() debe hacer POST a /dispositivos', (done) => {
       // Arrange
       const nuevoDispositivo = {
         nombre: 'Nueva Raspberry',
@@ -131,7 +131,7 @@ describe('ServicioHardwareAPI', () => {
       req.flush(dispositivoGuardado);
     });
 
-    it('✅ actualizarDispositivo() debe hacer PUT a /dispositivos/{id}', (done) => {
+    it('[] actualizarDispositivo() debe hacer PUT a /dispositivos/{id}', (done) => {
       // Arrange
       const actualizacion = { nombre: 'Raspberry Actualizada' };
 
@@ -149,7 +149,7 @@ describe('ServicioHardwareAPI', () => {
       req.flush({});
     });
 
-    it('✅ eliminarDispositivo() debe hacer DELETE a /dispositivos/{id}', (done) => {
+    it('[] eliminarDispositivo() debe hacer DELETE a /dispositivos/{id}', (done) => {
       // Act
       servicio.eliminarDispositivo('disp-001').subscribe(() => {
         // Assert
@@ -167,7 +167,7 @@ describe('ServicioHardwareAPI', () => {
   // ==================== COMANDOS ====================
 
   describe('Comandos', () => {
-    it('✅ reproducirContenido() debe ejecutar comando reproducir', (done) => {
+    it('[] reproducirContenido() debe ejecutar comando reproducir', (done) => {
       // Arrange
       const comando = {
         id: 'cmd-001',
@@ -191,7 +191,7 @@ describe('ServicioHardwareAPI', () => {
       req.flush(comando);
     });
 
-    it('✅ pausarDispositivo() debe ejecutar comando pausar', (done) => {
+    it('[] pausarDispositivo() debe ejecutar comando pausar', (done) => {
       // Arrange
       const comando = {
         id: 'cmd-002',
@@ -212,7 +212,7 @@ describe('ServicioHardwareAPI', () => {
       req.flush(comando);
     });
 
-    it('✅ detenerDispositivo() debe ejecutar comando detener', (done) => {
+    it('[] detenerDispositivo() debe ejecutar comando detener', (done) => {
       // Arrange
       const comando = {
         id: 'cmd-003',
@@ -233,7 +233,7 @@ describe('ServicioHardwareAPI', () => {
       req.flush(comando);
     });
 
-    it('✅ reiniciarDispositivo() debe ejecutar comando reiniciar', (done) => {
+    it('[] reiniciarDispositivo() debe ejecutar comando reiniciar', (done) => {
       // Arrange
       const comando = {
         id: 'cmd-004',
@@ -254,7 +254,7 @@ describe('ServicioHardwareAPI', () => {
       req.flush(comando);
     });
 
-    it('✅ actualizarSoftware() debe ejecutar comando actualizar', (done) => {
+    it('[] actualizarSoftware() debe ejecutar comando actualizar', (done) => {
       // Arrange
       const comando = {
         id: 'cmd-005',
@@ -279,7 +279,7 @@ describe('ServicioHardwareAPI', () => {
   // ==================== CONTENIDO ====================
 
   describe('Contenido', () => {
-    it('✅ obtenerContenido() debe hacer GET a /contenido', (done) => {
+    it('[] obtenerContenido() debe hacer GET a /contenido', (done) => {
       // Arrange
       const contenidoMock: ContenidoRemoto[] = [
         {
@@ -310,7 +310,7 @@ describe('ServicioHardwareAPI', () => {
       req.flush(contenidoMock);
     });
 
-    it('✅ asignarContenidoADispositivos() debe hacer POST a /contenido/{id}/asignar', (done) => {
+    it('[] asignarContenidoADispositivos() debe hacer POST a /contenido/{id}/asignar', (done) => {
       // Arrange
       const contenidoMock: ContenidoRemoto = {
         id: 'cont-001',
@@ -342,7 +342,7 @@ describe('ServicioHardwareAPI', () => {
       req.flush(contenidoMock);
     });
 
-    it('✅ eliminarContenido() debe hacer DELETE a /contenido/{id}', (done) => {
+    it('[] eliminarContenido() debe hacer DELETE a /contenido/{id}', (done) => {
       // Act
       servicio.eliminarContenido('cont-001').subscribe(() => {
         // Assert
@@ -360,7 +360,7 @@ describe('ServicioHardwareAPI', () => {
   // ==================== ESTADÍSTICAS ====================
 
   describe('Estadísticas', () => {
-    it('✅ obtenerEstadisticas() debe hacer GET a /dispositivos/{id}/estadisticas', (done) => {
+    it('[] obtenerEstadisticas() debe hacer GET a /dispositivos/{id}/estadisticas', (done) => {
       // Arrange
       const estadisticasMock = {
         dispositivoId: 'disp-001',
@@ -387,7 +387,7 @@ describe('ServicioHardwareAPI', () => {
       req.flush(estadisticasMock);
     });
 
-    it('✅ testConexion() debe hacer GET a /dispositivos/{id}/test', (done) => {
+    it('[] testConexion() debe hacer GET a /dispositivos/{id}/test', (done) => {
       // Arrange
       const testMock = {
         conectado: true,
@@ -409,7 +409,7 @@ describe('ServicioHardwareAPI', () => {
       req.flush(testMock);
     });
 
-    it('✅ sincronizar() debe hacer POST a /dispositivos/{id}/sincronizar', (done) => {
+    it('[] sincronizar() debe hacer POST a /dispositivos/{id}/sincronizar', (done) => {
       // Arrange
       const syncMock = {
         mensaje: 'Sincronización completada',
@@ -433,7 +433,7 @@ describe('ServicioHardwareAPI', () => {
   // ==================== OBSERVABLES ====================
 
   describe('Observables públicos', () => {
-    it('✅ dispositivos$ debe ser un Observable', (done) => {
+    it('[] dispositivos$ debe ser un Observable', (done) => {
       // Act & Assert
       servicio.dispositivos$.subscribe((dispositivos) => {
         expect(Array.isArray(dispositivos)).toBe(true);
@@ -441,7 +441,7 @@ describe('ServicioHardwareAPI', () => {
       });
     });
 
-    it('✅ contenido$ debe ser un Observable', (done) => {
+    it('[] contenido$ debe ser un Observable', (done) => {
       // Act & Assert
       servicio.contenido$.subscribe((contenido) => {
         expect(Array.isArray(contenido)).toBe(true);
@@ -449,7 +449,7 @@ describe('ServicioHardwareAPI', () => {
       });
     });
 
-    it('✅ estadoConexion$ debe ser un Observable', (done) => {
+    it('[] estadoConexion$ debe ser un Observable', (done) => {
       // Act & Assert
       servicio.estadoConexion$.subscribe((conectado) => {
         expect(typeof conectado).toBe('boolean');
@@ -457,7 +457,7 @@ describe('ServicioHardwareAPI', () => {
       });
     });
 
-    it('✅ metrics$ debe ser un Observable', (done) => {
+    it('[] metrics$ debe ser un Observable', (done) => {
       // Act & Assert
       servicio.metrics$.subscribe(() => {
         expect(true).toBe(true);

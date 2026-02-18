@@ -33,7 +33,7 @@ import NotifyX from 'notifyx';
           <div class="pulso-energia" [style.opacity]="estadoAsistente().nivelEnergia / 100"></div>
         </div>
         <div class="tooltip-asistente">
-          <span>¡Hola! Soy InnoBot 🤖</span>
+          <span>¡Hola! Soy InnoBot []�</span>
           <div class="flecha-tooltip"></div>
         </div>
       </div>

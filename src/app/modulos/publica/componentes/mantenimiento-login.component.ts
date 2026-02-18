@@ -19,13 +19,13 @@ import NotifyX from 'notifyx';
 
       <div class="contenido-mantenimiento">
         <div class="header-mantenimiento">
-          <div class="logo-mantenimiento">🔧</div>
+          <div class="logo-mantenimiento">[]�</div>
           <h1>Modo Mantenimiento</h1>
           <p class="subtitulo">El sistema está en mantenimiento programado</p>
         </div>
 
         <div class="info-mantenimiento">
-          <div class="icono-info">⚙️</div>
+          <div class="icono-info">⚙[]</div>
           <h2>Estamos mejorando tu experiencia</h2>
           <p>Realizamos actualizaciones importantes para ofrecerte un mejor servicio.</p>
           <p class="tiempo-estimado">Tiempo estimado: 2-4 horas</p>
@@ -62,11 +62,11 @@ import NotifyX from 'notifyx';
 
         <div class="info-adicional">
           <div class="item-info">
-            <span class="icono">📧</span>
+            <span class="icono">[]�</span>
             <p>Te notificaremos cuando el sistema esté disponible</p>
           </div>
           <div class="item-info">
-            <span class="icono">📱</span>
+            <span class="icono">[]�</span>
             <p>Puedes revisar el estado en nuestras redes sociales</p>
           </div>
           <div class="item-info">

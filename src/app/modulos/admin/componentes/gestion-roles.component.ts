@@ -18,7 +18,7 @@ const COLORES_DISPONIBLES = [
   '#FF8787', '#A78BFA', '#F97316', '#06B6D4', '#EC4899'
 ];
 
-const ICONOS_DISPONIBLES = ['⚙️', '👨‍💼', '📊', '👤', '🔐', '📱', '💼', '🎯', '🚀', '✨'];
+const ICONOS_DISPONIBLES = ['⚙[]', '[]�‍[]�', '[]�', '[]�', '[]�', '[]�', '[]�', '[]�', '[]�', '✨'];
 
 const PERMISOS_DISPONIBLES = [
   'CREAR_CAMPANAS', 'EDITAR_CAMPANAS', 'ELIMINAR_CAMPANAS',
@@ -242,7 +242,7 @@ export class GestionRolesComponent implements OnInit {
           nombre: 'Administrador',
           descripcion: 'Control total del sistema',
           color: '#FF6B9D',
-          icono: '⚙️',
+          icono: '⚙[]',
           permisos: PERMISOS_DISPONIBLES,
           estado: 'activo'
         },
@@ -251,7 +251,7 @@ export class GestionRolesComponent implements OnInit {
           nombre: 'Gerente',
           descripcion: 'Gestión de campañas y reportes',
           color: '#00D4FF',
-          icono: '👨‍💼',
+          icono: '[]�‍[]�',
           permisos: [
             'CREAR_CAMPANAS', 'EDITAR_CAMPANAS',
             'VER_REPORTES', 'DESCARGAR_REPORTES'
@@ -263,7 +263,7 @@ export class GestionRolesComponent implements OnInit {
           nombre: 'Operador',
           descripcion: 'Manejo de contenidos y pantallas',
           color: '#FFC93D',
-          icono: '📱',
+          icono: '[]�',
           permisos: [
             'CREAR_CONTENIDOS', 'EDITAR_CONTENIDOS',
             'CREAR_PANTALLAS', 'EDITAR_PANTALLAS'

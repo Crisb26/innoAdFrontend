@@ -48,11 +48,30 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         router.navigate(['/sin-permisos']);
       } else if (error.status === 404) {
         // Recurso no encontrado
-        console.warn('Recurso no encontrado (404):', mensajeErrorDetallado);
-        NotifyX.error('El recurso solicitado no fue encontrado.', {
-          duration: 2000,
-          dismissible: true
-        });
+        console.warn('Recurso no encontrado (404):', req.url);
+
+        // Silenciar ciertos 404s que son esperados (endpoints opcionales/antiguos)
+        const endpointsOpcionalesOAntiguos = [
+          '/api/onboarding',
+          '/api/chat/',
+          '/api/dispositivos',
+          '/api/ubicaciones/ciudades',
+          '/api/admin/monitoreo',
+          '/api/v1/publicaciones/pendientes-revision',
+          '/api/publicaciones',
+          'tutorial',
+          'health-check',
+          'assets'
+        ];
+
+        const esEndpointOpcional = endpointsOpcionalesOAntiguos.some(ep => req.url.includes(ep));
+
+        if (!esEndpointOpcional) {
+          NotifyX.error('El recurso solicitado no fue encontrado.', {
+            duration: 2000,
+            dismissible: true
+          });
+        }
       } else if (error.status === 503) {
         // Sistema en mantenimiento
         console.warn('Sistema en mantenimiento (503)');

@@ -77,7 +77,7 @@ interface RaspberryPi {
           <div class="cabecera-tarjeta">
             <div class="info-basica">
               <h3>{{ rpi.nombre }}</h3>
-              <p class="ubicacion">📍 {{ rpi.ubicacion }}</p>
+              <p class="ubicacion">[]� {{ rpi.ubicacion }}</p>
               <p class="id-pantalla">ID: {{ rpi.id }}</p>
             </div>
             <div class="estado-badge" [ngClass]="rpi.estado">
@@ -131,19 +131,19 @@ interface RaspberryPi {
           <!-- Acciones -->
           <div class="acciones-tarjeta">
             <button class="btn-pequeno" (click)="reproducirTest(rpi.id)" title="Prueba de pantalla">
-              📺 Test
+              []� Test
             </button>
             <button class="btn-pequeno" (click)="recargarPantalla(rpi.id)" title="Recargar contenido">
-              🔄 Recargar
+              []� Recargar
             </button>
             <button class="btn-pequeno" (click)="reiniciarPantalla(rpi.id)" title="Reiniciar">
               ⚡ Reiniciar
             </button>
             <button class="btn-pequeno danger" (click)="eliminarPantalla(rpi.id)" title="Eliminar">
-              🗑️ Eliminar
+              []�[] Eliminar
             </button>
             <button class="btn-pequeno" (click)="editarPantalla(rpi.id)" title="Editar">
-              ✏️ Editar
+              ✏[] Editar
             </button>
           </div>
         </div>

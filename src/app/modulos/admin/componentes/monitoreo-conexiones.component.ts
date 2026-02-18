@@ -34,9 +34,9 @@ interface EstadisticasConexiones {
   template: `
     <div class="monitoreo-conexiones">
       <div class="header">
-        <h2>ğŸ“Š Monitoreo de Conexiones en Tiempo Real</h2>
+        <h2>[]Š Monitoreo de Conexiones en Tiempo Real</h2>
         <div class="indicador-actualizacion" [class.actualizado]="actualizado">
-          ğŸ”„ Actualizado: {{ ultimaActualizacion | date:'HH:mm:ss' }}
+          []„ Actualizado: {{ ultimaActualizacion | date:'HH:mm:ss' }}
         </div>
       </div>
 
@@ -67,7 +67,7 @@ interface EstadisticasConexiones {
       </div>
 
       <div class="seccion-conexiones">
-        <h3>ğŸ‘¥ Conexiones Activas en Tiempo Real</h3>
+        <h3>[]¥ Conexiones Activas en Tiempo Real</h3>
         
         <div class="tabla-conexiones">
           <table>
@@ -108,7 +108,7 @@ interface EstadisticasConexiones {
 
       <div class="seccion-advertencias" *ngIf="mostrarAdvertencia()">
         <div class="advertencia" [class.critica]="estadisticas?.porcentajeCapacidad! > 95">
-          âš ï¸ 
+          [][] 
           <span *ngIf="estadisticas?.porcentajeCapacidad! > 95">
             ALERTA CRÃTICA: Sistema al {{ estadisticas?.porcentajeCapacidad }}% de capacidad
           </span>
@@ -396,11 +396,11 @@ export class MonitoreoConexionesComponent implements OnInit, OnDestroy {
 
   obtenerId(so: string): string {
     const iconos: { [key: string]: string } = {
-      'Windows': 'ğŸªŸ',
-      'macOS': 'ğŸ',
-      'Linux': 'ğŸ§',
-      'Android': 'ğŸ¤–',
-      'iOS': 'ğŸ',
+      'Windows': '[]Ÿ',
+      'macOS': '[]',
+      'Linux': '[]§',
+      'Android': '[]–',
+      'iOS': '[]',
       'Desconocido': 'â“'
     };
     return iconos[so] || 'â“';

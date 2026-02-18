@@ -94,9 +94,9 @@ import NotifyX from 'notifyx';
                   <td>
                     <span class="orientacion-badge" [ngClass]="pantalla.orientacion.toLowerCase()">
                       @if (pantalla.orientacion === 'HORIZONTAL') {
-                        ðŸ“º Horizontal
+                        []º Horizontal
                       } @else {
-                        ðŸ“± Vertical
+                        []± Vertical
                       }
                     </span>
                   </td>

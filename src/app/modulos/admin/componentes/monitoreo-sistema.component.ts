@@ -14,7 +14,7 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
       <!-- Header -->
       <div class="header-section">
         <div class="titulo-seccion">
-          <h2>🖥️ Monitoreo del Sistema</h2>
+          <h2>[]�[] Monitoreo del Sistema</h2>
           <p>Estado en tiempo real de la infraestructura</p>
         </div>
         <div class="controles-header">
@@ -24,9 +24,9 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
           </div>
           <button class="btn-futurista" (click)="toggleMonitoreo()">
             @if (monitoreando()) {
-              <span class="icono">⏸️</span> Pausar
+              <span class="icono">⏸[]</span> Pausar
             } @else {
-              <span class="icono">▶️</span> Reanudar
+              <span class="icono">▶[]</span> Reanudar
             }
           </button>
         </div>
@@ -46,7 +46,7 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
           <div class="metricas-principales">
             @if (estadoSistema(); as estado) {
               <div class="metrica-item">
-                <div class="metrica-icon">🖥️</div>
+                <div class="metrica-icon">[]�[]</div>
                 <div class="metrica-info">
                   <div class="metrica-label">CPU</div>
                   <div class="metrica-valor" [attr.data-nivel]="obtenerNivelMetrica(estado.cpu.porcentajeUso)">
@@ -62,7 +62,7 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
               </div>
 
               <div class="metrica-item">
-                <div class="metrica-icon">🧠</div>
+                <div class="metrica-icon">[]�</div>
                 <div class="metrica-info">
                   <div class="metrica-label">RAM</div>
                   <div class="metrica-valor" [attr.data-nivel]="obtenerNivelMetrica(estado.memoria.porcentajeUso)">
@@ -78,7 +78,7 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
               </div>
 
               <div class="metrica-item">
-                <div class="metrica-icon">💾</div>
+                <div class="metrica-icon">[]�</div>
                 <div class="metrica-info">
                   <div class="metrica-label">Disco</div>
                   <div class="metrica-valor" [attr.data-nivel]="obtenerNivelMetrica(estado.disco.porcentajeUso)">
@@ -134,7 +134,7 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
       <!-- Gráficos de Rendimiento -->
       <div class="tarjeta-cristal graficos-rendimiento">
         <div class="graficos-header">
-          <h3>📈 Rendimiento en Tiempo Real</h3>
+          <h3>[]� Rendimiento en Tiempo Real</h3>
           <div class="controles-grafico">
             <select [(ngModel)]="periodoGrafico" (change)="actualizarGraficos()" class="select-futurista">
               <option value="5m">Últimos 5 min</option>
@@ -215,13 +215,13 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
       <div class="grid-logs-alertas">
         <div class="tarjeta-cristal logs-sistema">
           <div class="logs-header">
-            <h3>📝 Logs del Sistema</h3>
+            <h3>[]� Logs del Sistema</h3>
             <button class="btn-secundario" (click)="limpiarLogs()">Limpiar</button>
           </div>
           <div class="logs-contenido">
             @if (logsSistema().length === 0) {
               <div class="empty-state-mini">
-                <div class="empty-icon">📋</div>
+                <div class="empty-icon">[]�</div>
                 <p>Sin logs recientes</p>
               </div>
             } @else {
@@ -237,7 +237,7 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
 
         <div class="tarjeta-cristal alertas-sistema">
           <div class="alertas-header">
-            <h3>🚨 Alertas</h3>
+            <h3>[]� Alertas</h3>
             @if (alertasActivas().length > 0) {
               <div class="contador-alertas">{{ alertasActivas().length }}</div>
             }
@@ -245,7 +245,7 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
           <div class="alertas-contenido">
             @if (alertasActivas().length === 0) {
               <div class="empty-state-mini success">
-                <div class="empty-icon">✅</div>
+                <div class="empty-icon">[]</div>
                 <p>Sistema funcionando correctamente</p>
               </div>
             } @else {
@@ -253,9 +253,9 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
                 <div class="alerta-item" [attr.data-tipo]="alerta.tipo">
                   <div class="alerta-icon">
                     @switch (alerta.tipo) {
-                      @case ('critical') { 🔴 }
-                      @case ('warning') { 🟡 }
-                      @case ('info') { 🔵 }
+                      @case ('critical') { []� }
+                      @case ('warning') { []� }
+                      @case ('info') { []� }
                     }
                   </div>
                   <div class="alerta-contenido">
@@ -274,7 +274,7 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
       <!-- Panel de Configuración -->
       <div class="tarjeta-cristal configuracion-panel">
         <div class="config-header">
-          <h3>⚙️ Configuración del Sistema</h3>
+          <h3>⚙[] Configuración del Sistema</h3>
           <button class="btn-futurista" (click)="toggleConfiguracion()">
             {{ panelConfigAbierto() ? 'Cerrar' : 'Configurar' }}
           </button>
@@ -359,10 +359,10 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
 
                   <div class="config-acciones">
                     <button class="btn-futurista" (click)="crearRespaldoManual()">
-                      💾 Crear Respaldo
+                      []� Crear Respaldo
                     </button>
                     <button class="btn-secundario" (click)="verHistorialRespaldos()">
-                      📋 Ver Historial
+                      []� Ver Historial
                     </button>
                   </div>
                 </div>

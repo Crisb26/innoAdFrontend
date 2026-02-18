@@ -5,11 +5,12 @@ import { filter } from 'rxjs/operators';
 import { AyudaService } from '@core/servicios/ayuda.servicio';
 import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
 import { EditarPerfilComponent } from './editar-perfil.component';
+import { ToggleTemaComponent } from './toggle-tema.component';
 
 @Component({
   selector: 'app-navegacion-autenticada',
   standalone: true,
-  imports: [CommonModule, RouterLink, EditarPerfilComponent],
+  imports: [CommonModule, RouterLink, EditarPerfilComponent, ToggleTemaComponent],
   styleUrls: ['./navegacion-autenticada.component.scss'],
   template: `
     <nav class="navbar-innoad">
@@ -27,7 +28,7 @@ import { EditarPerfilComponent } from './editar-perfil.component';
 
         <!-- Navegación Principal (Filtrada por Rol) -->
         <div class="nav-links">
-          <a routerLink="/dashboard" class="nav-item" routerLinkActive="active">
+          <a routerLink="/dashboard" class="nav-item" routerLinkActive="active" title="Tu dashboard personal">
             <span class="nav-icon"></span>
             Dashboard
           </a>
@@ -56,14 +57,15 @@ import { EditarPerfilComponent } from './editar-perfil.component';
             </a>
           }
           @if (esAdministrador()) {
-            <a routerLink="/admin" class="nav-item nav-admin" routerLinkActive="active">
+            <a routerLink="/admin" class="nav-item nav-admin" routerLinkActive="active" title="Panel de administración del sistema">
               <span class="nav-icon"></span>
               Admin
             </a>
           }
         </div>
 
-        
+        <!-- Toggle Tema -->
+        <app-toggle-tema></app-toggle-tema>
 
         <!-- Menu de Usuario -->
         <div class="user-menu" [class.open]="menuAbierto()" (click)="toggleMenu()">
@@ -113,19 +115,52 @@ import { EditarPerfilComponent } from './editar-perfil.component';
                 <span class="dropdown-icon"></span>
                 Mi Dashboard
               </a>
-              <a routerLink="/publicar" class="dropdown-item" (click)="cerrarMenu()">
-                <span class="dropdown-icon"></span>
-                Publicar Contenido
-              </a>
+
+              @if (esTecnico()) {
+                <hr class="dropdown-divider">
+                <span class="dropdown-header-text">Funciones Técnico</span>
+                <a routerLink="/pantallas" class="dropdown-item" (click)="cerrarMenu()">
+                  <span class="dropdown-icon"></span>
+                  Gestionar Pantallas
+                </a>
+                <a routerLink="/contenidos" class="dropdown-item" (click)="cerrarMenu()">
+                  <span class="dropdown-icon"></span>
+                  Revisar Contenidos
+                </a>
+              }
+
+              @if (esUsuario()) {
+                <hr class="dropdown-divider">
+                <a routerLink="/contenidos/crear" class="dropdown-item" (click)="cerrarMenu()">
+                  <span class="dropdown-icon"></span>
+                  Subir Contenido
+                </a>
+              }
+
               <a routerLink="/reportes" class="dropdown-item" (click)="cerrarMenu()">
                 <span class="dropdown-icon"></span>
                 Mis Reportes
               </a>
+
+              <a routerLink="/chat" class="dropdown-item" (click)="cerrarMenu()">
+                <span class="dropdown-icon"></span>
+                Soporte Técnico
+              </a>
+
               @if (esAdministrador()) {
                 <hr class="dropdown-divider">
+                <span class="dropdown-header-text">Funciones Admin</span>
                 <a routerLink="/admin" class="dropdown-item" (click)="cerrarMenu()">
                   <span class="dropdown-icon"></span>
-                  Panel Admin
+                  Panel de Control
+                </a>
+                <a routerLink="/admin/usuarios" class="dropdown-item" (click)="cerrarMenu()">
+                  <span class="dropdown-icon"></span>
+                  Gestionar Usuarios
+                </a>
+                <a routerLink="/admin/roles" class="dropdown-item" (click)="cerrarMenu()">
+                  <span class="dropdown-icon"></span>
+                  Configurar Roles
                 </a>
               }
               
@@ -174,18 +209,23 @@ export class NavegacionAutenticadaComponent implements OnInit {
   }
 
   private formatearNombreRol(rol: string): string {
+    // Mapeo de roles del backend (ADMIN, TECNICO, USUARIO) a display
     const rolesMap: { [key: string]: string } = {
-      'Developer': 'Desarrollador',
-      'developer': 'Desarrollador',
-      'Admin': 'Administrador',
-      'Administrador': 'Administrador',
-      'administrador': 'Administrador',
-      'Tecnico': 'Técnico',
-      'tecnico': 'Técnico',
-      'Usuario': 'Usuario',
-      'usuario': 'Usuario',
-      'User': 'Usuario',
-      'user': 'Usuario'
+      'ADMIN': '👑 Administrador',
+      'Admin': '👑 Administrador',
+      'Administrador': '👑 Administrador',
+      'administrador': '👑 Administrador',
+      'TECNICO': '🔧 Técnico',
+      'Tecnico': '🔧 Técnico',
+      'tecnico': '🔧 Técnico',
+      'Técnico': '🔧 Técnico',
+      'USUARIO': '👤 Usuario',
+      'Usuario': '👤 Usuario',
+      'usuario': '👤 Usuario',
+      'User': '👤 Usuario',
+      'user': '👤 Usuario',
+      'Developer': '👨‍💻 Desarrollador',
+      'developer': '👨‍💻 Desarrollador'
     };
     return rolesMap[rol] || rol;
   }
@@ -202,7 +242,20 @@ export class NavegacionAutenticadaComponent implements OnInit {
 
   protected esAdministrador(): boolean {
     const usuario = this.servicioAuth.usuarioActual();
-    return usuario?.rol?.nombre === 'Administrador' || false;
+    const rol = usuario?.rol?.nombre || '';
+    return rol === 'ADMIN' || rol === 'Administrador' || false;
+  }
+
+  protected esTecnico(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre || '';
+    return rol === 'TECNICO' || rol === 'Tecnico' || false;
+  }
+
+  protected esUsuario(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre || '';
+    return rol === 'USUARIO' || rol === 'Usuario' || false;
   }
 
   protected tieneAccesoCampanas(): boolean {
