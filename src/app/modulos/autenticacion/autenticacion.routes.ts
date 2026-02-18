@@ -12,7 +12,8 @@ export const routes: Routes = [
   },
   {
     path: 'recuperar-contrasena',
-    loadComponent: () => import('./componentes/recuperar-contrasena-codigo.component').then(m => m.RecuperarContraseñaCodigoComponent)  },
+    loadComponent: () => import('./componentes/recuperar-contrasena-codigo.component').then(m => m.RecuperarContraseñaCodigoComponent)
+  },
   {
     path: 'verificar-email',
     loadComponent: () => import('./componentes/verificar-email.component').then(m => m.VerificarEmailComponent)
