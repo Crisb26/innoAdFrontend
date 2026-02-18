@@ -81,9 +81,12 @@ export const authInterceptor: HttpInterceptorFn = (
   // URLs que no requieren autenticación
   const publicUrls = [
     '/auth/login',
-    '/auth/register', 
+    '/auth/registrarse',
+    '/auth/register',
     '/auth/refresh',
-    '/auth/reset-password',
+    '/auth/verificar-email',
+    '/auth/recuperar-contrasena',
+    '/auth/restablecer-contrasena',
     '/system/health'
   ];
 

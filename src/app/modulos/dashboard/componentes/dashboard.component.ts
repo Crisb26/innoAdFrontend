@@ -47,57 +47,63 @@ interface MetricaKPI {
         <!-- Saludo vacío para mantener estructura -->
         <div class="seccion-saludo">
 
-        <!-- Grid de Tarjetas -->
+        <!-- Grid de Tarjetas (Filtradas por rol) -->
         <div class="grid-tarjetas">
-          <!-- Tarjeta Campañas (Todos) -->
-          <div class="tarjeta-dashboard tarjeta-campanas">
-            <div class="icono-tarjeta">📢</div>
-            <div class="contenido-tarjeta">
-              <h3>Campañas</h3>
-              <p>{{ estadisticasCampanas() }}</p>
-              <a routerLink="/campanas" class="btn-tarjeta">
-                Gestionar Campañas
-              </a>
+          <!-- Tarjeta Campañas -->
+          @if (tieneAccesoCampanas()) {
+            <div class="tarjeta-dashboard tarjeta-campanas">
+              <div class="icono-tarjeta">Campañas</div>
+              <div class="contenido-tarjeta">
+                <h3>Campañas</h3>
+                <p>{{ estadisticasCampanas() }}</p>
+                <a routerLink="/campanas" class="btn-tarjeta">
+                  Gestionar Campañas
+                </a>
+              </div>
             </div>
-          </div>
+          }
 
-          <!-- Tarjeta Pantallas (Solo Admin y Tecnico) -->
-          @if (esAdministrador() || esTecnico()) {
+          <!-- Tarjeta Pantallas -->
+          @if (tieneAccesoPantallas()) {
             <div class="tarjeta-dashboard tarjeta-pantallas">
-              <div class="icono-tarjeta">📺</div>
+              <div class="icono-tarjeta">Pantallas</div>
               <div class="contenido-tarjeta">
                 <h3>Pantallas</h3>
                 <p>{{ estadisticasPantallas() }}</p>
                 <a routerLink="/pantallas" class="btn-tarjeta">
-                  Gestionar Pantallas
+                  Ver Pantallas
                 </a>
               </div>
             </div>
           }
 
           <!-- Tarjeta Contenidos -->
-          <div class="tarjeta-dashboard tarjeta-contenidos">
-            <div class="icono-tarjeta">Contenidos</div>
-            <div class="contenido-tarjeta">
-              <h3>Contenidos</h3>
-              <p>{{ estadisticasContenidos() }}</p>
-              <a routerLink="/contenidos" class="btn-tarjeta">
-                Crear Contenido
-              </a>
+          @if (tieneAccesoContenidos()) {
+            <div class="tarjeta-dashboard tarjeta-contenidos">
+              <div class="icono-tarjeta">Contenidos</div>
+              <div class="contenido-tarjeta">
+                <h3>Contenidos</h3>
+                <p>{{ estadisticasContenidos() }}</p>
+                <a routerLink="/contenidos" class="btn-tarjeta">
+                  Crear Contenido
+                </a>
+              </div>
             </div>
-          </div>
+          }
 
           <!-- Tarjeta Reportes -->
-          <div class="tarjeta-dashboard tarjeta-reportes">
-            <div class="icono-tarjeta">Reportes</div>
-            <div class="contenido-tarjeta">
-              <h3>Reportes</h3>
-              <p>Analytics avanzados</p>
-              <a routerLink="/reportes" class="btn-tarjeta">
-                Ver Reportes
-              </a>
+          @if (tieneAccesoReportes()) {
+            <div class="tarjeta-dashboard tarjeta-reportes">
+              <div class="icono-tarjeta">Reportes</div>
+              <div class="contenido-tarjeta">
+                <h3>Reportes</h3>
+                <p>Analytics avanzados</p>
+                <a routerLink="/reportes" class="btn-tarjeta">
+                  Ver Reportes
+                </a>
+              </div>
             </div>
-          </div>
+          }
 
           <!-- Tarjeta Graficos -->
           <div class="tarjeta-dashboard tarjeta-graficos">
@@ -260,6 +266,30 @@ export class DashboardComponent implements OnInit {
     const usuario = this.servicioAuth.usuarioActual();
     const rol = usuario?.rol?.nombre || '';
     return rol === 'USUARIO' || rol === 'Usuario' || false;
+  }
+
+  protected tieneAccesoCampanas(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
+    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
+  }
+
+  protected tieneAccesoPantallas(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
+    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
+  }
+
+  protected tieneAccesoContenidos(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
+    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
+  }
+
+  protected tieneAccesoReportes(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
+    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
   }
 
   protected estadisticasCampanas(): string {

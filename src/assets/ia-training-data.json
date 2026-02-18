@@ -1,0 +1,376 @@
+{
+  "version": "2.0",
+  "ultimaActualizacion": "2026-02-17T10:00:00Z",
+  "descripcionSistema": "InnoAd v2.0 - Plataforma integral de gestión de publicidad digital en pantallas LED",
+  "basesConocimiento": [
+    {
+      "id": "campanas",
+      "nombre": "Gestión de Campañas Publicitarias",
+      "prioridad": 1,
+      "articulos": [
+        {
+          "id": "crear_campana",
+          "titulo": "Crear una Nueva Campaña",
+          "palabrasClave": ["crear", "nueva", "hacer", "generar", "campaña", "iniciar", "comenzar"],
+          "contenido": "Para crear una nueva campaña en InnoAd:\n\n**Pasos:**\n1. Dirígete al módulo de **Campañas** desde el menú principal\n2. Haz clic en el botón **'+ Nueva Campaña'**\n3. Completa los siguientes campos:\n   - **Nombre:** Da un nombre descriptivo (máx 100 caracteres)\n   - **Descripción:** Breve descripción del objetivo\n   - **Presupuesto:** Inversión total para la campaña\n   - **Fechas:** Inicio y fin de la campaña\n4. Selecciona las **pantallas LED** donde se mostrarán los anuncios\n5. Sube o selecciona **contenido** (imágenes/videos)\n6. Configura los **horarios** de reproducción\n7. Haz clic en **'Crear Campaña'**\n\nLa campaña se creará en estado **BORRADOR** y podrás editarla antes de activarla.",
+          "ejemplos": [
+            "¿Cómo creo una campaña nueva?",
+            "Quiero hacer una campaña",
+            "¿Cuál es el proceso para crear una campaña?",
+            "Necesito crear una campaña urgente"
+          ],
+          "confianza": 0.95,
+          "accionSugerida": {
+            "id": "nav_crear_campana",
+            "titulo": "Crear Nueva Campaña",
+            "icono": "➕",
+            "tipo": "navegacion",
+            "destino": "/campanas/crear",
+            "permisosRequeridos": ["USUARIO", "ADMIN", "TECNICO"]
+          },
+          "relacionadas": ["editar_campana", "duplicar_campana", "activar_campana"]
+        },
+        {
+          "id": "crear_campana_con_ia",
+          "titulo": "Crear Campaña Automáticamente con IA",
+          "palabrasClave": ["ia", "inteligencia", "artificial", "generar", "automática", "crear campaña ia", "contenido automático"],
+          "contenido": "InnoAd incluye un **asistente de IA** que puede crear campanhas completas automáticamente:\n\n**Cómo usar:**\n1. Haz clic en el icono **🤖 Asistente IA** (esquina inferior derecha)\n2. Di o escribe: \"Crea una campaña para [tu producto]\"\n3. Proporciona detalles:\n   - Tipo de producto/servicio\n   - Público objetivo\n   - Estilo deseado (moderno, clásico, divertido, etc.)\n4. La IA generará:\n   - **Título** llamativo\n   - **Descripción** persuasiva\n   - **Call-to-action** efectivo\n   - **Hashtags** relevantes\n5. Revisa la propuesta y personaliza si necesario\n6. Haz clic en **'Crear Campaña'** para convertirla en campaña real\n\n**Beneficios:**\n- Ahorra 80% del tiempo\n- Sugerencias basadas en mejores prácticas\n- Múltiples variaciones para elegir\n- Optimizado para máximo impacto",
+          "ejemplos": [
+            "¿Puede la IA crear una campaña por mí?",
+            "Quiero que la IA genere una campaña para zapatos",
+            "¿Cómo uso la IA para crear contenido?",
+            "¿La IA puede hacer una campaña automáticamente?"
+          ],
+          "confianza": 0.90,
+          "accionSugerida": {
+            "id": "usar_ia_campana",
+            "titulo": "Usar IA para Crear Campaña",
+            "icono": "🤖",
+            "tipo": "accion",
+            "funcionalidad": "abrirAsistenteIA",
+            "permisosRequeridos": ["USUARIO", "ADMIN"]
+          },
+          "relacionadas": ["crear_campana", "editar_campana"]
+        },
+        {
+          "id": "editar_campana",
+          "titulo": "Editar una Campaña Existente",
+          "palabrasClave": ["editar", "modificar", "cambiar", "actualizar", "campaña"],
+          "contenido": "Para editar una campaña:\n\n1. Ve a **Campañas**\n2. Busca la campaña que deseas editar\n3. Haz clic en el **icono de edición** (✏️) o en el nombre de la campaña\n4. Modifica los campos que necesites:\n   - Nombre y descripción\n   - Presupuesto\n   - Fechas\n   - Pantallas asociadas\n   - Contenido\n   - Horarios\n5. Haz clic en **'Guardar Cambios'**\n\n**Nota:** No puedes editar campañas en estado ACTIVO. Si necesitas cambios urgentes, pausa la campaña primero.",
+          "ejemplos": [
+            "¿Cómo edito una campaña?",
+            "Necesito cambiar mi campaña"
+          ],
+          "confianza": 0.95,
+          "relacionadas": ["crear_campana", "duplicar_campana"]
+        },
+        {
+          "id": "duplicar_campana",
+          "titulo": "Duplicar o Clonar una Campaña",
+          "palabrasClave": ["duplicar", "clonar", "copiar", "campaña"],
+          "contenido": "Para duplicar una campaña existente:\n\n1. En la lista de campañas, find the campaign\n2. Haz clic en **'Más opciones'** (⋯) o menú contextual\n3. Selecciona **'Duplicar Campaña'**\n4. Se abrirá un formulario pre-completado con toda la información\n5. Personaliza el nombre (se sugiere: \"Nombre Original - Copia\")\n6. Realiza los cambios que necesites\n7. Haz clic en **'Crear Campaña'**\n\nEsta función es útil para reutilizar diseños exitosos o crear variantes rápidamente.",
+          "ejemplos": [
+            "¿Cómo duplico una campaña?",
+            "Quiero una copia de mi campaña anterior"
+          ],
+          "confianza": 0.95,
+          "relacionadas": ["crear_campana", "editar_campana"]
+        },
+        {
+          "id": "activar_pausar_campana",
+          "titulo": "Activar, Pausar o Finalizar una Campaña",
+          "palabrasClave": ["activar", "pausar", "detener", "parar", "finalizar", "campaña", "estado", "cambiar estado"],
+          "contenido": "Gestiona el estado de tus campañas:\n\n**ESTADOS DISPONIBLES:**\n- 🔵 **BORRADOR:** Campaña sin publicar (puedes editarla libremente)\n- 🟢 **ACTIVA:** Campaña en vivo (se muestra en pantallas)\n- 🟠 **EN PAUSA:** Campaña pausada temporalmente (puedes reanudarla)\n- 🔴 **FINALIZADA:** Campaña terminada (no puede reactivarse)\n\n**Cómo cambiar el estado:**\n1. Ve a Campañas\n2. Selecciona la campaña\n3. Haz clic en el botón de estado o en 'Cambiar Estado'\n4. Confirma la acción\n\n**Transiciones permitidas:**\nBORRADOR → ACTIVA → EN PAUSA → FINALIZADA",
+          "ejemplos": [
+            "¿Cómo activo una campaña?",
+            "¿Cómo pauso una campaña?",
+            "¿Cómo finalizo una campaña?"
+          ],
+          "confianza": 0.95,
+          "relacionadas": ["crear_campana", "editar_campana"]
+        },
+        {
+          "id": "eliminar_campana",
+          "titulo": "Eliminar una Campaña",
+          "palabrasClave": ["eliminar", "borrar", "quitar", "borrar", "campaña"],
+          "contenido": "Para eliminar una campaña:\n\n1. Ve a **Campañas**\n2. Busca la campaña a eliminar\n3. Haz clic en **'Más opciones'** (⋯)\n4. Selecciona **'Eliminar'**\n5. Confirma que deseas eliminar (⚠️ Esta acción puede no ser reversible)\n\n**RESTRICCIONES:**\n- ❌ No puedes eliminar campañas ACTIVAS (pausa primero)\n- ❌ Solo admins pueden eliminar campañas de otros usuarios\n- ⚠️ La eliminación es PERMANENTE\n\n**Alternativa:** En lugar de eliminar, puedes marcar como FINALIZADA.",
+          "ejemplos": [
+            "¿Cómo elimino una campaña?",
+            "Quiero borrar una campaña"
+          ],
+          "confianza": 0.90,
+          "relacionadas": ["activar_pausar_campana"]
+        }
+      ]
+    },
+    {
+      "id": "contenido",
+      "nombre": "Gestión de Contenido Multimedia",
+      "prioridad": 2,
+      "articulos": [
+        {
+          "id": "subir_contenido",
+          "titulo": "Subir Contenido Multimedia",
+          "palabrasClave": ["subir", "cargar", "upload", "imagen", "video", "contenido", "archivo", "media"],
+          "contenido": "Para subir contenido multimedia a InnoAd:\n\n**PASOS:**\n1. Ve al módulo **Contenido** desde el menú\n2. Haz clic en **'+ Subir Archivo'** o arrastra archivos\n3. Selecciona el archivo de tu computadora\n4. Se abrirá un editor donde puedes:\n   - Recortar/redimensionar (para imágenes)\n   - Agregar título y descripción\n   - Etiquetar con palabras clave\n   - Seleccionar categoría\n5. Haz clic en **'Confirmar'**\n\n**FORMATOS ACEPTADOS:**\n- Imágenes: JPG, PNG, GIF, WebP\n- Videos: MP4, WebM, OGG\n- Documentos: PDF\n- Máximo 500MB por archivo\n\n**TIPS:**\n- Usa nombres descriptivos\n- Comprime videos para mejor rendimiento\n- Mantén relaciones de aspecto 16:9 o 4:3",
+          "ejemplos": [
+            "¿Cómo subo un video?",
+            "¿Cómo cargo una imagen?",
+            "¿Cuál es el tamaño máximo de archivo?"
+          ],
+          "confianza": 0.95,
+          "accionSugerida": {
+            "id": "nav_subir_contenido",
+            "titulo": "Ir a Contenido",
+            "icono": "📤",
+            "tipo": "navegacion",
+            "destino": "/contenido/subir",
+            "permisosRequeridos": ["USUARIO", "ADMIN"]
+          },
+          "relacionadas": ["formatos_permitidos", "editar_contenido"]
+        },
+        {
+          "id": "formatos_permitidos",
+          "titulo": "Formatos de Archivo Permitidos",
+          "palabrasClave": ["formato", "archivo", "tipo", "extension", "permitidos", "aceptados", "formatos soportados"],
+          "contenido": "**FORMATOS SOPORTADOS EN INNOAD:**\n\n🖼️ **IMÁGENES:**\n- JPG/JPEG: Máx 500MB ✅\n- PNG: Máx 500MB ✅\n- GIF: Máx 500MB (animado soportado) ✅\n- WebP: Máx 500MB ✅\n\n🎬 **VIDEOS:**\n- MP4 (H.264): Máx 500MB ✅\n- WebM (VP8/VP9): Máx 500MB ✅\n- OGG (Theora): Máx 500MB ✅\n\n📄 **DOCUMENTOS:**\n- PDF: Máx 50MB ✅\n\n❌ **NO SOPORTADOS:**\n- Flash (.flv, .swf)\n- Real Media (.rm, .rmvb)\n- Archivos ejecutables\n- Comprimidos (.zip, .rar)\n\n💡 **RECOMENDACIONES:**\n- Usa MP4 para máxima compatibilidad\n- Comprime antes de subir\n- Prueba en pantalla antes de publicar",
+          "ejemplos": [
+            "¿Qué formatos puedo subir?",
+            "¿Soporta AVI?",
+            "¿Cuál es el tamaño máximo?"
+          ],
+          "confianza": 0.95,
+          "relacionadas": ["subir_contenido"]
+        },
+        {
+          "id": "editar_contenido",
+          "titulo": "Editar o Eliminar Contenido",
+          "palabrasClave": ["editar", "eliminar", "borrar", "contenido", "modificar"],
+          "contenido": "Para editar o eliminar contenido:\n\n**EDITAR:**\n1. Ve a Contenido\n2. Busca el archivo\n3. Haz clic en **'Editar'** o el nombre\n4. Modifica la información (nombre, descripción, etiquetas)\n5. Haz clic en **'Guardar'**\n\n**ELIMINAR:**\n1. Ve a Contenido\n2. Selecciona el archivo\n3. Haz clic en **'Más opciones'** (⋯)\n4. Selecciona **'Eliminar'**\n5. Confirma\n\n⚠️ **Nota:** Si el contenido está siendo usado en campañas activas, NO podrás eliminarlo. Primero desasócialo de las campañas.",
+          "ejemplos": [
+            "¿Cómo edito un video?",
+            "¿Cómo borro contenido?"
+          ],
+          "confianza": 0.95
+        }
+      ]
+    },
+    {
+      "id": "pantallas",
+      "nombre": "Gestión de Pantallas LED",
+      "prioridad": 3,
+      "articulos": [
+        {
+          "id": "conectar_pantalla",
+          "titulo": "Conectar una Pantalla LED",
+          "palabrasClave": ["conectar", "nueva", "añadir", "pantalla", "led", "dispositivo", "asociar"],
+          "contenido": "Para conectar una pantalla LED a InnoAd:\n\n**REQUISITOS PREVIOS:**\n- Pantalla LED física instalada\n- Conexión a internet (WiFi o Ethernet)\n- Código de emparejamiento del dispositivo\n\n**PASOS:**\n1. Ve a **Pantallas** en el módulo de administración\n2. Haz clic en **'+ Conectar Nueva Pantalla'**\n3. Completa:\n   - **Nombre:** Identificación de la pantalla (Ej: \"Pantalla entrada Calle 5\")\n   - **Código de dispositivo:** Código único de la pantalla (etiqueta física)\n   - **Ubicación:** Dirección física donde está instalada\n   - **Resolución:** Dimensiones de la pantalla (1920x1080, 1280x720, etc.)\n   - **Zona:** Grupo o zona administrativa\n4. Haz clic en **'Conectar'**\n5. La pantalla se conectará automáticamente\n\n**DESPUÉS DE CONECTAR:**\n- Puedes asignarle campañas\n- Configurar horarios de funcionamiento\n- Ver estadísticas de reproducción\n- Controlar remotamente\n\n**TROUBLESHOOTING:**\n- Si no conecta: Verifica conexión internet\n- Código inválido: Consulta con Técnico\n- Pantalla no responde: Reinicia dispositivo",
+          "ejemplos": [
+            "¿Cómo conecto una pantalla?",
+            "¿Cómo agrego una pantalla nueva?",
+            "¿Cuál es el proceso para conectar dispositivos?"
+          ],
+          "confianza": 0.95,
+          "accionSugerida": {
+            "id": "nav_conectar_pantalla",
+            "titulo": "Conectar Nueva Pantalla",
+            "icono": "📺",
+            "tipo": "navegacion",
+            "destino": "/pantallas/conectar",
+            "permisosRequeridos": ["ADMIN", "TECNICO"]
+          },
+          "relacionadas": ["ver_pantallas", "configurar_pantalla"]
+        },
+        {
+          "id": "ver_pantallas",
+          "titulo": "Ver Pantallas Conectadas",
+          "palabrasClave": ["ver", "listar", "pantallas", "mis pantallas", "dispositivos", "estado"],
+          "contenido": "Para ver el estado de tus pantallas:\n\n1. Ve a **Pantallas**\n2. Verás un listado con todas tus pantallas\n3. Para cada pantalla ves:\n   - 🟢/🔴 **Estado:** Online/Offline\n   - 📍 **Ubicación**\n   - 📊 **Resolución**\n   - 📺 **Contenido actual** reproduciendo\n   - ⏱️ **Tiempo activo**\n\n**ACCIONES DISPONIBLES:**\n- Haz clic para ver detalles\n- Editar configuración (⚙️)\n- Ver estadísticas (📊)\n- Control remoto (🎮)\n- Desconectar (✕)\n\n**FILTROS:**\n- Por estado (Online/Offline)\n- Por zona/ubicación\n- Por resolución",
+          "ejemplos": [
+            "¿Dónde veo mis pantallas?",
+            "¿Cómo sé qué pantallas tengo?"
+          ],
+          "confianza": 0.95,
+          "relacionadas": ["conectar_pantalla", "configurar_pantalla"]
+        },
+        {
+          "id": "configurar_pantalla",
+          "titulo": "Configurar Pantalla (Horarios, Brillo, etc.)",
+          "palabrasClave": ["configurar", "settings", "horarios", "brillo", "volumen", "pantalla"],
+          "contenido": "Para configurar una pantalla:\n\n**ACCESO:**\n1. Ve a Pantallas\n2. Selecciona la pantalla\n3. Haz clic en **'Configuración'** (⚙️)\n\n**OPCIONES DE CONFIGURACIÓN:**\n\n⏰ **Horarios de Funcionamiento:**\n- Hora de encendido\n- Hora de apagado\n- Días activos\n- Agenda especial\n\n🎨 **Pantalla:**\n- Brillo (0-100%)\n- Contraste\n- Color temperature\n- Modo (normal, presentación, energía)\n\n🔊 **Audio:**\n- Volumen\n- Entrada de audio\n\n🌐 **Red:**\n- WiFi/Ethernet\n- IP estática\n- DNS\n\n💾 **Almacenamiento:**\n- Limpiar caché\n- Ver espacio disponible\n\nHaz clic en **'Guardar'** para aplicar cambios.",
+          "ejemplos": [
+            "¿Cómo configuro el horario de una pantalla?",
+            "¿Cómo cambio el brillo?"
+          ],
+          "confianza": 0.90,
+          "relacionadas": ["conectar_pantalla", "ver_pantallas"]
+        }
+      ]
+    },
+    {
+      "id": "reportes",
+      "nombre": "Reportes y Estadísticas",
+      "prioridad": 4,
+      "articulos": [
+        {
+          "id": "ver_reportes",
+          "titulo": "Ver Reportes y Estadísticas",
+          "palabrasClave": ["reportes", "estadísticas", "datos", "analytics", "ver", "analítica"],
+          "contenido": "Para acceder a reportes en InnoAd:\n\n**UBICACIÓN:**\n1. Ve a **Reportes** en el menú principal\n2. O haz clic en **'Estadísticas'** en cualquier campaña/pantalla\n\n**TIPOS DE REPORTES:**\n\n📊 **Campañas:**\n- Impresiones totales\n- Clics\n- CTR (Click-Through Rate)\n- Duración promedio de visualización\n- Rendimiento por pantalla\n\n📺 **Pantallas:**\n- Tiempo de actividad\n- Disponibilidad (%)\n- Contenido reproducido\n- Horas pico\n\n💰 **Financieros:**\n- Costo por campaña\n- ROI estimado\n- Presupuesto restante\n- Gasto por mes\n\n**FILTROS:**\n- Rango de fechas\n- Por campaña/pantalla\n- Por zona/ubicación\n- Por tipo\n\n**EXPORTAR:**\n- PDF\n- Excel\n- CSV",
+          "ejemplos": [
+            "¿Cómo veo los reportes?",
+            "¿Dónde están las estadísticas?",
+            "¿Cómo exporto un reporte?"
+          ],
+          "confianza": 0.95,
+          "accionSugerida": {
+            "id": "nav_reportes",
+            "titulo": "Ir a Reportes",
+            "icono": "📊",
+            "tipo": "navegacion",
+            "destino": "/reportes",
+            "permisosRequeridos": ["USUARIO", "ADMIN", "TECNICO"]
+          },
+          "relacionadas": ["analizar_campana"]
+        },
+        {
+          "id": "analizar_campana",
+          "titulo": "Analizar Performance de una Campaña",
+          "palabrasClave": ["analizar", "performance", "efectividad", "campaña", "resultados"],
+          "contenido": "Para analizar cómo funciona tu campaña:\n\n**DESDE LA CAMPAÑA:**\n1. Ve a Campañas\n2. Selecciona una campaña\n3. Haz clic en **'Estadísticas'** o **'Analytics'**\n\n**MÉTRICAS CLAVE:**\n\n👁️ **Alcance:**\n- Impresiones: Veces que se mostró\n- Pantallas: Cantidad de pantallas usadas\n- Promedio de visualización: Personas que la vieron completa\n\n🖱️ **Interacción:**\n- Clics (si es interactiva)\n- Tasa de conversión\n- Tiempo promedio de visión\n\n💡 **Performance:**\n- Efectividad general (1-10)\n- Comparación con promedio\n- Tendencia (mejorando/empeorando)\n\n💰 **Financiero:**\n- Costo total\n- Costo por impresión\n- ROI proyectado\n\n**ANÁLISIS:**\n- Compara con campañas similares\n- Identifica pantallas de mejor rendimiento\n- Optimiza según resultados",
+          "ejemplos": [
+            "¿Cómo veo cómo va mi campaña?",
+            "¿Cuál es el rendimiento de mi anuncio?"
+          ],
+          "confianza": 0.95,
+          "relacionadas": ["ver_reportes"]
+        }
+      ]
+    },
+    {
+      "id": "cuenta",
+      "nombre": "Gestión de Cuenta y Perfil",
+      "prioridad": 5,
+      "articulos": [
+        {
+          "id": "editar_perfil",
+          "titulo": "Editar Perfil de Usuario",
+          "palabrasClave": ["perfil", "editar", "usuario", "cuenta", "información personal"],
+          "contenido": "Para editar tu perfil:\n\n1. Haz clic en tu **Avatar** (arriba a la derecha)\n2. Selecciona **'Mi Perfil'** o **'Configuración'**\n3. Edita:\n   - Nombre completo\n   - Email\n   - Teléfono\n   - Empresa\n   - Foto de perfil\n4. Haz clic en **'Guardar'**\n\n**CAMBIAR CONTRASEÑA:**\n1. Ve a Configuración\n2. Selecciona **'Cambiar Contraseña'**\n3. Ingresa contraseña actual\n4. Nueva contraseña (mín 8 caracteres)\n5. Confirma nueva contraseña\n6. Haz clic **'Actualizar'**",
+          "ejemplos": [
+            "¿Cómo cambio mi perfil?",
+            "¿Cómo cambio mi contraseña?"
+          ],
+          "confianza": 0.95
+        },
+        {
+          "id": "planes_suscripcion",
+          "titulo": "Planes de Suscripción y Facturación",
+          "palabrasClave": ["planes", "suscripción", "facturación", "pago", "upgrade", "downgrade"],
+          "contenido": "InnoAd ofrece varios planes:\n\n🆓 **PLAN GRATUITO:**\n- Hasta 2 campañas activas\n- Máx 1 pantalla\n- 10GB almacenamiento\n- Soporte por email\n\n⭐ **PLAN PROFESIONAL:**\n- Campañas ilimitadas\n- Hasta 10 pantallas\n- 100GB almacenamiento\n- Análisis avanzado\n- Soporte prioritario\n- $29/mes\n\n🏢 **PLAN EMPRESARIAL:**\n- Campaña ilimitadas\n- Pantallas ilimitadas\n- Almacenamiento ilimitado\n- API completa\n- Soporte 24/7\n- Personalizado\n\n**CAMBIAR PLAN:**\n1. Ve a **Configuración > Facturación**\n2. Selecciona nuevo plan\n3. Haz clic **'Cambiar Plan'**\n4. Confirma pago\n\n**HISTORIAL DE FACTURAS:**\n- Descargar invoices\n- Ver detalles de cargos\n- Cambiar método de pago",
+          "ejemplos": [
+            "¿Cuáles son los planes disponibles?",
+            "¿Cómo cambio de plan?",
+            "¿Dónde veo mis facturas?"
+          ],
+          "confianza": 0.90
+        }
+      ]
+    },
+    {
+      "id": "tecnico",
+      "nombre": "Soporte Técnico",
+      "prioridad": 6,
+      "articulos": [
+        {
+          "id": "problemas_comunes",
+          "titulo": "Solución de Problemas Comunes",
+          "palabrasClave": ["problema", "error", "no funciona", "falla", "ayuda", "solucionar"],
+          "contenido": "**PROBLEMAS FRECUENTES Y SOLUCIONES:**\n\n❌ **Pantalla no conecta:**\n- Verifica conexión internet en el dispositivo\n- Reinicia la pantalla (apaga 30 seg, enciende)\n- Verifica código de dispositivo (etiqueta trasera)\n- Contacta soporte técnico\n\n❌ **Video no se reproduce:**\n- Verifica format (MP4 recomendado)\n- Comprueba tamaño < 500MB\n- Intenta subir de nuevo\n- Prueba en otro navegador\n\n❌ **Campaña no aparece:**\n- Verifica horario configurado\n- Comprueba pantalla esté online\n- Recarga página (F5)\n- Limpia caché del navegador\n\n❌ **No puedo iniciar sesión:**\n- Verifica email/usuario correcto\n- Reinicia contraseña\n- Limpia cookies\n- Usa navegador diferente\n\n❌ **Lentitud/Lag:**\n- Cierra otras pestañas\n- Limpia caché del navegador\n- Re-inicia navegador y pc\n- Intenta con conexión diferente\n\n**Si persiste el problema:**\n→ Contacta soporte: support@innoad.com",
+          "ejemplos": [
+            "¿Por qué no funciona?",
+            "¿Cómo soluciono un error?",
+            "¿Qué hago si algo falla?"
+          ],
+          "confianza": 0.85,
+          "accionSugerida": {
+            "id": "contactar_soporte",
+            "titulo": "Contactar Soporte",
+            "icono": "💬",
+            "tipo": "accion",
+            "funcionalidad": "abrirChatSoporte",
+            "permisosRequeridos": ["USUARIO", "ADMIN", "TECNICO"]
+          }
+        },
+        {
+          "id": "contactar_soporte",
+          "titulo": "Contactar al Equipo de Soporte",
+          "palabrasClave": ["soporte", "ayuda", "contacto", "técnico", "chat", "email"],
+          "contenido": "Formas de contactar soporte:\n\n💬 **CHAT EN VIVO:**\n- Disponible L-V 9AM-6PM (horário local)\n- Click en icono chat esquina inferior\n- Respuesta inmediata\n\n📧 **EMAIL:**\n- support@innoad.com\n- Respuesta en máximo 24 horas\n- Incluye:\n  - Descripción del problema\n  - Pantallazos\n  - ID de campaña/pantalla\n\n📞 **TELÉFONO:**\n- Plan Profesional+: +1-XXX-XXX-XXXX\n- Lunes-Viernes 9AM-6PM\n\n🎓 **DOCUMENTACIÓN:**\n- Centro de ayuda: help.innoad.com\n- Video tutoriales\n- Base de conocimiento\n\n❓ **PREGUNTAS FRECUENTES:**\n- FAQs en la plataforma\n- Comunidad de usuarios\n- Webinars gratuitos\n\n**IMPORTANTE:**\nTen a mano:\n- Captura de pantalla del error\n- Pasos para reproducir\n- ID de cuenta\n- Navegador/dispositivo usado",
+          "ejemplos": [
+            "¿Cómo contacto soporte?",
+            "¿Hay chat de ayuda?",
+            "¿Cuál es el email de soporte?"
+          ],
+          "confianza": 0.95,
+          "accionSugerida": {
+            "id": "chat_soporte_directo",
+            "titulo": "Abrir Chat de Soporte",
+            "icono": "💬",
+            "tipo": "accion",
+            "funcionalidad": "abrirChatSoporteDirecto",
+            "permisosRequeridos": ["USUARIO", "ADMIN", "TECNICO"]
+          }
+        }
+      ]
+    }
+  ],
+  "accionesRapidas": [
+    {
+      "id": "crear_campana_quick",
+      "categoria": "campanas",
+      "icono": "➕",
+      "titulo": "Nueva Campaña",
+      "destino": "/campanas/crear",
+      "disponiblePara": ["USUARIO", "ADMIN"]
+    },
+    {
+      "id": "ver_reportes_quick",
+      "categoria": "reportes",
+      "icono": "📊",
+      "titulo": "Ver Reportes",
+      "destino": "/reportes",
+      "disponiblePara": ["USUARIO", "ADMIN", "TECNICO"]
+    },
+    {
+      "id": "pantallas_quick",
+      "categoria": "pantallas",
+      "icono": "📺",
+      "titulo": "Mis Pantallas",
+      "destino": "/pantallas",
+      "disponiblePara": ["ADMIN", "TECNICO"]
+    },
+    {
+      "id": "contenido_quick",
+      "categoria": "contenido",
+      "icono": "📤",
+      "titulo": "Subir Contenido",
+      "destino": "/contenido/subir",
+      "disponiblePara": ["USUARIO", "ADMIN"]
+    },
+    {
+      "id": "ayuda_quick",
+      "categoria": "soporte",
+      "icono": "❓",
+      "titulo": "Centro de Ayuda",
+      "destino": "https://help.innoad.com",
+      "disponiblePara": ["USUARIO", "ADMIN", "TECNICO"]
+    }
+  ],
+  "metainfo": {
+    "totalArticulos": 27,
+    "totalCategorias": 6,
+    "actualizadoPor": "System",
+    "proximaActualizacion": "2026-02-24T00:00:00Z"
+  }
+}

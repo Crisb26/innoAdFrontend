@@ -53,5 +53,10 @@ SCRIPTS-GUIA.md
 # Excluir archivo corrupto  
 src/app/core/servicios/usuarios.servicio.ts  
 
+# Archivos temporales de desarrollo (NO COMMITEAR)
+TEMP-*
+dev-mock.interceptor.ts
+**/dev-mock.interceptor.ts
+
 # Local Netlify folder
 .netlify

@@ -11,7 +11,7 @@ export const environment = {
   // Preparado para múltiples servicios backend
   api: {
     // Gateway principal (Nginx hace proxy a los servicios)
-    gateway: '/api',
+    gateway: '/api/v1',
     
     // Microservicios (todos a través de Nginx reverse proxy)
     services: {
@@ -26,7 +26,7 @@ export const environment = {
     },
 
     // URLs legacy
-    baseUrl: '/api',
+    baseUrl: '/api/v1',
     authUrl: '/api/v1/auth',
     uploadUrl: '/api/upload',
     wsUrl: '/ws',
@@ -49,21 +49,28 @@ export const environment = {
 
   // ===== CONFIGURACIÓN DE AUTENTICACIÓN =====
   auth: {
+    // Tiempos de expiración en desarrollo
     tokenExpiration: 8 * 60 * 60 * 1000, // 8 horas
-    refreshTokenExpiration: 7 * 24 * 60 * 60 * 1000, // 7 días
-    sessionWarningTime: 10 * 60 * 1000, // 10 minutos antes de expirar
+    refreshTokenExpiration: 30 * 24 * 60 * 60 * 1000, // 30 días
+    sessionWarningTime: 15 * 60 * 1000, // 15 minutos antes de expirar
+    
+    // Configuración de seguridad normal para desarrollo
     autoLogoutOnExpiry: true,
     refreshTokenOnActivity: true,
     maxLoginAttempts: 5,
-    lockoutDuration: 15 * 60 * 1000, // 15 minutos
-    maxConcurrentSessions: 3,
+    lockoutDuration: 10 * 60 * 1000, // 10 minutos
+    
+    // Configuración de sesiones
+    maxConcurrentSessions: 10,
     kickOtherSessions: false,
-    trackDeviceFingerprint: true,
+    trackDeviceFingerprint: false,
+    
+    // 2FA disabled en desarrollo
     twoFactorEnabled: false,
     backupCodesEnabled: false
   },
 
-  // ===== CONFIGURACIÓN DE AUTENTICACIÓN OFFLINE (DESHABILITADO - Usar solo backend)
+  // ===== CONFIGURACIÓN DE AUTENTICACIÓN OFFLINE (Compose / local deploy)
   offlineAuth: {
     enabled: false,
     users: [] // Solo usar backend real

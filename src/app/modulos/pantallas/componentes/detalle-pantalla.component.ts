@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -81,7 +81,11 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./detalle-pantalla.component.scss']
 })
 export class DetallePantallaComponent {
+  @Input() alCerrar?: () => void;
+
   cerrar() {
-    console.log('Cerrar detalle');
+    if (this.alCerrar) {
+      this.alCerrar();
+    }
   }
 }

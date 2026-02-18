@@ -26,46 +26,36 @@ import { ToggleTemaComponent } from './toggle-tema.component';
           </div>
         </div>
 
-        <!-- Navegación Principal -->
+        <!-- Navegación Principal (Filtrada por Rol) -->
         <div class="nav-links">
           <a routerLink="/dashboard" class="nav-item" routerLinkActive="active" title="Tu dashboard personal">
             <span class="nav-icon"></span>
             Dashboard
           </a>
-
-          <!-- Campañas: todos pueden acceder -->
-          <a routerLink="/campanas" class="nav-item" routerLinkActive="active" title="Crear y gestionar campañas publicitarias">
-            <span class="nav-icon"></span>
-            Campañas
-          </a>
-
-          <!-- Pantallas: solo ADMIN y TECNICO -->
-          @if (esAdministrador() || esTecnico()) {
-            <a routerLink="/pantallas" class="nav-item" routerLinkActive="active" title="Gestionar pantallas digitales">
+          @if (tieneAccesoCampanas()) {
+            <a routerLink="/campanas" class="nav-item" routerLinkActive="active">
+              <span class="nav-icon"></span>
+              Campañas
+            </a>
+          }
+          @if (tieneAccesoPantallas()) {
+            <a routerLink="/pantallas" class="nav-item" routerLinkActive="active">
               <span class="nav-icon"></span>
               Pantallas
             </a>
           }
-
-          <!-- Contenidos: todos pueden acceder -->
-          <a routerLink="/contenidos" class="nav-item" routerLinkActive="active" title="Subir y gestionar contenido multimedia">
-            <span class="nav-icon"></span>
-            Contenidos
-          </a>
-
-          <!-- Reportes: todos pueden acceder -->
-          <a routerLink="/reportes" class="nav-item" routerLinkActive="active" title="Ver estadísticas y reportes">
-            <span class="nav-icon"></span>
-            Reportes
-          </a>
-
-          <!-- Soporte/Chat: todos pueden acceder -->
-          <a routerLink="/chat" class="nav-item" routerLinkActive="active" title="Contactar con soporte técnico">
-            <span class="nav-icon"></span>
-            Soporte
-          </a>
-
-          <!-- Panel Admin: solo ADMIN -->
+          @if (tieneAccesoContenidos()) {
+            <a routerLink="/contenidos" class="nav-item" routerLinkActive="active">
+              <span class="nav-icon"></span>
+              Contenidos
+            </a>
+          }
+          @if (tieneAccesoReportes()) {
+            <a routerLink="/reportes" class="nav-item" routerLinkActive="active">
+              <span class="nav-icon"></span>
+              Reportes
+            </a>
+          }
           @if (esAdministrador()) {
             <a routerLink="/admin" class="nav-item nav-admin" routerLinkActive="active" title="Panel de administración del sistema">
               <span class="nav-icon"></span>
@@ -266,6 +256,34 @@ export class NavegacionAutenticadaComponent implements OnInit {
     const usuario = this.servicioAuth.usuarioActual();
     const rol = usuario?.rol?.nombre || '';
     return rol === 'USUARIO' || rol === 'Usuario' || false;
+  }
+
+  protected tieneAccesoCampanas(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
+    // ADMIN, TECNICO, USUARIO pueden acceder
+    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
+  }
+
+  protected tieneAccesoPantallas(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
+    // ADMIN, TECNICO, USUARIO pueden acceder (USUARIO solo ve sus pantallas)
+    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
+  }
+
+  protected tieneAccesoContenidos(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
+    // ADMIN, TECNICO, USUARIO pueden acceder
+    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
+  }
+
+  protected tieneAccesoReportes(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
+    // ADMIN, TECNICO, USUARIO pueden acceder
+    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
   }
 
   protected toggleMenu(): void {

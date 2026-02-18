@@ -16,13 +16,17 @@ RUN npm install --production=false && \
 # Copiar el código fuente
 COPY . .
 
-# Construir la aplicación Angular para producción
-# El argumento BUILD_CONFIGURATION permite elegir el ambiente
+# Construir la aplicación Angular
+# El argumento BUILD_CONFIGURATION permite elegir el ambiente (production o compose)
 ARG BUILD_CONFIGURATION=production
-RUN npm run construir || npm run construir:compose
+RUN if [ "$BUILD_CONFIGURATION" = "compose" ]; then \
+      npm run construir:compose; \
+    else \
+      npm run construir; \
+    fi
 
 # ======================================
-# ETAPA 2: Runtime - Servidor Nginx ligero
+# ETAPA 2: Runtime - Servidor Nginx
 # ======================================
 FROM nginx:alpine
 
@@ -31,19 +35,27 @@ LABEL maintainer="InnoAd Team"
 LABEL version="2.0.0"
 LABEL description="InnoAd Frontend - Sistema de Gestión de Publicidad Digital"
 
+# Instalar wget para healthcheck
+RUN apk add --no-cache wget
+
 # Copiar archivos construidos desde la etapa de build
 COPY --from=build /app/dist/innoad-frontend/browser /usr/share/nginx/html
 
-# Eliminar configuración default de Nginx y copiar la personalizada
-RUN rm -f /etc/nginx/conf.d/default.conf
+# Copiar la configuración personalizada
 COPY nginx.conf /etc/nginx/nginx.conf
+
+# Remover configuración default
+RUN rm -f /etc/nginx/conf.d/default.conf
 
 # Exponer el puerto 80
 EXPOSE 80
 
 # Health check para verificar que el contenedor está funcionando
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
   CMD wget --quiet --tries=1 --spider http://localhost/ || exit 1
+
+# CMD por defecto de nginx
+CMD ["nginx", "-g", "daemon off;"]
 
 # Comando de inicio
 CMD ["nginx", "-g", "daemon off;"]

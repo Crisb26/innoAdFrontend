@@ -334,7 +334,12 @@ export class GraficosAnalyticsComponent implements OnInit, OnDestroy {
           this.cargando = false;
         },
         (error) => {
-          console.error('Error cargando gráficos', error);
+          // Silenciar errores 404 (endpoint opcional no implementado)
+          if (error.status !== 404) {
+            console.error('Error cargando gráficos', error);
+          } else {
+            console.debug('Gráficos no disponibles (404)');
+          }
           this.cargando = false;
         }
       );
@@ -359,11 +364,14 @@ export class GraficosAnalyticsComponent implements OnInit, OnDestroy {
         this.cargando = false;
       },
       (error) => {
-        console.error('Error exportando PDF', error);
-        NotifyX.error('Error al descargar el PDF', {
-          duration: 3000,
-          dismissible: true
-        });
+        // Silenciar errores 404 para PDF
+        if (error.status !== 404) {
+          console.error('Error exportando PDF', error);
+          NotifyX.error('Error al descargar el PDF', {
+            duration: 3000,
+            dismissible: true
+          });
+        }
         this.cargando = false;
       }
     );
@@ -383,11 +391,14 @@ export class GraficosAnalyticsComponent implements OnInit, OnDestroy {
         this.cargando = false;
       },
       (error) => {
-        console.error('Error exportando CSV', error);
-        NotifyX.error('Error al descargar el CSV', {
-          duration: 3000,
-          dismissible: true
-        });
+        // Silenciar errores 404 para CSV
+        if (error.status !== 404) {
+          console.error('Error exportando CSV', error);
+          NotifyX.error('Error al descargar el CSV', {
+            duration: 3000,
+            dismissible: true
+          });
+        }
         this.cargando = false;
       }
     );

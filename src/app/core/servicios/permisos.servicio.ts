@@ -224,9 +224,9 @@ export class PermisosServicio {
   }
 
   /**
-   * Es developer? (para compatibilidad con código existente)
+   * Es developer? (ROL ELIMINADO - mantenido para compatibilidad)
    */
   esDeveloper(): boolean {
-    return this.tieneRol('DESARROLLADOR');
+    return false; // Rol DESARROLLADOR eliminado del sistema
   }
 }

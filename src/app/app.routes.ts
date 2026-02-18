@@ -30,7 +30,7 @@ export const routes: Routes = [
     loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes)
   },
 
-  // Panel administrativo - ADMINISTRADOR
+  // Panel administrativo - ADMIN
   {
     path: 'admin',
     loadChildren: () => import('./modulos/admin/admin.routes').then(m => m.routes),
@@ -46,14 +46,14 @@ export const routes: Routes = [
     data: { roles: ['TECNICO', 'ADMIN'] }
   },
 
-  // Panel desarrollador - DEVELOPER
-  {
+  // Panel desarrollador - DESHABILITADO (rol eliminado)
+  /* {
     path: 'developer',
     loadComponent: () => import('./modulos/dashboard/componentes/developer-dashboard.component')
       .then(m => m.DeveloperDashboardComponent),
     canActivate: [RolGuard],
-    data: { roles: ['ADMIN', 'TECNICO'] }
-  },
+    data: { role: 'DESARROLLADOR' }
+  }, */
 
   // Campañas
   {
@@ -68,7 +68,7 @@ export const routes: Routes = [
     path: 'pantallas',
     loadChildren: () => import('./modulos/pantallas/pantallas.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMIN', 'TECNICO'] }
+    data: { roles: ['ADMIN', 'TECNICO', 'USUARIO'] }
   },
 
   // Contenidos

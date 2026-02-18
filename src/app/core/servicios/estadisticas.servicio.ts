@@ -19,7 +19,7 @@ import {
 })
 export class ServicioEstadisticas {
   private readonly http = inject(HttpClient);
-  private readonly API_URL = `${environment.urlApi}/estadisticas`;
+  private readonly API_URL = `${environment.urlApi}/stats`;
   
   obtenerGenerales(filtro?: FiltroEstadisticas): Observable<EstadisticasGenerales> {
     let params = new HttpParams();
@@ -28,23 +28,41 @@ export class ServicioEstadisticas {
       params = params.set('fechaFin', filtro.fechaFin.toISOString());
     }
     
-    return this.http.get<RespuestaAPI<EstadisticasGenerales>>(`${this.API_URL}/generales`, { params })
-      .pipe(map(r => r.datos!));
+    return this.http.get<any>(`${this.API_URL}/dashboard`, { params })
+      .pipe(map(r => {
+        // El endpoint devuelve los datos directamente, no en una estructura RespuestaAPI
+        return r.datos || r;
+      }));
   }
   
   obtenerCampanas(filtro?: FiltroEstadisticas): Observable<EstadisticasCampanas> {
-    return this.http.post<RespuestaAPI<EstadisticasCampanas>>(`${this.API_URL}/campanas`, filtro)
-      .pipe(map(r => r.datos!));
+    let params = new HttpParams();
+    if (filtro) {
+      params = params.set('fechaInicio', filtro.fechaInicio.toISOString());
+      params = params.set('fechaFin', filtro.fechaFin.toISOString());
+    }
+    return this.http.get<any>(`${this.API_URL}/campaigns`, { params })
+      .pipe(map(r => r.datos || r));
   }
   
   obtenerPantallas(filtro?: FiltroEstadisticas): Observable<EstadisticasPantallas> {
-    return this.http.post<RespuestaAPI<EstadisticasPantallas>>(`${this.API_URL}/pantallas`, filtro)
-      .pipe(map(r => r.datos!));
+    let params = new HttpParams();
+    if (filtro) {
+      params = params.set('fechaInicio', filtro.fechaInicio.toISOString());
+      params = params.set('fechaFin', filtro.fechaFin.toISOString());
+    }
+    return this.http.get<any>(`${this.API_URL}/screens`, { params })
+      .pipe(map(r => r.datos || r));
   }
   
   obtenerContenidos(filtro?: FiltroEstadisticas): Observable<EstadisticasContenidos> {
-    return this.http.post<RespuestaAPI<EstadisticasContenidos>>(`${this.API_URL}/contenidos`, filtro)
-      .pipe(map(r => r.datos!));
+    let params = new HttpParams();
+    if (filtro) {
+      params = params.set('fechaInicio', filtro.fechaInicio.toISOString());
+      params = params.set('fechaFin', filtro.fechaFin.toISOString());
+    }
+    return this.http.get<any>(`${this.API_URL}/content`, { params })
+      .pipe(map(r => r.datos || r));
   }
   
   generarReporte(solicitud: SolicitudGenerarReporte): Observable<Reporte> {

@@ -161,14 +161,16 @@
                 <!-- Botones de Acciones -->
                 <div class="acciones-respuesta">
                   <button class="btn-copiar"
-                          (click)="copiarRespuesta(interaccion.respuesta)"
+                          (click)="copiarRespuesta(interaccion.respuesta, $event)"
                           title="Copiar respuesta">
-                    📋 Copiar
+                    <span class="btn-icono">📋</span>
+                    <span>Copiar</span>
                   </button>
                   <button class="btn-reutilizar-pregunta"
                           (click)="reutilizarPregunta(interaccion.pregunta)"
-                          title="Hacer pregunta similar">
-                    🔄 Similar
+                          title="Reutilizar pregunta">
+                    <span class="btn-icono">🔄</span>
+                    <span>Similar</span>
                   </button>
                 </div>
               </div>
