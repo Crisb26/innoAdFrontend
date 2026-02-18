@@ -44,21 +44,21 @@ export const routes: Routes = [
     loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes)
   },
 
-  // Panel desarrollador - DEVELOPER
-  {
+  // Panel desarrollador - DESHABILITADO (rol eliminado)
+  /* {
     path: 'developer',
     loadComponent: () => import('./modulos/dashboard/componentes/developer-dashboard.component')
       .then(m => m.DeveloperDashboardComponent),
     canActivate: [RolGuard],
     data: { role: 'DESARROLLADOR' }
-  },
+  }, */
 
   // Campañas
   {
     path: 'campanas',
     loadChildren: () => import('./modulos/campanas/campanas.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMIN', 'TECNICO', 'DESARROLLADOR', 'USUARIO'] }
+    data: { roles: ['ADMIN', 'TECNICO', 'USUARIO'] }
   },
 
   // Pantallas
@@ -66,7 +66,7 @@ export const routes: Routes = [
     path: 'pantallas',
     loadChildren: () => import('./modulos/pantallas/pantallas.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMIN', 'TECNICO', 'DESARROLLADOR'] }
+    data: { roles: ['ADMIN', 'TECNICO', 'USUARIO'] }
   },
 
   // Contenidos
@@ -74,7 +74,7 @@ export const routes: Routes = [
     path: 'contenidos',
     loadChildren: () => import('./modulos/contenidos/contenidos.routes').then(m => m.routes),
     canActivate: [guardAutenticacion, RolGuard],
-    data: { roles: ['ADMIN', 'TECNICO', 'DESARROLLADOR', 'USUARIO'] }
+    data: { roles: ['ADMIN', 'TECNICO', 'USUARIO'] }
   },
 
   // Reportes

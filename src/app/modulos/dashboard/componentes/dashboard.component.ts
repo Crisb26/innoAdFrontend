@@ -248,19 +248,19 @@ export class DashboardComponent implements OnInit {
   protected tieneAccesoCampanas(): boolean {
     const usuario = this.servicioAuth.usuarioActual();
     const rol = usuario?.rol?.nombre?.toUpperCase() || '';
-    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'DESARROLLADOR', 'USUARIO'].includes(rol);
+    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
   }
 
   protected tieneAccesoPantallas(): boolean {
     const usuario = this.servicioAuth.usuarioActual();
     const rol = usuario?.rol?.nombre?.toUpperCase() || '';
-    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'DESARROLLADOR'].includes(rol);
+    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
   }
 
   protected tieneAccesoContenidos(): boolean {
     const usuario = this.servicioAuth.usuarioActual();
     const rol = usuario?.rol?.nombre?.toUpperCase() || '';
-    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'DESARROLLADOR', 'USUARIO'].includes(rol);
+    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
   }
 
   protected tieneAccesoReportes(): boolean {

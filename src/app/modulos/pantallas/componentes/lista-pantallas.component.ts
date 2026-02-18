@@ -7,6 +7,7 @@ import { FormularioPantallaComponent } from './formulario-pantalla.component';
 import { DetallePantallaComponent } from './detalle-pantalla.component';
 import { PantallasService, RespuestaPantalla } from '../../../core/servicios/pantallas.service';
 import { AyudaService } from '../../../core/servicios/ayuda.servicio';
+import NotifyX from 'notifyx';
 
 @Component({
   selector: 'app-lista-pantallas',
@@ -110,6 +111,21 @@ import { AyudaService } from '../../../core/servicios/ayuda.servicio';
                     <button class="btn-ver" (click)="verDetalle(pantalla)">Ver</button>
                     <button class="btn-editar" (click)="abrirFormulario(pantalla)">Editar</button>
                     <button class="btn-eliminar" (click)="eliminar(pantalla.id)">Eliminar</button>
+                    
+                    <div class="control-remoto">
+                      <button class="btn-control encender" (click)="encenderPantalla(pantalla.id)" title="Encender Pantalla">
+                        🔌 Encender
+                      </button>
+                      <button class="btn-control apagar" (click)="apagarPantalla(pantalla.id)" title="Apagar Pantalla">
+                        ⚫ Apagar
+                      </button>
+                      <button class="btn-control reiniciar" (click)="reiniciarPantalla(pantalla.id)" title="Reiniciar Pantalla">
+                        🔄 Reiniciar
+                      </button>
+                      <button class="btn-control estado" (click)="verEstadoPantalla(pantalla.id)" title="Ver Estado">
+                        📊 Estado
+                      </button>
+                    </div>
                   </td>
                 </tr>
               }
@@ -126,7 +142,26 @@ import { AyudaService } from '../../../core/servicios/ayuda.servicio';
       ></app-formulario-pantalla>
     }
     @if (mostrarDetalle()) {
-      <app-detalle-pantalla></app-detalle-pantalla>
+      <app-detalle-pantalla [alCerrar]="cerrarDetalle.bind(this)"></app-detalle-pantalla>
+    }
+    
+    @if (mostrarConfirmacionEliminar()) {
+      <div class="modal-overlay" (click)="cancelarEliminar()">
+        <div class="modal-confirmacion" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h3>Confirmar Eliminación</h3>
+            <button class="btn-cerrar" (click)="cancelarEliminar()">×</button>
+          </div>
+          <div class="modal-body">
+            <p>¿Estás seguro de eliminar esta pantalla?</p>
+            <p class="advertencia">Esta acción no se puede deshacer.</p>
+          </div>
+          <div class="modal-footer">
+            <button class="boton-secundario" (click)="cancelarEliminar()">Cancelar</button>
+            <button class="boton-peligro" (click)="confirmarEliminar()">Eliminar</button>
+          </div>
+        </div>
+      </div>
     }
   `
 })
@@ -135,6 +170,8 @@ export class ListaPantallasComponent implements OnInit {
   cargando = signal(false);
   mostrarFormulario = signal(false);
   mostrarDetalle = signal(false);
+  mostrarConfirmacionEliminar = signal(false);
+  pantallaIdAEliminar: number | null = null;
   busqueda = '';
   estadoFiltro = 'todos';
   pantallaEnEdicion = signal<RespuestaPantalla | null>(null);
@@ -185,9 +222,69 @@ export class ListaPantallasComponent implements OnInit {
     this.mostrarDetalle.set(true);
   }
 
+  cerrarDetalle() {
+    this.mostrarDetalle.set(false);
+    this.pantallasService.establecerPantallaSeleccionada(null);
+  }
+
   eliminar(id: number) {
-    if (confirm('¿Estás seguro de eliminar esta pantalla?')) {
-      this.pantallasService.eliminarYActualizar(id);
+    this.pantallaIdAEliminar = id;
+    this.mostrarConfirmacionEliminar.set(true);
+  }
+
+  confirmarEliminar() {
+    if (this.pantallaIdAEliminar !== null) {
+      try {
+        this.pantallasService.eliminarYActualizar(this.pantallaIdAEliminar);
+        NotifyX.success('✅ Pantalla eliminada exitosamente', {
+          position: 'top-right',
+          duration: 3000
+        });
+      } catch (error) {
+        NotifyX.error('❌ Error al eliminar la pantalla', {
+          position: 'top-right',
+          duration: 3000
+        });
+      }
     }
+    this.mostrarConfirmacionEliminar.set(false);
+    this.pantallaIdAEliminar = null;
+  }
+
+  cancelarEliminar() {
+    this.mostrarConfirmacionEliminar.set(false);
+    this.pantallaIdAEliminar = null;
+  }
+
+  encenderPantalla(id: number) {
+    console.log('🔌 Encender pantalla:', id);
+    NotifyX.warning('⚙️ Función: Encender Pantalla - En desarrollo', {
+      position: 'top-right',
+      duration: 3000
+    });
+  }
+
+  apagarPantalla(id: number) {
+    console.log('⚫ Apagar pantalla:', id);
+    NotifyX.warning('⚙️ Función: Apagar Pantalla - En desarrollo', {
+      position: 'top-right',
+      duration: 3000
+    });
+  }
+
+  reiniciarPantalla(id: number) {
+    console.log('🔄 Reiniciar pantalla:', id);
+    NotifyX.warning('⚙️ Función: Reiniciar Pantalla - En desarrollo', {
+      position: 'top-right',
+      duration: 3000
+    });
+  }
+
+  verEstadoPantalla(id: number) {
+    console.log('📊 Ver estado pantalla:', id);
+    NotifyX.info('📊 Mostrando estado de pantalla...', {
+      position: 'top-right',
+      duration: 3000
+    });
   }
 }

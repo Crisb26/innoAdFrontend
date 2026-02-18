@@ -223,6 +223,7 @@
             
             &.acciones {
               display: flex;
+              flex-direction: column;
               gap: 8px;
               
               button {
@@ -261,6 +262,66 @@
                   &:hover {
                     background: rgba(239, 68, 68, 0.25);
                     box-shadow: 0 0 12px rgba(239, 68, 68, 0.2);
+                  }
+                }
+              }
+
+              .control-remoto {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                margin-top: 8px;
+                padding-top: 8px;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+                .btn-control {
+                  padding: 6px 10px;
+                  border: none;
+                  border-radius: 4px;
+                  font-size: 11px;
+                  font-weight: 500;
+                  cursor: pointer;
+                  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                  white-space: nowrap;
+                  
+                  &.encender {
+                    background: rgba(34, 197, 94, 0.15);
+                    color: #86efac;
+                    
+                    &:hover {
+                      background: rgba(34, 197, 94, 0.25);
+                      box-shadow: 0 0 12px rgba(34, 197, 94, 0.3);
+                    }
+                  }
+                  
+                  &.apagar {
+                    background: rgba(107, 114, 128, 0.15);
+                    color: #d1d5db;
+                    
+                    &:hover {
+                      background: rgba(107, 114, 128, 0.25);
+                      box-shadow: 0 0 12px rgba(107, 114, 128, 0.3);
+                    }
+                  }
+                  
+                  &.reiniciar {
+                    background: rgba(0, 212, 255, 0.15);
+                    color: #00d4ff;
+                    
+                    &:hover {
+                      background: rgba(0, 212, 255, 0.25);
+                      box-shadow: 0 0 12px rgba(0, 212, 255, 0.3);
+                    }
+                  }
+                  
+                  &.estado {
+                    background: rgba(139, 92, 246, 0.15);
+                    color: #c4b5fd;
+                    
+                    &:hover {
+                      background: rgba(139, 92, 246, 0.25);
+                      box-shadow: 0 0 12px rgba(139, 92, 246, 0.3);
+                    }
                   }
                 }
               }
@@ -381,5 +442,128 @@
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+.modal-confirmacion {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-radius: 16px;
+  max-width: 450px;
+  width: 90%;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: fadeInScale 0.3s ease-out;
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 24px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    h3 {
+      margin: 0;
+      color: #f59e0b;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .btn-cerrar {
+      background: transparent;
+      border: none;
+      font-size: 32px;
+      color: #94a3b8;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: all 0.2s;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+      }
+    }
+  }
+
+  .modal-body {
+    padding: 24px;
+
+    p {
+      margin: 0 0 12px 0;
+      color: #e2e8f0;
+      font-size: 16px;
+    }
+
+    .advertencia {
+      color: #f59e0b;
+      font-size: 14px;
+      font-weight: 500;
+      margin: 0;
+    }
+  }
+
+  .modal-footer {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding: 16px 24px 24px;
+
+    button {
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      font-size: 14px;
+    }
+
+    .boton-secundario {
+      background: rgba(148, 163, 184, 0.1);
+      color: #cbd5e1;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+
+      &:hover {
+        background: rgba(148, 163, 184, 0.2);
+        border-color: rgba(148, 163, 184, 0.5);
+      }
+    }
+
+    .boton-peligro {
+      background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+
+      &:hover {
+        background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+        box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4);
+        transform: translateY(-2px);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
   }
 }

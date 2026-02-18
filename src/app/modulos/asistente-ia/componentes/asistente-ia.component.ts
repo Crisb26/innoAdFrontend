@@ -142,21 +142,19 @@ import NotifyX from 'notifyx';
                     [class.activo]="estadoAsistente().escuchando"
                     (click)="toggleVoz()"
                     [disabled]="!soportaVoz">
-              <span class="icono">{{ estadoAsistente().escuchando ? '' : '' }}</span>
+              <span class="icono">🎤</span>
               <div class="tooltip">{{ estadoAsistente().escuchando ? 'Detener' : 'Hablar' }}</div>
             </button>
 
-            <!-- Configuración -->
             <button class="btn-control config" 
                     (click)="toggleConfiguracion()">
-              <span class="icono"></span>
+              <span class="icono">⚙️</span>
               <div class="tooltip">Configuración</div>
             </button>
 
-            <!-- Minimizar/Cerrar -->
             <button class="btn-control cerrar" 
                     (click)="toggleAsistente()">
-              <span class="icono"></span>
+              <span class="icono">✕</span>
               <div class="tooltip">Cerrar</div>
             </button>
           </div>
@@ -254,7 +252,7 @@ import NotifyX from 'notifyx';
                 @if (estadoAsistente().escribiendo) {
                   <div class="loader-mini"></div>
                 } @else {
-                  <span class="icono"></span>
+                  <span class="icono">📤</span>
                 }
               </button>
             </div>
@@ -263,16 +261,16 @@ import NotifyX from 'notifyx';
           <!-- Accesos rápidos -->
           <div class="accesos-rapidos">
             <button class="btn-rapido" (click)="enviarMensajeRapido('ayuda')">
-              Ayuda
+              ❓ Ayuda
             </button>
             <button class="btn-rapido" (click)="enviarMensajeRapido('tutorial')">
-              Tutorial
+              📚 Tutorial
             </button>
             <button class="btn-rapido" (click)="enviarMensajeRapido('optimizar')">
-              Optimizar
+              ⚡ Optimizar
             </button>
             <button class="btn-rapido" (click)="limpiarChat()">
-              Limpiar
+              🧹 Limpiar
             </button>
           </div>
         </div>
@@ -282,7 +280,7 @@ import NotifyX from 'notifyx';
           <div class="panel-configuracion">
             <div class="header-config">
               <h3>Configuración del Asistente</h3>
-              <button class="btn-cerrar-config" (click)="toggleConfiguracion()"></button>
+              <button class="btn-cerrar-config" (click)="toggleConfiguracion()">✕</button>
             </div>
             
             <div class="opciones-config">

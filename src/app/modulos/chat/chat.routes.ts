@@ -7,7 +7,7 @@ export const routes: Routes = [
     loadComponent: () => import('./componentes/chat-lista.component').then(m => m.ChatListaComponent),
     canActivate: [RolGuard],
     data: { 
-      rolesRequeridos: ['ADMINISTRADOR', 'TECNICO', 'USUARIO', 'DESARROLLADOR']
+      rolesRequeridos: ['ADMINISTRADOR', 'TECNICO', 'USUARIO']
     }
   }
 ];

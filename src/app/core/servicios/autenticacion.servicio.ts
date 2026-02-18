@@ -127,7 +127,6 @@ export class ServicioAutenticacion {
   iniciarSesion(solicitud: SolicitudLogin): Observable<RespuestaLogin> {
     this.cargandoSignal.set(true);
     
-    // Usar apiGateway.getAuthUrl() con el endpoint para evitar doble barra
     const loginUrl = this.apiGateway.getAuthUrl('/login');
     console.log('🔐 Login URL:', loginUrl);
     console.log('🔐 Datos enviados:', solicitud);
