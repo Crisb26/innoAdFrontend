@@ -8,12 +8,11 @@ export const routes: Routes = [
   },
   {
     path: 'registrarse',
-    loadComponent: () => import('./componentes/registrarse.component').then(m => m.RegistrarseComponent)
+    loadComponent: () => import('./componentes/registro-con-codigo.component').then(m => m.RegistroConCodigoComponent)
   },
   {
     path: 'recuperar-contrasena',
-    loadComponent: () => import('./componentes/recuperar-contrasena.component').then(m => m.RecuperarContrasenaComponent)
-  },
+    loadComponent: () => import('./componentes/recuperar-contrasena-codigo.component').then(m => m.RecuperarContraseñaCodigoComponent)  },
   {
     path: 'verificar-email',
     loadComponent: () => import('./componentes/verificar-email.component').then(m => m.VerificarEmailComponent)

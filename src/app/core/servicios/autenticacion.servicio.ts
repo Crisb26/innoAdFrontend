@@ -215,7 +215,7 @@ export class ServicioAutenticacion {
   registrarse(solicitud: SolicitudRegistro): Observable<RespuestaLogin> {
     this.cargandoSignal.set(true);
     
-    return this.http.post<RespuestaAPI<RespuestaLogin>>(this.apiGateway.getAuthUrl('/register'), solicitud)
+    return this.http.post<RespuestaAPI<RespuestaLogin>>(this.apiGateway.getAuthUrl('/registrarse'), solicitud)
       .pipe(
         map(respuesta => {
           if (!respuesta.exitoso || !respuesta.datos) {
@@ -285,7 +285,7 @@ export class ServicioAutenticacion {
    * Recupera la contrasena enviando un email
    */
   recuperarContrasena(solicitud: SolicitudRecuperarContrasena): Observable<void> {
-    return this.http.post<RespuestaAPI<void>>(this.apiGateway.getAuthUrl('/reset-password'), solicitud)
+    return this.http.post<RespuestaAPI<void>>(this.apiGateway.getAuthUrl('/recuperar-contrasena'), solicitud)
       .pipe(
         map(respuesta => {
           if (!respuesta.exitoso) {
@@ -300,7 +300,7 @@ export class ServicioAutenticacion {
    * Restablece la contrasena con el token recibido por email
    */
   restablecerContrasena(solicitud: SolicitudRestablecerContrasena): Observable<void> {
-    return this.http.post<RespuestaAPI<void>>(this.apiGateway.getAuthUrl('/reset-password/confirm'), solicitud)
+    return this.http.post<RespuestaAPI<void>>(this.apiGateway.getAuthUrl('/restablecer-contrasena'), solicitud)
       .pipe(
         map(respuesta => {
           if (!respuesta.exitoso) {
@@ -330,7 +330,7 @@ export class ServicioAutenticacion {
    * Verifica el email del usuario usando el token
    */
   verificarEmail(token: string): Observable<void> {
-    return this.http.get<RespuestaAPI<void>>(this.apiGateway.getAuthUrl('/verify-email'), {
+    return this.http.get<RespuestaAPI<void>>(this.apiGateway.getAuthUrl('/verificar-email'), {
       params: { token }
     }).pipe(
       map(respuesta => {
@@ -492,16 +492,9 @@ export class ServicioAutenticacion {
     return Date.now() < expira;
   }
   
-  private manejarError(error: any): Error {
-    let mensaje = 'Ha ocurrido un error inesperado';
-    
-    if (error.error?.mensaje) {
-      mensaje = error.error.mensaje;
-    } else if (error.message) {
-      mensaje = error.message;
-    }
-    
-    return new Error(mensaje);
+  private manejarError(error: any): any {
+    // Devolver el error original para que preserve status y estructura
+    return error;
   }
 
   /**
@@ -909,6 +902,67 @@ export class ServicioAutenticacion {
 
   private guardarConfiguracionSeguridad(): void {
     localStorage.setItem(this.SEGURIDAD_KEY, JSON.stringify(this.configuracionSeguridadSignal()));
+  }
+
+  // ==================== MÉTODOS PARA CÓDIGOS DE VERIFICACIÓN ====================
+
+  /**
+   * Solicita un código de verificación por email
+   */
+  solicitarCodigoVerificacion(email: string, tipo: 'REGISTRO' | 'RECUPERACION'): Observable<any> {
+    return this.http.post(
+      this.apiGateway.getAuthUrl('/solicitar-codigo'),
+      { email, tipo }
+    ).pipe(
+      catchError(error => {
+        console.error('Error solicitando código:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
+   * Registra un usuario con código de verificación
+   */
+  registrarConCodigo(datos: any): Observable<RespuestaLogin> {
+    this.cargandoSignal.set(true);
+
+    return this.http.post<RespuestaAPI<RespuestaLogin>>(
+      this.apiGateway.getAuthUrl('/registrar-con-codigo'),
+      datos
+    ).pipe(
+      map(respuesta => {
+        if (!respuesta.exitoso || !respuesta.datos) {
+          throw new Error(respuesta.mensaje || 'Error al registrar');
+        }
+        return respuesta.datos;
+      }),
+      tap(datosLogin => {
+        this.guardarSesion(datosLogin, false);
+        this.usuarioActualSignal.set(datosLogin.usuario);
+        this.tokenActualSignal.set(datosLogin.token);
+        this.cargandoSignal.set(false);
+      }),
+      catchError(error => {
+        this.cargandoSignal.set(false);
+        return throwError(() => this.manejarError(error));
+      })
+    );
+  }
+
+  /**
+   * Recupera contraseña usando código de verificación
+   */
+  recuperarContraseñaConCodigo(datos: any): Observable<any> {
+    return this.http.post(
+      this.apiGateway.getAuthUrl('/recuperar-contrasena-con-codigo'),
+      datos
+    ).pipe(
+      catchError(error => {
+        console.error('Error recuperando contraseña:', error);
+        return throwError(() => error);
+      })
+    );
   }
 }
  

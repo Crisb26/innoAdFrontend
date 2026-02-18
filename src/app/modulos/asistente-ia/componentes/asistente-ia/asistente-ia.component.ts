@@ -381,22 +381,63 @@ export class AsistenteIAComponent implements OnInit, OnDestroy {
   /**
    * Reutiliza una pregunta del historial
    */
+  /**
+   * Reutiliza una pregunta anterior y la envía nuevamente
+   */
   reutilizarPregunta(pregunta: string): void {
     this.pregunta = pregunta;
     this.mostrarHistorial = false;
+    
+    // Notificar al usuario
+    NotifyX.default.info('🔄 Pregunta cargada', {
+      timeout: 2000,
+      position: 'bottom-right'
+    });
+    
+    // Hacer scroll al input
+    setTimeout(() => {
+      const input = document.querySelector('.campo-busqueda') as HTMLInputElement;
+      input?.focus();
+      input?.scrollIntoView({ behavior: 'smooth' });
+    }, 300);
   }
   
   /**
-   * Copia una respuesta al portapapeles
+   * Copia una respuesta al portapapeles con feedback visual
    */
-  copiarRespuesta(texto: string): void {
+  copiarRespuesta(texto: string, event?: Event): void {
+    const boton = (event?.target as HTMLButtonElement);
+    
     navigator.clipboard.writeText(texto).then(
       () => {
-        // Mostrar notificación de éxito (opcional)
-        console.log('Texto copiado al portapapeles');
+        // Feedback visual
+        if (boton) {
+          boton.classList.add('copiado');
+          
+          // Cambiar texto del botón temporalmente
+          const textoOriginal = boton.innerHTML;
+          boton.innerHTML = '✓ ¡Copiado!';
+          
+          setTimeout(() => {
+            boton.classList.remove('copiado');
+            boton.innerHTML = textoOriginal;
+          }, 1500);
+        }
+        
+        // Notificación
+        NotifyX.default.success('✓ Copiado al portapapeles', {
+          timeout: 2000,
+          position: 'bottom-right'
+        });
+        
+        console.log('✓ Texto copiado al portapapeles exitosamente');
       },
       (error) => {
-        console.error('Error al copiar:', error);
+        console.error('✗ Error al copiar:', error);
+        NotifyX.default.error('✗ Error al copiar', {
+          timeout: 2000,
+          position: 'bottom-right'
+        });
       }
     );
   }

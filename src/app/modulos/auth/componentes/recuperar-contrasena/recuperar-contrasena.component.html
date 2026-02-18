@@ -1,0 +1,145 @@
+<div class="recuperar-contrasena-container">
+  <div class="recuperar-contrasena-card">
+    <!-- HEADER -->
+    <div class="card-header-custom">
+      <div class="icon-wrapper">
+        <i class="bi bi-shield-lock"></i>
+      </div>
+      <h2 class="card-title">{{ faseActual === 'solicitud' ? 'Recuperar Contraseña' : 'Establecer Nueva Contraseña' }}</h2>
+      <p class="card-subtitle">
+        {{ faseActual === 'solicitud' 
+          ? 'Te enviaremos instrucciones a tu correo' 
+          : 'Crea una nueva contraseña segura' }}
+      </p>
+    </div>
+
+    <!-- MENSAJE DE ESTADO -->
+    <div *ngIf="mensaje" [ngClass]="'alert alert-' + (mensaje.tipo === 'exito' ? 'success' : mensaje.tipo === 'error' ? 'danger' : 'info')" 
+         class="alert-custom-message" role="alert">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <strong *ngIf="mensaje.tipo === 'exito'">¡Éxito!</strong>
+          <strong *ngIf="mensaje.tipo === 'error'">Error</strong>
+          <strong *ngIf="mensaje.tipo === 'info'">Información</strong>
+          <span class="ms-2">{{ mensaje.texto }}</span>
+        </div>
+        <button type="button" class="btn-close btn-close-custom" (click)="cerrarMensaje()" aria-label="Cerrar"></button>
+      </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="card-body-custom">
+      <!-- FASE 1: SOLICITUD DE RECUPERACIÓN -->
+      <form *ngIf="faseActual === 'solicitud'" [formGroup]="formularioSolicitud" (ngSubmit)="solicitarRecuperacion()">
+        <div class="form-group-custom">
+          <label for="email" class="form-label-custom">Correo Electrónico</label>
+          <div class="input-wrapper">
+            <span class="input-icon">
+              <i class="bi bi-envelope"></i>
+            </span>
+            <input 
+              type="email" 
+              id="email" 
+              class="form-control-custom"
+              formControlName="email"
+              placeholder="tu@correo.com"
+              [class.is-invalid]="formularioSolicitud.get('email')?.invalid && formularioSolicitud.get('email')?.touched"
+            >
+          </div>
+          <div *ngIf="formularioSolicitud.get('email')?.invalid && formularioSolicitud.get('email')?.touched" class="invalid-feedback">
+            <small *ngIf="formularioSolicitud.get('email')?.hasError('required')">El correo es requerido</small>
+            <small *ngIf="formularioSolicitud.get('email')?.hasError('email')">Ingresa un correo válido</small>
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn-submit-custom"
+          [disabled]="cargando || formularioSolicitud.invalid"
+        >
+          <span *ngIf="!cargando">
+            <i class="bi bi-send"></i>
+            Enviar Instrucciones
+          </span>
+          <span *ngIf="cargando">
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Enviando...
+          </span>
+        </button>
+      </form>
+
+      <!-- FASE 2: RESTABLECIMIENTO DE CONTRASEÑA -->
+      <form *ngIf="faseActual === 'restablecimiento'" [formGroup]="formularioRestablecimiento" (ngSubmit)="restablecerContrasena()">
+        <div class="form-group-custom">
+          <label for="nuevaContrasena" class="form-label-custom">Nueva Contraseña</label>
+          <div class="input-wrapper">
+            <span class="input-icon">
+              <i class="bi bi-lock"></i>
+            </span>
+            <input 
+              type="password" 
+              id="nuevaContrasena" 
+              class="form-control-custom"
+              formControlName="nuevaContrasena"
+              placeholder="Mínimo 8 caracteres"
+              [class.is-invalid]="formularioRestablecimiento.get('nuevaContrasena')?.invalid && formularioRestablecimiento.get('nuevaContrasena')?.touched"
+            >
+          </div>
+          <div *ngIf="formularioRestablecimiento.get('nuevaContrasena')?.invalid && formularioRestablecimiento.get('nuevaContrasena')?.touched" class="invalid-feedback">
+            <small *ngIf="formularioRestablecimiento.get('nuevaContrasena')?.hasError('required')">La contraseña es requerida</small>
+            <small *ngIf="formularioRestablecimiento.get('nuevaContrasena')?.hasError('minlength')">Mínimo 8 caracteres</small>
+          </div>
+        </div>
+
+        <div class="form-group-custom">
+          <label for="confirmarContrasena" class="form-label-custom">Confirmar Contraseña</label>
+          <div class="input-wrapper">
+            <span class="input-icon">
+              <i class="bi bi-lock-fill"></i>
+            </span>
+            <input 
+              type="password" 
+              id="confirmarContrasena" 
+              class="form-control-custom"
+              formControlName="confirmarContrasena"
+              placeholder="Repite tu contraseña"
+              [class.is-invalid]="formularioRestablecimiento.get('confirmarContrasena')?.invalid && formularioRestablecimiento.get('confirmarContrasena')?.touched"
+            >
+          </div>
+          <div *ngIf="formularioRestablecimiento.get('confirmarContrasena')?.invalid && formularioRestablecimiento.get('confirmarContrasena')?.touched" class="invalid-feedback">
+            <small *ngIf="formularioRestablecimiento.get('confirmarContrasena')?.hasError('required')">Confirma tu contraseña</small>
+            <small *ngIf="formularioRestablecimiento.get('confirmarContrasena')?.hasError('noCoinciden')">Las contraseñas no coinciden</small>
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn-submit-custom"
+          [disabled]="cargando || formularioRestablecimiento.invalid"
+        >
+          <span *ngIf="!cargando">
+            <i class="bi bi-check-lg"></i>
+            Actualizar Contraseña
+          </span>
+          <span *ngIf="cargando">
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Actualizando...
+          </span>
+        </button>
+
+        <a href="javascript:void(0)" (click)="volverA()" class="btn-volver">
+          <i class="bi bi-arrow-left"></i>
+          Volver
+        </a>
+      </form>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="card-footer-custom">
+      <p class="footer-text">
+        ¿Recordaste tu contraseña? 
+        <a routerLink="/login" class="link-custom">Inicia sesión aquí</a>
+      </p>
+    </div>
+  </div>
+</div>

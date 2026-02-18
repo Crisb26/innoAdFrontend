@@ -18,6 +18,7 @@ export interface ApiEndpoints {
     logout: string;
     profile: string;
     resetPassword: string;
+    confirmReset: string;
     changePassword: string;
   };
 
@@ -124,7 +125,8 @@ export const API_ENDPOINTS: ApiEndpoints = {
     refresh: '/auth/refresh',
     logout: '/auth/logout',
     profile: '/auth/profile',
-    resetPassword: '/auth/reset-password',
+    resetPassword: '/auth/recuperar-contrasena',
+    confirmReset: '/auth/restablecer-contrasena',
     changePassword: '/auth/change-password'
   },
 

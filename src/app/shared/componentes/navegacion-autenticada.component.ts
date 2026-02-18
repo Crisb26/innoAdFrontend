@@ -25,24 +25,36 @@ import { EditarPerfilComponent } from './editar-perfil.component';
           </div>
         </div>
 
-        <!-- Navegación Principal -->
+        <!-- Navegación Principal (Filtrada por Rol) -->
         <div class="nav-links">
           <a routerLink="/dashboard" class="nav-item" routerLinkActive="active">
             <span class="nav-icon"></span>
             Dashboard
           </a>
-          <a routerLink="/campanas" class="nav-item" routerLinkActive="active">
-            <span class="nav-icon"></span>
-            Campañas
-          </a>
-          <a routerLink="/pantallas" class="nav-item" routerLinkActive="active">
-            <span class="nav-icon"></span>
-            Pantallas
-          </a>
-          <a routerLink="/contenidos" class="nav-item" routerLinkActive="active">
-            <span class="nav-icon"></span>
-            Contenidos
-          </a>
+          @if (tieneAccesoCampanas()) {
+            <a routerLink="/campanas" class="nav-item" routerLinkActive="active">
+              <span class="nav-icon"></span>
+              Campañas
+            </a>
+          }
+          @if (tieneAccesoPantallas()) {
+            <a routerLink="/pantallas" class="nav-item" routerLinkActive="active">
+              <span class="nav-icon"></span>
+              Pantallas
+            </a>
+          }
+          @if (tieneAccesoContenidos()) {
+            <a routerLink="/contenidos" class="nav-item" routerLinkActive="active">
+              <span class="nav-icon"></span>
+              Contenidos
+            </a>
+          }
+          @if (tieneAccesoReportes()) {
+            <a routerLink="/reportes" class="nav-item" routerLinkActive="active">
+              <span class="nav-icon"></span>
+              Reportes
+            </a>
+          }
           @if (esAdministrador()) {
             <a routerLink="/admin" class="nav-item nav-admin" routerLinkActive="active">
               <span class="nav-icon"></span>
@@ -191,6 +203,34 @@ export class NavegacionAutenticadaComponent implements OnInit {
   protected esAdministrador(): boolean {
     const usuario = this.servicioAuth.usuarioActual();
     return usuario?.rol?.nombre === 'Administrador' || false;
+  }
+
+  protected tieneAccesoCampanas(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
+    // ADMIN, TECNICO, DESARROLLADOR, USUARIO pueden acceder
+    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'DESARROLLADOR', 'USUARIO'].includes(rol);
+  }
+
+  protected tieneAccesoPantallas(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
+    // Solo ADMIN, TECNICO, DESARROLLADOR pueden acceder
+    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'DESARROLLADOR'].includes(rol);
+  }
+
+  protected tieneAccesoContenidos(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
+    // ADMIN, TECNICO, DESARROLLADOR, USUARIO pueden acceder
+    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'DESARROLLADOR', 'USUARIO'].includes(rol);
+  }
+
+  protected tieneAccesoReportes(): boolean {
+    const usuario = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
+    // ADMIN, TECNICO, USUARIO pueden acceder
+    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
   }
 
   protected toggleMenu(): void {

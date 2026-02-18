@@ -11,23 +11,23 @@ export const environment = {
   // Preparado para múltiples servicios backend
   api: {
     // Gateway principal (Nginx hace proxy a los servicios)
-    gateway: '/api',
+    gateway: '/api/v1',
     
     // Microservicios (todos a través de Nginx reverse proxy)
     services: {
-      auth: '/api/auth',
-      users: '/api/users',
-      campaigns: '/api/campaigns',
-      contents: '/api/contents',
-      screens: '/api/screens',
-      analytics: '/api/analytics',
-      notifications: '/api/notifications',
-      system: '/api/system'
+      auth: '/api/v1/auth',
+      users: '/api/v1/users',
+      campaigns: '/api/v1/campaigns',
+      contents: '/api/v1/contents',
+      screens: '/api/v1/screens',
+      analytics: '/api/v1/analytics',
+      notifications: '/api/v1/notifications',
+      system: '/api/v1/system'
     },
     
     // URLs legacy
-    baseUrl: '/api',
-    authUrl: '/api/auth',
+    baseUrl: '/api/v1',
+    authUrl: '/api/v1/auth',
     uploadUrl: '/api/upload',
     wsUrl: '/ws',
     
@@ -46,6 +46,29 @@ export const environment = {
   // Por eso las URLs son relativas al mismo dominio
   urlApi: '/api',
   urlWebSocket: '/ws',
+
+  // ===== CONFIGURACIÓN DE AUTENTICACIÓN =====
+  auth: {
+    // Tiempos de expiración en desarrollo
+    tokenExpiration: 8 * 60 * 60 * 1000, // 8 horas
+    refreshTokenExpiration: 30 * 24 * 60 * 60 * 1000, // 30 días
+    sessionWarningTime: 15 * 60 * 1000, // 15 minutos antes de expirar
+    
+    // Configuración de seguridad normal para desarrollo
+    autoLogoutOnExpiry: true,
+    refreshTokenOnActivity: true,
+    maxLoginAttempts: 5,
+    lockoutDuration: 10 * 60 * 1000, // 10 minutos
+    
+    // Configuración de sesiones
+    maxConcurrentSessions: 10,
+    kickOtherSessions: false,
+    trackDeviceFingerprint: false,
+    
+    // 2FA disabled en desarrollo
+    twoFactorEnabled: false,
+    backupCodesEnabled: false
+  },
 
   // ===== CONFIGURACIÓN DE AUTENTICACIÓN OFFLINE (Compose / local deploy)
   offlineAuth: {

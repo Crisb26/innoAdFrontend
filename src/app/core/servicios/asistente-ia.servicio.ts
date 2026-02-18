@@ -201,7 +201,7 @@ export class AsistenteIAServicio {
       timestamp: new Date()
     };
 
-    this._historialChat.update(chat => [mensajeUsuario, ...chat]);
+    this._historialChat.update(chat => [...chat, mensajeUsuario]);
     this._nuevoMensaje$.next(mensajeUsuario);
 
     // Mostrar que el asistente está pensando
@@ -227,7 +227,7 @@ export class AsistenteIAServicio {
         metadata: respuesta.metadata
       };
 
-      this._historialChat.update(chat => [mensajeAsistente, ...chat]);
+      this._historialChat.update(chat => [...chat, mensajeAsistente]);
       this._nuevoMensaje$.next(mensajeAsistente);
 
       // Ejecutar acciones sugeridas si las hay
@@ -266,7 +266,7 @@ export class AsistenteIAServicio {
         }
       };
 
-      this._historialChat.update(chat => [mensajeError, ...chat]);
+      this._historialChat.update(chat => [...chat, mensajeError]);
       this.cambiarEstado({
         escribiendo: false,
         animacion: 'confundido',
