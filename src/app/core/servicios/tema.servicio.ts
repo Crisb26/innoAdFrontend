@@ -47,11 +47,16 @@ export class TemaServicio {
   private aplicarTema(tema: Tema): void {
     const html = document.documentElement;
 
+    // Agregar clase para transición suave
+    html.style.transition = 'background 0.3s ease, color 0.3s ease';
+
     if (tema === 'dark') {
       html.classList.add('dark-mode');
+      html.classList.remove('light-mode');
       html.style.setProperty('color-scheme', 'dark');
     } else {
       html.classList.remove('dark-mode');
+      html.classList.add('light-mode');
       html.style.setProperty('color-scheme', 'light');
     }
 
@@ -63,6 +68,12 @@ export class TemaServicio {
       html.style.setProperty('--text-secondary', '#b0b0b0');
       html.style.setProperty('--border-color', '#404040');
       html.style.setProperty('--shadow-color', 'rgba(0, 0, 0, 0.5)');
+      
+      html.style.setProperty('--fondo-oscuro', '#0a0e27');
+      html.style.setProperty('--fondo-medio', '#1a1f3a');
+      html.style.setProperty('--color-texto', '#f0f0f0');
+      html.style.setProperty('--color-texto-claro', '#e8e8e8');
+      html.style.setProperty('--color-primario', '#00d4ff');
     } else {
       html.style.setProperty('--bg-primary', '#ffffff');
       html.style.setProperty('--bg-secondary', '#f5f5f5');
@@ -70,6 +81,13 @@ export class TemaServicio {
       html.style.setProperty('--text-secondary', '#666666');
       html.style.setProperty('--border-color', '#e0e0e0');
       html.style.setProperty('--shadow-color', 'rgba(0, 0, 0, 0.1)');
+      
+      html.style.setProperty('--fondo-oscuro', '#f8f9fa');
+      html.style.setProperty('--fondo-medio', '#e9ecef');
+      html.style.setProperty('--fondo-claro', '#dee2e6');
+      html.style.setProperty('--color-texto', '#000000');
+      html.style.setProperty('--color-texto-claro', '#333333');
+      html.style.setProperty('--color-primario', '#0099cc');
     }
   }
 

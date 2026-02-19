@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { NavegacionAutenticadaComponent } from '@shared/componentes/navegacion-autenticada.component';
+import { NavegacionAutenticadaComponent } from '../../../shared/componentes/navegacion-autenticada.component';
 import { FormularioPantallaComponent } from './formulario-pantalla.component';
 import { DetallePantallaComponent } from './detalle-pantalla.component';
 import { PantallasService, RespuestaPantalla } from '../../../core/servicios/pantallas.service';
@@ -187,16 +187,29 @@ export class ListaPantallasComponent implements OnInit {
 
   ngOnInit() {
     this.cargando.set(true);
+    
+    // Desuscribirse de cualquier suscripción anterior
+    let firstDataReceived = false;
+    const subscription = this.pantallasService.pantallas$.subscribe(() => {
+      // Solo ejecutar una vez cuando lleguen los datos
+      if (!firstDataReceived) {
+        firstDataReceived = true;
+        this.cargando.set(false);
+        
+        // Mostrar ayuda introductoria del módulo Pantallas (una sola vez)
+        this.ayuda.startTourOnce('pantallas', [
+          { element: '.header-pantallas .boton-primario', intro: 'Crea una nueva pantalla para transmitir contenidos.', position: 'left' },
+          { element: '.entrada-busqueda', intro: 'Busca pantallas por nombre o ubicación.' , position: 'bottom'},
+          { element: '.tabla-pantallas', intro: 'En la tabla puedes ver estado, contenidos y acciones disponibles.' , position: 'top'}
+        ], { showProgress: true, exitOnOverlayClick: true });
+        
+        // Desuscribirse después de la primera ejecución
+        subscription.unsubscribe();
+      }
+    });
+    
+    // Inicia la carga de pantallas
     this.pantallasService.cargarPantallas();
-    setTimeout(() => this.cargando.set(false), 1000);
-    // Mostrar ayuda introductoria del módulo Pantallas (una sola vez)
-    setTimeout(() => {
-      this.ayuda.startTourOnce('pantallas', [
-        { element: '.header-pantallas .boton-primario', intro: 'Crea una nueva pantalla para transmitir contenidos.', position: 'left' },
-        { element: '.entrada-busqueda', intro: 'Busca pantallas por nombre o ubicación.' , position: 'bottom'},
-        { element: '.tabla-pantallas', intro: 'En la tabla puedes ver estado, contenidos y acciones disponibles.' , position: 'top'}
-      ], { showProgress: true, exitOnOverlayClick: true });
-    }, 600);
   }
 
   pantallasFiltradasUnicaBusqueda(): RespuestaPantalla[] {

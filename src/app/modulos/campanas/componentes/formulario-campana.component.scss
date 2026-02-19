@@ -14,8 +14,8 @@
   padding: 20px;
 
   .modal-contenido {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    border: 1px solid #334155;
+    background: linear-gradient(135deg, var(--fondo-medio, #1e293b) 0%, var(--fondo-oscuro, #0f172a) 100%);
+    border: 1px solid var(--fondo-claro, #334155);
     border-radius: 12px;
     max-width: 600px;
     width: 100%;
@@ -94,10 +94,10 @@
         textarea {
           width: 100%;
           padding: 12px;
-          background: #0f172a;
-          border: 2px solid #334155;
+          background: var(--fondo-oscuro, #0f172a);
+          border: 2px solid var(--fondo-claro, #334155);
           border-radius: 8px;
-          color: #fff;
+          color: var(--color-texto, #fff);
           font-size: 14px;
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           font-family: inherit;
@@ -105,9 +105,9 @@
 
           &:focus {
             outline: none;
-            border-color: #00d4ff;
+            border-color: var(--color-primario, #00d4ff);
             box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
-            background: linear-gradient(135deg, #0f172a 0%, rgba(0, 212, 255, 0.05) 100%);
+            background: linear-gradient(135deg, var(--fondo-oscuro, #0f172a) 0%, rgba(0, 212, 255, 0.05) 100%);
           }
 
           &::placeholder {

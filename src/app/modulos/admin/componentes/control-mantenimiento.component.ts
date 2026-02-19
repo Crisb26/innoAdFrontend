@@ -140,35 +140,35 @@ import { ServicioMantenimiento } from '@core/servicios/mantenimiento.servicio';
                       type="checkbox"
                       value="VISITANTE"
                       (change)="actualizarRolesAfectados('VISITANTE', $event)">
-                    <span class="checkbox-label">[]� Visitante</span>
+                    <span class="checkbox-label">Visitante</span>
                   </label>
                   <label class="checkbox-custom">
                     <input 
                       type="checkbox"
                       value="USUARIO"
                       (change)="actualizarRolesAfectados('USUARIO', $event)">
-                    <span class="checkbox-label">[]� Usuario</span>
+                    <span class="checkbox-label">Usuario</span>
                   </label>
                   <label class="checkbox-custom">
                     <input 
                       type="checkbox"
                       value="TECNICO"
                       (change)="actualizarRolesAfectados('TECNICO', $event)">
-                    <span class="checkbox-label">[]� Técnico</span>
+                    <span class="checkbox-label">Técnico</span>
                   </label>
                   <label class="checkbox-custom disabled">
                     <input 
                       type="checkbox"
                       checked
                       disabled>
-                    <span class="checkbox-label">[]�‍[]� Admin (Siempre puede acceder)</span>
+                    <span class="checkbox-label">Admin (Siempre puede acceder)</span>
                   </label>
                   <label class="checkbox-custom disabled">
                     <input 
                       type="checkbox"
                       checked
                       disabled>
-                    <span class="checkbox-label">[]�‍[]� Desarrollador (Siempre puede acceder)</span>
+                    <span class="checkbox-label">Desarrollador (Siempre puede acceder)</span>
                   </label>
                 </div>
                 <div class="ayuda-campo">Los administradores y desarrolladores siempre pueden entrar, incluso durante mantenimiento</div>

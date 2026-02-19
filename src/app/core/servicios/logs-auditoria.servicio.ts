@@ -47,7 +47,7 @@ const MOCK_LOGS: LogAuditoria[] = [
     tipo: 'security',
     accion: 'LOGIN_EXITOSO',
     descripcion: 'Usuario inició sesión correctamente',
-    usuario: { id: 1, nombre: 'Temporal', email: 'temporal@innoad.com' },
+    usuario: { id: 1, nombre: 'Admin', email: 'admin@innoad.com' },
     ip: '192.168.1.100',
     userAgent: 'Mozilla/5.0',
     recurso: '/auth/login',
@@ -58,7 +58,7 @@ const MOCK_LOGS: LogAuditoria[] = [
     tipo: 'info',
     accion: 'CREAR_PANTALLA',
     descripcion: 'Se creó nueva pantalla "Pantalla Entrada Principal"',
-    usuario: { id: 1, nombre: 'Temporal', email: 'temporal@innoad.com' },
+    usuario: { id: 1, nombre: 'Admin', email: 'admin@innoad.com' },
     ip: '192.168.1.100',
     userAgent: 'Mozilla/5.0',
     recurso: '/pantallas',
@@ -70,7 +70,7 @@ const MOCK_LOGS: LogAuditoria[] = [
     tipo: 'info',
     accion: 'ACTUALIZAR_PANTALLA',
     descripcion: 'Se actualizó la configuración de la pantalla',
-    usuario: { id: 1, nombre: 'Temporal', email: 'temporal@innoad.com' },
+    usuario: { id: 1, nombre: 'Admin', email: 'admin@innoad.com' },
     ip: '192.168.1.100',
     userAgent: 'Mozilla/5.0',
     recurso: '/pantallas/1',
@@ -92,7 +92,7 @@ const MOCK_LOGS: LogAuditoria[] = [
     tipo: 'info',
     accion: 'CREAR_CAMPAÑA',
     descripcion: 'Se creó nueva campaña publicitaria',
-    usuario: { id: 1, nombre: 'Temporal', email: 'temporal@innoad.com' },
+    usuario: { id: 1, nombre: 'Admin', email: 'admin@innoad.com' },
     ip: '192.168.1.100',
     userAgent: 'Mozilla/5.0',
     recurso: '/campañas',
@@ -104,7 +104,7 @@ const MOCK_LOGS: LogAuditoria[] = [
     tipo: 'error',
     accion: 'ERROR_ACTUALIZACION_PANTALLA',
     descripcion: 'Error al actualizar configuración de pantalla',
-    usuario: { id: 1, nombre: 'Temporal', email: 'temporal@innoad.com' },
+    usuario: { id: 1, nombre: 'Admin', email: 'admin@innoad.com' },
     ip: '192.168.1.100',
     userAgent: 'Mozilla/5.0',
     recurso: '/pantallas/2',
@@ -114,7 +114,7 @@ const MOCK_LOGS: LogAuditoria[] = [
 ];
 
 const MOCK_USUARIOS = [
-  { id: 1, nombre: 'Temporal', email: 'temporal@innoad.com' },
+  { id: 1, nombre: 'Admin', email: 'admin@innoad.com' },
   { id: 2, nombre: 'Usuario Demo', email: 'demo@innoad.com' },
   { id: 3, nombre: 'Admin Principal', email: 'admin@innoad.com' }
 ];

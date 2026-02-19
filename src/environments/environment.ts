@@ -67,11 +67,15 @@ export const environment = {
   },
   // ===== CONFIGURACIÓN DE AUTENTICACIÓN OFFLINE (DESHABILITADO en producción)
   offlineAuth: {
-    enabled: false,  // DESHABILITADO - Usa el backend real
+    enabled: false,  // DESHABILITADO en este entorno para mostrar errores reales de conexión contra el backend.
                      // NOTA: En environment.compose.ts permanece HABILITADO a propósito para facilitar el desarrollo
                      // con Docker Compose (posibilidad de trabajar sin backend real). Esta diferencia entre
                      // entornos es INTENCIONAL y debe mantenerse mientras se necesite probar ambos escenarios.
-    users: []  // Array vacío - Los usuarios deben venir del backend real
+    // Usuarios por defecto para poder entrar sin backend
+    users: [
+      { nombreUsuario: 'admin', email: 'admin@local', contrasena: 'admin123', rol: 'Administrador', nombreCompleto: 'Administrador Local' },
+      { nombreUsuario: 'usuario', email: 'user@local', contrasena: 'user123', rol: 'Usuario', nombreCompleto: 'Usuario Local' }
+    ]
   },
   
   // ===== CONFIGURACIÓN DE CACHE =====

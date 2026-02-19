@@ -215,13 +215,13 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
       <div class="grid-logs-alertas">
         <div class="tarjeta-cristal logs-sistema">
           <div class="logs-header">
-            <h3>[]� Logs del Sistema</h3>
+            <h3>Logs del Sistema</h3>
             <button class="btn-secundario" (click)="limpiarLogs()">Limpiar</button>
           </div>
           <div class="logs-contenido">
             @if (logsSistema().length === 0) {
               <div class="empty-state-mini">
-                <div class="empty-icon">[]�</div>
+                <div class="empty-icon">📋</div>
                 <p>Sin logs recientes</p>
               </div>
             } @else {
@@ -237,7 +237,7 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
 
         <div class="tarjeta-cristal alertas-sistema">
           <div class="alertas-header">
-            <h3>[]� Alertas</h3>
+            <h3>Alertas</h3>
             @if (alertasActivas().length > 0) {
               <div class="contador-alertas">{{ alertasActivas().length }}</div>
             }
@@ -245,7 +245,7 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
           <div class="alertas-contenido">
             @if (alertasActivas().length === 0) {
               <div class="empty-state-mini success">
-                <div class="empty-icon">[]</div>
+                <div class="empty-icon">✓</div>
                 <p>Sistema funcionando correctamente</p>
               </div>
             } @else {
@@ -253,9 +253,9 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
                 <div class="alerta-item" [attr.data-tipo]="alerta.tipo">
                   <div class="alerta-icon">
                     @switch (alerta.tipo) {
-                      @case ('critical') { []� }
-                      @case ('warning') { []� }
-                      @case ('info') { []� }
+                      @case ('critical') { 🔴 }
+                      @case ('warning') { 🟡 }
+                      @case ('info') { 🔵 }
                     }
                   </div>
                   <div class="alerta-contenido">
@@ -274,7 +274,7 @@ import { interval, Subscription, switchMap, startWith } from 'rxjs';
       <!-- Panel de Configuración -->
       <div class="tarjeta-cristal configuracion-panel">
         <div class="config-header">
-          <h3>⚙[] Configuración del Sistema</h3>
+          <h3>Configuración del Sistema</h3>
           <button class="btn-futurista" (click)="toggleConfiguracion()">
             {{ panelConfigAbierto() ? 'Cerrar' : 'Configurar' }}
           </button>

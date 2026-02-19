@@ -106,6 +106,45 @@
   --color-texto-claro: #e8e8e8;
 }
 
+/* Modo Claro */
+:root:not(.dark-mode),
+:root.light-mode {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --border-color: #e0e0e0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+
+  /* Sobrescribir colores principales para light mode */
+  --fondo-oscuro: #f8f9fa;
+  --fondo-medio: #e9ecef;
+  --fondo-claro: #dee2e6;
+  --fondo-superficie: #ced4da;
+  
+  --color-texto: #000000;
+  --color-texto-claro: #333333;
+  --color-texto-medio: #666666;
+  --color-texto-oscuro: #999999;
+  
+  /* Estados más oscuros para light mode */
+  --color-exito: #16a34a;
+  --color-error: #dc2626;
+  --color-advertencia: #ea580c;
+  --color-info: #0099cc;
+  
+  /* Colores primarios adaptados para light mode */
+  --color-primario: #0099cc;
+  --color-secundario: #6f42c1;
+  --color-acento: #ff8800;
+  --color-acento-alt: #cc0066;
+  
+  /* Colores de estado más oscuros para light mode */
+  --color-badge-activa: #22c55e;
+  --color-badge-programada: #f59e0b;
+  --color-badge-finalizada: #6b7280;
+}
+
 /* Reset y Base */
 * {
   margin: 0;
@@ -121,6 +160,7 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background var(--transicion-media), color var(--transicion-media);
 }
 
 /* Scrollbar personalizado */

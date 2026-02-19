@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { NavegacionAutenticadaComponent } from '@shared/componentes/navegacion-autenticada.component';
+import { NavegacionAutenticadaComponent } from '../../../shared/componentes/navegacion-autenticada.component';
 import { ServicioContenidos } from '@core/servicios/contenidos.servicio';
 import { Contenido, FiltroContenidos, RespuestaPaginada, TipoContenido } from '@core/modelos';
 import { FormularioContenidoComponent } from './formulario-contenido.component';

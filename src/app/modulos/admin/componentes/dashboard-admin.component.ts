@@ -34,15 +34,20 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
       <!-- Header Admin -->
       <div class="header-admin">
         <div class="titulo-admin">
-          <h1>[]� Panel de Administración</h1>
+          <h1>Panel de Administración</h1>
           <p>Control total del sistema InnoAd</p>
         </div>
         <div class="info-admin">
           <div class="badge-admin">Administrador</div>
           <div class="usuario-actual">{{ usuarioActual() }}</div>
-          <a routerLink="/admin/mantenimiento" class="btn-mantenimiento-rapido">
-            🛠️ Modo Mantenimiento
-          </a>
+          <div class="botones-header">
+            <a routerLink="/dashboard" class="btn-volver-inicio">
+              Ir al Inicio
+            </a>
+            <a routerLink="/admin/mantenimiento" class="btn-mantenimiento-rapido">
+              🛠️ Modo Mantenimiento
+            </a>
+          </div>
         </div>
       </div>
 
@@ -72,7 +77,7 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
           [class.activa]="pestanaActiva() === 'logs'"
           (click)="cambiarPestana('logs')"
         >
-          []� Logs
+          Logs
         </button>
         <button 
           class="pestana" 
@@ -86,7 +91,7 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
           [class.activa]="pestanaActiva() === 'roles'"
           (click)="cambiarPestana('roles')"
         >
-          []� Roles
+          Roles
         </button>
         <button 
           class="pestana" 
@@ -105,7 +110,7 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
             <!-- Estadísticas Rápidas -->
             <div class="tarjeta-admin tarjeta-estadisticas">
               <div class="header-tarjeta">
-                <h3>[]� Estadísticas del Sistema</h3>
+                <h3>Estadísticas del Sistema</h3>
                 <span class="badge-nuevo">En Tiempo Real</span>
               </div>
               <div class="contenido-estadisticas">
@@ -157,7 +162,7 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
               <div class="lista-usuarios">
                 <!-- Placeholder para usuarios recientes -->
                 <div class="usuario-item">
-                  <div class="avatar-usuario">[]�</div>
+                    <div class="avatar-usuario">👤</div>
                   <div class="info-usuario">
                     <div class="nombre-usuario">Últimos registros aparecerán aquí</div>
                     <div class="rol-usuario">Al conectar con el backend</div>
@@ -171,20 +176,20 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
         <!-- Monitoreo de Pantallas -->
         <div class="tarjeta-admin tarjeta-pantallas">
           <div class="header-tarjeta">
-            <h3>[]� Monitoreo de Pantallas</h3>
+            <h3>Monitoreo de Pantallas</h3>
             <span class="badge-estado estado-online">{{ pantallasOnline() }} Online</span>
           </div>
           <div class="contenido-pantallas">
             <div class="mapa-pantallas">
               <div class="pantalla-status online">
-                <div class="pantalla-icon">[]�</div>
+                <div class="pantalla-icon">📺</div>
                 <div class="pantalla-info">
                   <div class="pantalla-nombre">Pantalla Demo 1</div>
                   <div class="pantalla-estado">Online - Reproduciendo</div>
                 </div>
               </div>
               <div class="pantalla-status offline">
-                <div class="pantalla-icon">[]�</div>
+                <div class="pantalla-icon">📺</div>
                 <div class="pantalla-info">
                   <div class="pantalla-nombre">Pantalla Demo 2</div>
                   <div class="pantalla-estado">Offline - Sin conexión</div>
@@ -196,7 +201,7 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
                 Ver Todas
               </button>
               <button class="btn-accion-pequeño btn-refresh" (click)="actualizarDatos()">
-                []� Actualizar
+                Actualizar
               </button>
             </div>
           </div>
@@ -205,7 +210,7 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
         <!-- Sistema de Auditoría -->
         <div class="tarjeta-admin tarjeta-auditoria">
           <div class="header-tarjeta">
-            <h3>[]� Auditoría y Logs</h3>
+            <h3>Auditoría y Logs</h3>
             <span class="badge-warning">{{ logsRecientes() }} Nuevos</span>
           </div>
           <div class="contenido-auditoria">
@@ -233,24 +238,24 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
         <!-- Configuración del Sistema -->
         <div class="tarjeta-admin tarjeta-configuracion">
           <div class="header-tarjeta">
-            <h3>⚙[] Configuración</h3>
+            <h3>Configuración</h3>
           </div>
           <div class="contenido-configuracion">
             <div class="config-opciones">
               <div class="config-item">
-                <div class="config-label">[]� Códigos de Seguridad</div>
+                <div class="config-label">Códigos de Seguridad</div>
                 <button class="btn-config">Gestionar</button>
               </div>
               <div class="config-item">
-                <div class="config-label">[]� Configuración Email</div>
+                <div class="config-label">Configuración Email</div>
                 <button class="btn-config">Configurar</button>
               </div>
               <div class="config-item">
-                <div class="config-label">[]� Personalización</div>
+                <div class="config-label">Personalización</div>
                 <button class="btn-config">Personalizar</button>
               </div>
               <div class="config-item">
-                <div class="config-label">[]� Backup y Restore</div>
+                <div class="config-label">Backup y Restore</div>
                 <button class="btn-config">Gestionar</button>
               </div>
             </div>
@@ -260,28 +265,28 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
         <!-- Accesos Rápidos -->
         <div class="tarjeta-admin tarjeta-accesos">
           <div class="header-tarjeta">
-            <h3>[]� Accesos Rápidos</h3>
+            <h3>Accesos Rápidos</h3>
           </div>
           <div class="contenido-accesos">
             <div class="grid-accesos-rapidos">
               <a routerLink="/campanas" class="acceso-rapido">
-                <span class="icono-acceso">[]�</span>
+                <span class="icono-acceso">📢</span>
                 <span class="label-acceso">Campañas</span>
               </a>
               <a routerLink="/pantallas" class="acceso-rapido">
-                <span class="icono-acceso">[]�</span>
+                <span class="icono-acceso">📺</span>
                 <span class="label-acceso">Pantallas</span>
               </a>
               <a routerLink="/contenidos" class="acceso-rapido">
-                <span class="icono-acceso">[]�</span>
+                <span class="icono-acceso">📄</span>
                 <span class="label-acceso">Contenidos</span>
               </a>
               <a routerLink="/reportes" class="acceso-rapido">
-                <span class="icono-acceso">[]�</span>
+                <span class="icono-acceso">📊</span>
                 <span class="label-acceso">Reportes</span>
               </a>
               <a routerLink="/publicar" class="acceso-rapido">
-                <span class="icono-acceso">[]�</span>
+                <span class="icono-acceso">✨</span>
                 <span class="label-acceso">Publicar</span>
               </a>
               <a routerLink="/inicio" class="acceso-rapido">

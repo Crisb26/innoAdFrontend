@@ -1,7 +1,7 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { NavegacionAutenticadaComponent } from '@shared/componentes/navegacion-autenticada.component';
+import { NavegacionAutenticadaComponent } from '../../../shared/componentes/navegacion-autenticada.component';
 import { ServicioPagos } from '@core/servicios/pagos.servicio';
 
 @Component({
