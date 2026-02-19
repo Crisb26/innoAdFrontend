@@ -13,7 +13,7 @@ import { ServicioMantenimiento } from '@core/servicios/mantenimiento.servicio';
       <!-- Header del Control -->
       <div class="header-mantenimiento">
         <div class="titulo-seccion">
-          <h2>🔧 Control de Mantenimiento</h2>
+          <h2>🎛️ Control de Mantenimiento</h2>
           <div class="estado-actual" [class.activo]="modoActivo()">
             <span class="indicador"></span>
             Estado: {{ modoActivo() ? 'MANTENIMIENTO ACTIVO' : 'Sistema Normal' }}
@@ -122,9 +122,9 @@ import { ServicioMantenimiento } from '@core/servicios/mantenimiento.servicio';
                   class="input-innoad"
                   required>
                   <option value="" disabled selected>Selecciona un tipo...</option>
-                  <option value="PROGRAMADO">📅 Programado (Mantenimiento Planeado)</option>
-                  <option value="EMERGENCIA">🚨 Emergencia (Urgente)</option>
-                  <option value="CRITICA">⚠️ Crítica (Problema Grave)</option>
+                  <option value="PROGRAMADO">[]� Programado (Mantenimiento Planeado)</option>
+                  <option value="EMERGENCIA">[]� Emergencia (Urgente)</option>
+                  <option value="CRITICA">[][] Crítica (Problema Grave)</option>
                 </select>
                 @if (formulario.get('tipoMantenimiento')?.errors?.['required'] && formulario.get('tipoMantenimiento')?.touched) {
                   <div class="error-campo">El tipo de mantenimiento es requerido</div>
@@ -140,35 +140,35 @@ import { ServicioMantenimiento } from '@core/servicios/mantenimiento.servicio';
                       type="checkbox"
                       value="VISITANTE"
                       (change)="actualizarRolesAfectados('VISITANTE', $event)">
-                    <span class="checkbox-label">👤 Visitante</span>
+                    <span class="checkbox-label">[]� Visitante</span>
                   </label>
                   <label class="checkbox-custom">
                     <input 
                       type="checkbox"
                       value="USUARIO"
                       (change)="actualizarRolesAfectados('USUARIO', $event)">
-                    <span class="checkbox-label">👥 Usuario</span>
+                    <span class="checkbox-label">[]� Usuario</span>
                   </label>
                   <label class="checkbox-custom">
                     <input 
                       type="checkbox"
                       value="TECNICO"
                       (change)="actualizarRolesAfectados('TECNICO', $event)">
-                    <span class="checkbox-label">🔧 Técnico</span>
+                    <span class="checkbox-label">[]� Técnico</span>
                   </label>
                   <label class="checkbox-custom disabled">
                     <input 
                       type="checkbox"
                       checked
                       disabled>
-                    <span class="checkbox-label">👨‍💼 Admin (Siempre puede acceder)</span>
+                    <span class="checkbox-label">[]�‍[]� Admin (Siempre puede acceder)</span>
                   </label>
                   <label class="checkbox-custom disabled">
                     <input 
                       type="checkbox"
                       checked
                       disabled>
-                    <span class="checkbox-label">👨‍💻 Desarrollador (Siempre puede acceder)</span>
+                    <span class="checkbox-label">[]�‍[]� Desarrollador (Siempre puede acceder)</span>
                   </label>
                 </div>
                 <div class="ayuda-campo">Los administradores y desarrolladores siempre pueden entrar, incluso durante mantenimiento</div>

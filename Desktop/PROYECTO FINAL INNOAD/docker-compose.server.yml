@@ -1,0 +1,150 @@
+# ============================================================================
+# DOCKER COMPOSE - SERVIDOR CASERO (Self-Hosted)
+# ============================================================================
+# Levanta todo el stack InnoAd:
+#   - PostgreSQL 15 (base de datos)
+#   - Backend Spring Boot (API REST en puerto 8080)
+#   - Frontend Angular + Nginx (proxy reverso en puerto 80)
+#
+# USO:
+#   1. Copiar .env.server.example a .env  y configurar las variables
+#   2. docker-compose -f docker-compose.server.yml up -d --build
+#   3. Acceder a http://<IP-DEL-SERVIDOR>
+#
+# PARAR:
+#   docker-compose -f docker-compose.server.yml down
+#
+# VER LOGS:
+#   docker-compose -f docker-compose.server.yml logs -f
+# ============================================================================
+
+version: '3.8'
+
+services:
+  # ==================== BASE DE DATOS ====================
+  postgres:
+    image: postgres:15-alpine
+    container_name: innoad-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-innoad}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-innoad_password_segura_2024}
+      POSTGRES_DB: ${DB_NAME:-innoad_db}
+      TZ: America/Bogota
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # Descomentar si quieres inicializar la BD con el script:
+      # - ./BACKEND/DATABASE-SCRIPT.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5433:5432"  # Expuesto en 5433 para no chocar con PostgreSQL local
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-innoad} -d ${DB_NAME:-innoad_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - innoad-network
+
+  # ==================== BACKEND (Spring Boot) ====================
+  backend:
+    build:
+      context: ./BACKEND
+      dockerfile: Dockerfile
+    image: innoad-backend:latest
+    container_name: innoad-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # Perfil de Spring Boot para servidor casero
+      SPRING_PROFILES_ACTIVE: server
+      # Base de datos (apunta al contenedor postgres)
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-innoad_db}
+      DB_USER: ${DB_USER:-innoad}
+      DB_PASSWORD: ${DB_PASSWORD:-innoad_password_segura_2024}
+      # Tambien soporta el formato DATABASE_URL por si application.yml lo usa
+      DATABASE_URL: jdbc:postgresql://postgres:5432/${DB_NAME:-innoad_db}
+      DATABASE_USERNAME: ${DB_USER:-innoad}
+      DATABASE_PASSWORD: ${DB_PASSWORD:-innoad_password_segura_2024}
+      # JWT
+      JWT_SECRET: ${JWT_SECRET:-CAMBIAR_ESTE_SECRETO_EN_PRODUCCION_MINIMO_64_CARACTERES_ABC123}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
+      # Puerto
+      PORT: 8080
+      SERVER_PORT: 8080
+      # Frontend URL para CORS
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost}
+      SERVER_PUBLIC_URL: ${SERVER_PUBLIC_URL:-http://localhost}
+      # Admin
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin123!}
+      # Email
+      MAIL_HOST: ${MAIL_HOST:-smtp.gmail.com}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      # OpenAI / IA
+      AI_API_KEY: ${AI_API_KEY:-}
+      AI_MODEL: ${AI_MODEL:-gpt-4}
+      OPENAI_API_KEY: ${AI_API_KEY:-}
+      # Mercado Pago
+      MERCADO_PAGO_ACCESS_TOKEN: ${MERCADO_PAGO_ACCESS_TOKEN:-}
+      MERCADO_PAGO_PUBLIC_KEY: ${MERCADO_PAGO_PUBLIC_KEY:-}
+      # Mantenimiento
+      MAINTENANCE_CODE: ${MAINTENANCE_CODE:-93022611184}
+      # Zona horaria
+      TZ: America/Bogota
+    volumes:
+      - backend_uploads:/app/uploads
+      - backend_logs:/app/logs
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks:
+      - innoad-network
+
+  # ==================== FRONTEND (Angular + Nginx) ====================
+  frontend:
+    build:
+      context: ./FRONTEND/innoadFrontend
+      dockerfile: Dockerfile
+      args:
+        BUILD_CONFIGURATION: compose
+    image: innoad-frontend:latest
+    container_name: innoad-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "80:80"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - innoad-network
+
+# ==================== VOLUMENES ====================
+volumes:
+  postgres_data:
+    driver: local
+  backend_uploads:
+    driver: local
+  backend_logs:
+    driver: local
+
+# ==================== RED ====================
+networks:
+  innoad-network:
+    driver: bridge

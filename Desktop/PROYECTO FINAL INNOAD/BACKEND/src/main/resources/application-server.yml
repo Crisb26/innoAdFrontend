@@ -1,0 +1,70 @@
+# =====================================================
+# PERFIL: SERVIDOR CASA (PRINCIPAL)
+# Activar con: SPRING_PROFILES_ACTIVE=server
+# =====================================================
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:innoad_db}
+    username: ${DB_USERNAME:innoad_user}
+    password: ${DB_PASSWORD:innoad_pass}
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 15
+      minimum-idle: 3
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-test-query: SELECT 1
+
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: false
+
+# Logging para produccion
+logging:
+  level:
+    root: WARN
+    com.innoad: INFO
+    org.springframework.web: WARN
+    org.hibernate: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# Server
+server:
+  port: ${SERVER_PORT:8080}
+  compression:
+    enabled: true
+  error:
+    include-message: always
+    include-stacktrace: never
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+  health:
+    mail:
+      enabled: false
+
+# CORS y frontend para servidor
+innoad:
+  frontend:
+    url: ${FRONTEND_URL:http://localhost}
+    allowed-origins:
+      - http://localhost
+      - http://localhost:80
+      - http://localhost:4200
+      - http://100.91.23.46
+      - http://100.91.23.46:8080
+      - https://*.ts.net
+      - https://*.netlify.app

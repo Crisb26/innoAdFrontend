@@ -41,7 +41,9 @@ export const routes: Routes = [
   // Panel técnico - TECNICO
   {
     path: 'tecnico',
-    loadChildren: () => import('./modulos/dashboard/dashboard.routes').then(m => m.routes)
+    loadChildren: () => import('./modulos/tecnico/tecnico.routes').then(m => m.routes),
+    canActivate: [guardAutenticacion, RolGuard],
+    data: { roles: ['TECNICO', 'ADMIN'] }
   },
 
   // Panel desarrollador - DESHABILITADO (rol eliminado)

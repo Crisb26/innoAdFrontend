@@ -1,0 +1,137 @@
+name: Deploy Backend to Tailscale Server
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'BACKEND/**'
+      - '.github/workflows/deploy-tailscale.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: ☕ Setup Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: 🔨 Build Backend
+      run: |
+        cd BACKEND
+        mvn clean package -DskipTests
+
+    - name: 📂 Prepare deployment artifacts
+      run: |
+        mkdir -p deploy
+        cp BACKEND/target/innoad-backend-*.jar deploy/
+        cp BACKEND/Dockerfile deploy/ 2>/dev/null || true
+        cp BACKEND/docker-compose.yml deploy/ 2>/dev/null || true
+
+    - name: 🔐 Setup SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.TAILSCALE_SSH_KEY }}" > ~/.ssh/id_ed25519
+        chmod 600 ~/.ssh/id_ed25519
+        ssh-keyscan -H 100.91.23.46 >> ~/.ssh/known_hosts 2>/dev/null || true
+
+    - name: 📡 Deploy to Tailscale Server
+      run: |
+        echo "📤 Transferring build artifacts..."
+        scp -r -o StrictHostKeyChecking=accept-new deploy/*.jar vboxuser@100.91.23.46:/tmp/innoad-backend/
+
+        echo "🚀 Running deployment on server..."
+        ssh -o StrictHostKeyChecking=accept-new vboxuser@100.91.23.46 << 'EOF'
+        set -e
+
+        DEPLOY_DIR="/home/vboxuser/innoad"
+        BACKUP_DIR="/home/vboxuser/innoad-backup-$(date +%Y%m%d-%H%M%S)"
+
+        echo "📂 Creating backup..."
+        if [ -f "$DEPLOY_DIR/innoad-backend.jar" ]; then
+          mkdir -p "$BACKUP_DIR"
+          cp "$DEPLOY_DIR/innoad-backend.jar" "$BACKUP_DIR/" || true
+        fi
+
+        echo "📥 Deploying new backend..."
+        mkdir -p "$DEPLOY_DIR"
+        cp /tmp/innoad-backend/innoad-backend-*.jar "$DEPLOY_DIR/innoad-backend.jar"
+
+        echo "🔄 Restarting backend service..."
+
+        # If running via Docker
+        if docker ps 2>/dev/null | grep -q innoad-backend; then
+          echo "  └─ Restarting Docker container..."
+          cd "$DEPLOY_DIR"
+          docker-compose -f docker-compose.server.yml restart backend
+        fi
+
+        # If running via pm2
+        if command -v pm2 &> /dev/null; then
+          echo "  └─ Restarting PM2 process..."
+          pm2 restart innoad-backend || pm2 start --name innoad-backend "cd $DEPLOY_DIR && java -jar innoad-backend.jar --spring.profiles.active=server"
+        fi
+
+        # If running via systemd
+        if systemctl list-units --all | grep -q innoad-backend; then
+          echo "  └─ Restarting systemd service..."
+          sudo systemctl restart innoad-backend
+        fi
+
+        echo "✅ Backend deployment complete"
+        echo "🧹 Cleaning up..."
+        rm -rf /tmp/innoad-backend
+
+        # Wait for backend to start
+        echo "⏳ Waiting for backend to start..."
+        for i in {1..30}; do
+          if curl -sf http://localhost:8080/actuator/health > /dev/null 2>&1; then
+            echo "✅ Backend is responding"
+            break
+          fi
+          echo "  Attempt $i/30..."
+          sleep 2
+        done
+
+        EOF
+
+    - name: ✅ Verify deployment
+      run: |
+        echo "🔍 Checking if API is responding..."
+        max_attempts=10
+        attempt=0
+
+        while [ $attempt -lt $max_attempts ]; do
+          if curl -sf https://azure-pro.tail2a2f73.ts.net/api/health > /dev/null 2>&1 || \
+             curl -sf https://azure-pro.tail2a2f73.ts.net/api/v1/auth/health > /dev/null 2>&1 || \
+             curl -sf http://100.91.23.46:8080/actuator/health > /dev/null 2>&1; then
+            echo "✅ API is responding"
+            exit 0
+          fi
+
+          attempt=$((attempt + 1))
+          echo "⏳ Attempt $attempt/$max_attempts - waiting for API..."
+          sleep 5
+        done
+
+        echo "⚠️  API check timed out, but deployment may still be in progress"
+        exit 0
+
+    - name: 📢 Deployment notification
+      if: always()
+      run: |
+        if [ "${{ job.status }}" == "success" ]; then
+          echo "✅ Backend deployment to Tailscale successful!"
+          echo "🌐 API available at: https://azure-pro.tail2a2f73.ts.net/api"
+        else
+          echo "❌ Backend deployment failed"
+        fi

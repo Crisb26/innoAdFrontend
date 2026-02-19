@@ -144,9 +144,9 @@ export class UsuarioDashboardComponent implements OnInit, OnDestroy {
   getEstadoLabel(estado: string): string {
     const labels: Record<string, string> = {
       PENDIENTE: '⏳ En Revisión',
-      APROBADO: '✅ Aprobado',
-      RECHAZADO: '❌ Rechazado',
-      PUBLICADO: '📡 En Transmisión',
+      APROBADO: '[] Aprobado',
+      RECHAZADO: '[] Rechazado',
+      PUBLICADO: '[]� En Transmisión',
       FINALIZADO: '✓ Finalizado'
     };
     return labels[estado] || estado;

@@ -29,7 +29,17 @@ interface MetricaKPI {
       <!-- Sección de Bienvenida Hero -->
       <div class="seccion-bienvenida-hero">
         <h1 class="titulo-bienvenida-hero">¡Bienvenido, {{ nombreUsuario() }}!</h1>
-        <p class="subtitulo-bienvenida-hero">Gestiona tu contenido digital de manera inteligente</p>
+        <p class="subtitulo-bienvenida-hero">
+          @if (esAdministrador()) {
+            Administra el sistema, usuarios y configuración de InnoAd
+          } @else if (esTecnico()) {
+            Gestiona pantallas, contenidos y brinda soporte técnico a usuarios
+          } @else if (esUsuario()) {
+            Crea campañas y contenido multimedia para tus públicos digitales
+          } @else {
+            Gestiona tu contenido digital de manera inteligente
+          }
+        </p>
       </div>
 
       <!-- Contenido Principal -->
@@ -240,9 +250,27 @@ export class DashboardComponent implements OnInit {
     return usuario?.nombreCompleto || usuario?.nombreUsuario || 'Usuario';
   }
 
+  private obtenerRolNombre(): string {
+    const usuario: any = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol;
+    if (typeof rol === 'string') return rol;
+    if (rol && typeof rol === 'object' && typeof rol.nombre === 'string') return rol.nombre;
+    return '';
+  }
+
   protected esAdministrador(): boolean {
-    const usuario = this.servicioAuth.usuarioActual();
-    return usuario?.rol?.nombre === 'Administrador' || false;
+    const rol = this.obtenerRolNombre().toUpperCase();
+    return rol === 'ADMIN';
+  }
+
+  protected esTecnico(): boolean {
+    const rol = this.obtenerRolNombre().toUpperCase();
+    return rol === 'TECNICO';
+  }
+
+  protected esUsuario(): boolean {
+    const rol = this.obtenerRolNombre().toUpperCase();
+    return rol === 'USUARIO';
   }
 
   protected tieneAccesoCampanas(): boolean {

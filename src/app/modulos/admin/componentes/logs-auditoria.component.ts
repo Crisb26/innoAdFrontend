@@ -1,18 +1,20 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { LogsAuditoriaService, LogAuditoria, FiltrosLogs, EstadisticasLogs } from '@core/servicios/logs-auditoria.servicio';
 
 @Component({
   selector: 'app-logs-auditoria',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   styleUrls: ['./logs-auditoria.component.scss'],
   template: `
     <div class="logs-container">
       <!-- Header -->
       <div class="header-section">
-        <div class="titulo-seccion">
+        <div class="titulo-seccion">          
+          <a routerLink="/admin" class="btn-volver" title="Volver al Dashboard">← Volver</a>          
           <h2>📋 Logs de Auditoría</h2>
           <p>Registro completo de actividades del sistema</p>
         </div>
@@ -151,7 +153,7 @@ import { LogsAuditoriaService, LogAuditoria, FiltrosLogs, EstadisticasLogs } fro
           </div>
         } @else if (logs().length === 0) {
           <div class="empty-state">
-            <div class="empty-icon">📋</div>
+            <div class="empty-icon">🔍</div>
             <h3>No se encontraron registros</h3>
             <p>Intenta ajustar los filtros de búsqueda</p>
           </div>
@@ -271,7 +273,7 @@ import { LogsAuditoriaService, LogAuditoria, FiltrosLogs, EstadisticasLogs } fro
         <div class="modal-overlay" (click)="cerrarModalMantenimiento()">
           <div class="modal-contenido" (click)="$event.stopPropagation()">
             <div class="modal-header">
-              <h3>🧹 Mantenimiento de Logs</h3>
+              <h3>🔧 Mantenimiento de Logs</h3>
               <button class="btn-cerrar" (click)="cerrarModalMantenimiento()">✕</button>
             </div>
             <div class="modal-body">

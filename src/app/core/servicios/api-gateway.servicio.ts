@@ -34,7 +34,7 @@ export class ApiGatewayService {
     const serviceUrl = environment.api?.services?.[serviceName];
     
     if (!serviceUrl) {
-      console.warn(`⚠️ Servicio "${serviceName}" no configurado, usando gateway por defecto`);
+      console.warn(`[][] Servicio "${serviceName}" no configurado, usando gateway por defecto`);
       return this.getGatewayUrl();
     }
     
@@ -128,7 +128,7 @@ export class ApiGatewayService {
    * Para debugging: muestra la configuración actual
    */
   logConfiguration(): void {
-    console.group('🔧 Configuración de API Gateway');
+    console.group('[]� Configuración de API Gateway');
     console.log('Gateway Principal:', this.getGatewayUrl());
     console.log('Servicios Configurados:', this.getConfiguredServices());
     console.table(environment.api?.services || {});

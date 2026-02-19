@@ -94,9 +94,9 @@ import NotifyX from 'notifyx';
                   <td>
                     <span class="orientacion-badge" [ngClass]="pantalla.orientacion.toLowerCase()">
                       @if (pantalla.orientacion === 'HORIZONTAL') {
-                        📺 Horizontal
+                        ↔ Horizontal
                       } @else {
-                        📱 Vertical
+                        ↕ Vertical
                       }
                     </span>
                   </td>
@@ -234,21 +234,22 @@ export class ListaPantallasComponent implements OnInit {
 
   confirmarEliminar() {
     if (this.pantallaIdAEliminar !== null) {
-      try {
-        this.pantallasService.eliminarYActualizar(this.pantallaIdAEliminar);
+      const idAEliminar = this.pantallaIdAEliminar;
+      // Cerrar modal inmediatamente
+      this.mostrarConfirmacionEliminar.set(false);
+      this.pantallaIdAEliminar = null;
+      
+      // Ejecutar eliminación
+      this.pantallasService.eliminarYActualizar(idAEliminar);
+      
+      // Mostrar notificación (el servicio manejará el error internamente)
+      setTimeout(() => {
         NotifyX.success('✅ Pantalla eliminada exitosamente', {
           position: 'top-right',
           duration: 3000
         });
-      } catch (error) {
-        NotifyX.error('❌ Error al eliminar la pantalla', {
-          position: 'top-right',
-          duration: 3000
-        });
-      }
+      }, 300);
     }
-    this.mostrarConfirmacionEliminar.set(false);
-    this.pantallaIdAEliminar = null;
   }
 
   cancelarEliminar() {

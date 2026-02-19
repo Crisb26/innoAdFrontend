@@ -17,7 +17,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
     <div class="seleccionar-ubicaciones-container">
       <header class="header">
         <button class="btn-volver" (click)="volver()">← Volver</button>
-        <h1>📍 Seleccionar Ubicaciones para tu Publicidad</h1>
+        <h1>[]� Seleccionar Ubicaciones para tu Publicidad</h1>
       </header>
 
       <div class="contenido">
@@ -83,7 +83,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
         <!-- Panel derecha: Resumen -->
         <div class="panel-derecha">
           <div class="resumen-card">
-            <h2>📋 Resumen</h2>
+            <h2>[]� Resumen</h2>
 
             <!-- Ubicaciones seleccionadas -->
             <div class="ubicaciones-seleccionadas">
@@ -144,7 +144,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
               <button class="btn-limpiar"
                       [disabled]="ubicacionesElegidas.length === 0"
                       (click)="limpiarSeleccion()">
-                🗑️ Limpiar
+                []�[] Limpiar
               </button>
               <button class="btn-continuar"
                       [disabled]="ubicacionesElegidas.length === 0 || duracionDias < 1"
@@ -156,7 +156,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
 
           <!-- Info adicional -->
           <div class="info-card">
-            <h3>💡 Información</h3>
+            <h3>[]� Información</h3>
             <p>Puedes seleccionar múltiples ubicaciones en diferentes ciudades.</p>
             <p>El costo se calcula automáticamente según la duración y los pisos seleccionados.</p>
           </div>

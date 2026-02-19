@@ -1,5 +1,5 @@
 /**
- * ðŸ§ª TESTS - COMPONENTE HARDWARE
+ * []ª TESTS - COMPONENTE HARDWARE
  * Gestor de dispositivos IoT con listado, control y monitoreo
  */
 

@@ -17,7 +17,7 @@ import { PermisosServicio } from '../../core/servicios/permisos.servicio';
       <div class="dashboard-grid">
         <!-- Ventana de Daños -->
         <div class="dashboard-card" (click)="navegarA('daños')">
-          <div class="card-icon">⚠️</div>
+          <div class="card-icon">[][]</div>
           <h2>Daños Reportados</h2>
           <p class="card-description">Ver y gestionar problemas del sistema</p>
           <div class="card-meta">
@@ -27,7 +27,7 @@ import { PermisosServicio } from '../../core/servicios/permisos.servicio';
 
         <!-- Monitoreo de Raspberry Pi -->
         <div class="dashboard-card" (click)="navegarA('dispositivos')">
-          <div class="card-icon">📡</div>
+          <div class="card-icon">[]�</div>
           <h2>Dispositivos IoT</h2>
           <p class="card-description">Monitoreo de Raspberry Pi y pantallas</p>
           <div class="card-meta">
@@ -38,7 +38,7 @@ import { PermisosServicio } from '../../core/servicios/permisos.servicio';
 
         <!-- Publicaciones por Revisar -->
         <div class="dashboard-card" (click)="navegarA('publicaciones')">
-          <div class="card-icon">📋</div>
+          <div class="card-icon">[]�</div>
           <h2>Publicaciones</h2>
           <p class="card-description">Revisar y aprobar contenido nuevo</p>
           <div class="card-meta">
@@ -48,7 +48,7 @@ import { PermisosServicio } from '../../core/servicios/permisos.servicio';
 
         <!-- Chat con Usuarios -->
         <div class="dashboard-card" (click)="navegarA('chat')">
-          <div class="card-icon">💬</div>
+          <div class="card-icon">[]�</div>
           <h2>Soporte de Usuarios</h2>
           <p class="card-description">Mensajes de usuarios requiriendo soporte</p>
           <div class="card-meta">
@@ -58,14 +58,14 @@ import { PermisosServicio } from '../../core/servicios/permisos.servicio';
 
         <!-- Logs del Sistema -->
         <div class="dashboard-card" (click)="navegarA('logs')">
-          <div class="card-icon">📊</div>
+          <div class="card-icon">[]�</div>
           <h2>Logs del Sistema</h2>
           <p class="card-description">Historial de eventos y errores</p>
         </div>
 
         <!-- Estadísticas -->
         <div class="dashboard-card" (click)="navegarA('estadisticas')">
-          <div class="card-icon">📈</div>
+          <div class="card-icon">[]�</div>
           <h2>Estadísticas</h2>
           <p class="card-description">Métricas de desempeño y uso</p>
         </div>

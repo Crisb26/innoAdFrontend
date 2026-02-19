@@ -1,17 +1,20 @@
-# Configuración de Netlify para InnoAd Frontend
+# Configuracion de Netlify para InnoAd Frontend
+# =====================================================
+# BUILD POR DEFECTO: Servidor casa (principal)
+# Para Azure (emergencia): cambiar comando a "npm run construir:azure"
+# =====================================================
 
 [build]
-  # Comando de build
+  # Comando de build - SERVIDOR CASA (principal)
   command = "npm run construir"
-  
+
   # Directorio con los archivos compilados
   publish = "dist/innoad-frontend/browser"
-  
-  # Directorio base (raíz del proyecto)
+
+  # Directorio base (raiz del proyecto)
   base = "."
 
 [build.environment]
-  # Versión de Node.js
   NODE_VERSION = "20"
 
 # Redireccionamiento para Angular routing (SPA)
@@ -29,7 +32,7 @@
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "no-referrer-when-downgrade"
 
-# Cache para assets estáticos
+# Cache para assets estaticos
 [[headers]]
   for = "/assets/*"
   [headers.values]

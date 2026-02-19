@@ -18,10 +18,10 @@ import { takeUntil } from 'rxjs/operators';
     <div class="container-dispositivos">
       <!-- Header -->
       <div class="header-dispositivos">
-        <h1>🔌 Gestión de Dispositivos IoT</h1>
+        <h1>[]� Gestión de Dispositivos IoT</h1>
         <div class="acciones-header">
           <button class="btn-primario" (click)="abrirModalNuevoDispositivo()">+ Nuevo Dispositivo</button>
-          <button class="btn-secundario" (click)="actualizarDispositivos()">🔄 Actualizar</button>
+          <button class="btn-secundario" (click)="actualizarDispositivos()">[]� Actualizar</button>
         </div>
       </div>
 
@@ -38,7 +38,7 @@ import { takeUntil } from 'rxjs/operators';
           <div class="tarjeta-header">
             <div class="info-basica">
               <h3>{{ dispositivo.nombre }}</h3>
-              <p class="ubicacion">📍 {{ dispositivo.ubicacion }}</p>
+              <p class="ubicacion">[]� {{ dispositivo.ubicacion }}</p>
             </div>
             <div class="badge-estado" [class]="'estado-' + dispositivo.estado">
               {{ dispositivo.estado | uppercase }}
@@ -68,15 +68,15 @@ import { takeUntil } from 'rxjs/operators';
           <!-- Sensores (si existen) -->
           <div *ngIf="dispositivo.sensores" class="sensores-info">
             <div class="sensor-item">
-              <span>🌡️ Temp:</span>
+              <span>[]�[] Temp:</span>
               <strong>{{ dispositivo.sensores.temperatura }}°C</strong>
             </div>
             <div class="sensor-item">
-              <span>💧 Humedad:</span>
+              <span>[]� Humedad:</span>
               <strong>{{ dispositivo.sensores.humedad }}%</strong>
             </div>
             <div class="sensor-item">
-              <span>⚖️ Presión:</span>
+              <span>⚖[] Presión:</span>
               <strong>{{ dispositivo.sensores.presion }} hPa</strong>
             </div>
           </div>
@@ -84,7 +84,7 @@ import { takeUntil } from 'rxjs/operators';
           <!-- Acciones -->
           <div class="acciones-dispositivo">
             <button class="btn-accion" (click)="abrirEstadisticas(dispositivo)" title="Ver estadísticas">
-              📊
+              []�
             </button>
             <button
               class="btn-accion"
@@ -92,7 +92,7 @@ import { takeUntil } from 'rxjs/operators';
               (click)="reproducirContenido(dispositivo)"
               title="Reproducir contenido"
             >
-              ▶️
+              ▶[]
             </button>
             <button
               class="btn-accion"
@@ -100,7 +100,7 @@ import { takeUntil } from 'rxjs/operators';
               (click)="pausarDispositivo(dispositivo)"
               title="Pausar"
             >
-              ⏸️
+              ⏸[]
             </button>
             <button
               class="btn-accion"
@@ -108,10 +108,10 @@ import { takeUntil } from 'rxjs/operators';
               (click)="detenerDispositivo(dispositivo)"
               title="Detener"
             >
-              ⏹️
+              ⏹[]
             </button>
             <button class="btn-accion" (click)="sincronizar(dispositivo)" title="Sincronizar">
-              🔄
+              []�
             </button>
             <button
               class="btn-accion"
@@ -119,13 +119,13 @@ import { takeUntil } from 'rxjs/operators';
               (click)="reiniciarDispositivo(dispositivo)"
               title="Reiniciar"
             >
-              🔌
+              []�
             </button>
             <button class="btn-accion" (click)="editarDispositivo(dispositivo)" title="Editar">
-              ✏️
+              ✏[]
             </button>
             <button class="btn-accion btn-peligro" (click)="eliminarDispositivo(dispositivo)" title="Eliminar">
-              🗑️
+              []�[]
             </button>
           </div>
 
@@ -143,7 +143,7 @@ import { takeUntil } from 'rxjs/operators';
       <div *ngIf="mostrarEstadisticas" class="modal-overlay" (click)="cerrarEstadisticas()">
         <div class="modal-contenido" (click)="$event.stopPropagation()">
           <div class="modal-header">
-            <h2>📊 Estadísticas - {{ dispositivoSeleccionado?.nombre }}</h2>
+            <h2>[]� Estadísticas - {{ dispositivoSeleccionado?.nombre }}</h2>
             <button class="btn-cerrar" (click)="cerrarEstadisticas()">✕</button>
           </div>
 
@@ -185,10 +185,10 @@ import { takeUntil } from 'rxjs/operators';
 
             <div class="acciones-modal">
               <button class="btn-secundario" (click)="testConexion(dispositivoSeleccionado!)">
-                🧪 Test de Conexión
+                []� Test de Conexión
               </button>
               <button class="btn-primario" (click)="actualizarSoftware(dispositivoSeleccionado!)">
-                ⬆️ Actualizar Software
+                ⬆[] Actualizar Software
               </button>
             </div>
           </div>

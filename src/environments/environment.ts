@@ -23,7 +23,7 @@ export const environment = {
       notifications: 'http://localhost:8080/api/v1/notifications',
       system: 'http://localhost:8080/api/v1/system'
     },
-    
+
     // URLs específicas
     baseUrl: 'http://localhost:8080/api/v1',
     authUrl: 'http://localhost:8080/api/v1/auth',
@@ -65,7 +65,7 @@ export const environment = {
     twoFactorEnabled: false,
     backupCodesEnabled: false
   },
-  // ===== CONFIGURACIÓN DE AUTENTICACIÓN OFFLINE (Útil para desarrollo local)
+  // ===== CONFIGURACIÓN DE AUTENTICACIÓN OFFLINE (DESHABILITADO en producción)
   offlineAuth: {
     enabled: false,  // DESHABILITADO en este entorno para mostrar errores reales de conexión contra el backend.
                      // NOTA: En environment.compose.ts permanece HABILITADO a propósito para facilitar el desarrollo

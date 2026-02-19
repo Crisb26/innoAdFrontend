@@ -221,11 +221,11 @@ export class ModalDetallesPublicacionComponent implements OnInit {
   getEstadoLabel(estado: string): string {
     const labels: Record<string, string> = {
       'PENDIENTE': '⏳ En Revisión',
-      'APROBADO': '✅ Aprobado',
-      'RECHAZADO': '❌ Rechazado',
-      'PUBLICADO': '📡 En Transmisión',
+      'APROBADO': '[] Aprobado',
+      'RECHAZADO': '[] Rechazado',
+      'PUBLICADO': '[]� En Transmisión',
       'FINALIZADO': '✓ Finalizado',
-      'BORRADOR': '📝 Borrador'
+      'BORRADOR': '[]� Borrador'
     };
     return labels[estado] || estado;
   }

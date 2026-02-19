@@ -99,7 +99,7 @@ import NotifyX from 'notifyx';
           </div>
         } @else if (usuariosFiltrados().length === 0) {
           <div class="empty-state">
-            <div class="empty-icon">👥</div>
+            <div class="empty-icon">[]�</div>
             <h3>No se encontraron usuarios</h3>
             <p>Intenta ajustar los filtros de búsqueda</p>
           </div>
@@ -256,7 +256,7 @@ import NotifyX from 'notifyx';
         <div class="modal-overlay" (click)="cerrarModalEliminar()">
           <div class="modal-contenido modal-peligro" (click)="$event.stopPropagation()">
             <div class="modal-header">
-              <h3>⚠️ Confirmar Eliminación</h3>
+              <h3>[][] Confirmar Eliminación</h3>
               <button class="btn-cerrar" (click)="cerrarModalEliminar()">✕</button>
             </div>
             <div class="modal-body">

@@ -15,12 +15,12 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
     <div class="publicaciones-container">
       <header class="header">
         <h1>Revisar Publicaciones</h1>
-        <button class="btn-recargar" (click)="recargar()">🔄 Actualizar</button>
+        <button class="btn-recargar" (click)="recargar()">[]� Actualizar</button>
       </header>
 
       <!-- Alerta de nuevas publicaciones -->
       <div *ngIf="publicacionesPendientes.length > 0" class="alerta-banner">
-        <span class="icon">⚠️</span>
+        <span class="icon">[][]</span>
         <span class="mensaje">
           Se acaba de detectar {{ publicacionesPendientes.length }} 
           {{ publicacionesPendientes.length === 1 ? 'publicación' : 'publicaciones' }} 
@@ -46,7 +46,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
                    [alt]="pub.titulo"
                    (error)="$event.target.src = '/assets/imagenes/placeholder.jpg'">
               <span class="tipo-badge">
-                {{ pub.contenido.tipo === 'VIDEO' ? '▶️' : '🖼️' }}
+                {{ pub.contenido.tipo === 'VIDEO' ? '▶[]' : '[]�[]' }}
               </span>
             </div>
 
@@ -58,7 +58,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
               
               <div class="ubicaciones">
                 <small *ngFor="let ub of pub.ubicaciones | slice:0:2">
-                  📍 {{ ub.ciudad }} - {{ ub.ubicacion }}
+                  []� {{ ub.ciudad }} - {{ ub.ubicacion }}
                 </small>
                 <small *ngIf="pub.ubicaciones.length > 2" class="mas">
                   +{{ pub.ubicaciones.length - 2 }} más
@@ -124,7 +124,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
                 <h3>Ubicaciones Seleccionadas:</h3>
                 <ul>
                   <li *ngFor="let ub of publicacionSeleccionada.ubicaciones">
-                    📍 {{ ub.ciudad }} - {{ ub.ubicacion }}
+                    []� {{ ub.ciudad }} - {{ ub.ubicacion }}
                   </li>
                 </ul>
               </div>

@@ -118,15 +118,15 @@ export class IniciarSesionComponent {
         // Navegar al dashboard después de un breve delay para asegurar que todo se guarde
         setTimeout(() => {
           this.router.navigate(['/dashboard']).then(navegado => {
-            console.log('✅ Navegación completada:', navegado);
+            console.log('[] Navegación completada:', navegado);
             
             // Mostrar notificación verde de bienvenida con el rol
-            NotifyX.success(`🎉 ¡Bienvenido! Iniciaste sesión como ${rol}`, {
+            NotifyX.success(`[]� ¡Bienvenido! Iniciaste sesión como ${rol}`, {
               duration: 4000,
               dismissible: true
             });
           }).catch(error => {
-            console.error('❌ Error al navegar:', error);
+            console.error('[] Error al navegar:', error);
             NotifyX.error('Error al acceder al dashboard', {
               duration: 3000,
               dismissible: true
@@ -205,49 +205,49 @@ export class IniciarSesionComponent {
   private detectarTipoError(error: any): string {
     console.log('Analizando error:', error);
 
-    // 1️⃣ Error de conexión (No hay conexión con backend)
+    // 1[]⃣ Error de conexión (No hay conexión con backend)
     if (!error.status || error.status === 0) {
       if (error.name === 'TimeoutError' || error.message?.includes('timeout')) {
-        return '⏱️ Conexión agotada. El servidor tarda demasiado en responder. Intenta nuevamente.';
+        return '⏱[] Conexión agotada. El servidor tarda demasiado en responder. Intenta nuevamente.';
       }
-      return '🌐 No hay conexión con el servidor. Verifica tu conexión a internet.';
+      return '[]� No hay conexión con el servidor. Verifica tu conexión a internet.';
     }
 
-    // 2️⃣ Error 401 (Credenciales incorrectas)
+    // 2[]⃣ Error 401 (Credenciales incorrectas)
     if (error.status === 401) {
-      return '🔒 Las credenciales son incorrectas. Verifica tu usuario y contraseña.';
+      return '[]� Las credenciales son incorrectas. Verifica tu usuario y contraseña.';
     }
 
-    // 3️⃣ Error 403 (Prohibido - Usuario inactivo o sin permisos)
+    // 3[]⃣ Error 403 (Prohibido - Usuario inactivo o sin permisos)
     if (error.status === 403) {
-      return '🚫 Tu cuenta está desactivada o no tienes permisos. Contacta al administrador.';
+      return '[]� Tu cuenta está desactivada o no tienes permisos. Contacta al administrador.';
     }
 
-    // 4️⃣ Error 404 (Usuario no encontrado)
+    // 4[]⃣ Error 404 (Usuario no encontrado)
     if (error.status === 404) {
-      return '👤 Usuario no encontrado. Verifica que el usuario exista.';
+      return '[]� Usuario no encontrado. Verifica que el usuario exista.';
     }
 
-    // 5️⃣ Error 429 (Demasiados intentos)
+    // 5[]⃣ Error 429 (Demasiados intentos)
     if (error.status === 429) {
-      return '⏸️ Demasiados intentos fallidos. Intenta más tarde.';
+      return '⏸[] Demasiados intentos fallidos. Intenta más tarde.';
     }
 
-    // 6️⃣ Error 500+ (Error del servidor)
+    // 6[]⃣ Error 500+ (Error del servidor)
     if (error.status && error.status >= 500) {
-      return '⚠️ Error del servidor. Por favor, intenta más tarde.';
+      return '[][] Error del servidor. Por favor, intenta más tarde.';
     }
 
-    // 7️⃣ Mensaje personalizado del backend (si viene en error.error.mensaje)
+    // 7[]⃣ Mensaje personalizado del backend (si viene en error.error.mensaje)
     if (error.error?.mensaje) {
       return error.error.mensaje;
     }
 
-    // 8️⃣ Mensaje de error genérico
+    // 8[]⃣ Mensaje de error genérico
     if (error.message) {
       return error.message;
     }
 
-    return '❌ Error al iniciar sesión. Intenta nuevamente.';
+    return '[] Error al iniciar sesión. Intenta nuevamente.';
   }
 }

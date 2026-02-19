@@ -20,7 +20,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
         <div class="chat-header-info">
           <h2>{{ obtenerNombreParticipante() }}</h2>
           <small class="estado-badge" [class.cerrado]="chatActual.estado === 'CERRADO'">
-            {{ chatActual.estado === 'CERRADO' ? '🔒 Cerrado' : '✓ Activo' }}
+            {{ chatActual.estado === 'CERRADO' ? '[]� Cerrado' : '✓ Activo' }}
           </small>
         </div>
 
@@ -28,12 +28,12 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
           <button *ngIf="puedoCerrar()" 
                   class="btn-cerrar-chat"
                   (click)="cerrarChat()">
-            🔒 Cerrar Chat
+            []� Cerrar Chat
           </button>
           <button *ngIf="chatActual.estado === 'CERRADO' && puedoCerrar()" 
                   class="btn-reabrir-chat"
                   (click)="reabrirChat()">
-            🔓 Reabrir
+            []� Reabrir
           </button>
         </div>
       </header>
@@ -60,7 +60,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
       <!-- Input de mensaje -->
       <footer class="chat-footer" *ngIf="chatActual">
         <div *ngIf="chatActual.estado === 'CERRADO' && !esAdmin" class="chat-cerrado-info">
-          <p>⚠️ Este chat ha sido cerrado. Puedes ver el historial pero no puedes enviar nuevos mensajes.</p>
+          <p>[][] Este chat ha sido cerrado. Puedes ver el historial pero no puedes enviar nuevos mensajes.</p>
         </div>
 
         <div *ngIf="puedoEscribir()" class="input-area">
@@ -73,7 +73,7 @@ import { PermisosServicio } from '../../../core/servicios/permisos.servicio';
           <button (click)="enviarMensaje()" 
                   [disabled]="!mensajeNuevo.trim()"
                   class="btn-enviar">
-            📤
+            []�
           </button>
         </div>
 

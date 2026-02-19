@@ -9,7 +9,7 @@ import { EventoMantenimiento } from '@modulos/mantenimiento/modelos/mantenimient
   imports: [CommonModule],
   template: `
     <div class="historial-container">
-      <h1>ðŸ“œ Historial de Mantenimiento</h1>
+      <h1>[]œ Historial de Mantenimiento</h1>
 
       @if (cargando()) {
         <div class="loader">Cargando historial...</div>
@@ -27,9 +27,9 @@ import { EventoMantenimiento } from '@modulos/mantenimiento/modelos/mantenimient
                 </div>
                 <p class="descripcion">{{ evento.descripcion }}</p>
                 <div class="evento-meta">
-                  <span class="usuario">ðŸ‘¤ {{ evento.usuario }}</span>
+                  <span class="usuario">[]¤ {{ evento.usuario }}</span>
                   @if (evento.dispositivo) {
-                    <span class="dispositivo">ðŸ“± {{ evento.dispositivo }}</span>
+                    <span class="dispositivo">[]± {{ evento.dispositivo }}</span>
                   }
                   <span class="impacto" [class]="evento.impacto.toLowerCase()">
                     {{ evento.impacto }}

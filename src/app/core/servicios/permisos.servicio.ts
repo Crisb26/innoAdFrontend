@@ -123,7 +123,7 @@ export class PermisosServicio {
    * Verifica si el usuario es administrador
    */
   esAdministrador(): boolean {
-    return this.tieneRol(Rol.ADMINISTRADOR);
+    return this.tieneRol(Rol.ADMIN);
   }
 
   /**
@@ -131,13 +131,6 @@ export class PermisosServicio {
    */
   esTecnico(): boolean {
     return this.tieneRol(Rol.TECNICO);
-  }
-
-  /**
-   * Verifica si el usuario es operador
-   */
-  esOperador(): boolean {
-    return this.tieneRol(Rol.OPERADOR);
   }
 
   /**

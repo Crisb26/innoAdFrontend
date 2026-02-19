@@ -335,7 +335,7 @@ export class HttpBaseService {
       };
     }
 
-    console.error('🚨 Error procesado por HttpBaseService:', processedError);
+    console.error('[]� Error procesado por HttpBaseService:', processedError);
     return throwError(() => processedError);
   }
 
@@ -415,13 +415,13 @@ export class HttpBaseService {
     window.addEventListener('online', () => {
       this._isOnline.set(true);
       this.connectionState$.next(true);
-      console.log('🟢 Conexión restablecida');
+      console.log('[]� Conexión restablecida');
     });
 
     window.addEventListener('offline', () => {
       this._isOnline.set(false);
       this.connectionState$.next(false);
-      console.log('🔴 Sin conexión a internet');
+      console.log('[]� Sin conexión a internet');
     });
   }
 }
