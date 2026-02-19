@@ -19,6 +19,9 @@ import {
 })
 export class ServicioEstadisticas {
   private readonly http = inject(HttpClient);
+  // NOTA: Los endpoints de estadísticas usan rutas en inglés (/stats, /dashboard, /campaigns, /screens, /content)
+  // mientras que los endpoints de autenticación usan rutas en español (/registrarse, /recuperar-contrasena).
+  // Esta inconsistencia existe por razones históricas del backend. Considerar estandarizar en el futuro.
   private readonly API_URL = `${environment.urlApi}/stats`;
   
   obtenerGenerales(filtro?: FiltroEstadisticas): Observable<EstadisticasGenerales> {
