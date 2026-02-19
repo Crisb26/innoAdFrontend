@@ -127,6 +127,44 @@ export class ServicioAutenticacion {
   iniciarSesion(solicitud: SolicitudLogin): Observable<RespuestaLogin> {
     this.cargandoSignal.set(true);
     
+    // 🔧 USUARIO TEMPORAL PARA DESARROLLO (BORRAR ANTES DE PRODUCCIÓN)
+    if (solicitud.nombreUsuarioOEmail === 'Temporal' && solicitud.contrasena === 'Admin123') {
+      console.log('🔧 Modo desarrollo: Usuario temporal activado');
+      
+      const mockUsuario: Usuario = {
+        id: 9999,
+        nombreUsuario: 'Temporal',
+        email: 'temporal@innoad.dev',
+        nombreCompleto: 'Usuario Temporal de Desarrollo',
+        rol: { nombre: 'ADMIN' },
+        permisos: [{ nombre: '*' }],
+        avatarUrl: '',
+        activo: true,
+        verificado: true,
+        fechaCreacion: new Date(),
+        ultimoAcceso: new Date()
+      };
+      
+      const mockRespuesta: RespuestaLogin = {
+        token: 'mock_temporal_token_' + Date.now(),
+        tokenActualizacion: 'mock_refresh_token',
+        usuario: mockUsuario,
+        expiraEn: 86400 // 24 horas
+      };
+      
+      return of(mockRespuesta).pipe(
+        tap(datos => {
+          console.log('🔧 Guardando sesión temporal:', datos);
+          this.guardarSesion(datos, solicitud.recordarme);
+          this.usuarioActualSignal.set(datos.usuario);
+          this.tokenActualSignal.set(datos.token);
+          this.programarRefrescoConExpira(datos.expiraEn);
+          this.cargandoSignal.set(false);
+        })
+      );
+    }
+    // FIN USUARIO TEMPORAL
+    
     const loginUrl = this.apiGateway.getAuthUrl('/login');
     console.log('[]� Login URL:', loginUrl);
     console.log('[]� Datos enviados:', solicitud);

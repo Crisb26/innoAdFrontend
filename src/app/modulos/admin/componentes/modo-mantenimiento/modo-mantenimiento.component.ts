@@ -1,21 +1,22 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { AdminService } from '@core/servicios/admin.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-modo-mantenimiento',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   template: `
     <div class="mantenimiento-container">
       <div class="mantenimiento-card">
-        <h1>[]§ Modo Mantenimiento</h1>
+        <h1>Modo Mantenimiento</h1>
         
         <div class="status-section">
           <div [class.active]="modoActivo" class="status-badge">
-            {{ modoActivo ? '[]´ ACTIVO' : '[]¢ INACTIVO' }}
+            {{ modoActivo ? 'ACTIVO' : 'INACTIVO' }}
           </div>
         </div>
 
@@ -57,6 +58,12 @@ import { Subject, takeUntil } from 'rxjs';
           >
             Recargar
           </button>
+        </div>
+
+        <div>
+          <a routerLink="/admin" class="btn btn-volver">
+            Volver al Panel
+          </a>
         </div>
 
         <div *ngIf="mensaje" [class.error]="tipoMensaje === 'error'" [class.success]="tipoMensaje === 'success'" class="mensaje">
@@ -196,6 +203,28 @@ import { Subject, takeUntil } from 'rxjs';
 
     .btn-secondary:hover:not(:disabled) {
       background-color: #d0d0d0;
+    }
+
+    .btn-volver {
+      display: block;
+      width: 100%;
+      padding: 0.75rem 1.5rem;
+      background-color: #00d4ff;
+      color: #0f172a;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .btn-volver:hover {
+      background-color: #00b8d4;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 212, 255, 0.4);
     }
 
     .btn:disabled {

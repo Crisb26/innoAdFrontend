@@ -7,9 +7,10 @@
   width: 100vw;
   min-height: 100vh;
   padding: 6rem 2rem 2rem 2rem;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--fondo-oscuro, #0f172a) 0%, var(--fondo-medio, #1e293b) 100%);
+  color: var(--color-texto, #ffffff);
   overflow-y: auto;
+  transition: background var(--transicion-media), color var(--transicion-media);
 
   &::-webkit-scrollbar {
     width: 10px;

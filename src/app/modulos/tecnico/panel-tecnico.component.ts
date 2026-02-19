@@ -200,20 +200,20 @@ interface Pantalla {
   styles: [`
     .panel-tecnico {
       padding: 2rem;
-      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      background: linear-gradient(135deg, var(--fondo-oscuro, #1e293b) 0%, var(--fondo-medio, #0f172a) 100%);
       min-height: 100vh;
-      color: #e2e8f0;
+      color: var(--color-texto-claro, #e2e8f0);
     }
 
     .header-tecnico {
       margin-bottom: 2rem;
       padding: 1rem;
-      border-bottom: 2px solid #00d4ff;
+      border-bottom: 2px solid var(--color-primario, #00d4ff);
     }
 
     .header-tecnico h1 {
       margin: 0 0 1rem 0;
-      color: #00d4ff;
+      color: var(--color-primario, #00d4ff);
       font-size: 2rem;
     }
 
@@ -224,7 +224,7 @@ interface Pantalla {
     }
 
     .info-tecnico strong {
-      color: #ff006a;
+      color: var(--color-advertencia, #ff006a);
     }
 
     .tabs-navigation {
@@ -238,7 +238,7 @@ interface Pantalla {
       padding: 0.75rem 1.5rem;
       border: 2px solid transparent;
       background: rgba(0, 212, 255, 0.1);
-      color: #cbd5e1;
+      color: var(--color-texto-claro, #cbd5e1);
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -247,13 +247,13 @@ interface Pantalla {
 
     .btn-tab:hover {
       background: rgba(0, 212, 255, 0.2);
-      border-color: #00d4ff;
+      border-color: var(--color-primario, #00d4ff);
     }
 
     .btn-tab.activo {
-      background: linear-gradient(135deg, #00d4ff, #0066ff);
-      color: white;
-      border-color: #00d4ff;
+      background: linear-gradient(135deg, var(--color-primario, #00d4ff), #0066ff);
+      color: var(--color-texto, white);
+      border-color: var(--color-primario, #00d4ff);
     }
 
     .contenido-pestana {
@@ -266,7 +266,7 @@ interface Pantalla {
     }
 
     .contenido-pestana h2 {
-      color: #00d4ff;
+      color: var(--color-primario, #00d4ff);
       margin-top: 0;
       margin-bottom: 1.5rem;
       font-size: 1.5rem;
@@ -287,7 +287,7 @@ interface Pantalla {
     }
 
     .tarjeta-publicacion {
-      background: rgba(30, 41, 59, 0.8);
+      background: var(--fondo-medio, rgba(30, 41, 59, 0.8));
       border: 1px solid rgba(0, 212, 255, 0.3);
       border-radius: 12px;
       overflow: hidden;
@@ -295,7 +295,7 @@ interface Pantalla {
     }
 
     .tarjeta-publicacion:hover {
-      border-color: #00d4ff;
+      border-color: var(--color-primario, #00d4ff);
       box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
     }
 
@@ -311,13 +311,13 @@ interface Pantalla {
 
     .info-publicacion h3 {
       margin: 0 0 0.5rem 0;
-      color: #00d4ff;
+      color: var(--color-primario, #00d4ff);
     }
 
     .info-publicacion p {
       margin: 0.25rem 0;
       font-size: 0.9rem;
-      color: #cbd5e1;
+      color: var(--color-texto-claro, #cbd5e1);
     }
 
     .acciones-publicacion {
@@ -338,8 +338,8 @@ interface Pantalla {
 
     .btn-aprobar {
       background: rgba(16, 185, 129, 0.3);
-      color: #10b981;
-      border: 1px solid #10b981;
+      color: var(--color-exito, #10b981);
+      border: 1px solid var(--color-exito, #10b981);
     }
 
     .btn-aprobar:hover {
@@ -348,8 +348,8 @@ interface Pantalla {
 
     .btn-rechazar {
       background: rgba(255, 0, 106, 0.3);
-      color: #ff006a;
-      border: 1px solid #ff006a;
+      color: var(--color-error, #ff006a);
+      border: 1px solid var(--color-error, #ff006a);
     }
 
     .btn-rechazar:hover {
@@ -363,24 +363,25 @@ interface Pantalla {
     table {
       width: 100%;
       border-collapse: collapse;
-      background: rgba(30, 41, 59, 0.8);
-      border: 1px solid rgba(0, 212, 255, 0.3);
+      background: var(--fondo-medio, rgba(30, 41, 59, 0.8));
+      border: 1px solid var(--fondo-claro, rgba(0, 212, 255, 0.3));
       border-radius: 8px;
       overflow: hidden;
     }
 
     th {
-      background: rgba(0, 212, 255, 0.1);
-      color: #00d4ff;
+      background: var(--fondo-claro, rgba(0, 212, 255, 0.1));
+      color: var(--color-primario, #00d4ff);
       padding: 1rem;
       text-align: left;
       font-weight: 600;
-      border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+      border-bottom: 2px solid var(--color-primario, rgba(0, 212, 255, 0.3));
     }
 
     td {
       padding: 1rem;
-      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+      border-bottom: 1px solid var(--fondo-claro, rgba(0, 212, 255, 0.1));
+      color: var(--color-texto-claro, #e2e8f0);
     }
 
     .badge {
@@ -392,13 +393,13 @@ interface Pantalla {
 
     .badge.conectada {
       background: rgba(16, 185, 129, 0.2);
-      color: #10b981;
+      color: var(--color-exito, #10b981);
     }
 
     .contenedor-mapa {
       padding: 1.5rem;
-      background: rgba(30, 41, 59, 0.8);
-      border: 1px solid rgba(0, 212, 255, 0.3);
+      background: var(--fondo-medio, rgba(30, 41, 59, 0.8));
+      border: 1px solid var(--fondo-claro, rgba(0, 212, 255, 0.3));
       border-radius: 12px;
     }
 
@@ -409,8 +410,8 @@ interface Pantalla {
     }
 
     .tarjeta-inventario {
-      background: rgba(30, 41, 59, 0.8);
-      border: 1px solid rgba(0, 212, 255, 0.3);
+      background: var(--fondo-medio, rgba(30, 41, 59, 0.8));
+      border: 1px solid var(--fondo-claro, rgba(0, 212, 255, 0.3));
       border-radius: 12px;
       padding: 1.5rem;
       text-align: center;
@@ -418,7 +419,7 @@ interface Pantalla {
     }
 
     .tarjeta-inventario:hover {
-      border-color: #00d4ff;
+      border-color: var(--color-primario, #00d4ff);
       transform: translateY(-5px);
     }
 
@@ -429,16 +430,16 @@ interface Pantalla {
 
     .tarjeta-inventario h3 {
       margin: 0.5rem 0;
-      color: #00d4ff;
+      color: var(--color-primario, #00d4ff);
     }
 
     .cantidad {
-      color: #10b981;
+      color: var(--color-exito, #10b981);
       font-weight: 600;
     }
 
     .estado {
-      color: #ff006a;
+      color: var(--color-error, #ff006a);
       font-size: 0.9rem;
     }
 

@@ -202,6 +202,7 @@
       right: 0;
       min-width: 300px;
       max-width: 350px;
+      max-height: 70vh;
       background: var(--fondo-oscuro, #0f172a);
       border: 2px solid rgba(0, 212, 255, 0.3);
       border-radius: 12px;
@@ -215,6 +216,27 @@
       display: block;
       visibility: visible;
       opacity: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba(0, 212, 255, 0.4);
+        border-radius: 4px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: rgba(0, 212, 255, 0.6);
+        }
+      }
     }
 
     @keyframes dropdownAppear {

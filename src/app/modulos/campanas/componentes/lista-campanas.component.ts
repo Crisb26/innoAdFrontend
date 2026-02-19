@@ -2,7 +2,8 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { NavegacionAutenticadaComponent } from '@shared/componentes/navegacion-autenticada.component';
+import NotifyX from 'notifyx';
+import { NavegacionAutenticadaComponent } from '../../../shared/componentes/navegacion-autenticada.component';
 import { FormularioCampanaComponent } from './formulario-campana.component';
 
 @Component({
@@ -123,43 +124,40 @@ import { FormularioCampanaComponent } from './formulario-campana.component';
         (cerrarModal)="mostrarFormulario.set(false)"
       ></app-formulario-campana>
     }
+
+    @if (mostrarConfirmacionEliminar()) {
+      <div class="overlay-modal" (click)="mostrarConfirmacionEliminar.set(false)">
+        <div class="modal-confirmacion" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h3>Eliminar Campaña</h3>
+            <button class="btn-cerrar" (click)="mostrarConfirmacionEliminar.set(false)">✕</button>
+          </div>
+          <div class="modal-body">
+            <p>¿Estás seguro de que deseas eliminar la campaña <strong>{{ campaniaAEliminar()?.nombre }}</strong>?</p>
+            <p class="advertencia">⚠️ Esta acción no se puede deshacer.</p>
+          </div>
+          <div class="modal-footer">
+            <button class="boton-secundario" (click)="mostrarConfirmacionEliminar.set(false)">
+              Cancelar
+            </button>
+            <button class="boton-peligro" (click)="confirmarEliminar()">
+              Eliminar Campaña
+            </button>
+          </div>
+        </div>
+      </div>
+    }
   `
 })
 export class ListaCampanasComponent implements OnInit {
   cargando = signal(false);
   mostrarFormulario = signal(false);
+  mostrarConfirmacionEliminar = signal(false);
+  campaniaAEliminar = signal<any>(null);
   busqueda = '';
   estadoFiltro = 'todas';
   
-  campanas = signal([
-    { 
-      id: '1', 
-      nombre: 'Black Friday 2024', 
-      descripcion: 'Campaña de descuentos especiales para Black Friday',
-      fechaInicio: new Date(Date.now() + 86400000), 
-      fechaFin: new Date(Date.now() + 172800000), 
-      estado: 'programada', 
-      pantallasAsignadas: 5 
-    },
-    { 
-      id: '2', 
-      nombre: 'Verano 2024', 
-      descripcion: 'Promoción de productos de verano',
-      fechaInicio: new Date(), 
-      fechaFin: new Date(Date.now() + 7776000000), 
-      estado: 'activa', 
-      pantallasAsignadas: 8 
-    },
-    { 
-      id: '3', 
-      nombre: 'Año Nuevo', 
-      descripcion: 'Campaña especial de Año Nuevo',
-      fechaInicio: new Date(Date.now() - 2592000000), 
-      fechaFin: new Date(Date.now() - 86400000), 
-      estado: 'finalizada', 
-      pantallasAsignadas: 3 
-    },
-  ]);
+  campanas = signal<any[]>([]);
 
   ngOnInit() {
     setTimeout(() => this.cargando.set(false), 500);
@@ -205,8 +203,17 @@ export class ListaCampanasComponent implements OnInit {
   }
 
   eliminar(campana: any) {
-    if (confirm('¿Estás seguro de eliminar esta campaña?')) {
+    this.campaniaAEliminar.set(campana);
+    this.mostrarConfirmacionEliminar.set(true);
+  }
+
+  confirmarEliminar() {
+    const campana = this.campaniaAEliminar();
+    if (campana) {
       this.campanas.update(c => c.filter(item => item.id !== campana.id));
+      this.mostrarConfirmacionEliminar.set(false);
+      this.campaniaAEliminar.set(null);
+      NotifyX.success(`✓ Campaña "${campana.nombre}" eliminada correctamente`);
     }
   }
 }
