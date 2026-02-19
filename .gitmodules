@@ -1,0 +1,7 @@
+[submodule "Desktop/PROYECTO FINAL INNOAD/BACKEND/innoadBackend"]
+	path = Desktop/PROYECTO FINAL INNOAD/BACKEND/innoadBackend
+	url = https://github.com/Crisb26/innoAdBackend.git
+
+[submodule "Desktop/PROYECTO FINAL INNOAD/FRONTEND/innoadFrontend"]
+	path = Desktop/PROYECTO FINAL INNOAD/FRONTEND/innoadFrontend
+	url = https://github.com/Crisb26/innoAdFrontend.git

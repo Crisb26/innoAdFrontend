@@ -64,6 +64,73 @@ export class PantallasService {
   private pantallaSeleccionadaSubject = new BehaviorSubject<RespuestaPantalla | null>(null);
   pantallaSeleccionada$ = this.pantallaSeleccionadaSubject.asObservable();
 
+  // Pantallas de demo para modo offline
+  private pantallasMock: RespuestaPantalla[] = [
+    {
+      id: 1,
+      nombre: 'Pantalla Entrada Principal',
+      descripcion: 'Pantalla ubicada en la entrada principal del edificio',
+      codigoIdentificacion: 'PANT-001',
+      estado: 'ACTIVA',
+      ubicacion: 'Vestíbulo Principal',
+      resolucion: '1920x1080',
+      orientacion: 'HORIZONTAL',
+      usuarioId: 1,
+      nombreUsuario: 'Temporal',
+      fechaRegistro: new Date().toISOString(),
+      ultimaConexion: new Date().toISOString(),
+      ultimaSincronizacion: new Date().toISOString(),
+      direccionIp: '192.168.1.100',
+      versionSoftware: '2.0.0',
+      informacionSistema: 'Linux Ubuntu 22.04',
+      notas: 'Pantalla de bienvenida',
+      estaConectada: true,
+      cantidadContenidos: 5
+    },
+    {
+      id: 2,
+      nombre: 'Pantalla Sala de Espera',
+      descripcion: 'Pantalla vertical en la sala de espera',
+      codigoIdentificacion: 'PANT-002',
+      estado: 'ACTIVA',
+      ubicacion: 'Sala de Espera A',
+      resolucion: '1080x1920',
+      orientacion: 'VERTICAL',
+      usuarioId: 1,
+      nombreUsuario: 'Temporal',
+      fechaRegistro: new Date().toISOString(),
+      ultimaConexion: new Date().toISOString(),
+      ultimaSincronizacion: new Date().toISOString(),
+      direccionIp: '192.168.1.101',
+      versionSoftware: '2.0.0',
+      informacionSistema: 'Linux Ubuntu 22.04',
+      notas: 'Pantalla para publicaciones verticales',
+      estaConectada: true,
+      cantidadContenidos: 3
+    },
+    {
+      id: 3,
+      nombre: 'Pantalla Pasillo Centro',
+      descripcion: 'Pantalla en el pasillo central del edificio',
+      codigoIdentificacion: 'PANT-003',
+      estado: 'INACTIVA',
+      ubicacion: 'Pasillo Central',
+      resolucion: '1920x1080',
+      orientacion: 'HORIZONTAL',
+      usuarioId: 1,
+      nombreUsuario: 'Temporal',
+      fechaRegistro: new Date().toISOString(),
+      ultimaConexion: new Date(Date.now() - 3600000).toISOString(),
+      ultimaSincronizacion: new Date(Date.now() - 7200000).toISOString(),
+      direccionIp: '192.168.1.102',
+      versionSoftware: '1.9.8',
+      informacionSistema: 'Linux CentOS 7',
+      notas: 'Pantalla en mantenimiento',
+      estaConectada: false,
+      cantidadContenidos: 2
+    }
+  ];
+
   constructor(private http: HttpClient) {
     this.cargarPantallas();
   }
@@ -83,10 +150,23 @@ export class PantallasService {
       response => {
         if (response.exitoso && response.datos) {
           this.pantallasSubject.next(response.datos);
+        } else {
+          // Si no hay respuesta válida, cargar mock
+          this.cargarPantallasMock();
         }
       },
-      error => console.error('Error al cargar pantallas:', error)
+      error => {
+        console.warn('Error al cargar pantallas desde API, usando datos mock:', error);
+        this.cargarPantallasMock();
+      }
     );
+  }
+
+  /**
+   * Carga pantallas mock para desarrollo/demostración
+   */
+  private cargarPantallasMock(): void {
+    this.pantallasSubject.next(this.pantallasMock);
   }
 
   /**
@@ -193,7 +273,14 @@ export class PantallasService {
           this.pantallaSeleccionadaSubject.next(null);
         }
       },
-      error => console.error('Error al eliminar pantalla:', error)
+      error => {
+        // En modo offline, eliminar del mock local
+        console.warn('Error al eliminar pantalla, removiendo del mock local:', error);
+        const pantallasActuales = this.pantallasSubject.value;
+        const pantallasFiltradas = pantallasActuales.filter(p => p.id !== id);
+        this.pantallasSubject.next(pantallasFiltradas);
+        this.pantallaSeleccionadaSubject.next(null);
+      }
     );
   }
 

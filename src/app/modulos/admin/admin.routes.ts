@@ -8,5 +8,9 @@ export const routes: Routes = [
   {
     path: 'mantenimiento',
     loadComponent: () => import('./componentes/modo-mantenimiento/modo-mantenimiento.component').then(m => m.ModoMantenimientoComponent)
+  },
+  {
+    path: 'logs',
+    loadComponent: () => import('./componentes/logs-auditoria.component').then(m => m.LogsAuditoriaComponent)
   }
 ];

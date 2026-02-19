@@ -48,8 +48,8 @@ import NotifyX from 'notifyx';
             <div class="campo">
               <label>OrientaciÃ³n de Pantalla</label>
               <select formControlName="orientacion" class="entrada">
-                <option value="HORIZONTAL">[]º Horizontal (16:9) - Recomendado</option>
-                <option value="VERTICAL">[]± Vertical (9:16) - Para publicaciones verticales</option>
+                <option value="HORIZONTAL">â†” Horizontal (16:9) - Recomendado</option>
+                <option value="VERTICAL">â†• Vertical (9:16) - Para publicaciones verticales</option>
               </select>
             </div>
           </div>

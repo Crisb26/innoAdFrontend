@@ -22,7 +22,7 @@ interface EstadoMantenimiento {
   template: `
     <div class="contenedor-mantenimiento-admin">
       <div class="header-seccion">
-        <h1>⚙[] Gestión de Modo Mantenimiento</h1>
+        <h1>⚙️ Gestión de Modo Mantenimiento</h1>
         <p>Controla el estado de mantenimiento del sistema</p>
       </div>
 
@@ -74,7 +74,7 @@ interface EstadoMantenimiento {
                   <span class="spinner"></span>
                   Desactivando...
                 } @else {
-                  []� Desactivar Mantenimiento
+                  []� Desactivar Mantenimiento
                 }
               </button>
             } @else {
@@ -132,7 +132,7 @@ interface EstadoMantenimiento {
                     <span class="spinner"></span>
                     Activando...
                   } @else {
-                    []� Activar Mantenimiento
+                    []� Activar Mantenimiento
                   }
                 </button>
               </div>
@@ -143,7 +143,7 @@ interface EstadoMantenimiento {
         <!-- Card de Información -->
         <div class="card informacion">
           <div class="card-header">
-            <h2>[]� Información Importante</h2>
+            <h2>[]� Información Importante</h2>
           </div>
 
           <div class="card-body">

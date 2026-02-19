@@ -15,12 +15,12 @@ import NotifyX from 'notifyx';
       <!-- Header -->
       <div class="header-section">
         <div class="titulo-seccion">
-          <h2>[]• Gesti√≥n de Usuarios</h2>
+          <h2>üë• Gesti√≥n de Usuarios</h2>
           <p>Administra todos los usuarios del sistema</p>
         </div>
         <div class="acciones-header">
           <button class="btn-futurista" (click)="refrescarDatos()">
-            <span class="icono">[]Ñ</span>
+            <span class="icono">üîÑ</span>
             Actualizar
           </button>
         </div>
@@ -69,7 +69,7 @@ import NotifyX from 'notifyx';
               placeholder="Buscar usuarios por nombre, email o usuario..."
               class="input-busqueda"
             >
-            <span class="icono-busqueda">[]ç</span>
+            <span class="icono-busqueda">üîç</span>
           </div>
           <div class="filtros-adicionales">
             <select [(ngModel)]="filtroRol" (change)="aplicarFiltros()" class="select-futurista">
@@ -99,7 +99,7 @@ import NotifyX from 'notifyx';
           </div>
         } @else if (usuariosFiltrados().length === 0) {
           <div class="empty-state">
-            <div class="empty-icon">[]•</div>
+            <div class="empty-icon">[]ÔøΩ</div>
             <h3>No se encontraron usuarios</h3>
             <p>Intenta ajustar los filtros de b√∫squeda</p>
           </div>
