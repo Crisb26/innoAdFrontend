@@ -18,7 +18,7 @@ const COLORES_DISPONIBLES = [
   '#FF8787', '#A78BFA', '#F97316', '#06B6D4', '#EC4899'
 ];
 
-const ICONOS_DISPONIBLES = ['‚öô[]', '[]®‚Äç[]º', '[]ä', '[]§', '[]ê', '[]±', '[]º', '[]Ø', '[]Ä', '‚ú®'];
+const ICONOS_DISPONIBLES = ['‚öô[]', '[]ÔøΩ‚Äç[]ÔøΩ', '[]ÔøΩ', '[]ÔøΩ', '[]ÔøΩ', '[]ÔøΩ', '[]ÔøΩ', '[]ÔøΩ', '[]ÔøΩ', '‚ú®'];
 
 const PERMISOS_DISPONIBLES = [
   'CREAR_CAMPANAS', 'EDITAR_CAMPANAS', 'ELIMINAR_CAMPANAS',
@@ -38,7 +38,7 @@ const PERMISOS_DISPONIBLES = [
     <div class="contenedor-roles">
       <div class="header-roles">
         <div>
-          <h2>Gesti√≥n de Roles</h2>
+          <h2>üîê Gesti√≥n de Roles</h2>
           <p>Crea y administra los roles del sistema</p>
         </div>
         <button class="boton-primario" (click)="abrirNuevoRol()">
@@ -251,7 +251,7 @@ export class GestionRolesComponent implements OnInit {
           nombre: 'Gerente',
           descripcion: 'Gesti√≥n de campa√±as y reportes',
           color: '#00D4FF',
-          icono: '[]®‚Äç[]º',
+          icono: '[]ÔøΩ‚Äç[]ÔøΩ',
           permisos: [
             'CREAR_CAMPANAS', 'EDITAR_CAMPANAS',
             'VER_REPORTES', 'DESCARGAR_REPORTES'
@@ -263,7 +263,7 @@ export class GestionRolesComponent implements OnInit {
           nombre: 'Operador',
           descripcion: 'Manejo de contenidos y pantallas',
           color: '#FFC93D',
-          icono: '[]±',
+          icono: '[]ÔøΩ',
           permisos: [
             'CREAR_CONTENIDOS', 'EDITAR_CONTENIDOS',
             'CREAR_PANTALLAS', 'EDITAR_PANTALLAS'

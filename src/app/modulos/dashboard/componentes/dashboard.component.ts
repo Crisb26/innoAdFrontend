@@ -250,46 +250,47 @@ export class DashboardComponent implements OnInit {
     return usuario?.nombreCompleto || usuario?.nombreUsuario || 'Usuario';
   }
 
+  private obtenerRolNombre(): string {
+    const usuario: any = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol;
+    if (typeof rol === 'string') return rol;
+    if (rol && typeof rol === 'object' && typeof rol.nombre === 'string') return rol.nombre;
+    return '';
+  }
+
   protected esAdministrador(): boolean {
-    const usuario = this.servicioAuth.usuarioActual();
-    const rol = usuario?.rol?.nombre || '';
-    return rol === 'ADMIN' || rol === 'Administrador' || false;
+    const rol = this.obtenerRolNombre().toUpperCase();
+    return rol === 'ADMIN';
   }
 
   protected esTecnico(): boolean {
-    const usuario = this.servicioAuth.usuarioActual();
-    const rol = usuario?.rol?.nombre || '';
-    return rol === 'TECNICO' || rol === 'Tecnico' || false;
+    const rol = this.obtenerRolNombre().toUpperCase();
+    return rol === 'TECNICO';
   }
 
   protected esUsuario(): boolean {
-    const usuario = this.servicioAuth.usuarioActual();
-    const rol = usuario?.rol?.nombre || '';
-    return rol === 'USUARIO' || rol === 'Usuario' || false;
+    const rol = this.obtenerRolNombre().toUpperCase();
+    return rol === 'USUARIO';
   }
 
   protected tieneAccesoCampanas(): boolean {
-    const usuario = this.servicioAuth.usuarioActual();
-    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
-    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
+    const rol = this.obtenerRolNombre().toUpperCase();
+    return ['ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
   }
 
   protected tieneAccesoPantallas(): boolean {
-    const usuario = this.servicioAuth.usuarioActual();
-    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
-    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
+    const rol = this.obtenerRolNombre().toUpperCase();
+    return ['ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
   }
 
   protected tieneAccesoContenidos(): boolean {
-    const usuario = this.servicioAuth.usuarioActual();
-    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
-    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
+    const rol = this.obtenerRolNombre().toUpperCase();
+    return ['ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
   }
 
   protected tieneAccesoReportes(): boolean {
-    const usuario = this.servicioAuth.usuarioActual();
-    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
-    return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
+    const rol = this.obtenerRolNombre().toUpperCase();
+    return ['ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
   }
 
   protected estadisticasCampanas(): string {

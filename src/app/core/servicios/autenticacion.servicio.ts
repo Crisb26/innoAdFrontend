@@ -551,8 +551,8 @@ export class ServicioAutenticacion {
       expiraEn: Math.floor(((environment.auth && environment.auth.tokenExpiration) || (8 * 60 * 60 * 1000)) / 1000)
     };
 
-    // Guardar sesión localmente
-    this.guardarSesion(datosLogin, solicitud.recordarme || false);
+    // Guardar sesión localmente (siempre en localStorage para modo offline)
+    this.guardarSesion(datosLogin, true);
     this.usuarioActualSignal.set(datosLogin.usuario);
     this.tokenActualSignal.set(datosLogin.token);
     this.programarRefrescoConExpira(datosLogin.expiraEn);

@@ -34,9 +34,9 @@ interface EstadisticasConexiones {
   template: `
     <div class="monitoreo-conexiones">
       <div class="header">
-        <h2>[]ä Monitoreo de Conexiones en Tiempo Real</h2>
+        <h2>üåê Monitoreo de Conexiones en Tiempo Real</h2>
         <div class="indicador-actualizacion" [class.actualizado]="actualizado">
-          []Ñ Actualizado: {{ ultimaActualizacion | date:'HH:mm:ss' }}
+          üü¢ Actualizado: {{ ultimaActualizacion | date:'HH:mm:ss' }}
         </div>
       </div>
 
@@ -67,7 +67,7 @@ interface EstadisticasConexiones {
       </div>
 
       <div class="seccion-conexiones">
-        <h3>[]• Conexiones Activas en Tiempo Real</h3>
+        <h3>[]ÔøΩ Conexiones Activas en Tiempo Real</h3>
         
         <div class="tabla-conexiones">
           <table>
@@ -396,11 +396,11 @@ export class MonitoreoConexionesComponent implements OnInit, OnDestroy {
 
   obtenerId(so: string): string {
     const iconos: { [key: string]: string } = {
-      'Windows': '[]ü',
-      'macOS': '[]é',
-      'Linux': '[]ß',
-      'Android': '[]ñ',
-      'iOS': '[]é',
+      'Windows': '[]ÔøΩ',
+      'macOS': '[]ÔøΩ',
+      'Linux': '[]ÔøΩ',
+      'Android': '[]ÔøΩ',
+      'iOS': '[]ÔøΩ',
       'Desconocido': '‚ùì'
     };
     return iconos[so] || '‚ùì';

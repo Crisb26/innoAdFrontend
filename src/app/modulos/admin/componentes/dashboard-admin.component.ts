@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { ControlMantenimientoComponent } from './control-mantenimiento.component';
 import { GestionUsuariosComponent } from './gestion-usuarios.component';
 import { LogsAuditoriaComponent } from './logs-auditoria.component';
@@ -34,14 +34,14 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
       <!-- Header Admin -->
       <div class="header-admin">
         <div class="titulo-admin">
-          <h1>[]ë Panel de Administraci√≥n</h1>
+          <h1>[]ÔøΩ Panel de Administraci√≥n</h1>
           <p>Control total del sistema InnoAd</p>
         </div>
         <div class="info-admin">
           <div class="badge-admin">Administrador</div>
           <div class="usuario-actual">{{ usuarioActual() }}</div>
           <a routerLink="/admin/mantenimiento" class="btn-mantenimiento-rapido">
-            []ß Modo Mantenimiento
+            üõ†Ô∏è Modo Mantenimiento
           </a>
         </div>
       </div>
@@ -58,42 +58,42 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
           [class.activa]="pestanaActiva() === 'dashboard'"
           (click)="cambiarPestana('dashboard')"
         >
-          []ä Dashboard
+          üìä Dashboard
         </button>
         <button 
           class="pestana" 
           [class.activa]="pestanaActiva() === 'usuarios'"
           (click)="cambiarPestana('usuarios')"
         >
-          []• Usuarios
+          üë• Usuarios
         </button>
         <button 
           class="pestana" 
           [class.activa]="pestanaActiva() === 'logs'"
           (click)="cambiarPestana('logs')"
         >
-          []ã Logs
+          []ÔøΩ Logs
         </button>
         <button 
           class="pestana" 
           [class.activa]="pestanaActiva() === 'monitoreo'"
           (click)="cambiarPestana('monitoreo')"
         >
-          []•[] Monitoreo
+          üì° Monitoreo
         </button>
         <button 
           class="pestana" 
           [class.activa]="pestanaActiva() === 'roles'"
           (click)="cambiarPestana('roles')"
         >
-          []ê Roles
+          []ÔøΩ Roles
         </button>
         <button 
           class="pestana" 
           [class.activa]="pestanaActiva() === 'mantenimiento'"
           (click)="cambiarPestana('mantenimiento')"
         >
-          ‚öô[] Mantenimiento
+          ‚öôÔ∏è Mantenimiento
         </button>
       </div>
 
@@ -105,7 +105,7 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
             <!-- Estad√≠sticas R√°pidas -->
             <div class="tarjeta-admin tarjeta-estadisticas">
               <div class="header-tarjeta">
-                <h3>[]ä Estad√≠sticas del Sistema</h3>
+                <h3>[]ÔøΩ Estad√≠sticas del Sistema</h3>
                 <span class="badge-nuevo">En Tiempo Real</span>
               </div>
               <div class="contenido-estadisticas">
@@ -157,7 +157,7 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
               <div class="lista-usuarios">
                 <!-- Placeholder para usuarios recientes -->
                 <div class="usuario-item">
-                  <div class="avatar-usuario">[]§</div>
+                  <div class="avatar-usuario">[]ÔøΩ</div>
                   <div class="info-usuario">
                     <div class="nombre-usuario">√öltimos registros aparecer√°n aqu√≠</div>
                     <div class="rol-usuario">Al conectar con el backend</div>
@@ -171,20 +171,20 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
         <!-- Monitoreo de Pantallas -->
         <div class="tarjeta-admin tarjeta-pantallas">
           <div class="header-tarjeta">
-            <h3>[]∫ Monitoreo de Pantallas</h3>
+            <h3>[]ÔøΩ Monitoreo de Pantallas</h3>
             <span class="badge-estado estado-online">{{ pantallasOnline() }} Online</span>
           </div>
           <div class="contenido-pantallas">
             <div class="mapa-pantallas">
               <div class="pantalla-status online">
-                <div class="pantalla-icon">[]±</div>
+                <div class="pantalla-icon">[]ÔøΩ</div>
                 <div class="pantalla-info">
                   <div class="pantalla-nombre">Pantalla Demo 1</div>
                   <div class="pantalla-estado">Online - Reproduciendo</div>
                 </div>
               </div>
               <div class="pantalla-status offline">
-                <div class="pantalla-icon">[]±</div>
+                <div class="pantalla-icon">[]ÔøΩ</div>
                 <div class="pantalla-info">
                   <div class="pantalla-nombre">Pantalla Demo 2</div>
                   <div class="pantalla-estado">Offline - Sin conexi√≥n</div>
@@ -196,7 +196,7 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
                 Ver Todas
               </button>
               <button class="btn-accion-peque√±o btn-refresh" (click)="actualizarDatos()">
-                []Ñ Actualizar
+                []ÔøΩ Actualizar
               </button>
             </div>
           </div>
@@ -205,7 +205,7 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
         <!-- Sistema de Auditor√≠a -->
         <div class="tarjeta-admin tarjeta-auditoria">
           <div class="header-tarjeta">
-            <h3>[]ç Auditor√≠a y Logs</h3>
+            <h3>[]ÔøΩ Auditor√≠a y Logs</h3>
             <span class="badge-warning">{{ logsRecientes() }} Nuevos</span>
           </div>
           <div class="contenido-auditoria">
@@ -238,19 +238,19 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
           <div class="contenido-configuracion">
             <div class="config-opciones">
               <div class="config-item">
-                <div class="config-label">[]ê C√≥digos de Seguridad</div>
+                <div class="config-label">[]ÔøΩ C√≥digos de Seguridad</div>
                 <button class="btn-config">Gestionar</button>
               </div>
               <div class="config-item">
-                <div class="config-label">[]ß Configuraci√≥n Email</div>
+                <div class="config-label">[]ÔøΩ Configuraci√≥n Email</div>
                 <button class="btn-config">Configurar</button>
               </div>
               <div class="config-item">
-                <div class="config-label">[]® Personalizaci√≥n</div>
+                <div class="config-label">[]ÔøΩ Personalizaci√≥n</div>
                 <button class="btn-config">Personalizar</button>
               </div>
               <div class="config-item">
-                <div class="config-label">[]æ Backup y Restore</div>
+                <div class="config-label">[]ÔøΩ Backup y Restore</div>
                 <button class="btn-config">Gestionar</button>
               </div>
             </div>
@@ -260,32 +260,32 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
         <!-- Accesos R√°pidos -->
         <div class="tarjeta-admin tarjeta-accesos">
           <div class="header-tarjeta">
-            <h3>[]Ä Accesos R√°pidos</h3>
+            <h3>[]ÔøΩ Accesos R√°pidos</h3>
           </div>
           <div class="contenido-accesos">
             <div class="grid-accesos-rapidos">
               <a routerLink="/campanas" class="acceso-rapido">
-                <span class="icono-acceso">[]¢</span>
+                <span class="icono-acceso">[]ÔøΩ</span>
                 <span class="label-acceso">Campa√±as</span>
               </a>
               <a routerLink="/pantallas" class="acceso-rapido">
-                <span class="icono-acceso">[]∫</span>
+                <span class="icono-acceso">[]ÔøΩ</span>
                 <span class="label-acceso">Pantallas</span>
               </a>
               <a routerLink="/contenidos" class="acceso-rapido">
-                <span class="icono-acceso">[]®</span>
+                <span class="icono-acceso">[]ÔøΩ</span>
                 <span class="label-acceso">Contenidos</span>
               </a>
               <a routerLink="/reportes" class="acceso-rapido">
-                <span class="icono-acceso">[]ä</span>
+                <span class="icono-acceso">[]ÔøΩ</span>
                 <span class="label-acceso">Reportes</span>
               </a>
               <a routerLink="/publicar" class="acceso-rapido">
-                <span class="icono-acceso">[]§</span>
+                <span class="icono-acceso">[]ÔøΩ</span>
                 <span class="label-acceso">Publicar</span>
               </a>
               <a routerLink="/inicio" class="acceso-rapido">
-                <span class="icono-acceso">[]†</span>
+                <span class="icono-acceso">[]ÔøΩ</span>
                 <span class="label-acceso">P√°gina P√∫blica</span>
               </a>
             </div>
@@ -319,6 +319,7 @@ import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
 })
 export class DashboardAdminComponent implements OnInit {
   private readonly servicioAuth = inject(ServicioAutenticacion);
+  private readonly router = inject(Router);
 
   protected readonly usuarioActual = signal('Administrador');
   protected readonly totalUsuarios = signal(47);
@@ -342,6 +343,13 @@ export class DashboardAdminComponent implements OnInit {
 
   protected cambiarPestana(pestana: 'dashboard' | 'usuarios' | 'logs' | 'monitoreo' | 'roles' | 'mantenimiento'): void {
     this.pestanaActiva.set(pestana);
+    
+    // Navegar si es una pesta√±a de ruta separada
+    if (pestana === 'logs') {
+      this.router.navigate(['/admin/logs']);
+    } else if (pestana === 'mantenimiento') {
+      this.router.navigate(['/admin/mantenimiento']);
+    }
   }
 
   private cargarEstadisticas(): void {

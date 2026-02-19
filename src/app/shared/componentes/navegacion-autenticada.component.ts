@@ -203,8 +203,7 @@ export class NavegacionAutenticadaComponent implements OnInit {
   }
 
   protected rolUsuario(): string {
-    const usuario = this.servicioAuth.usuarioActual();
-    const rol = usuario?.rol?.nombre || 'Usuario';
+    const rol = this.obtenerRolNombre() || 'Usuario';
     return this.formatearNombreRol(rol);
   }
 
@@ -241,49 +240,65 @@ export class NavegacionAutenticadaComponent implements OnInit {
   }
 
   protected esAdministrador(): boolean {
-    const usuario = this.servicioAuth.usuarioActual();
-    const rol = usuario?.rol?.nombre || '';
-    return rol === 'ADMIN' || rol === 'Administrador' || false;
+    const rol = this.obtenerRolNombreUpper();
+    return rol === 'ADMIN' || rol === 'ADMINISTRADOR';
   }
 
   protected esTecnico(): boolean {
-    const usuario = this.servicioAuth.usuarioActual();
-    const rol = usuario?.rol?.nombre || '';
-    return rol === 'TECNICO' || rol === 'Tecnico' || false;
+    const rol = this.obtenerRolNombreUpper();
+    return rol === 'TECNICO' || this.esAdministrador();
   }
 
   protected esUsuario(): boolean {
-    const usuario = this.servicioAuth.usuarioActual();
-    const rol = usuario?.rol?.nombre || '';
-    return rol === 'USUARIO' || rol === 'Usuario' || false;
+    const rol = this.obtenerRolNombreUpper();
+    return rol === 'USUARIO' || this.esAdministrador();
   }
 
   protected tieneAccesoCampanas(): boolean {
-    const usuario = this.servicioAuth.usuarioActual();
-    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
+    const rol = this.obtenerRolNombreUpper();
     // ADMIN, TECNICO, USUARIO pueden acceder
     return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
   }
 
   protected tieneAccesoPantallas(): boolean {
-    const usuario = this.servicioAuth.usuarioActual();
-    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
+    const rol = this.obtenerRolNombreUpper();
     // ADMIN, TECNICO, USUARIO pueden acceder (USUARIO solo ve sus pantallas)
     return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
   }
 
   protected tieneAccesoContenidos(): boolean {
-    const usuario = this.servicioAuth.usuarioActual();
-    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
+    const rol = this.obtenerRolNombreUpper();
     // ADMIN, TECNICO, USUARIO pueden acceder
     return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
   }
 
   protected tieneAccesoReportes(): boolean {
-    const usuario = this.servicioAuth.usuarioActual();
-    const rol = usuario?.rol?.nombre?.toUpperCase() || '';
+    const rol = this.obtenerRolNombreUpper();
     // ADMIN, TECNICO, USUARIO pueden acceder
     return ['ADMINISTRADOR', 'ADMIN', 'TECNICO', 'USUARIO'].includes(rol);
+  }
+
+  private obtenerRolNombre(): string {
+    const usuario: any = this.servicioAuth.usuarioActual();
+    const rol = usuario?.rol;
+
+    if (typeof rol === 'string') {
+      return rol;
+    }
+
+    if (rol && typeof rol === 'object' && typeof rol.nombre === 'string') {
+      return rol.nombre;
+    }
+
+    if (Array.isArray(usuario?.roles) && usuario.roles.length > 0) {
+      return usuario.roles[0];
+    }
+
+    return '';
+  }
+
+  private obtenerRolNombreUpper(): string {
+    return this.obtenerRolNombre().toUpperCase();
   }
 
   protected toggleMenu(): void {
