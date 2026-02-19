@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { ToggleTemaComponent } from '@shared/componentes/toggle-tema.component';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, ToggleTemaComponent],
   styleUrls: ['./landing.component.scss'],
   template: `
     <div class="landing-container">
@@ -17,6 +18,7 @@ import { RouterLink } from '@angular/router';
             <span class="logo-subtitle">Publicidad Digital Inteligente</span>
           </div>
           <div class="nav-links">
+            <app-toggle-tema></app-toggle-tema>
             <a routerLink="/autenticacion/iniciar-sesion" class="btn-login">Iniciar Sesión</a>
             <a routerLink="/autenticacion/registrarse" class="btn-register">Crear Cuenta</a>
           </div>
