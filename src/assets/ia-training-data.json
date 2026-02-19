@@ -26,7 +26,7 @@
             "icono": "➕",
             "tipo": "navegacion",
             "destino": "/campanas/crear",
-            "permisosRequeridos": ["USUARIO", "ADMIN", "TECNICO"]
+            "permisosRequeridos": ["USUARIO", "ADMINISTRADOR", "TECNICO"]
           },
           "relacionadas": ["editar_campana", "duplicar_campana", "activar_campana"]
         },
@@ -48,7 +48,7 @@
             "icono": "🤖",
             "tipo": "accion",
             "funcionalidad": "abrirAsistenteIA",
-            "permisosRequeridos": ["USUARIO", "ADMIN"]
+            "permisosRequeridos": ["USUARIO", "ADMINISTRADOR"]
           },
           "relacionadas": ["crear_campana", "editar_campana"]
         },
@@ -125,7 +125,7 @@
             "icono": "📤",
             "tipo": "navegacion",
             "destino": "/contenido/subir",
-            "permisosRequeridos": ["USUARIO", "ADMIN"]
+            "permisosRequeridos": ["USUARIO", "ADMINISTRADOR"]
           },
           "relacionadas": ["formatos_permitidos", "editar_contenido"]
         },
@@ -177,7 +177,7 @@
             "icono": "📺",
             "tipo": "navegacion",
             "destino": "/pantallas/conectar",
-            "permisosRequeridos": ["ADMIN", "TECNICO"]
+            "permisosRequeridos": ["ADMINISTRADOR", "TECNICO"]
           },
           "relacionadas": ["ver_pantallas", "configurar_pantalla"]
         },
@@ -229,7 +229,7 @@
             "icono": "📊",
             "tipo": "navegacion",
             "destino": "/reportes",
-            "permisosRequeridos": ["USUARIO", "ADMIN", "TECNICO"]
+            "permisosRequeridos": ["USUARIO", "ADMINISTRADOR", "TECNICO"]
           },
           "relacionadas": ["analizar_campana"]
         },
@@ -299,7 +299,7 @@
             "icono": "💬",
             "tipo": "accion",
             "funcionalidad": "abrirChatSoporte",
-            "permisosRequeridos": ["USUARIO", "ADMIN", "TECNICO"]
+            "permisosRequeridos": ["USUARIO", "ADMINISTRADOR", "TECNICO"]
           }
         },
         {
@@ -319,7 +319,7 @@
             "icono": "💬",
             "tipo": "accion",
             "funcionalidad": "abrirChatSoporteDirecto",
-            "permisosRequeridos": ["USUARIO", "ADMIN", "TECNICO"]
+            "permisosRequeridos": ["USUARIO", "ADMINISTRADOR", "TECNICO"]
           }
         }
       ]
@@ -332,7 +332,7 @@
       "icono": "➕",
       "titulo": "Nueva Campaña",
       "destino": "/campanas/crear",
-      "disponiblePara": ["USUARIO", "ADMIN"]
+      "disponiblePara": ["USUARIO", "ADMINISTRADOR"]
     },
     {
       "id": "ver_reportes_quick",
@@ -340,7 +340,7 @@
       "icono": "📊",
       "titulo": "Ver Reportes",
       "destino": "/reportes",
-      "disponiblePara": ["USUARIO", "ADMIN", "TECNICO"]
+      "disponiblePara": ["USUARIO", "ADMINISTRADOR", "TECNICO"]
     },
     {
       "id": "pantallas_quick",
@@ -348,7 +348,7 @@
       "icono": "📺",
       "titulo": "Mis Pantallas",
       "destino": "/pantallas",
-      "disponiblePara": ["ADMIN", "TECNICO"]
+      "disponiblePara": ["ADMINISTRADOR", "TECNICO"]
     },
     {
       "id": "contenido_quick",
@@ -356,7 +356,7 @@
       "icono": "📤",
       "titulo": "Subir Contenido",
       "destino": "/contenido/subir",
-      "disponiblePara": ["USUARIO", "ADMIN"]
+      "disponiblePara": ["USUARIO", "ADMINISTRADOR"]
     },
     {
       "id": "ayuda_quick",
@@ -364,7 +364,7 @@
       "icono": "❓",
       "titulo": "Centro de Ayuda",
       "destino": "https://help.innoad.com",
-      "disponiblePara": ["USUARIO", "ADMIN", "TECNICO"]
+      "disponiblePara": ["USUARIO", "ADMINISTRADOR", "TECNICO"]
     }
   ],
   "metainfo": {
