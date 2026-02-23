@@ -6,11 +6,12 @@ import { AyudaService } from '@core/servicios/ayuda.servicio';
 import { ServicioAutenticacion } from '@core/servicios/autenticacion.servicio';
 import { EditarPerfilComponent } from './editar-perfil.component';
 import { ToggleTemaComponent } from './toggle-tema.component';
+import { OnboardingTutorialComponent } from './onboarding-tutorial.component';
 
 @Component({
   selector: 'app-navegacion-autenticada',
   standalone: true,
-  imports: [CommonModule, RouterLink, EditarPerfilComponent, ToggleTemaComponent],
+  imports: [CommonModule, RouterLink, EditarPerfilComponent, ToggleTemaComponent, OnboardingTutorialComponent],
   styleUrls: ['./navegacion-autenticada.component.scss'],
   template: `
     <nav class="navbar-innoad">
@@ -180,6 +181,9 @@ import { ToggleTemaComponent } from './toggle-tema.component';
     @if (mostrarModalPerfil()) {
       <app-editar-perfil (cerrar)="cerrarModalPerfil()" />
     }
+
+    <!-- Tutorial de bienvenida para nuevos usuarios -->
+    <app-onboarding-tutorial />
   `
 })
 export class NavegacionAutenticadaComponent implements OnInit {

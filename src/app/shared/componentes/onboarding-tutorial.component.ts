@@ -1,6 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 
 interface TutorialPaso {
   paso: number;
@@ -43,7 +42,7 @@ interface TutorialPaso {
 
           <!-- Credenciales (si existen) -->
           <div *ngIf="pasoActual.credenciales" class="credenciales-box">
-            <h4>[]� Credenciales Disponibles:</h4>
+            <h4>[]� Credenciales Disponibles:</h4>
             <div class="credenciales-lista">
               <div *ngFor="let cred of pasoActual.credenciales" class="credencial-item">
                 <span class="usuario">{{ cred.usuario }}</span>
@@ -54,7 +53,7 @@ interface TutorialPaso {
 
           <!-- Elementos (si existen) -->
           <div *ngIf="pasoActual.elementos" class="elementos-box">
-            <h4>[]� Elementos principales:</h4>
+            <h4>[]� Elementos principales:</h4>
             <ul>
               <li *ngFor="let elem of pasoActual.elementos">{{ elem }}</li>
             </ul>
@@ -342,7 +341,7 @@ export class OnboardingTutorialComponent implements OnInit {
   mostrarTutorial = false;
   pasoActual: TutorialPaso = {
     paso: 1,
-    titulo: '[]� Bienvenido',
+    titulo: '¡Bienvenido a InnoAd!',
     descripcion: 'Cargando...',
     contenido: '',
     icono: 'rocket'
@@ -350,26 +349,92 @@ export class OnboardingTutorialComponent implements OnInit {
   totalPasos = 10;
   pasos: TutorialPaso[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   ngOnInit() {
     this.cargarTutorial();
   }
 
   cargarTutorial() {
-    this.http.get<any>('http://localhost:8080/api/onboarding/tutorial').subscribe(
-      (response) => {
-        if (response.tutorialCompleto) {
-          this.pasos = response.tutorialCompleto;
-          this.totalPasos = this.pasos.length;
-          this.mostrarTutorial = true;
-          this.irAlPaso(1);
-        }
+    // Solo mostrar si el usuario no ha visto el tutorial antes
+    if (localStorage.getItem('innoad_onboarding_completado') === '1') return;
+
+    this.pasos = [
+      {
+        paso: 1,
+        titulo: '¡Bienvenido a InnoAd! 🚀',
+        descripcion: 'La plataforma de publicidad digital inteligente',
+        contenido: 'InnoAd es un sistema de gestión de publicidad digital que te permite crear, aprobar y publicar contenido en pantallas ubicadas en diferentes lugares.',
+        icono: 'rocket'
       },
-      (error) => {
-        console.error('Error cargando tutorial:', error);
+      {
+        paso: 2,
+        titulo: 'Tu Rol en el Sistema 🔑',
+        descripcion: '¿Quién eres en InnoAd?',
+        contenido: 'InnoAd tiene tres roles:\n\n👤 Usuario: Puedes crear y subir publicaciones, pagar campañas y ver estadísticas.\n\n🔧 Técnico: Revisas y apruebas publicaciones, gestionas pantallas y equipos.\n\n👑 Administrador: Control total del sistema, usuarios y configuración.',
+        icono: 'login'
+      },
+      {
+        paso: 3,
+        titulo: 'Crear una Publicación 📢',
+        descripcion: 'El primer paso para publicar tu contenido',
+        contenido: 'Ve a Publicación > Crear para subir tu contenido multimedia (imágenes o videos).\n\nPuedes previsualizar cómo se verá en las pantallas antes de enviarlo.',
+        icono: 'megaphone'
+      },
+      {
+        paso: 4,
+        titulo: 'Seleccionar Ubicaciones 📍',
+        descripcion: 'Elige dónde mostrar tu publicidad',
+        contenido: 'Selecciona las ciudades, lugares y pisos donde quieres que se muestre tu publicidad.\n\nEl sistema calcula automáticamente el costo según la duración y las ubicaciones elegidas.',
+        icono: 'monitor'
+      },
+      {
+        paso: 5,
+        titulo: 'Pago y Aprobación 💳',
+        descripcion: 'Proceso de pago y revisión',
+        contenido: 'Después de crear tu publicación deberás completar el pago.\n\nUn técnico revisará tu contenido y lo aprobará antes de publicarse en las pantallas.',
+        icono: 'file'
+      },
+      {
+        paso: 6,
+        titulo: 'Panel del Técnico 🔧',
+        descripcion: 'Revisión y publicación de contenido',
+        contenido: 'Como técnico, en tu panel puedes:\n• Ver publicaciones pendientes de aprobación\n• Aprobar o rechazar contenido\n• Gestionar las pantallas conectadas\n• Monitorear el estado de los equipos',
+        icono: 'settings'
+      },
+      {
+        paso: 7,
+        titulo: 'Gestión de Campañas 📊',
+        descripcion: 'Organiza tus campañas publicitarias',
+        contenido: 'Las campañas agrupan múltiples publicaciones. Puedes:\n• Programar fechas de inicio y fin\n• Asignar pantallas específicas\n• Ver el rendimiento en tiempo real\n• Controlar el presupuesto',
+        icono: 'chart'
+      },
+      {
+        paso: 8,
+        titulo: 'Estadísticas e Informes 📈',
+        descripcion: 'Mide el impacto de tu publicidad',
+        contenido: 'En la sección de Estadísticas encontrarás:\n• Impresiones y visualizaciones\n• Rendimiento por ubicación\n• Reportes exportables\n• Gráficas en tiempo real',
+        icono: 'graph'
+      },
+      {
+        paso: 9,
+        titulo: 'InnoBot - Tu Asistente IA 🤖',
+        descripcion: 'Ayuda inteligente siempre disponible',
+        contenido: 'InnoBot es el asistente de inteligencia artificial de InnoAd.\n\n¡Encuéntralo en la esquina inferior derecha! Puedes preguntarle sobre:\n• Cómo usar el sistema\n• Dudas sobre tu cuenta\n• Recomendaciones de campañas\n• Ayuda técnica',
+        icono: 'lightbulb'
+      },
+      {
+        paso: 10,
+        titulo: '¡Listo para Empezar! ✅',
+        descripcion: '¡Ya conoces InnoAd!',
+        contenido: 'Ya tienes todo lo que necesitas para empezar.\n\nRecuerda que puedes volver a ver este tutorial desde la configuración en cualquier momento.\n\n¡Bienvenido a la familia InnoAd! 🎉',
+        icono: 'check'
       }
-    );
+    ];
+
+    this.totalPasos = this.pasos.length;
+    this.mostrarTutorial = true;
+    this.irAlPaso(1);
   }
 
   irAlPaso(numero: number) {
@@ -393,22 +458,23 @@ export class OnboardingTutorialComponent implements OnInit {
 
   cerrarTutorial() {
     this.mostrarTutorial = false;
+    localStorage.setItem('innoad_onboarding_completado', '1');
     this.tutorialCerrado.emit();
   }
 
   getIcono(tipo: string): string {
     const iconos: { [key: string]: string } = {
-      rocket: '[]�',
-      login: '[]�',
-      chart: '[]�',
-      megaphone: '[]�',
-      monitor: '[]�',
-      file: '[]�',
-      graph: '[]�',
-      settings: '[]�',
-      lightbulb: '[]�',
+      rocket: '[]�',
+      login: '[]�',
+      chart: '[]�',
+      megaphone: '[]�',
+      monitor: '[]�',
+      file: '[]�',
+      graph: '[]�',
+      settings: '[]�',
+      lightbulb: '[]�',
       check: '[]'
     };
-    return iconos[tipo] || '[]�';
+    return iconos[tipo] || '[]�';
   }
 }
