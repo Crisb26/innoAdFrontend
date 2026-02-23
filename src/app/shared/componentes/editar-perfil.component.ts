@@ -260,12 +260,19 @@ export class EditarPerfilComponent implements OnInit {
       }
 
       // Actualizar perfil en el backend
-      const usuarioActualizado = await firstValueFrom(
-        this.http.put<Usuario>(`${environment.api.baseUrl}/auth/perfil`, datosActualizados)
+      // El backend devuelve RespuestaAPI<UsuarioLogin> = { exitoso, datos: {...} }
+      const respuesta = await firstValueFrom(
+        this.http.put<any>(`${environment.api.baseUrl}/auth/perfil`, datosActualizados)
       );
-      
+
+      // Extraer el usuario del wrapper o usarlo directo si ya es un Usuario
+      const usuarioActualizado: Usuario = respuesta?.datos || respuesta;
+
       // Actualizar el usuario actual en el servicio
       this.servicioAuth.actualizarUsuarioActual(usuarioActualizado);
+
+      // Mantener el estado local sincronizado
+      this.usuario.set(usuarioActualizado);
       
       NotifyX.success('[] Guardó los cambios', {
         duration: 3000,

@@ -1,25 +1,9 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-interface Publicacion {
-  id: number;
-  titulo: string;
-  descripcion: string;
-  imagenUrl: string;
-  estado: string;
-  usuarioNombre: string;
-  ubicacion: string;
-  precioCOP: number;
-  fechaCreacion: string;
-}
-
-interface Pantalla {
-  id: number;
-  nombre: string;
-  ubicacion: string;
-  estado: string;
-  ultimaActualizacion: string;
-}
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { PublicacionServicio, Publicacion } from '@core/servicios/publicacion.servicio';
+import { PantallasService, RespuestaPantalla } from '@core/servicios/pantallas.service';
 
 @Component({
   selector: 'app-panel-tecnico',
@@ -31,7 +15,7 @@ interface Pantalla {
         <h1>🔧 Panel Técnico - InnoAd</h1>
         <div class="info-tecnico">
           <span>Publicaciones pendientes: <strong>{{ pendientes().length }}</strong></span>
-          <span>Pantallas conectadas: <strong>{{ pantallasConectadas().length }}</strong></span>
+          <span>Pantallas activas: <strong>{{ pantallasConectadas().length }}</strong></span>
         </div>
       </header>
 
@@ -78,12 +62,13 @@ interface Pantalla {
               <div class="grid-publicaciones">
                 @for (pub of pendientes(); track pub.id) {
                   <div class="tarjeta-publicacion">
-                    <img [src]="pub.imagenUrl" [alt]="pub.titulo" class="img-publicacion">
+                    <img [src]="pub.contenido?.url || '/assets/imagenes/placeholder.jpg'" [alt]="pub.titulo" class="img-publicacion"
+                         (error)="$any($event.target).src='/assets/imagenes/placeholder.jpg'">
                     <div class="info-publicacion">
                       <h3>{{ pub.titulo }}</h3>
                       <p class="usuario">👤 {{ pub.usuarioNombre }}</p>
-                      <p class="ubicacion">📍 {{ pub.ubicacion }}</p>
-                      <p class="precio">💰 COP $ {{ pub.precioCOP }}</p>
+                      <p class="ubicacion">📍 {{ pub.ubicaciones?.[0]?.ciudad || 'Sin ubicación' }}</p>
+                      <p class="precio">💰 COP $ {{ pub.costo | number }}</p>
                       <p class="descripcion">{{ pub.descripcion }}</p>
                       <div class="acciones-publicacion">
                         <button class="btn-aprobar" (click)="aprobarPublicacion(pub.id)">
@@ -122,13 +107,13 @@ interface Pantalla {
                     @for (pantalla of pantallasConectadas(); track pantalla.id) {
                       <tr>
                         <td>
-                          <span class="badge" [class.conectada]="pantalla.estado === 'CONECTADA'">
-                            {{ pantalla.estado === 'CONECTADA' ? '🟢' : '🔴' }}
+                          <span class="badge" [class.conectada]="pantalla.estaConectada">
+                            {{ pantalla.estaConectada ? '🟢' : '🔴' }}
                           </span>
                         </td>
                         <td>{{ pantalla.nombre }}</td>
                         <td>{{ pantalla.ubicacion }}</td>
-                        <td>{{ pantalla.ultimaActualizacion }}</td>
+                        <td>{{ pantalla.ultimaSincronizacion | date:'short' }}</td>
                       </tr>
                     }
                   </tbody>
@@ -466,15 +451,24 @@ interface Pantalla {
     }
   `]
 })
-export class PanelTecnicoComponent implements OnInit {
+export class PanelTecnicoComponent implements OnInit, OnDestroy {
   protected pendientes = signal<Publicacion[]>([]);
-  protected pantallasConectadas = signal<Pantalla[]>([]);
+  protected pantallasConectadas = signal<RespuestaPantalla[]>([]);
   protected pestanaActiva = signal<string>('revision');
-  protected municipios: any[] = [];
+  protected procesando = signal<boolean>(false);
+
+  private destroy$ = new Subject<void>();
+  private publicacionServicio = inject(PublicacionServicio);
+  private pantallasService = inject(PantallasService);
 
   ngOnInit(): void {
     this.cargarPublicacionesPendientes();
     this.cargarPantallasConectadas();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   protected cambiarPestana(pestana: string): void {
@@ -482,47 +476,56 @@ export class PanelTecnicoComponent implements OnInit {
   }
 
   private cargarPublicacionesPendientes(): void {
-    // Datos simulados
-    this.pendientes.set([
-      {
-        id: 1,
-        titulo: 'Publicación de prueba 1',
-        descripcion: 'Descripción de la publicación pendiente',
-        imagenUrl: 'https://via.placeholder.com/300x200?text=Publicacion+1',
-        estado: 'PENDIENTE',
-        usuarioNombre: 'Juan Pérez',
-        ubicacion: 'Centro Comercial Norte',
-        precioCOP: 50000,
-        fechaCreacion: '2024-02-15'
-      }
-    ]);
+    this.publicacionServicio.obtenerPublicacionesPendientes$()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(publicaciones => {
+        this.pendientes.set(publicaciones);
+      });
+    this.publicacionServicio.cargarPublicacionesPendientes();
   }
 
   private cargarPantallasConectadas(): void {
-    // Datos simulados
-    this.pantallasConectadas.set([
-      {
-        id: 1,
-        nombre: 'Pantalla Centro',
-        ubicacion: 'Centro Comercial',
-        estado: 'CONECTADA',
-        ultimaActualizacion: '2024-02-15 10:30'
-      },
-      {
-        id: 2,
-        nombre: 'Pantalla Terminal',
-        ubicacion: 'Terminal de Transporte',
-        estado: 'CONECTADA',
-        ultimaActualizacion: '2024-02-15 10:25'
-      }
-    ]);
+    this.pantallasService.pantallas$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(pantallas => {
+        this.pantallasConectadas.set(pantallas);
+      });
+    this.pantallasService.cargarPantallas();
   }
 
   protected aprobarPublicacion(publicacionId: number): void {
-    alert('✅ Publicación ' + publicacionId + ' aprobada');
+    const notas = prompt('Notas de aprobación (opcional):');
+    if (notas === null) return; // Cancelado
+    this.procesando.set(true);
+    this.publicacionServicio.aprobarPublicacion(publicacionId, notas || undefined)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.procesando.set(false);
+          alert('✅ Publicación aprobada exitosamente');
+        },
+        error: (err) => {
+          this.procesando.set(false);
+          alert('Error al aprobar la publicación: ' + (err.error?.mensaje || err.message));
+        }
+      });
   }
 
   protected rechazarPublicacion(publicacionId: number): void {
-    alert('❌ Publicación ' + publicacionId + ' rechazada');
+    const motivo = prompt('Motivo del rechazo (requerido):');
+    if (!motivo || !motivo.trim()) return;
+    this.procesando.set(true);
+    this.publicacionServicio.rechazarPublicacion(publicacionId, motivo)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.procesando.set(false);
+          alert('❌ Publicación rechazada');
+        },
+        error: (err) => {
+          this.procesando.set(false);
+          alert('Error al rechazar la publicación: ' + (err.error?.mensaje || err.message));
+        }
+      });
   }
 }

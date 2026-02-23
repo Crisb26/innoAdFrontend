@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 
@@ -14,7 +15,7 @@ interface CarritoItem {
 @Component({
   selector: 'app-carrito',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   template: `
     <div class="carrito-container">
       <header class="header-carrito">
